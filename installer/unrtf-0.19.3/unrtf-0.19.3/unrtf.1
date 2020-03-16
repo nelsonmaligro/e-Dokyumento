@@ -1,0 +1,71 @@
+.\" Copyright (C) Zachary Thayer Smith 2001
+.\"
+.\" This file may be copied under the conditions described
+.\" in the GNU GENERAL PUBLIC LICENSE, Version 2, June 1991
+.\" that should have been distributed together with this file.
+.\"
+.TH UNRTF "GNU UnRTF 0.19.2"
+.SH NAME
+UnRTF \- converts document in RTF format to other formats
+.SH SYNOPSIS
+.BI "unrtf [" options "] [" file... ]
+.br
+.sp
+Options: 
+.BI [\-\-nopict]
+.BI [\-\-html]
+.BI [\-\-text]
+.BI [\-\-vt]
+.BI [\-\-latex]
+.BI [\-\-ps]
+.BI [\-\-wpml]
+.BI [\-\-help]
+.BI [\-\-version]
+.br
+.SH DESCRIPTION
+The program
+.B unrtf
+is a converter from Rich Text Format (RTF) to a growing number
+of document formats. At present it supports
+Hypertext Markup Language (HTML), plain text, text with VT100 codes,
+LaTeX, and PostScript.
+All output formats except HTML are "alpha" i.e. limited and development
+has just begun.
+However with HTML, the program supports tables, fonts, embedded images,
+hyperlinks, and paragraph alignment. Font support includes
+face and size changes, as well as 
+typical attributes such as italic, bold, 
+underlining, strikethrough, smallcaps, allcaps, expand, compress
+and both foreground and background colors.
+Images are always stored to separate files in the current
+directory, or they can be ignored.
+.SH OPTIONS
+.TP
+\-\-nopict 
+disables the automatic storing of embedded pictures to
+the current directory.
+.TP
+\-\-html
+selects HTML output (default).
+.TP
+\-\-text
+selects plain ASCII text output.
+.TP
+\-\-vt
+selects text output with VT100 escape codes.
+.TP
+\-\-latex
+selects output of a LaTeX document.
+.TP
+\-\-ps
+selects PostScript output.
+.TP
+\-\-wpml
+selects WPML output.
+.TP
+\-\-version 
+prints the program version.
+.SH WEBSITE
+http://www.gnu.org/software/unrtf/unrtf.html
+.SH NOTES
+Report bugs in the program to unrtf@gnu.ai.mit.edu.

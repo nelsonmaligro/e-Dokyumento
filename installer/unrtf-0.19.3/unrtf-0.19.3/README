@@ -1,0 +1,26 @@
+Greetings,
+
+UnRTF is a moderately complicated converter from RTF to other
+formats, including HTML, LaTeX, text, and PostScript. Converting
+to HTML, it supports tables, fonts, colors, embedded images, 
+hyperlinks, paragraph alignment among other things. All other
+conversions are "alpha"--just begun.
+
+Compiling with GCC: type "make all", and assuming you have GCC
+and GNU make, it should compile without any warnings or errors 
+under Linux, BSD, and DOS (using DJGPP). Amiga/GCC users
+should utilize the build.amiga file. Please let me know of 
+any compilation problems.
+
+This program includes no warranty whatsoever. It is provided
+"AS IS". For more information please read the COPYING
+document, which should be included with the source code.
+It describes the GNU Public License, which covers UnRTF.
+
+Enjoy.
+
+Zachary Thayer Smith
+  tuorfa@yahoo.com
+
+22 Sept 01
+

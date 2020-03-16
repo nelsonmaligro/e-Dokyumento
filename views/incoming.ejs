@@ -1,0 +1,30 @@
+
+
+<!-- content -->
+  <script src="/assets/js/jquery.213.min.js"></script>
+  <script src="/assets/js/pdfobject.min.js"></script>
+
+  <style>
+	   .pdfobject-container { height: 500px;}
+     .pdfobject { border: 1px solid #666; }
+  </style>
+
+  <div class="content mt-3">
+      <div class="col-sm-12">
+
+	       <div id="pdf_view"></div>
+      </div>
+  </div>
+
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    <% if (disp!= 'empty'){%>
+      PDFObject.embed("/drive/incoming-temp/<%= disp %>", "#pdf_view");
+    <% }else { %>
+      PDFObject.embed("/drive/No Pending Files.pdf", "#pdf_view");
+    <% } %>
+  });
+</script>
+<!-- /content -->

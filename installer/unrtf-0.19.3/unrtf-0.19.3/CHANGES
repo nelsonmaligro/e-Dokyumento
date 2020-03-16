@@ -1,0 +1,87 @@
+
+Overall Program Change Log for GNU UnRTF
+----------------------------------------
+0.1: original version, known as "rtf2htm"
+0.2: first civilized (Un*x) version
+0.3: addition of hash storage for all strings
+0.4: support for a few HTML special exprs
+0.5: tables finally work
+0.6: addition of usage()
+0.7: added special chars, \tab, info group, <body>
+0.8: font table support
+
+0.9.0: images are stored to files
+0.9.1: pict files extensions a bit more accurate
+0.9.2: font size changes (\fs) more accurate.
+0.9.3: fixed bug regarding where <body> goes
+0.9.4: added -nopict option
+0.9.5: fixed table data printing.
+0.9.6: if >1 \cell in a group, font attrs affect all.
+0.9.7: Chunk class renamed Word
+
+0.10.0: input file type is checked, -echo renamed -dump
+0.11.0: addition of ANSI->HTML conversion, plus limited Mac->HTML
+0.11.1: unknown chars are printed as <!--0x##-->
+
+0.12.0: separated parser from word module
+0.12.1: added -version option
+0.12.2: backslash-newline is now \par
+0.12.3: added default font families (\fswiss etc)
+0.12.4: added blurb about program in the output HTML
+0.12.5: added recognition of files with ".RTF" ending, not just ".rtf"
+0.12.6: added charset tables for CP437 and CP850
+0.12.7: fixed bug preventing \'## sequences from being translated
+0.12.8: removed size limit for words, verified DJGPP compilation works.
+0.12.9: compilation bugfix, fixed author/date information
+0.12.10: added --simple switch for generating HTML without SPAN/DIV tags
+
+0.13.0: paragraph alignment added
+0.13.1: fix for words getting lost after \par
+0.13.2: fix for color table not being recognized
+
+0.14.0: separation of word and convert modules
+0.14.1: fixed color table indexing, added support for font background color.
+0.14.2: updated parsing mechanism
+0.14.3: fix for DIV nesting; fix for NS's hiding any table within a span.
+0.14.4: fix for color table parsing; added better underline/strikethru support.
+
+0.15.0: hashing of RTF keywords in convert.c; moved much code out of convert.c
+0.15.1: removed null entries from special.c to reduce program size
+0.15.2: removed no-op entries from hash in convert.c to reduce program size
+0.15.3: first 16-bit MSDOS executable
+0.15.4: fixed paragraph alignment not getting cleared by \pard
+0.15.5: updated code to produce as few paragraph alignment tags as possible
+
+0.16.0: added input buffering to improve speed
+0.16.1: bugfix for printing of debugging strings stored in command hash
+
+0.17.0: hyperlink support added
+0.17.1: added support for several font attributes e.g. smallcaps, caps, \expand
+0.17.2: added Amiga(TM) compilation support
+0.17.3: fixed problem in interpretation of RTF command words
+0.17.4: changed attr.c to use AttrStack (stack of stacks) paradigm
+----program renamed UnRTF----
+0.17.5: began implementation of output personalities; wrote HTML personality.
+0.17.6: added text and vt personalities
+0.17.7: began addition of PostScript(TM) and LaTeX and WPML output
+0.17.8: first fully commented version, removed "last change" lines
+0.17.9: fixed translation between character sets
+0.17.10: PS now supports underline, strikethrough, shadowed text
+0.17.11: PS now uses ISOLatin1Encoding
+0.17.12: PS now supports these fonts: Times,Courier,Symbol,Helvetica
+
+----program is now GNU UnRTF----
+0.18.0: updates to comments, documentation to reflect inclusion in GNU suite.
+0.18.1: updated manual
+
+0.19.1: new maintainers: minor fixes to prevent segmentation violations;
+	further special character code; minor cleanups
+0.19.2: updated some files;
+0.19.3: fix bug #225592: null pointer param in convert.c    
+
+Note:
+  LaTeX is a system of macros for TeX by Leslie Lamport.
+  WPML is a tentative document format by Z.T. Smith
+
+
+

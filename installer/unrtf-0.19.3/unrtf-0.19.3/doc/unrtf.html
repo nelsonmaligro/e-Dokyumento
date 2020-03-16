@@ -1,0 +1,374 @@
+<html>
+<head>
+<title>GNU UnRTF User's Manual</title>
+</head>
+<body>
+<big>
+<center>
+<big>
+<big>
+<b>
+GNU UnRTF User's Manual
+</br>
+</big>
+</b>
+For program version 0.19.2
+<br>
+</big>
+(A work in progress.)
+</center>
+<br>
+<br>
+
+</big>
+Copyright (C) 2001<br>
+by Zachary Thayer Smith.<br>
+All rights reserved.<br>
+
+<br>
+Document begun 18 Sept 01.
+<br>
+Last updated 08 Oct 03.
+</big>
+
+<h2>Preface</h2>
+
+Once upon a time, GNU UnRTF was a program that I wrote called
+"rtf2htm". This seemed too generic a name, since many free programs
+of varying quality exist with that name. So I finally settled on
+a new name, UnRTF. This name reflects a desire to convert <i>away</i>
+from the RTF format, to various other formats.
+When it came time to include the program into the GNU software suite, 
+the program name was changed to GNU UnRTF.
+
+This document is also provided AS-IS and without any warranty of any kind.
+
+The user shall utilize the program and/or this document
+at his or her own risk.
+
+<p>
+
+I am the primary engineer behind UnRTF, however I have
+received comments and bug reports from various people.
+These contributors are identified in the source code,
+when they desired to be mentioned.
+
+<h2>Program License</h2>
+
+<pre>
+<small>
+   UnRTF, a command-line program to convert RTF documents to other formats.
+   Copyright (C) 2000,2001 Zachary Thayer Smith
+
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+
+   The author is reachable by electronic mail at tuorfa@yahoo.com.
+</small>
+</pre>
+
+
+<h2>Introduction</h2>
+
+UnRTF is a program to convert RTF (Rich Text) documents to 
+other formats. At present, conversion to HTML is the most
+complete. I am presently adding LaTeX, plain text, 
+text with VT100 codes, and PostScript conversion.
+I will later add my own format, WPML (word processor markup language),
+to that list.
+<!-- daved - 0.19.0 URL no longer valid
+that format is described at
+<a href=http://www.geocities.com/tuorfa/wpml.html>
+http://www.geocities.com/tuorfa/wpml.html</a>.
+-->
+
+<h2>Converting to HTML</h2>
+
+The program supports many features of the current RTF standard
+when converting to HTML.
+
+<h3>Character Attributes</h3>
+
+<table border=2>
+<tr> <th>Feature Name</th><th>Supported?</th></tr>
+<tr><td>Text font change</td><td>yes</td></tr>
+<tr><td>Text font sizes</td><td>yes</td></tr>
+<tr><td>Text bold, italic</td><td>yes</td></tr>
+<tr><td>Text single-underline</td><td>yes</td></tr>
+<tr><td>Other text underlining modes (double, dashed etc)</td><td>converted to basic underline</td></tr>
+<tr><td>Text shadow, outline, emboss, engrave</td><td>converted to bold or italic</td></tr>
+<tr><td>Text (single-line) strikethrough</td><td>yes</td></tr>
+<tr><td>Text double-strikethrough</td><td>converted to single-strikethrough</td></tr>
+<tr><td>Text all-caps</td><td>yes</td></tr>
+<tr><td>Text small-caps</td><td>yes</td></tr>
+<tr><td>Text superscript, subscript</td><td>yes</td></tr>
+<tr><td>Text expand/condense</td><td>yes (not all browsers supported)</td></tr>
+<tr><td>Text foreground color change</td><td>yes</td></tr>
+<tr><td>Text background color change</td><td>yes</td></tr>
+
+</table>
+
+<h3>Character Sets</h3>
+
+RTF supports at least four character sets, probably more. 
+These four are: ANSI, Macintosh(TM), PC codepage 437, and PC codepage 850.
+In order to be able to read each of these, a converter can use one
+of two strategies: either have conversion tables from each of
+these four to each potential output format, or convert from
+each of these four to an intermediate, and then have one conversion
+table from the intermediate to each output format. 
+The first approach requires 2<sup>n</sup> tables, whereas 
+the second requires 4+n tables where n is the number of output
+formats.
+Obviously the second approach is
+better, but implementing it requires research to find
+out what the maximal set of characters is. I haven't gotten around to
+that, so for the time being,
+UnRTF uses the first approach.
+In addition, existing open source software may already
+be available to perform such conversions based on a larger
+library of character sets. If so, it would be wiser to
+utilize an existing system such as that.
+
+<h3>Text Blocks</h3>
+
+<table border=2>
+<tr> <th>Feature Name</th><th>Supported?</th></tr>
+<tr><td>Tables</td><td>yes</td></tr>
+<tr><td>Table cell background patterns e.g. diagonal lines</td><td>no</td></tr>
+<tr><td>Paragraph left-align</td><td>yes</td></tr>
+<tr><td>Paragraph right-align</td><td>yes</td></tr>
+<tr><td>Paragraph centered</td><td>yes</td></tr>
+<tr><td>Paragraph justify</td><td>yes</td></tr>
+<tr><td>Paragraph center within table</td><td>buggy?</td></tr>
+</table>
+
+<h2>Converting to LaTeX</h2>
+
+LaTeX is a tricky format to convert to, for several reasons.
+It's a very specialized system of macros. One could argue that it
+would be easier to convert to raw TeX than bother with the
+idiosyncrices of LaTeX. It has its own character set and fonts. It has
+some commands which are unstable, such as <tt>\underline</tt>.
+Some commonplace items are not for use outside of equations,
+e.g. superscripting.  I've made an initial effort at getting
+the converter to work, with improvements later.
+
+<h3>Character Attributes</h3>
+
+<table border=2>
+<tr> <th>Feature Name</th><th>Supported?</th></tr>
+<tr><td>Text font change</td><td>not yet</td></tr>
+<tr><td>Text font sizes</td><td>yes</td></tr>
+<tr><td>Text bold, italic</td><td>yes</td></tr>
+<tr><td>Text single-underline</td><td>no</td></tr>
+<tr><td>Other text underlining modes (double, dashed etc)</td><td>no</td></tr>
+<tr><td>Text shadow, outline, emboss, engrave</td><td>no</td></tr>
+<tr><td>Text (single-line) strikethrough</td><td>no</td></tr>
+<tr><td>Text double-strikethrough</td><td>no</td></tr>
+<tr><td>Text all-caps</td><td>yes</td></tr>
+<tr><td>Text small-caps</td><td>yes</td></tr>
+<tr><td>Text superscript, subscript</td><td>yes</td></tr>
+<tr><td>Text expand/condense</td><td>no</td></tr>
+<tr><td>Text foreground color change</td><td>no</td></tr>
+<tr><td>Text background color change</td><td>no</td></tr>
+
+</table>
+
+<h3>Character Sets</h3>
+
+Under construction.
+
+<h3>Text Blocks</h3>
+
+<table border=2>
+<tr> <th>Feature Name</th><th>Supported?</th></tr>
+<tr><td>Tables</td><td>yes</td></tr>
+<tr><td>Table cell background patterns e.g. diagonal lines</td><td>no</td></tr>
+<tr><td>Paragraph left-align</td><td>yes?</td></tr>
+<tr><td>Paragraph right-align</td><td>no</td></tr>
+<tr><td>Paragraph centered</td><td>yes?</td></tr>
+<tr><td>Paragraph justify</td><td>yes</td></tr>
+<tr><td>Paragraph center within table</td><td>no</td></tr>
+</table>
+
+<h2>Converting to PostScript</h2>
+
+Converting to PostScript is a tricky because it is not actually
+a document format. PostScript is in fact a stack-based programming
+language that is executed in the printer.
+It lacks such concepts are paragraphs and tables or anything document-related
+really, but it does have drawing primitives, mechanisms for accessing
+built-in fonts, and can print pages.
+Still, at first it would that conversion to this format is a very large
+obstacle. Actually, PostScript
+is a robust and enjoyable programming language and I am enjoying
+the task of writing the PostScript code. Presently my
+text renderer is limited, since it is quite new. I will be improving it soon.
+
+
+<h3>Character Attributes</h3>
+
+<table border=2>
+<tr> <th>Feature Name</th><th>Supported?</th></tr>
+<tr><td>Text font change</td><td>not yet</td></tr>
+<tr><td>Text font sizes</td><td>yes</td></tr>
+<tr><td>Text bold, italic</td><td>yes</td></tr>
+<tr><td>Text single-underline</td><td>yes</td></tr>
+<tr><td>Other text underlining modes (double, dashed etc)</td><td>converted to basic underline</td></tr>
+<tr><td>Text shadow, outline, emboss, engrave</td><td>shadow only</td></tr>
+<tr><td>Text (single-line) strikethrough</td><td>yes</td></tr>
+<tr><td>Text double-strikethrough</td><td>converted to single-strikethrough</td></tr>
+<tr><td>Text all-caps</td><td>yes</td></tr>
+<tr><td>Text small-caps</td><td>not yet</td></tr>
+<tr><td>Text superscript, subscript</td><td>not yet</td></tr>
+<tr><td>Text expand/condense</td><td>yes<td></tr>
+<tr><td>Text foreground color change</td><td>not yet</td></tr>
+<tr><td>Text background color change</td><td>not yet</td></tr>
+
+</table>
+
+<h3>Character Sets</h3>
+
+Under construction.
+
+<h3>Text Blocks</h3>
+
+Paragraph alignment and tables are not yet supported for PostScript
+output.
+
+<h3>Extra Features</h3>
+
+None yet.
+
+<h2>Converting to Plain Text</h2>
+
+Under construction.
+
+<h2>Converting to Text with VT100 control codes</h2>
+
+Under construction.
+
+<h2>Converting to WPML</h2>
+
+Under construction.
+
+<h2>Features Not Yet Supported</h2>
+
+As development continues, I will try to add support
+for other features. Some that I know are not
+covered but that I would like to address include:
+
+<ul>
+<li>numbered lists and point lists
+<li>shapes (objects composed of lines, circles etc)
+<li>index entries and index generation
+<li>tables of contents entries and generation
+<li>automatic conversion of embedded images to PNG
+</ul>
+
+
+<h2>Using UnRTF</h2>
+
+Please refer to the manual page (unrtf.1).
+
+<h2>Compilation</h2>
+
+Please see the README file.
+
+<h2>Theory of Operation</h2>
+
+This  program essentially reads the entire
+RTF file into memory and works on it.
+Because of this, it may require that you run
+the program on a computer that has virtual 
+memory enabled. With smaller input files
+it should be possible to use the program under DOS,
+so long as it is compiled with the
+DOS version of GCC, called DJGPP. 
+
+<p>
+The program operates by dealing with each
+RTF word in order, and interpreting those
+which are commands. Some RTF command words
+have parameters in a subtree. The command
+\info is an example. The program has separate
+routines to handle such cases. In fact,
+most commands have separate functions which
+handle their execution.
+
+<p>
+When the program was called rtf2htm (up through
+version 0.17 or so), the output mechanism was 
+based on the production of HTML exclusively.
+This has now changed, and the abstraction of an
+OutputPersonality is used allow other output
+formats. Each format has its own C file,
+in which all the basic strings for producing
+text are stored, as well as character conversion
+tables. Note, RTF itself allows several character
+sets to be used, so for each output personality
+there are that many conversion tables.
+
+<p>
+One or two things that UnRTF does are fairly
+tricky, such as the conversion of tabular data.
+RTF encodes tables in an odd way compared
+to HTML or LaTeX, so the code is accordingly
+complicated. Suffice it to say that it works,
+so don't touch it. Do note, PostScript does not
+have concept of a table, since it is not
+a document format but a programming language.
+I will eventually get tables working under PS
+anyway, by porting my table rendering code
+over from my HTML viewer, Beest.
+
+<p>
+I have implemented at least three optimizations to 
+reduce the amount of memory required
+by the program and the time used for the conversion.
+
+<ol>
+<li>Text words and RTF command-words are stored in a 
+hash table. This has the effect of saving memory
+since commonly occurring words such as "the" and "\par"
+are not repeated in memory. When the program
+finishes doing the conversion, it reports the
+number of words hashed.
+<li>RTF command-words and pointers to the functions 
+that interpret them are stored in a static hash
+so that execution can be speedy. This replaces the
+long if-else sequence once used and greatly speeds
+up the program.
+<li>Input data are buffered, to eliminate the large
+number of calls to the fgetc function. In a modern
+OS such as Linux this has only a small impact, but
+under DOS it can really help.
+</ol>
+
+<h2>Notes</h2>
+
+<ol>
+<li>
+LaTeX is a system of macros for TeX originated by Leslie Lamport
+<li>
+WPML is a tentative document format by Zachary Thayer Smith
+<li>
+PostScript is a stack-based programming language for printers.
+</ol>
+
+</body>
+</html>
+
+
