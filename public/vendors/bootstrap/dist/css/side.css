@@ -1,0 +1,147 @@
+.hamburger {
+  font-size: 15px;
+  cursor: pointer;
+  top: 145px;
+  right: 0px;
+  position: fixed;
+}
+
+#mySidenav {
+  height: 270px;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 176px;
+  right: 0;
+  background-color: #111;
+  overflow-x: auto;
+  overflow-y: auto;
+  white-space:nowrap;
+  padding-top: 5px;
+  transition: 0.5s;
+}
+
+#mySidenav a {
+  padding: 8px 8px 8px 22px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #818181;
+  display: block;
+  transition: 0.3s
+}
+
+#mySidenav a:hover,
+#mySidenav .offcanvas a:focus {
+  color: #f1f1f1;
+}
+
+.overlay {
+  position:absolute;
+      top:50%;
+      left:55%;
+      height: 50px;/*height needs to be set*/
+      width: 250px;
+      transform:translate(-50%, -50%);
+      color: white; background: #666666; opacity: .8;
+      margin: auto;
+      z-index: 1000;
+}
+
+
+
+
+.commentburger {
+  font-size: 15px;
+  cursor: pointer;
+  top: 105px;
+  right: 0px;
+  position: fixed;
+}
+
+#commentnav {
+  height: 470px;
+  width: 0;
+  position: fixed;
+  z-index: 1;
+  top: 105px;
+  right: 0;
+  color: black; background: rgba(50, 50, 0, .5); 
+  overflow-x: auto;
+  overflow-y: auto;
+  white-space:nowrap;
+  padding-top: 5px;
+  transition: 0.5s;
+}
+
+#commentnav a {
+  padding: 8px 8px 8px 22px;
+  text-decoration: none;
+  font-size: 15px;
+  color: white;
+  display: block;
+  transition: 0.3s
+}
+#commentnav .box {
+  padding: 1px 1px 1px 1px;
+  border-radius: 15px;
+  width: 380px;
+  height: 120px;
+  overflow-y: auto;
+  overflow-x: auto;
+  font-size: 15px;
+  background: #FAF304; opacity: 1;
+  display: block;
+  transition: 0.3s;
+  position:relative;
+  left:10px;
+
+}
+#commentnav textarea {
+  padding: 1px 8px 8px 8px;
+  font-size: 15px;
+  color: black;
+  display: block;
+  transition: 0.3s;
+  width: 90px;
+  white-space:normal;
+  position:relative;
+  left:30px;
+}
+#commentnav .box p {
+  padding: 1px 8px 8px 8px;
+  font-size: 15px;
+  color: black;
+  display: block;
+  transition: 0.3s;
+  width: 360px;
+  height: 62px;
+  white-space:normal;
+}
+
+#commentnav a:hover,
+#commentnav .offcanvas a:focus {
+  color: #f1f1f1;
+}
+
+.annotate {
+  font-size: 15px;
+  cursor: pointer;
+  top: 72px;
+  left: 350px;
+  position: fixed;
+}
+
+.annotate2 {
+  font-size: 15px;
+  cursor: pointer;
+  top: 72px;
+  left: 690px;
+  position: fixed;
+}
+.mydiv {
+      position:absolute;
+      height: 30px;/*height needs to be set*/
+      transform:translate(-50%, -50%);
+      margin: auto;
+      z-index: 1000;
+  }

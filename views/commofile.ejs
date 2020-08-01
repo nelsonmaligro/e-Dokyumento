@@ -1,0 +1,52 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Pinoy Electronic Document Management System</title>
+    <meta name="description" content="Philippine Navy Document Management System">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="/vendors/bootstrap/dist/css/bootstrap.css">
+
+</head>
+
+<body>
+<div class="wrapper">
+          <!-- content -->
+
+          <script src="/assets/js/jquery.213.min.js"></script>
+          <script src="/assets/js/pdfobject.min.js"></script>
+          <style>
+             .pdfobject-container { height: 600px;}
+             .pdfobject { border: 1px solid #666; }
+          </style>
+          <div class="content mt-3">
+
+              <div class="col-sm-12">
+                 <div id="pdf_view"></div>
+              </div>
+          </div>
+
+        <script type="text/javascript">
+
+          $(document).ready(function(){
+              PDFObject.embed("<%= path %>", "#pdf_view");
+            });
+        </script>
+</div><!-- ./wrapper -->
+<script src="/vendors/jquery/dist/jquery.min.js"></script>
+<script src="/vendors/popper.js/dist/umd/popper.min.js"></script>
+<script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+
+
+
+</body>
+
+</html>

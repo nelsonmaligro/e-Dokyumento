@@ -1,0 +1,1042 @@
+[{
+  "_id": {
+    "$oid": "5e2d429f669cff1b20fb1a5d"
+  },
+  "title": "Chapter 1 - 09Apr2020.docx",
+  "filename": "Chapter 3 - 09Apr2020.docx",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6A",
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5e2d429f669cff1b20fb1a5e"
+      },
+      "deyt": "26 Jan 2020 15:41"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5e2d4382669cff1b20fb1a67"
+      },
+      "deyt": "26 Jan 2020 15:45"
+    },
+    {
+      "branch": [
+        "N6"
+      ],
+      "_id": {
+        "$oid": "5ea596c86597a724a8562afa"
+      },
+      "deyt": "26 Apr 2020 22:12"
+    },
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5ea6a2b8137e7d2bec64b695"
+      },
+      "deyt": "27 Apr 2020 17:15"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5e6f89f061926429343f8a97"
+      },
+      "deyt": "16 Mar 2020 22:15"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e2d441a669cff1b20fb1a6a"
+  },
+  "title": "Chapter 4 - 09Apr2020.docx",
+  "filename": "Chapter 4 - 09Apr2020.docx",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6A",
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5e2d441a669cff1b20fb1a6b"
+      },
+      "deyt": "26 Jan 2020 15:47"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5e563d6ca5c5d1222c9974c3"
+      },
+      "deyt": "26 Feb 2020 17:42"
+    },
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5ea599d62338f3037c31d5f6"
+      },
+      "deyt": "26 Apr 2020 22:25"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5ea5a3cdb5beb33abc251e2d"
+      },
+      "deyt": "26 Apr 2020 23:07"
+    },
+    {
+      "branch": [
+        "N6"
+      ],
+      "_id": {
+        "$oid": "5ea69e64137e7d2bec64b693"
+      },
+      "deyt": "27 Apr 2020 16:57"
+    },
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5ea98830badaf62220316758"
+      },
+      "deyt": "29 Apr 2020 21:59"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e2d49f2621d5f1d5c6834d6"
+  },
+  "title": "PN Unclassified Video Teleconference System.docx",
+  "filename": "PN Unclassified Video Teleconference System.docx",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B",
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5e2d49f2621d5f1d5c6834d7"
+      },
+      "deyt": "26 Jan 2020 16:12"
+    },
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5e7caf69a5c5d1222c9974c8"
+      },
+      "deyt": "26 Mar 2020 21:34"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e2d4ffab0c3da36acdef8d6"
+  },
+  "title": "Circular on Secure Baseline Configuration.docx",
+  "filename": "Circular on Secure Baseline Configuration.docx.pdf",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5e2d4ffab0c3da36acdef8d7"
+      },
+      "deyt": "26 Jan 2020 16:38"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5ea5a428b5beb33abc251e2f"
+      },
+      "deyt": "26 Apr 2020 23:09"
+    },
+    {
+      "branch": [
+        "N6"
+      ],
+      "_id": {
+        "$oid": "5ea6a12c137e7d2bec64b694"
+      },
+      "deyt": "27 Apr 2020 17:09"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e5630d0b0c3da36acdef8da"
+  },
+  "title": "Eclipse IDE.pdf",
+  "filename": "Eclipse IDE.pdf",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5e5630d0b0c3da36acdef8db"
+      },
+      "deyt": "26 Feb 2020 16:48"
+    },
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5ea5a4ccb5beb33abc251e33"
+      },
+      "deyt": "26 Apr 2020 23:12"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5ecd34e5b5beb33abc251e3a"
+      },
+      "deyt": "26 May 2020 23:25"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e56316cb0c3da36acdef8de"
+  },
+  "title": "ISSP-Template.pdf",
+  "filename": "ISSP-Template.pdf",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5e56316cb0c3da36acdef8df"
+      },
+      "deyt": "26 Feb 2020 16:50"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5ea5a505b5beb33abc251e35"
+      },
+      "deyt": "26 Apr 2020 23:13"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e56324ff33f3b2eec363e2a"
+  },
+  "title": "Network and IS.xlsx",
+  "filename": "Network and IS.xlsx",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5e56324ff33f3b2eec363e2b"
+      },
+      "deyt": "26 Feb 2020 16:54"
+    },
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5e7caf17a5c5d1222c9974c6"
+      },
+      "deyt": "26 Mar 2020 21:33"
+    },
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5eb2297b9083870f2c721c8a"
+      },
+      "deyt": "06 May 2020 11:05"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e5632e4c3d7370c44eb463b"
+  },
+  "title": "NOC DF Conduct of 1st Quarter Test Firing of Naval Gun of PC118.pdf",
+  "filename": "NOC DF Conduct of 1st Quarter Test Firing of Naval Gun of PC118.pdf",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5e5632e4c3d7370c44eb463c"
+      },
+      "deyt": "26 Feb 2020 16:57"
+    },
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5e7caecda5c5d1222c9974c4"
+      },
+      "deyt": "26 Mar 2020 21:31"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e56349bc3d7370c44eb463f"
+  },
+  "title": "Rootcon.docx",
+  "filename": "CRA Result PAF as 07 March 2019 Final.ppt.mario.pdf",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5e56349bc3d7370c44eb4640"
+      },
+      "deyt": "26 Feb 2020 17:04"
+    },
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5ea7f01218a7df277c3b092b"
+      },
+      "deyt": "28 Apr 2020 16:57"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5ea7f09918a7df277c3b092d"
+      },
+      "deyt": "28 Apr 2020 17:00"
+    },
+    {
+      "branch": [
+        "N6"
+      ],
+      "_id": {
+        "$oid": "5ea98912badaf6222031675a"
+      },
+      "deyt": "29 Apr 2020 22:02"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e7cafbea5c5d1222c9974c9"
+  },
+  "title": "sample1-&gt;2",
+  "filename": "sample2.txt",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5e7cafbea5c5d1222c9974ca"
+      },
+      "deyt": "26 Mar 2020 21:35"
+    },
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5ea59487ae7a9f1b18c2ff91"
+      },
+      "deyt": "26 Apr 2020 22:02"
+    },
+    {
+      "branch": [
+        "N6E"
+      ],
+      "_id": {
+        "$oid": "5eb38d796b034903a4be3c1c"
+      },
+      "deyt": "07 May 2020 12:24"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5ea594d5ae7a9f1b18c2ff92"
+  },
+  "title": "NOC DF.pdf",
+  "filename": "NOC DF.pdf",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5ea594d5ae7a9f1b18c2ff93"
+      },
+      "deyt": "26 Apr 2020 22:04"
+    },
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5ea59582ae7a9f1b18c2ff96"
+      },
+      "deyt": "26 Apr 2020 22:06"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5ea59dd72338f3037c31d5fb"
+  },
+  "title": "VLAN Routed.doc",
+  "filename": "192.168.0.154",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5ea59dd72338f3037c31d5fc"
+      },
+      "deyt": "26 Apr 2020 22:42"
+    },
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5ea8ee02f04b221ab44d21cf"
+      },
+      "deyt": "29 Apr 2020 11:01"
+    },
+    {
+      "branch": [
+        "N6C"
+      ],
+      "_id": {
+        "$oid": "5eb38ae06b034903a4be3c14"
+      },
+      "deyt": "07 May 2020 12:13"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5ea59e1f2338f3037c31d5ff"
+  },
+  "title": "Old Rootcon.doc",
+  "filename": "Old Rootcon.doc.pdf",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5ea59e1f2338f3037c31d600"
+      },
+      "deyt": "26 Apr 2020 22:43"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5ecd3551b5beb33abc251e3c"
+      },
+      "deyt": "26 May 2020 23:27"
+    },
+    {
+      "branch": [
+        "N6"
+      ],
+      "_id": {
+        "$oid": "5eb9038520cbc81e882212e4"
+      },
+      "deyt": "11 May 2020 15:49"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5ea59e972338f3037c31d603"
+  },
+  "title": "Philippine Navy NICTS.pdf",
+  "filename": "Philippine Navy NICTS.pdf",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5ea59e972338f3037c31d604"
+      },
+      "deyt": "26 Apr 2020 22:45"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5ecd35a6b5beb33abc251e3e"
+      },
+      "deyt": "26 May 2020 23:28"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5ea59f1f2338f3037c31d607"
+  },
+  "title": "PN Eclipse IDE - 3.pdf",
+  "filename": "Desktop.pdf",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5ea59f1f2338f3037c31d608"
+      },
+      "deyt": "26 Apr 2020 22:47"
+    },
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5ecd3feb7e150627f0834dd8"
+      },
+      "deyt": "27 May 2020 00:12"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5ea5a48fb5beb33abc251e31"
+  },
+  "title": "CryptoIM.png",
+  "filename": "CryptoIM.png",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5ea5a48fb5beb33abc251e32"
+      },
+      "deyt": "26 Apr 2020 23:11"
+    },
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5ecd36e6b5beb33abc251e42"
+      },
+      "deyt": "26 May 2020 23:33"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5ecd371cb5beb33abc251e44"
+      },
+      "deyt": "26 May 2020 23:34"
+    },
+    {
+      "branch": [
+        "N6"
+      ],
+      "_id": {
+        "$oid": "5ea98985badaf6222031675b"
+      },
+      "deyt": "29 Apr 2020 22:04"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5ea67ec2a824bc37b0f4447b"
+  },
+  "title": "Chapter 1 - 09Apr2020.docx",
+  "filename": "Chapter 1 - 09Apr2020.docx",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B",
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5ea67ec2a824bc37b0f4447c"
+      },
+      "deyt": "27 Apr 2020 14:42"
+    },
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5ea682bfce57902a200b3f5b"
+      },
+      "deyt": "27 Apr 2020 14:59"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5ea683b9dc90032ae083d46a"
+      },
+      "deyt": "27 Apr 2020 15:03"
+    },
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5ea69d83dc90032ae083d46c"
+      },
+      "deyt": "27 Apr 2020 16:53"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5eb38b736b034903a4be3c16"
+      },
+      "deyt": "07 May 2020 12:15"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5ea8f6382a2fe42ce45e3bbd"
+  },
+  "title": "LastActivity.txt",
+  "filename": "LastActivity.txt",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B",
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5ea8f6382a2fe42ce45e3bbe"
+      },
+      "deyt": "29 Apr 2020 11:36"
+    },
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5ea9880bbadaf62220316756"
+      },
+      "deyt": "29 Apr 2020 21:58"
+    },
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5eb228970ff87e2c7474c240"
+      },
+      "deyt": "06 May 2020 11:01"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5eb38c086b034903a4be3c18"
+      },
+      "deyt": "07 May 2020 12:18"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5ea98a4cbadaf6222031675c"
+  },
+  "title": "AuditScripts-Critical-Security-Control-Manual-Assessment-Tool-v7.0_Joey.xls",
+  "filename": "AuditScripts-Critical-Security-Control-Manual-Assessment-Tool-v7.0_Joey.xls",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "DN6",
+        "N6"
+      ],
+      "_id": {
+        "$oid": "5ea98a4cbadaf6222031675d"
+      },
+      "deyt": "29 Apr 2020 22:08"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5ea98e73badaf62220316760"
+  },
+  "title": "tiktok.jpg",
+  "filename": "tiktok.jpg",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6F",
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5ea98e73badaf62220316761"
+      },
+      "deyt": "29 Apr 2020 22:25"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eaf9b201813ad223069e469"
+  },
+  "title": "temp.docx",
+  "filename": "temp.docx",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5eaf9b201813ad223069e46a"
+      },
+      "deyt": "04 May 2020 12:33"
+    },
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5eb22f0754c35502f413dba6"
+      },
+      "deyt": "06 May 2020 11:29"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb0e5b410a1b61b7891b2b0"
+  },
+  "title": "v2_CEIS Directive-AFP CRA.docx",
+  "filename": "v2_CEIS Directive-AFP CRA.docx",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6C",
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5eb0e5b410a1b61b7891b2b1"
+      },
+      "deyt": "05 May 2020 12:04"
+    },
+    {
+      "branch": [
+        "N6C"
+      ],
+      "_id": {
+        "$oid": "5e6f895a61926429343f8a96"
+      },
+      "deyt": "16 Mar 2020 22:12"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb37ac5f86c7f1f8c2134b4"
+  },
+  "title": "Letter to Google re Meet.doc",
+  "filename": "Letter to Google re Meet.doc",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B",
+        "N6C"
+      ],
+      "_id": {
+        "$oid": "5eb37ac5f86c7f1f8c2134b5"
+      },
+      "deyt": "07 May 2020 11:04"
+    },
+    {
+      "branch": [
+        "N6C"
+      ],
+      "_id": {
+        "$oid": "5eb389586b034903a4be3c11"
+      },
+      "deyt": "07 May 2020 12:06"
+    },
+    {
+      "branch": [
+        "N6D"
+      ],
+      "_id": {
+        "$oid": "5eb3c36162b19529787515a8"
+      },
+      "deyt": "07 May 2020 16:14"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb390b562b19529787515a5"
+  },
+  "title": "sample1.txt",
+  "filename": "sample1.txt",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B",
+        "N6D"
+      ],
+      "_id": {
+        "$oid": "5eb390b562b19529787515a6"
+      },
+      "deyt": "07 May 2020 12:38"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e49058d63fed103b0e6dbb7"
+  },
+  "title": "Chapter 2 - 09Apr2020.docx",
+  "filename": "Chapter 2 - 09Apr2020.docx",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5e49058d63fed103b0e6dbb8"
+      },
+      "deyt": "16 Feb 2020 17:04"
+    },
+    {
+      "branch": [
+        "N6D"
+      ],
+      "_id": {
+        "$oid": "5e7086127e75b619cc4591e1"
+      },
+      "deyt": "17 Mar 2020 16:10"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e490dac0a107527481c1d7d"
+  },
+  "title": "Circular on Secure Baseline Configuration.docx",
+  "filename": "Circular on Secure Baseline Configuration.docx",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5e490dac0a107527481c1d7e"
+      },
+      "deyt": "16 Feb 2020 17:38"
+    },
+    {
+      "branch": [
+        "N6C"
+      ],
+      "_id": {
+        "$oid": "5e7085bf7e75b619cc4591df"
+      },
+      "deyt": "17 Mar 2020 16:09"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5e9965647e75b619cc4591e4"
+      },
+      "deyt": "17 Apr 2020 16:14"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e4912c2439ebf1538021fd6"
+  },
+  "title": "DICT Request for courtesy call.doc",
+  "filename": "DICT Request for courtesy call.doc",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6F"
+      ],
+      "_id": {
+        "$oid": "5e4912c2439ebf1538021fd7"
+      },
+      "deyt": "16 Feb 2020 18:00"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e6f91041eafb9213c510847"
+  },
+  "title": "Information Systems Development.docx",
+  "filename": "Information Systems Development.docx",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6A",
+        "N6D"
+      ],
+      "_id": {
+        "$oid": "5e6f91041eafb9213c510848"
+      },
+      "deyt": "16 Mar 2020 22:45"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5e9966557e75b619cc4591e7"
+      },
+      "deyt": "17 Apr 2020 16:18"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e7084bb7e75b619cc4591db"
+  },
+  "title": "PN SOP on Inventory of Devices and Software.docx",
+  "filename": "PN SOP on Inventory of Devices and Software.docx.pdf",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6A",
+        "N6C"
+      ],
+      "_id": {
+        "$oid": "5e7084bb7e75b619cc4591dc"
+      },
+      "deyt": "17 Mar 2020 16:05"
+    },
+    {
+      "branch": [
+        "DN6"
+      ],
+      "_id": {
+        "$oid": "5e9965357e75b619cc4591e3"
+      },
+      "deyt": "17 Apr 2020 16:13"
+    },
+    {
+      "branch": [
+        "N6"
+      ],
+      "_id": {
+        "$oid": "5e9965b27e75b619cc4591e5"
+      },
+      "deyt": "17 Apr 2020 16:15"
+    }
+  ],
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5ec2074939c2183170e6eaee"
+  },
+  "title": "DICT Request for lecturer.doc",
+  "filename": "DICT Request for lecturer.doc",
+  "filepath": "D:\\Projects\\PN DocMS\\public\\drive",
+  "route": [
+    {
+      "branch": [
+        "N6B"
+      ],
+      "_id": {
+        "$oid": "5ec2074939c2183170e6eaef"
+      },
+      "deyt": "18 May 2020 11:55"
+    },
+    {
+      "branch": [
+        "N6A"
+      ],
+      "_id": {
+        "$oid": "5ec208ac39c2183170e6eaf1"
+      },
+      "deyt": "18 May 2020 12:01"
+    }
+  ],
+  "__v": 0
+}]

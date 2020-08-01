@@ -1,0 +1,48 @@
+<script src="/assets/js/jquery.213.min.js"></script>
+
+  <!-- content -->
+
+
+<div class="col-md-6">
+    <div class="card">
+      <div class="card-header bg-secondary">
+        <strong class="card-title text-light">Step 1 - Select the Server destination folder</strong>
+      </div>
+      <div class="card-body text-white bg-primary">
+        <div class=" col-md-12 float-left">Destination Folder: &nbsp;&nbsp;<input style="width:330px;" value= "<%= path %>" type="text" id="disPath"  name="disPath"></div>
+        <div class="col-md-12" style="height:10px;" ></div>
+        <div class="col-md-11" style="margin-left:-50px;" >
+          <ul class="uploadTree">
+            <div class="uploadDrive" style="padding-left:10px;background-color:white;height:350px;width:510px;verflow-y:auto;overflow-x:auto;white-space:nowrap;">
+            </div>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="col-md-1">
+  </div>
+  <div class="col-md-5">
+    <div class="card">
+      <div class="card-header bg-secondary">
+        <strong class="card-title text-light">Step 2 - Browse and upload the file</strong>
+      </div>
+      <div class="card-body text-white bg-primary">
+        <div class="row form-group">
+            <form id="uploadForm" enctype="multipart/form-data" method="post" >
+          <div class="col col-md-12"><input type="file" id="fileinput" name="fileinput" class="form-control-file"></div>
+          <div class="col col-md-6 ml-auto">
+            <br>
+            <button id="butUploadFile"type="submit" class="btn btn-warning btn-md "><i class="fa fa-cloud-upload"></i>&nbsp; Upload this file</button>
+          </div>
+        </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- /content -->
+
+
+<script src="/assets/uploadfile.js"></script

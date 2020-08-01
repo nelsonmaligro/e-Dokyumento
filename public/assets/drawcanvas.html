@@ -1,0 +1,38 @@
+
+<!doctype html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/assets/css/sign.css">
+  <link rel="stylesheet" href="/vendors/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="/vendors/bootstrap/dist/css/side.css">
+  <script type="text/javascript" src="/assets/hashes.js"></script>
+
+</head>
+
+<body>
+  <canvas id='canvasPDF'></canvas>
+  <div id='overlay' class='overlay'style="display:none;">
+    <div id='showProgress'class="sufee-alert alert with-close alert-primary alert-dismissible fade show" >
+      <span class=" spinner-border spinner-border-lg badge badge-pill badge-primary" role="status" aria-hidden="true">  </span>
+      &nbsp;&nbsp;Loading File...
+    </div>
+  </div>
+  <div class='mydiv' id="floatText">
+    <input type='text' id='inputText' style='font-size:18px;width:100%;color:blue;background:white;border:0;'>
+  </div>
+
+</body>
+
+  <script src="/vendors/jquery/dist/jquery.min.js"></script>
+  <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="/vendors/bootstrap/dist/js/pdf.min.js"></script>
+<script src="/vendors/bootstrap/dist/js/pdf.worker.min.js"></script>
+<script src="/assets/cookie.js"></script>
+<script src="/assets/js/drawPDF.js"> </script>
+
+
+
+
+</html>

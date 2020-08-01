@@ -1,0 +1,74 @@
+<script src="/assets/js/jquery.213.min.js"></script>
+<script src="/assets/js/pdfobject.min.js"></script>
+
+<div class="wrapper">
+  <div class=" float-left"><input value= "<%= path %>" type="hidden" id="disPath"  name="disPath"></div>
+  <div class=" float-left"><input value= "<%= category %>" type="hidden" id="disCateg" ></div>
+  <div class=" float-left"><input value= "<%= level %>" type="hidden" id="disLevel" ></div>
+
+  <div id="disFrame" style="display:none;">
+    <iframe id="canvasPDF"
+    name="canvasPDF"
+    style="margin-left:20px;height:560px;width:950px;"
+    src="/assets/signcanvas.html">
+  </iframe>
+ </div>
+<!-- content -->
+
+<div id="disContent">
+  <style>
+    .pdfobject-container { height: 600px;}
+    .pdfobject { border: 1px solid #666; }
+  </style>
+  <div class="content mt-3">
+    <div class="col-sm-12">
+      <div id="pdf_view"></div>
+    </div>
+  </div>
+</div>
+
+<!-- /content -->
+<!-- Annotation Floating -->
+<div id='disAnnotate' class="annotate" style='border:1;background-color:GreenYellow;border-radius:6px;width:305px;height:40px;padding-left:10px;padding-top:4px;'>
+  <i style='color:black;'>&nbsp;Annotate&nbsp;&nbsp;</i>
+  <button  id="annoDraw" class="btn btn-sm btn-danger" type="button" >
+    <i class="fa fa-pencil"></i> Line
+  </button>&nbsp;
+  <button  id="annoText" class="btn btn-sm btn-danger" type="button" >
+    <i class="fa fa-font"></i> Text
+  </button>&nbsp;
+  <button  id="annoErase" class="btn btn-sm btn-danger" type="button" >
+    <i class="fa fa-eraser"></i> Erase
+  </button>
+</div>
+<!-- /Annotation FLoating -->
+
+<!-- Annotation Floating -->
+
+<div id='disAnnotate2' class="annotate2" style='display:none;border:1;background-color:Yellow;border-radius:6px;width:330px;height:40px;padding-left:2px;padding-top:4px;'>
+  <div  class="col col-sm-1"><button  id="butDrawCancel" class="btn btn-danger btn-sm" type="button" >
+    <i class="fa fa-times"></i> &nbsp;Cancel
+  </button></div>
+  <div  class="col col-sm-3" style="left:55px;"><button  id="butDrawSave" class="btn btn-primary btn-sm" type="button" >
+    <i class="fa fa-upload"></i>&nbsp; Save
+  </button></div>  <div class="col-sm-1" style="left:70px;">Page:&nbsp;</div>
+  <div class="col-sm-4" style="left:80px;width:140px;"> <select id="selPageDraw" class="form-control-sm form-control"></select></div>
+
+</div>
+
+</div>
+
+<!-- ./wrapper -->
+
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    <% if (disp!= 'empty'){%>
+      PDFObject.embed("<%= path %>", "#pdf_view");
+      <% }else { %>
+        PDFObject.embed("/drive/No Pending Files.pdf", "#pdf_view");
+        <% } %>
+      });
+    </script>
+
+  <script src="/assets/annotatedraw.js"></script>

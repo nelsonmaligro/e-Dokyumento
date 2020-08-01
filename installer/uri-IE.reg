@@ -1,0 +1,12 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Classes\ie]
+"URL Protocol"=""
+@="URL:IE Protocol"
+
+[HKEY_CURRENT_USER\Software\Classes\ie\shell]
+
+[HKEY_CURRENT_USER\Software\Classes\ie\shell\open]
+
+[HKEY_CURRENT_USER\Software\Classes\ie\shell\open\command]
+@="cmd /c set url=\"%1\" & call set url=%%url:ie:=%% & call start explorer.exe file:%%url%%"

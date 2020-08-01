@@ -1,0 +1,145 @@
+[{
+  "_id": {
+    "$oid": "5eb0182fb09f7110a41b84c8"
+  },
+  "year": "2020",
+  "month": "JAN",
+  "branch": "N6A",
+  "count": 3,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb0182fb09f7110a41b84c9"
+  },
+  "year": "2020",
+  "month": "JAN",
+  "branch": "N6B",
+  "count": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb0182fb09f7110a41b84ca"
+  },
+  "year": "2020",
+  "month": "FEB",
+  "branch": "N6A",
+  "count": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb0182fb09f7110a41b84cb"
+  },
+  "year": "2020",
+  "month": "FEB",
+  "branch": "N6B",
+  "count": 5,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb0182fb09f7110a41b84cc"
+  },
+  "year": "2020",
+  "month": "MAR",
+  "branch": "N6B",
+  "count": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb0182fb09f7110a41b84cd"
+  },
+  "year": "2020",
+  "month": "APR",
+  "branch": "N6A",
+  "count": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb0182fb09f7110a41b84ce"
+  },
+  "year": "2020",
+  "month": "APR",
+  "branch": "N6B",
+  "count": 7,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb0182fb09f7110a41b84cf"
+  },
+  "year": "2020",
+  "month": "APR",
+  "branch": "DN6",
+  "count": 2,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb0182fb09f7110a41b84d0"
+  },
+  "year": "2020",
+  "month": "APR",
+  "branch": "N6F",
+  "count": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb0e5b410a1b61b7891b2b2"
+  },
+  "year": "2020",
+  "month": "MAY",
+  "branch": "N6C",
+  "count": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb2304d54c35502f413dbaa"
+  },
+  "year": "2020",
+  "month": "MAY",
+  "branch": "N6A",
+  "count": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb37709a85a8519e8156070"
+  },
+  "year": "2020",
+  "month": "MAY",
+  "branch": "N6B",
+  "count": 4,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5eb390b662b19529787515a7"
+  },
+  "year": "2020",
+  "month": "MAY",
+  "branch": "N6D",
+  "count": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e4912c2439ebf1538021fd8"
+  },
+  "year": "2020",
+  "month": "FEB",
+  "branch": "N6F",
+  "count": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e6f91051eafb9213c510849"
+  },
+  "year": "2020",
+  "month": "MAR",
+  "branch": "N6D",
+  "count": 1,
+  "__v": 0
+},{
+  "_id": {
+    "$oid": "5e7084bb7e75b619cc4591dd"
+  },
+  "year": "2020",
+  "month": "MAR",
+  "branch": "N6C",
+  "count": 1,
+  "__v": 0
+}]

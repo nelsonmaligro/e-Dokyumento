@@ -1,0 +1,133 @@
+<link rel="stylesheet" href="/vendors/datatables.net-bs4/css/dataTables.bootstrap4.orig.css">
+<link rel="stylesheet" href="/vendors/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.orig.css">
+
+
+<% if (view=='drive') { %>
+  <div id="viewDrive" class="row col-md-6 offset-md-3">
+    <label>File Server Absolute Path</label>
+    <input class="col-md-12" id="drivePath" type="text" class="form-control-sm"  value="<%= JSON.parse(setting).maindrive %>">
+    <div class="col-md-12">&nbsp;&nbsp;</div>
+    <label>Web Server Static Relative Path</label>
+    <input class="col-md-12" id="publicPath" type="text" class="form-control-sm"  value="<%= JSON.parse(setting).publicdrive %>">
+    <div class="col-md-12">&nbsp;&nbsp;</div>
+    <label>Web Server Static Path String (prefix)</label>
+    <input class="col-md-12" id="publicStr" type="text" class="form-control-sm"  value="<%= JSON.parse(setting).publicstr %>">
+    <div class="col-md-12">&nbsp;&nbsp;</div>
+    <button id="butSaveDrive" type="button" class="offset-md-9 btn btn-primary btn-flat float-right"> &nbsp;&nbsp; Save&nbsp;&nbsp;</button>
+  </div>
+  <% } else if (view=='setting') {  %>
+    <div id="viewSetting" class="row col-md-6 offset-md-3">
+      <div class="col-md-12">&nbsp;&nbsp;</div>
+      <div class="col-md-6 checkbox">
+        <label><input id='enableAI' type="checkbox" <% if (JSON.parse(setting).ai == "true") { %> checked <% } %> >&nbsp;&nbsp;Enable Machine Learning</label>
+        </div>
+      <div class="col-md-2 ">
+        <button id="butSaveAI" type="button" class="offset-md-9 btn btn-primary btn-flat float-right"> &nbsp;&nbsp; Save&nbsp;&nbsp;</button>
+      </div>
+      <div class="col-md-12"><hr /></div>
+      <div class="col-md-4 ">Top Management</div>
+      <div class="col-md-5 "> <input class="col-md-12" id="topMgmt" type="text" class="form-control-sm"  value="<%= JSON.parse(setting).topmgmt %>">
+      </div>
+      <div class="col-md-2 ">
+        <button id="butSaveMgmt" type="button" class="offset-md-9 btn btn-primary btn-flat float-right"> &nbsp;&nbsp; Save&nbsp;&nbsp;</button>
+      </div>
+      <div class="col-md-12"><hr /></div>
+      <div class="col-md-6 ">
+        <label>&nbsp;&nbsp;Clear Temporary PDF Files&nbsp;&nbsp;</label>
+        </div>
+      <div class="col-md-2 ">
+        <button id="butClearPDF" type="button" class="offset-md-9 btn btn-primary btn-flat float-right"> &nbsp;&nbsp; Clear&nbsp;&nbsp;</button>
+      </div>
+
+    </div>
+  <% } else if (view=='logs') {  %>
+      <div id="viewLogs" class="col-md-12">
+        <div class="col-md-12 ">
+          <div class="card">
+            <div class="card-header" style="text-align:center;background-color:teal;color:white;">
+              <select id="selLogs" data-placeholder="Select Logs" class="form-control-sm form-control" tabindex="5" name="selLogs">
+                <option <% if (show=='Signed Documents') {%> selected <% } %> value= "Signed Documents" id= "optSigned">Signed Documents</option>
+                <option <% if (show=='Released Documents') {%> selected <% } %> value= "Released Documents" id= "optReleased" >Released Documents</option>
+              </select>
+            </div>
+            <div class="card-body">
+              <table style='table-layout:fixed;' id="bootstrap-data-table-export" class="table table-striped table-bordered">
+                <thead>
+                  <tr >
+                    <th width='15%'>Control Nr/ IP </th>
+                    <th width='50%'>Document Title</th>
+                    <th width='16%'>Date </th>
+                    <th width='14%'>User Name</th>
+                  </tr>
+                </thead>
+                  <tbody id='tbody'>
+                   <% JSON.parse(setting).forEach((item)=>{ let disDeyt = new Date(item.deyt);%>
+                    <tr>
+                      <td><%= item.serial %></td>
+                      <td style='word-wrap:break-word;'><%= item.doc %></td>
+                      <td><%= disDeyt.getMonth() + '/' +disDeyt.getDate() + '/' +  disDeyt.getFullYear() + ' ' + disDeyt.getHours() + disDeyt.getMinutes() + 'H' %></td>
+                      <td><%= item.user %></td>
+                    </tr>
+                  <%})%>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+      </div>
+<% } else if (view=='branch') {  %>
+    <div id="viewBranch" class="row offset-md-1">
+      <div class="col-md-4 "><div class="col-md-12">&nbsp;&nbsp;</div>
+      <label class="col col-md-12 ">Group/Branch</label>
+      <select id="selectBranch" style="width:300px; height:300px;" autocomplete="off" multiple >
+        <% docBr.forEach(function(branch){ %>
+            <option value= "<%= branch.toUpperCase() %>" id= "<%= branch %>" ><%= branch.toUpperCase() %></option>
+            <% }) %>
+      </select>
+      <div class="col-md-12">&nbsp;&nbsp;</div>
+      <button id="butDelGroup" type="button" class="offset-md-7 btn btn-primary btn-flat "> &nbsp;&nbsp; Delete&nbsp;&nbsp;</button>
+      </div>
+      <div class="col-md-4"><div class="col-md-12">&nbsp;&nbsp;</div>
+      <label>Add this Group/ Branch</label>
+      <input class="col-md-12" id="newBranch" type="text" class="form-control-sm" >
+      <div class="col-md-12">&nbsp;&nbsp;</div>
+      <button id="butSaveGroup" type="button" class="offset-md-8 btn btn-primary btn-flat "> &nbsp;&nbsp; Add&nbsp;&nbsp;</button>
+      </div>
+   </div>
+   <% } else if (view=='class') {  %>
+       <div id="viewClass" class="row offset-md-1">
+         <div class="col-md-4 "><div class="col-md-12">&nbsp;&nbsp;</div>
+         <label class='col col-md-12' >Classification</label>
+         <select id="selectClass"  style="width:300px; height:400px;" autocomplete="off" multiple   >
+           <% docClass.forEach(function(classi){ %>
+                <option value= "<%= classi %>" id= "<%= classi %>" ><%= classi %></option>
+            <% }) %>
+         </select>
+         <div class="col-md-12">&nbsp;&nbsp;</div>
+         <button id="butDelClass" type="button" class="offset-md-7 btn btn-primary btn-flat "> &nbsp;&nbsp; Delete&nbsp;&nbsp;</button>
+
+       </div>
+       <div class="col-md-4"><div class="col-md-12">&nbsp;&nbsp;</div>
+         <label>Add this Classification</label>
+         <input class="col-md-12" id="newClass" type="text" class="form-control-sm" >
+         <div class="col-md-12">&nbsp;&nbsp;</div>
+         <button id="butSaveClass" type="button" class="offset-md-9 btn btn-primary btn-flat float-right"> &nbsp;&nbsp; Save&nbsp;&nbsp;</button>
+      </div>
+  </div>
+  <% } %>
+  <script src="/vendors/jquery/dist/jquery.min.js"></script>
+  <script src="/vendors/popper.js/dist/umd/popper.min.js"></script>
+
+  <script src="/assets/js/main.js"></script>
+
+  <script src="/vendors/datatables.net/js/jquery.dataTables.min.orig.js"></script>
+   <script src="/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+   <script src="/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+   <script src="/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+   <script src="/vendors/jszip/dist/jszip.min.js"></script>
+   <script src="/vendors/pdfmake/build/pdfmake.min.js"></script>
+   <script src="/vendors/pdfmake/build/vfs_fonts.js"></script>
+   <script src="/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+   <script src="/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+   <script src="/vendors/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+   <script src="/assets/js/init-scripts/data-table/datatables-init.orig.js"></script>

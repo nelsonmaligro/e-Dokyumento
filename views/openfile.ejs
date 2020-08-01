@@ -1,0 +1,40 @@
+<script src="/assets/js/jquery.213.min.js"></script>
+<script src="/assets/js/pdfobject.min.js"></script>
+
+<div class="wrapper">
+  <!-- content -->
+  <div class=" float-left"><input value= "<%= path %>" type="hidden" id="disPath"  name="disPath"></div>
+  <div id="disFrame" style="display:none;">
+    <iframe id="canvasPDF"
+    name="canvasPDF"
+    style="margin-left:20px;height:560px;width:950px;"
+    src="/assets/signcanvas.html">
+  </iframe>
+</div>
+<div id="disContent">
+  <style>
+    .pdfobject-container { height: 600px;}
+    .pdfobject { border: 1px solid #666; }
+  </style>
+  <div class="content mt-3">
+
+    <div class="col-sm-12">
+      <div id="pdf_view"></div>
+    </div>
+  </div>
+
+  <script type="text/javascript">
+    $(document).ready(function(){
+      <% if (disp!= 'empty'){%>
+        PDFObject.embed("<%= path %>", "#pdf_view");
+        <% }else { %>
+          PDFObject.embed("/drive/No Pending Files.pdf", "#pdf_view");
+          <% } %>
+        });
+      </script>
+    </div>
+    <!-- /content -->
+  </div><!-- ./wrapper -->
+  <button style="margin-top:-15px; display:none;" id="butFileopen" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#largeModal">Add File</button>
+
+  <script src="/assets/openfile.js"></script

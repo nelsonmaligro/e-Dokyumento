@@ -1,0 +1,48 @@
+<link rel="stylesheet" href="/vendors/datatables.net-bs4/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="/vendors/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css">
+
+<div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <table id="bootstrap-data-table-export" class="table">
+                                    <thead>
+                                        <tr style="display:none;" >
+                                            <th > Monitoring of Office Document Communication </th>
+
+                                        </tr>
+                                    </thead>
+                                    <tbody id="tableCanvas">
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+
+<!-- needed -->
+  <div class=" float-left"><input value= "<%= path %>" type="hidden" id="disPath"  name="disPath"></div>
+  <script src="/assets/js/jquery.213.min.js"></script>
+  <script src="/assets/js/pdfobject.min.js"></script>
+  <div id="pdf_view"></div>
+  <button style="margin-top:-15px; display:none;" id="butFileopen" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#largeModal">Add File</button>
+ <!-- .needed -->
+
+<script src="/vendors/chart.js/dist/hammer.js"></script>
+ <script src="/vendors/chart.js/dist/Chart.bundle.js"></script>
+ <script src="/vendors/chart.js/dist/zoom.js"></script>
+ <script src="/vendors/chart.js/dist/utils.js"></script>
+
+ <script src="/vendors/datatables.net/js/jquery.chartTables.js"></script>
+  <script src="/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+  <script src="/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+  <script src="/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+  <script src="/vendors/jszip/dist/jszip.min.js"></script>
+  <script src="/vendors/pdfmake/build/pdfmake.min.js"></script>
+  <script src="/vendors/pdfmake/build/vfs_fonts.js"></script>
+  <script src="/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+  <script src="/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+  <script src="/vendors/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+
+
+ <script src="/assets/chartmonitor.js"></script>

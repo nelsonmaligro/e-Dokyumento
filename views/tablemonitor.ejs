@@ -1,0 +1,96 @@
+<link rel="stylesheet" href="/vendors/datatables.net-bs4/css/dataTables.bootstrap4.css">
+<link rel="stylesheet" href="/vendors/datatables.net-buttons-bs4/css/buttons.bootstrap4.min.css">
+
+
+<style>
+  .pt-3-half {
+      padding-top: 1.4rem;
+    }
+</style>
+<div class="col-md-12 ">
+                        <div class="card">
+                            <div class="card-header" style="text-align:center;background-color:teal;color:white;">
+                                <strong class="card-title" >Monitoring of Office Document Communications</strong>
+                            </div>
+                            <div class="card-body">
+                                <table id="bootstrap-data-table-export" class="table table-striped table-bordered">
+                                    <thead>
+                                        <tr>
+                                            <th width='45%'>Document Title </th>
+                                            <th style='display:none'>Routed to :</th>
+                                            <th width='40%'>Routed to :</th>
+                                            <th width='15%'>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id='tbody'>
+                                      <% JSON.parse(monitor).forEach(function (items){ %>
+                                        <tr>
+                                          <td id='disTitle' class= "pt-3-half"><%= items.title %></td>
+                                          <td style='display:none' id='disFile' ><%= items.filename %></td>
+                                          <td id='disRoute'>
+                                            <table width='100%'><% items.route.forEach(function (route){ %><tr>
+                                                <td width='50%'><%= route.branch %></td>
+                                                <td width='50%'><%= route.deyt %></td>
+                                            </tr><% }); %></table>
+                                          </td>
+                                          <td>
+                                            <span class="table-view"><button id="bView" type="button" class="btn btn-primary btn-rounded btn-sm fa fa-eye"></button></span>
+                                            <span class="table-edit"><button id="bEdit" type="button" class="btn btn-info btn-rounded btn-sm fa fa-edit"></button></span>
+                                            <span class="table-remove"><button data-toggle="modal" data-target="#staticModal" id="bDel" type="button" class="btn btn-danger btn-rounded btn-sm fa fa-trash"></button></span>
+                                            <span class="table-accept"><button id="bAcep" type="button" class="btn btn-success btn-rounded fa fa-check-circle" style="display:none;"> </button></span>
+                                            <span class="table-cancel"><button id="bCanc" type="button" class="btn btn-warning btn-rounded fa fa-times-circle" style="display:none;"> </button></span>
+                                          </td>
+
+                                        </tr>
+                                      <% }); %>
+
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+<!-- Modal Dialog Box -->
+<button id='toggleDialog' style='display:none' type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#staticModal"> </button>
+                    <div  class="modal fade" id="staticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
+                                        <div class="modal-dialog modal-sm"  role="document">
+                                            <div class="modal-content" style='min-width:350px;' >
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title" id="staticModalLabel">Confirmation</h5>
+                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>
+                                                <div id= 'modDisp' class="modal-body">
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button id='modCancel' type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                    <button id='butConfirm' type="button" class="btn btn-primary">Confirm</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+<!-- Modal Dialog Box -->
+
+<!-- needed -->
+  <div class=" float-left"><input value= "<%= path %>" type="hidden" id="disPath"  name="disPath"></div>
+  <script src="/assets/js/jquery.213.min.js"></script>
+  <script src="/assets/js/pdfobject.min.js"></script>
+  <div id="pdf_view"></div>
+  <button style="margin-top:-15px; display:none;" id="butFileopen" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#largeModal">Add File</button>
+ <!-- .needed -->
+
+    <script src="/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
+     <script src="/vendors/datatables.net-bs4/js/dataTables.bootstrap4.min.js"></script>
+     <script src="/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
+     <script src="/vendors/datatables.net-buttons-bs4/js/buttons.bootstrap4.min.js"></script>
+     <script src="/vendors/jszip/dist/jszip.min.js"></script>
+     <script src="/vendors/pdfmake/build/pdfmake.min.js"></script>
+     <script src="/vendors/pdfmake/build/vfs_fonts.js"></script>
+     <script src="/vendors/datatables.net-buttons/js/buttons.html5.min.js"></script>
+     <script src="/vendors/datatables.net-buttons/js/buttons.print.min.js"></script>
+     <script src="/vendors/datatables.net-buttons/js/buttons.colVis.min.js"></script>
+     <script src="/assets/js/init-scripts/data-table/datatables-init.js"></script>
+
+<script src="/assets/tablemonitor.js"></script>

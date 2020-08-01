@@ -1,0 +1,36 @@
+<div class="col-md-5">
+  <div class="card">
+    <div class="card-body">
+      <h6 style="font-size:14px;" class="mb-3">Documents Pending</h6>
+      <canvas height='127px' id="pieChart"></canvas>
+    </div>
+  </div>
+</div>
+<div class="col-md-7">
+
+      <iframe height='240px' class="iframe-preview" width="100%" src="/chartmonitornolayout">
+      </iframe>
+
+</div>
+<div style="top:-15px;"class="col-md-12">
+  <div class="card">
+    <div class="card-body">
+      <h6 style="font-size:14px;" id="titleBar" class="mb-3">Total Documents Routed</h6>
+      <canvas style="margin-top:-25px;" id="barChart" height='75px'></canvas>
+    </div>
+  </div>
+</div>
+
+<select  id="tempSelBr" multiple style="display:none;">
+  <% docBr.forEach((item)=>{ %>
+    <option value= "<%= item %>" ><%= item %></option>
+    <%}); %>
+  </select>
+  <script src="/assets/js/jquery.213.min.js"></script>
+  <script src="/vendors/chart.js/dist/hammer.js"></script>
+  <script src="/vendors/chart.js/dist/Chart.bundle.js"></script>
+  <script src="/vendors/chart.js/dist/zoom.js"></script>
+  <script src="/vendors/chart.js/dist/utils.js"></script>
+
+
+  <script src="/assets/commologs.js"></script>

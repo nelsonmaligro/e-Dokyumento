@@ -17,7 +17,9 @@ const userSchema = new Schema({
   hashP: String,
   email: String,
   salt: String,
+  group: String,
   level: String,
+  path: String,
 });
 
 userSchema.methods.setPassword = function(password){

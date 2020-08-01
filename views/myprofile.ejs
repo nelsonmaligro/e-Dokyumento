@@ -1,0 +1,96 @@
+<script src="/assets/js/jquery.213.min.js"></script>
+
+<!-- content -->
+
+<div style='left:20px;min-height:260px;background-color:salmon;' class='col-md-11 twt-feed '>
+    <div class="corner-ribon black-ribon"><i class="fa fa-male"></i></div>
+      <div class="fa fa-twitter wtt-mark"></div>
+      <div class="col-md-6">
+        <div class="card">
+          <div class="card-header bg-secondary">
+            <strong class="card-title text-light">Update Account</strong>
+          </div>
+          <div class="card-body text-white bg-success">
+            <div style='left:10px;'>
+              Fullname/QR &nbsp; <input id='changeQR' type='text' value='<%= fullname %>' style='width:270px;'>  <button id="butSaveQR" class="btn btn-warning btn-sm"><i class="fa fa-save"></i>&nbsp; Save</button>
+            </div>
+            <br>
+            <div style='left:10px;'>
+              Password&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <input type='password' id='changePass' style='width:270px;'>  <button id="butSavePass" class="btn btn-warning btn-sm"><i class="fa fa-save"></i>&nbsp; Save</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="col-md-1"></div>
+      <div class="col-md-5">
+        <div class="card">
+          <div class="card-header bg-secondary">
+            <strong class="card-title text-light">Upload Avatar/Profile Image (JPG 50x50)</strong>
+          </div>
+          <div class="card-body text-white bg-primary">
+            <div class="row form-group">
+              <form id="uploadForm" enctype="multipart/form-data" method="post" >
+                <div class="col col-md-12"><input type="file" id="avatarinput" name="avatarinput" class="form-control-file"></div>
+                <div class="col col-md-6 ml-auto">
+                  <br>
+                  <button id="butUploadAvatar"type="submit" class="btn btn-warning btn-md "><i class="fa fa-cloud-upload"></i>&nbsp; Upload Image</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+</div>
+<br />
+<div class="col-md-11">&nbsp;</div>
+
+<div style='left:20px;min-height:260px;' class='col-md-11 twt-feed blue-bg'>
+    <div class="corner-ribon black-ribon"><i class="fa fa-pencil-square-o"></i></div>
+      <div class="fa fa-twitter wtt-mark"></div>
+
+      <div class="col col-md-5">
+        <div class="card">
+          <div class="card-header bg-secondary">
+            <strong class="card-title text-light">Upload Signature (PNG 200x120)</strong>
+          </div>
+          <div class="card-body text-white bg-primary">
+            <div class="row form-group">
+              <form id="uploadPng" enctype="multipart/form-data" method="post" >
+                <div class="col col-md-12"><input type="file" id="pnginput" name="pnginput" class="form-control-file"></div>
+                <div class="col col-md-6 ml-auto">
+                  <br>
+                  <button id="butUploadPng"type="submit" class="btn btn-warning btn-md "><i class="fa fa-cloud-upload"></i>&nbsp; Upload PNG</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col col-md-1"></div>
+      <div class="col col-md-5">
+        <div class="card">
+          <div class="card-header bg-secondary">
+            <strong class="card-title text-light">Upload Mousemove-Signature (SVG 200x120)</strong>
+          </div>
+          <div class="card-body text-white bg-primary">
+            <div class="row form-group">
+              <form id="uploadSvg" enctype="multipart/form-data" method="post" >
+                <div class="col col-md-12"><input type="file" id="svginput" name="svginput" class="form-control-file"></div>
+                <div class="col col-md-6 ml-auto">
+                  <br>
+                  <button id="butUploadSvg"type="submit" class="btn btn-warning btn-md "><i class="fa fa-cloud-upload"></i>&nbsp; Upload SVG</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+
+</div>
+
+
+<!-- /content -->
+
+
+<script src="/assets/myprofile.js"></script

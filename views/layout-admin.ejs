@@ -1,0 +1,211 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="en">
+<!--<![endif]-->
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>PN e-Dokyu</title>
+  <meta name="description" content="Philippine Navy Document Management System">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+  <link rel="apple-touch-icon" href="/logo2.png">
+  <link rel="shortcut icon" href="/favicon.ico">
+
+  <link rel="stylesheet" href="/vendors/bootstrap/dist/css/bootstrap.css">
+  <link rel="stylesheet" href="/vendors/font-awesome/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/vendors/themify-icons/css/themify-icons.css">
+  <link rel="stylesheet" href="/vendors/flag-icon-css/css/flag-icon.min.css">
+  <link rel="stylesheet" href="/vendors/selectFX/css/cs-skin-elastic.css">
+  <link rel="stylesheet" href="/vendors/jqvmap/dist/jqvmap.min.css">
+  <link rel="stylesheet" href="/vendors/bootstrap/dist/css/select2.css">
+
+  <link rel="stylesheet" href="/assets/css/style.css">
+
+  <link href='/vendors/bootstrap/dist/css/font.css' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" href="/vendors/chosen/chosen.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="/vendors/bootstrap/dist/css/side.css">
+  <link href="/vendors/bootstrap/dist/css/file-explore.css" rel="stylesheet" type="text/css">
+  <link href="/vendors/bootstrap/dist/css/jquerysctipttop.css" rel="stylesheet" type="text/css">
+  <link href="/vendors/bootstrap/dist/css/newPDF.css" rel="stylesheet" type="text/css">
+  <link href="/vendors/bootstrap/dist/css/bootstrap-toggle.min.css" rel="stylesheet" type="text/css">
+  <script type="text/javascript" src="/assets/hashes.js"></script>
+
+</head>
+
+<body>
+  <!-- Left Panel -->
+  <aside id="left-panel" class="left-panel">
+    <nav class="navbar navbar-expand-sm navbar-default">
+
+      <div class="navbar-header">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+          <i class="fa fa-bars"></i>
+        </button>
+        <a class="navbar-brand" href="./"><img src="/images/logo.png" alt="Logo"></a>
+        <a class="navbar-brand hidden" href="./"><img src="/images/logo2.png" alt="Logo"></a>
+      </div>
+
+      <div id="main-menu" class="main-menu collapse navbar-collapse">
+        <ul class="nav navbar-nav">
+          <h3 class="menu-title">Accounts</h3>
+          <li>
+            <a id="menuReg" href="/kalikot"> <i class="menu-icon fa fa-user"></i>Register</a>
+          </li>
+          <li>
+            <a id="menuViewEdit" href="/viewusers"> <i class="menu-icon fa fa-table"></i>View/Edit/Del</a>
+          </li>
+          <h3 class="menu-title">Server Config</h3>
+          <li class="menu-item-has-children dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="menu-icon fa  fa-list-ol"></i>Lists</a>
+            <ul class="sub-menu children dropdown-menu">
+              <li><i class="menu-icon fa fa-users"></i><a id="menuBranch" href="/configserve/branch">Branches/Groups</a></li>
+              <li><i class="menu-icon fa fa-sitemap"></i><a id="menuClass" href="/configserve/class">Classification</a></li>
+            </ul>
+          </li>
+          <li class="menu-item-has-children dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="menu-icon fa  fa-gears (alias)"></i>Advanced</a>
+            <ul class="sub-menu children dropdown-menu">
+              <li><i class="menu-icon fa fa-tasks"></i><a id="menuDrive" href="/configserve/drive">Drive Path</a></li>
+              <li><i class="menu-icon fa fa-gear (alias)"></i><a id="menuSetting" href="/configserve/setting">Settings</a></li>
+              <li><i class="menu-icon fa fa-chain"></i><a id="menuLogs" href="/showlogs/Signed Documents">Logs</a></li>
+            </ul>
+          </li>
+          <h3 class="menu-title">Communications</h3>
+          <li class="menu-item-has-children dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="menu-icon fa fa-laptop"></i>Monitoring</a>
+            <ul class="sub-menu children dropdown-menu">
+              <li><i class="menu-icon fa fa-bar-chart-o"></i><a href="/chartmonitor">Chart</a></li>
+              <li><i class="menu-icon fa fa-table"></i><a href="/tablemonitor">Table</a></li>
+            </ul>
+          </li>
+
+
+        </ul>
+      </div><!-- /.navbar-collapse -->
+    </nav>
+  </aside><!-- /#left-panel -->
+
+  <!-- Right Panel -->
+  <div id="right-panel" class="right-panel">
+
+    <!-- Header-->
+    <header id="header" class="header">
+
+      <div class="header-menu">
+
+        <div class="col-sm-12">
+          <a id="menuToggle" class="menutoggle pull-left"><i class="fa fa fa-tasks"></i></a>
+          <div class="header-left">
+
+
+            <form name="formroute" id="formroute">
+
+            </form>
+
+            <div class="header-right">
+
+              <div class="user-area dropdown float-right">
+                <a id= 'userProf' href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  <img id="pixID" class="user-avatar rounded-circle" src="/images/nelson.jpg" alt="User Avatar">
+                  <span class="count"><%= mailfiles.length %></span>
+                </a>
+
+                <div class="user-menu dropdown-menu">
+                  <li><a class="nav-link" href="/myprofile"><i class="fa fa-user"></i> My Profile</a></li>
+                  <li class="dropdown-submenu">
+                    <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><i class="fa fa-envelope"></i> Mail <span class="count"><%= mailfiles.length %></span></a>
+                    <ul id='mailnoti'class="dropdown-menu" style="left:-220px!important;width:210px!important;padding-left:5px;">
+                      <% mailfiles.forEach (function (file){
+                        var fileArr = file.split('/'); filename = fileArr[fileArr.length - 1].substring(0,20); %>
+                        <li><button type='button' onclick="delNotiFile('<%= file %>')" class='btn btn-danger btn-sm fa fa-times' href="#"></button><button button type='button' class="btn btn-link btn-sm" onclick="openDisFile('<%= file %>')" href="#"><%= filename %></button></li>
+                        <% }); %>
+                      </ul>
+                    </li>
+                    <li><a id="disCheckDrive" class="nav-link"  href="#"><i class="fa fa-cog"></i> Check map drive</a></li>
+                    <li><a id="disLogout" class="nav-link" href="#"><i class="fa fa-power-off"></i> Logout</a></li>
+                  </div>
+                </div>
+
+
+
+              </div>
+            </div>
+
+          </header><!-- /header -->
+          <!-- Layout for Content-->
+          <%-body%>
+        </div><!-- /#right-panel -->
+      <!-- Modal Dialog Box -->
+        <button id='mstrtoggleDialog' style='display:none' type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#mstrstaticModal"> </button>
+        <div  class="modal fade" id="mstrstaticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
+          <div class="modal-dialog modal-sm"  role="document">
+            <div class="modal-content" style='min-width:350px;' >
+              <div class="modal-header">
+                <h5 class="modal-title">Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div id= 'mstrmodDisp' class="modal-body">
+              </div>
+              <div class="modal-footer">
+                <button id='butInfoOk' type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Modal Dialog Box -->
+
+
+        <!-- Password Modal Dialog Box -->
+        <button id='passwtoggleDialog' style='display:none' type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#passwstaticModal"> </button>
+        <div  class="modal fade" id="passwstaticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
+          <div class="modal-dialog modal-sm"  role="document">
+            <div class="modal-content" style='min-width:350px;' >
+              <div class="modal-header">
+                <h5 class="modal-title" id="passwstaticModalLabel">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div id= 'passwmodDisp' class="modal-body">
+                <p id='lblResult' class='h4'></p>
+                <p class='h6'>Re-enter your password for validation:<input type='password' id='passwmodPass' class='input-sm form-control-sm form-control'></p>
+              </div>
+              <div class="modal-footer">
+                <button id='passwmodCancel' type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button id='passwbutConfirm' type="button" class="btn btn-primary">Confirm</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Password Modal Dialog Box -->
+
+        <!-- Right Panel -->
+
+        <script src="/vendors/jquery/dist/jquery.min.js"></script>
+        <script src="/vendors/popper.js/dist/umd/popper.min.js"></script>
+        <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/assets/js/main.js"></script>
+
+        <script src="/vendors/bootstrap/dist/js/select2.min.js"></script>
+
+        <script src="/vendors/bootstrap/dist/js/side.js"></script>
+        <script src="/vendors/bootstrap/dist/js/bootstrap-toggle.min.js"></script>
+        <script src="/assets/js/dashboard.js"></script>
+        <script src="/assets/cookie.js"></script>
+        <script src="/assets/modaldoc.js"></script>
+        <script src="/assets/common.js"></script>
+        <script src="/assets/administration.js"></script>
+
+        <script src="/vendors/chosen/chosen.jquery.min.js"></script>
+      </body>
+
+      </html>
