@@ -4282,7 +4282,7 @@ input[type="button"].btn-block {
 }
 
 .nav-tabs .dropdown-menu {
-  margin-top: -1px;
+  margin-top: -10px;
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }

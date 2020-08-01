@@ -15,11 +15,14 @@ exports.outtext = function outtext(pathPDF, retText){
   processor.on('complete', data => callback(null, data));
   processor.on('error', callback);
   var strTxt ='';
-  function callback (error, data) { error ? console.error(error) :
-     data.text_pages.forEach(function(data){
-       strTxt+=' '+data;
-   });
-
+  function callback (error, data) {
+     if (error) console.log(error);
+     else{
+       data.text_pages.forEach(function(data){
+         strTxt+=' '+data;
+       });
+     }
      retText(strTxt);
+
   };
 };

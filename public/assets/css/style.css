@@ -1416,10 +1416,15 @@ header .form-inline {
       color: #272c33 !important; }
   .header-left .dropdown .dropdown-menu {
     background: #fff;
-    border: none;
+	border-color: #8c8c8c;
     border-radius: 0;
     box-shadow: none;
-    top: 49px !important; }
+    top: 39px !important; }
+	
+  .header-left .dropdown .dropdown-menu .move-right {
+	right: 300px !important; }
+
+	
     .header-left .dropdown .dropdown-menu p {
       font-size: 15px;
       margin: 0;
@@ -1482,7 +1487,7 @@ header .form-inline {
     position: absolute;
     width: 100%;
     z-index: 999;
-    min-width: 150px; }
+    min-width: 180px; }
     .user-area .user-menu .nav-link {
       color: #272c33;
       display: block;
@@ -2462,3 +2467,26 @@ header .form-inline {
         .right-panel .content #bootstrap-data-table_wrapper .table td,
         .right-panel .content #bootstrap-data-table_wrapper .table th {
           padding: 5px; } }
+
+.dropdown-submenu {
+  position: relative;
+
+}
+.dropdown-submenu:hover {
+  background: white;
+}
+.dropdown-submenu a::after {
+  transform: rotate(-90deg);
+  position: absolute;
+  right: 6px;
+  top: .8em;
+}
+
+.dropdown-submenu .dropdown-menu {
+  top:0;
+  left: -11rem;
+  margin-left: .1rem;
+  margin-right: .1rem;
+  margin-top:-30px;
+}
+

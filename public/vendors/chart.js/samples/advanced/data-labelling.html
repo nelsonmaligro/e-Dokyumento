@@ -3,72 +3,62 @@
 <html>
 
 <head>
-	<title>Labelling Data Points</title>
+	<title>Labelling Points</title>
 	<script src="../../dist/Chart.bundle.js"></script>
 	<script src="../utils.js"></script>
-	<style>
-		canvas {
-			-moz-user-select: none;
-			-webkit-user-select: none;
-			-ms-user-select: none;
-		}
-	</style>
+
 </head>
 
+
 <body>
-	<div style="width: 75%">
+	<div style="width:75%;">
 		<canvas id="canvas"></canvas>
 	</div>
-	<button id="randomizeData">Randomize Data</button>
 	<script>
-		var color = Chart.helpers.color;
-		var barChartData = {
-			labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-			datasets: [{
-				type: 'bar',
-				label: 'Dataset 1',
-				backgroundColor: color(window.chartColors.red).alpha(0.2).rgbString(),
-				borderColor: window.chartColors.red,
-				data: [
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor()
-				]
-			}, {
-				type: 'line',
-				label: 'Dataset 2',
-				backgroundColor: color(window.chartColors.blue).alpha(0.2).rgbString(),
-				borderColor: window.chartColors.blue,
-				data: [
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor()
-				]
-			}, {
-				type: 'bar',
-				label: 'Dataset 3',
-				backgroundColor: color(window.chartColors.green).alpha(0.2).rgbString(),
-				borderColor: window.chartColors.green,
-				data: [
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor(),
-					randomScalingFactor()
-				]
-			}]
+		var config = {
+			type: 'line',
+			data: {
+				xLabels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+				yLabels: ['File 1', 'File 2', 'File 3', 'File 4', 'File 5', 'File 6'],
+				datasets: [{
+					label: 'File 1',
+					data: [{x:'January',y:'File 3',label:'N6A'}, {x:'January',y:'File 3',label:'N6B'}, {x:'March',y:'File 3',label:'N6C'}, {x:'April',y:'File 3',label:'N6D'}, {x:'July',y:'File 3',label:'N6E'}],
+					fill: false,
+					borderColor: window.chartColors.blue,
+					backgroundColor: window.chartColors.blue
+				}]
+			},
+			options: {
+				responsive: true,
+				title: {
+					display: true,
+					text: 'Chart with Non Numeric Y Axis'
+				},
+				scales: {
+					xAxes: [{
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Month'
+						},
+						ticks: {
+							reverse: true
+						}
+					}],
+					yAxes: [{
+						type: 'category',
+						position: 'left',
+						display: true,
+						scaleLabel: {
+							display: true,
+							labelString: 'Request State'
+						}
+					}]
+				}
+			}
 		};
-
+		
+		
 		// Define a plugin to provide data labels
 		Chart.plugins.register({
 			afterDatasetsDraw: function(chart) {
@@ -81,13 +71,13 @@
 							// Draw the text in black, with the specified font
 							ctx.fillStyle = 'rgb(0, 0, 0)';
 
-							var fontSize = 16;
+							var fontSize = 12;
 							var fontStyle = 'normal';
-							var fontFamily = 'Helvetica Neue';
+							var fontFamily = 'Arial';
 							ctx.font = Chart.helpers.fontString(fontSize, fontStyle, fontFamily);
 
 							// Just naively convert to string for now
-							var dataString = dataset.data[index].toString();
+							var dataString = dataset.data[index].label;
 
 							// Make sure alignment settings are correct
 							ctx.textAlign = 'center';
@@ -102,29 +92,11 @@
 			}
 		});
 
+
 		window.onload = function() {
 			var ctx = document.getElementById('canvas').getContext('2d');
-			window.myBar = new Chart(ctx, {
-				type: 'bar',
-				data: barChartData,
-				options: {
-					responsive: true,
-					title: {
-						display: true,
-						text: 'Chart.js Combo Bar Line Chart'
-					},
-				}
-			});
+			window.myLine = new Chart(ctx, config);
 		};
-
-		document.getElementById('randomizeData').addEventListener('click', function() {
-			barChartData.datasets.forEach(function(dataset) {
-				dataset.data = dataset.data.map(function() {
-					return randomScalingFactor();
-				});
-			});
-			window.myBar.update();
-		});
 	</script>
 </body>
 

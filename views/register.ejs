@@ -1,30 +1,41 @@
-<div class="sufee-login d-flex align-content-center flex-wrap">
-        <div class="container">
-            <div class="login-content">
-                <div class="login-logo">
-                    <a href="index.html">
-                        <img class="align-content" src="/images/logo.png" alt="">
-                    </a>
-                </div>
-                <div class="login-form">
-                    <form>
-                        <div class="form-group">
-                            <label>User Name</label>
-                            <input type="text" class="form-control" placeholder="User Name">
-                        </div>
-                                <div class="form-group">
-                                    <label>Password</label>
-                                    <input type="password" class="form-control" placeholder="Password">
-                        </div>
-                                    <div class="checkbox">
-                                        <label>
-                                <input type="checkbox"> Agree the terms and policy
-                            </label>
-                                    </div>
-                                    <button type="submit" class="btn btn-primary btn-flat m-b-30 m-t-30">Register</button>
-                                    
-                    </form>
-                </div>
-            </div>
-        </div>
+
+
+    <div id="registerUser" class="row col-md-6 offset-md-3">
+            <label>User Name</label>
+            <input class="col-md-12" id="userN" type="text" class="form-control-sm" placeholder="User Name">
+            <label>Password</label>
+            <input class="col-md-12" id="passW" type="password" class="form-control-sm" placeholder="Password">
+            <label>Confirm Password</label>
+            <input class="col-md-12" id="passW2" type="password" class="form-control-sm" placeholder="Verify Password">
+            <label>Full Name</label>
+            <input class="col-md-12" id="email" type="text" class="form-control-sm" placeholder="Full Name">
+            <label>Group/Branch</label>
+            <select id="selBranch" data-placeholder="Select Branch" multiple class="standardSelect" tabindex="5" >
+              <% docBr.forEach(function(branch){ %>
+                <% if (branch.toUpperCase()!='ALL BRANCHES') {%>
+                <option value= "<%= branch.toUpperCase() %>" id= "<%= branch %>" ><%= branch.toUpperCase() %></option>
+                <% } }) %>
+            </select>
+            <label>Access Level/Privilege</label>
+            <select id="selAccess" data-placeholder="Select Access Privilege" multiple class="standardSelect" tabindex="5" >
+              <% if (topmgmt.toUpperCase().includes('G.M.') || topmgmt.toUpperCase().includes('GM') || topmgmt.toUpperCase().includes('PRES') || topmgmt.toUpperCase().includes('MANAGER')) { %>
+                <option value="SECRETARY" >SECRETARY</option>
+                <option value="STAFF" >STAFF</option>
+                <option value="MANAGER" >MANAGER</option>
+                <option value="EAGM">EAGM</option>
+                <option value="GM" >GM</option>
+                <option value="SysAdmin" >SysAdmin</option>
+            <% } else { %>
+              <option value="DutyAdmin" >DutyAdmin</option>
+              <option value="DutyBranch" >DutyBranch</option>
+              <option value="OICBranch" >OICBranch</option>
+              <option value="DEP" >DEP</option>
+              <option value="CO" >CO</option>
+              <option value="SysAdmin" >SysAdmin</option>
+            <% } %>
+            </select>
+            <label>Mapped Drive Path (For Editing Document)</label>
+            <input class="col-md-12" id="drivePath" type="text" class="form-control-sm" placeholder="Z:/">
+            <div class="col-md-12">&nbsp;&nbsp;</div>
+            <button id="butRegister" type="button" class="offset-md-9 btn btn-primary btn-flat float-right"> &nbsp;&nbsp; Register&nbsp;&nbsp;</button>
     </div>
