@@ -1,5 +1,5 @@
-# Pinoy Electronic Document Management System 
-# (e-Dokyumento) 
+# e-Dokyumento 
+### Pinoy Electronic Document Management System 
 ![alt text](https://github.com/nelsonmaligro/e-Dokyumento/blob/master/public/images/edokyu.png)
 # Overview
 e-Dokyumento is an opensource Document Management System that stores, organizes, indexes, routes, and tracks
@@ -14,7 +14,7 @@ and approving (e-signature) of documents.
   
   Accounts:
   Username                        Password            Privilege           Department/Branch
-   1. staff-marketing             staff@123           STAFF               MARKETING
+   <pre><code>1. staff-marketing             staff@123           STAFF               MARKETING
    2. manager-finance             manager@123         MANAGER             FINANCE
    3. staff-secretary             staff@123           SECRETARY           SECRETARY-RECEIVING
    4. boss                        boss@123            GM                  G.M.
