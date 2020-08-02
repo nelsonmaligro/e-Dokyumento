@@ -11,14 +11,14 @@ and approving (e-signature) of documents.
 
 # Demo
   https://34.67.81.154/
-  
+  <pre><code>
   Accounts:
   Username                        Password            Privilege           Department/Branch
-   <pre><code>1. staff-marketing             staff@123           STAFF               MARKETING
+   1. staff-marketing             staff@123           STAFF               MARKETING
    2. manager-finance             manager@123         MANAGER             FINANCE
    3. staff-secretary             staff@123           SECRETARY           SECRETARY-RECEIVING
    4. boss                        boss@123            GM                  G.M.
    5. boss.wannabe                boss@123            EAGM                ASST.G.M.
-
+</code></pre>
 # License
 GPL
