@@ -8,14 +8,14 @@ of hard-printed documents through capturing (scanning), digitizing (OCR Reading)
 and approving (e-signature) of documents. 
 
 # Features
-  ####1. Document routing and workflow 
+  #### 1. Document routing and workflow 
                 - users can freely select the department or branch to route the document.
-  ####2. Add file links to the document 
+  #### 2. Add file links to the document 
                 - users can link or attach files to the main document. This is ideal for documents requiring attachments 
                   such as references and enclosures
-  ####3. Add notes or comments 
+  #### 3. Add notes or comments 
                 - users can add notes or comments to the documents during routing. This is similar to manually attaching 'Post it'.
-  ####4. Annotations 
+  #### 4. Annotations 
                 - managers and bosses can draw and add text into the document when correcting. Upon saving of the annotated document, 
                   he/she can return it to the originator.
   5. Electronic Signature - managers and bosses can electronically sign to approve the document. Every document signed has a
