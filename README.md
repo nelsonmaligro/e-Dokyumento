@@ -7,4 +7,4 @@ electronic documents. It automates the basic office document workflow such as re
 of hard-printed documents through capturing (scanning), digitizing (OCR Reading), storing, tagging, and electronic routing 
 and approving (e-signature) of documents. 
 
-Essential Feature
+# Features
