@@ -9,7 +9,7 @@ and approving (e-signature) of documents.
 
 # Features
   #### 1. Document routing and workflow 
-                - users can freely select the department or branch to route the document.
+   - users can freely select the department or branch to route the document.
   #### 2. Add file links to the document 
                 - users can link or attach files to the main document. This is ideal for documents requiring attachments 
                   such as references and enclosures
