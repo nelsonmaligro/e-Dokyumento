@@ -25,7 +25,7 @@ and approving (e-signature) of documents.
 </code></pre>
 
 # Note
-Currently, the source code is admittedly unstructured and introduces several vulnerabilities, inconsistencies and 
+Currently, the source code is admittedly un-structured and introduces several vulnerabilities, inconsistencies, repetitions and 
 deep nested algorithms. The author welcomes critics and feedbacks from end users, co-developers, security researchers, and 
 other open source collaborators.
 
