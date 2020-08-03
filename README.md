@@ -37,7 +37,7 @@ and approving (e-signature) of documents.
   1. Download the ISO file from Sourceforge.net
   2. Login with root and p@ssword123
   3. move drive folder from /opt to root :  "mv /opt/drive /"
-  note: during installation, delete the drive and create a SWAP and root (/) drives
+  4. During installation, delete the drive and create a SWAP and root (/) drives
 
 # Demo
   https://34.67.81.154/
