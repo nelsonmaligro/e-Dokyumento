@@ -34,7 +34,7 @@ and approving (e-signature) of documents.
   #### 11. Automatic Document classification using Machine Learning
 
 # Installation
-  1. Download the ISO file from Sourceforge.net
+  1. Download the ISO file from https://sourceforge.net/projects/e-dokyumento/files/e-dokyumento.iso/download
   2. Login with root and p@ssword123
   3. move drive folder from /opt to root :  "mv /opt/drive /"
   4. During installation, delete the drive and create a SWAP and root (/) drives
@@ -52,8 +52,14 @@ and approving (e-signature) of documents.
 </code></pre>
 
 # Roadmap
-
-
+  1. Automate re-training of Machine Learning for improved document classification
+  2. PKI-based digital signature
+  3. QR Code document tracking
+  4. Advance Searching or search files through date, size, classifications, tags, etc.
+  5. Online or web-based editing
+  6. Integration with MS Active Directory for improved file server security
+  7. Customizable Workflow
+  
 # Note
 Currently, the source code is admittedly un-structured and introduces several vulnerabilities, inconsistencies, repetitions and 
 deep nested algorithms. The author welcomes critics and feedbacks from end users, co-developers, security researchers, and 
