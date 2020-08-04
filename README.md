@@ -31,7 +31,7 @@ and approving (e-signature) of documents.
   #### 10. Send document to other users 
    - documents can be sent directly to users much like an email. This is ideal for documents to be internally communicated between the 
      staff and manager within the department.
-  #### 11. Automatic Document classification using Machine Learning
+  #### 11. Intelligent Document classification using Machine Learning
 
 # Installation
   1. Download the ISO file from https://sourceforge.net/projects/e-dokyumento/files/e-dokyumento.iso/download
