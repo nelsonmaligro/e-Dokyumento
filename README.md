@@ -1,10 +1,7 @@
 # e-Dokyumento 
 ### Pinoy Electronic Document Management System 
-<<<<<<< HEAD
-![Screenshot](https://a.fsdn.com/con/app/proj/e-dokyumento/screenshots/edokyu.png/max/max/1)
-=======
 ![alt text](https://github.com/nelsonmaligro/e-Dokyumento/blob/master/public/images/edokyu.png)
->>>>>>> 50b83e53bc0adaafcfc8ed0bb6327db8d00616bd
+
 # Overview
 e-Dokyumento is an opensource Document Management System that stores, organizes, indexes, routes, and tracks
 electronic documents. It automates the basic office document workflow such as receiving, filing, routing, and approving
@@ -12,7 +9,6 @@ of hard-printed documents through capturing (scanning), digitizing (OCR Reading)
 and approving (e-signature) of documents. 
 
 # Features
-<<<<<<< HEAD
 ### 1. Document routing and workflow 
    - users can freely select the department or branch to route the document.
 ### 2. Add file links to the document 
@@ -67,7 +63,6 @@ and approving (e-signature) of documents.
 
 # Installation
   1. Download the ISO file from https://sourceforge.net/projects/e-dokyumento/files/e-dokyumento.iso/download
->>>>>>> 50b83e53bc0adaafcfc8ed0bb6327db8d00616bd
   2. Login with root and p@ssword123
   3. move drive folder from /opt to root :  "mv /opt/drive /"
   4. During installation, delete the drive and create a SWAP and root (/) drives
@@ -85,10 +80,6 @@ and approving (e-signature) of documents.
 </code></pre>
 
 # Roadmap
-<<<<<<< HEAD
-
-=======
->>>>>>> 50b83e53bc0adaafcfc8ed0bb6327db8d00616bd
   1. Automate re-training of Machine Learning for improved document classification
   2. PKI-based digital signature
   3. QR Code document tracking
@@ -97,11 +88,7 @@ and approving (e-signature) of documents.
   6. Integration with MS Active Directory for improved file server security
   7. Customizable Workflow
   9. Android and IOS Versions
-<<<<<<< HEAD
 
-=======
-  
->>>>>>> 50b83e53bc0adaafcfc8ed0bb6327db8d00616bd
 # Note
 Currently, the source code is admittedly un-structured and introduces several vulnerabilities, inconsistencies, repetitions and 
 deep nested algorithms. The author welcomes critics and feedbacks from end users, co-developers, security researchers, and 
