@@ -1,3 +1,13 @@
+/*
+Helper Modules for indexing documents
+
+
+@module multiple modules in handling document indexing
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
+
 var flexsearch = require("flexsearch");
 var storage = require('dom-storage');
 const promisify = require('util').promisify;

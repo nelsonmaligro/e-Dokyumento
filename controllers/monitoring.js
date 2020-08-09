@@ -1,3 +1,11 @@
+/*
+Helper Modules for Monitoring Routed Documents
+
+@module multiple modules for App Utilities
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
 const path = require('path');
 const  fs = require('fs');
 const dbhandle = require('./dbhandle');

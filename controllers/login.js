@@ -1,5 +1,11 @@
-//forward to main app (index.js)
+/*
+Primary Controller - Handle client login
 
+@module Login
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
 module.exports = function(app){
 
   const mongoose = require('mongoose');

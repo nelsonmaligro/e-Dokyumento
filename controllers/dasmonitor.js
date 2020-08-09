@@ -1,3 +1,14 @@
+/*
+Controller Module for Monitoring Documents
+- handles all operations for monitoring the document routing such as displaying charts and tables, editing,
+deleting, and opening while en-route.
+- includes password validation when deleting records
+
+@module Monitoring
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
 module.exports = function(app, arrDB){
   var fs = require('fs');
   var path = require('path');
@@ -8,7 +19,7 @@ module.exports = function(app, arrDB){
   const monitoring = require('./monitoring');
   const utilsdocms = require('./utilsdocms');
   const dateformat = require('dateformat');
-
+  //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
   var drivetmp = "public/drive/", drive = "D:/Drive/";
@@ -22,63 +33,66 @@ module.exports = function(app, arrDB){
 
   dbhandle.settingDis((setting)=>{
     drive = setting.maindrive;
-    //get chart monitor
+    //
+    //---------------------------------- Express app handling starts here --------------------------------------------------
+
+    //get show document routing in table monitor
     app.get('/tablemonitor', function(req,res){
-    utilsdocms.validToken(req, res,  function (decoded, id){
+      utilsdocms.validToken(req, res,  function (decoded, id){
         getTableMonitor(req, res, id);
       });
     });
-    //get chart monitor
+    //get document routing in chart monitor
     app.get('/chartmonitor', function(req,res){
-    utilsdocms.validToken(req, res,  function (decoded, id){
+      utilsdocms.validToken(req, res,  function (decoded, id){
         getChartMonitor(req, res, id);
       });
     });
-    //get chart monitor
+    //get document routing in chart monitor without layouts
     app.get('/chartmonitornolayout', function(req,res){
-    utilsdocms.validToken(req, res,  function (decoded, id){
+      utilsdocms.validToken(req, res,  function (decoded, id){
         getChartMonitornolayout(req, res, id);
       });
     });
-    //get logs dashboard
+    //get show default monitoring view for dashboard
     app.get('/dashlogs', function(req,res){
-    utilsdocms.validToken(req, res,  function (decoded, id){
+      utilsdocms.validToken(req, res,  function (decoded, id){
         getdashlogs(req, res, id);
       });
     });
-    //post logs dashboard
+    //post handle display monitoring in dashboard
     app.post('/dashlogs', urlencodedParser, function(req,res){
-    utilsdocms.validToken(req, res,  function (decoded, id){
+      utilsdocms.validToken(req, res,  function (decoded, id){
         postdashlogs(req, res, id);
       });
     });
-    //post chart monitor
+    //post handle display document routing in chart monitor
     app.post('/chartmonitor', urlencodedParser, function(req,res){
-    utilsdocms.validToken(req, res,  function (decoded, id){
+      utilsdocms.validToken(req, res,  function (decoded, id){
         postChartMonitor(req, res, id);
       });
     });
-    //post delete file from monitoring
+    //post handle delete file from monitoring
     app.post('/delmonitor', urlencodedParser, function(req,res){
-    utilsdocms.validToken(req, res,  function (decoded, id){
+      utilsdocms.validToken(req, res,  function (decoded, id){
         delMonitor(req, res, id);
       });
     });
-    //post delete file from monitoring
+    //post edit title from table monitoring
     app.post('/editmonitor', urlencodedParser, function(req,res){
-    utilsdocms.validToken(req, res,  function (decoded, id){
+      utilsdocms.validToken(req, res,  function (decoded, id){
         editMonitor(req, res, id);
       });
     });
-    //get open file chart
+    //get open document in the chart and table monitoring
     app.get('/commofile/:file/:branch', function(req,res){
-    utilsdocms.validToken(req, res,  function (decoded, id){
+      utilsdocms.validToken(req, res,  function (decoded, id){
         getchartFileopen(req, res);
       });
     });
     //post to validate password prior delete file from monitoring
     app.post('/validatepass', urlencodedParser, function(req,res){
-    utilsdocms.validToken(req, res,  function (decoded, id){
+      utilsdocms.validToken(req, res,  function (decoded, id){
         dbhandle.validatePassword(req.body.user,req.body.hashval, function (result){
           if (result) {
             console.log('password validated');
@@ -89,7 +103,8 @@ module.exports = function(app, arrDB){
         });
       });
     });
-    ///////////////////////////////////FUNCTIONS START HERE///////////////////////////////////////////////
+    //
+    //------------------------------------------FUNCTIONS START HERE----------------------------------------------------
     //Process post dashboard logs
     function postdashlogs(req, res, id){
       dbhandle.generateList(arrDB.branch, function (res){ docBr = res; });
@@ -102,7 +117,7 @@ module.exports = function(app, arrDB){
             disMonitor.forEach((item)=>{
               let disBranch = item.route[item.route.length-1].branch;
               if ((disBranch[disBranch.length-1]).toUpperCase()=="ALL BRANCHES") {
-                  if ((disBranch[0]).toUpperCase()==branch.toUpperCase()) ++count;
+                if ((disBranch[0]).toUpperCase()==branch.toUpperCase()) ++count;
               } else if ((disBranch[disBranch.length-1]).toUpperCase()==branch.toUpperCase()) ++count;
             });
             arrBranch.push({branch:branch,count:count});
@@ -116,12 +131,12 @@ module.exports = function(app, arrDB){
     function getdashlogs(req, res, id){
       dbhandle.userFind(id, function(user){
         console.log('GET logs dashboard');
-          fs.readdir(drivetmp + user.group, function(err,items){
-            let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
-            if (err) console.log(err);
-            //console.log(result);
-            return res.render('commologs', {layout:'layout-user', realdrive:drive, level:user.level, docPers:[], branch:user.group, files:sortArr, disp:"Empty File", mailfiles:user.mailfiles, docBr:docBr, docClass:docClass, docTag:docTag});
-          });
+        fs.readdir(drivetmp + user.group, function(err,items){
+          let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
+          if (err) console.log(err);
+          //console.log(result);
+          return res.render('commologs', {layout:'layout-user', realdrive:drive, level:user.level, docPers:[], branch:user.group, files:sortArr, disp:"Empty File", mailfiles:user.mailfiles, docBr:docBr, docClass:docClass, docTag:docTag});
+        });
       });
     }
     //process get Chart Open
@@ -131,14 +146,14 @@ module.exports = function(app, arrDB){
       dbhandle.monitorFindFile(req.params.file, (result)=>{
         disBranch = req.params.branch;
         if (disBranch=='none') disBranch = result.route[result.route.length-1].branch;
-          if (fs.existsSync(drivetmp + disBranch +'/'+disFile)){
-            if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
-              dochandle.convDoctoPDF(drivetmp + disBranch +'/'+disFile,drivetmp + 'PDF-temp/'+disFile +'.pdf', function(){
-                return res.render('commofile', {layout:'commofile', path:disDrive + 'PDF-temp/'+ disFile +'.pdf'});
-              });
-            } else return res.render('commofile', {layout:'commofile',  path:disDrive + disBranch +'/'+ disFile});
-          } else return res.render('commofile', {layout:'commofile',  path:disDrive +'No Pending Files.pdf'});
-        });
+        if (fs.existsSync(drivetmp + disBranch +'/'+disFile)){
+          if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
+            dochandle.convDoctoPDF(drivetmp + disBranch +'/'+disFile,drivetmp + 'PDF-temp/'+disFile +'.pdf', function(){
+              return res.render('commofile', {layout:'commofile', path:disDrive + 'PDF-temp/'+ disFile +'.pdf'});
+            });
+          } else return res.render('commofile', {layout:'commofile',  path:disDrive + disBranch +'/'+ disFile});
+        } else return res.render('commofile', {layout:'commofile',  path:disDrive +'No Pending Files.pdf'});
+      });
     }
     //process deleting file from monitoring
     function editMonitor(req, res, id){

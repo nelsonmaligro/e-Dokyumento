@@ -1,3 +1,11 @@
+/*
+Main App for Scanning and indexing the entire drive.
+
+@module Main App for indexing the entire drive
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
 const fs = require('fs');
 const dochandle = require('./dochandle');
 const dbhandle = require('./dbhandle');

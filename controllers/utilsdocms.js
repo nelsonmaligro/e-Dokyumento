@@ -1,3 +1,12 @@
+/*
+Helper Modules for App Utilies
+    - Provides utility functions for the main app
+
+@module multiple modules for App Utilities
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
 const fs = require('fs');
 const path = require('path');
 const dateformat = require('dateformat');
@@ -112,14 +121,16 @@ dbhandle.settingDis((setting)=>{
   //check permission error;
   exports.checkPermission = function(items, path) {
   let sortArr = [];
-  items.forEach((item)=>{
-    try {fs.statSync(path+item).mtime; sortArr.push(item);}
-    catch (err) {}
-  });
-  sortArr.sort((a, b)=>{
-    if (os.platform()=='linux') return  fs.statSync(path+b).mtime - fs.statSync(path+a).mtime;
-    else return  fs.statSync(path+b).birthtime - fs.statSync(path+a).birthtime;
-  });
+  if (items) {
+    items.forEach((item)=>{
+      try {fs.statSync(path+item).mtime; sortArr.push(item);}
+      catch (err) {}
+    });
+    sortArr.sort((a, b)=>{
+      if (os.platform()=='linux') return  fs.statSync(path+b).mtime - fs.statSync(path+a).mtime;
+      else return  fs.statSync(path+b).birthtime - fs.statSync(path+a).birthtime;
+    });
+  }
   return sortArr;
   }
 

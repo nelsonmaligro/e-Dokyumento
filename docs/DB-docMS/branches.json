@@ -1,0 +1,12 @@
+{"_id":{"$oid":"5f1fd9fb6dfb3ee348370c9b"},"name":"FINANCE"}
+{"_id":{"$oid":"5f1fdace6dfb3ee348370c9c"},"name":"MARKETING"}
+{"_id":{"$oid":"5f1fdadf6dfb3ee348370c9d"},"name":"PRODUCTION"}
+{"_id":{"$oid":"5f1fdae76dfb3ee348370c9e"},"name":"LOGISTICS"}
+{"_id":{"$oid":"5f1fdaf16dfb3ee348370c9f"},"name":"HR"}
+{"_id":{"$oid":"5f1fdaf76dfb3ee348370ca0"},"name":"IT"}
+{"_id":{"$oid":"5f1fdb096dfb3ee348370ca1"},"name":"ACCOUNTING"}
+{"_id":{"$oid":"5f1fdb126dfb3ee348370ca2"},"name":"QA"}
+{"_id":{"$oid":"5f1fde1b6dfb3ee348370ca5"},"name":"SECRETARY-RECEIVING"}
+{"_id":{"$oid":"5f1fdf406dfb3ee348370ca8"},"name":"All Branches"}
+{"_id":{"$oid":"5f1fdf4b6dfb3ee348370ca9"},"name":"ASST.G.M."}
+{"_id":{"$oid":"5f1fdf4e6dfb3ee348370caa"},"name":"G.M."}

@@ -1,3 +1,13 @@
+/*
+Controller Module for the Managers and Bosses - Priveleged Transactions
+- handles all document operations specifically for Managers, Asst. Managers, and other privileged transactions.
+- It includes signing, annotations, and releasing of documents
+
+@module Royalty
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
 module.exports = function(app, arrDB){
   var fs = require('fs');
   var path = require('path');
@@ -11,7 +21,7 @@ module.exports = function(app, arrDB){
   const utilsdocms = require('./utilsdocms');
   const dateformat = require('dateformat');
   var multer = require('multer');
-
+  //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
   var drivetmp = "public/drive/", drive = "D:/Drive/", publicstr = 'public';
@@ -27,38 +37,41 @@ module.exports = function(app, arrDB){
     });
     var upload = multer({ storage : storage}).single('image');
 
-    //get handle signing PDF
+    //
+    //---------------------------------- Express app handling starts here --------------------------------------------------
+    //get handle signing document
     app.get('/signpdf', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         getsignpdf(req, res, id);
       });
     });
-    //post handle signing PDF
+    //post handle signing document
     app.post('/signpdf', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         postsignpdf(req, res, id);
       });
     });
-    //post handle signing PDF
+    //post handle annotating document
     app.post('/drawpdf', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         postdrawpdf(req, res, id);
       });
     });
-    //post handle release PDF
+    //post handle releasing document
     app.post('/releasedoc', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         releasesignpdf(req, res, id);
       });
     });
-    //post handle signing PDF
+    //post handle cancel signing
     app.post('/cancelsign', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         if (fs.existsSync(drivetmp + 'PDF-temp/'+id+'.res.pdf')) fs.unlink(drivetmp + 'PDF-temp/'+id+'.res.pdf',()=>{res.json('ok');});
         else res.json('ok');
       });
     });
-    //////////////////////////////////////FUNCTIONS START HERE///////////////////////////////////////////////
+    //
+    //------------------------------------------FUNCTIONS START HERE----------------------------------------------------
 
     //process document release after signing
     function releasesignpdf(req, res, id){
@@ -129,18 +142,18 @@ module.exports = function(app, arrDB){
           if (err) res.json('error');
           else {
             utilsdocms.sleep(2000).then(()=>{
-                if (fs.existsSync(path.resolve(drivetmp +'Uploads/' + id + '.drw.png'))) {
-                  fs.readFile(drivetmp +'Uploads/' + id + '.drw.png', 'utf-8', (err, data) => {
-                    base64Data = data.replace(/^data:image\/png;base64,/, "");
-                    let buff = new Buffer.from(base64Data,'base64');
-                    fs.writeFile(drivetmp +'PDF-temp/' + id + '.new.drw.png',  buff, (err)=>{
-                      pdflib.addLineDoc(user.group, id, publicstr+req.cookies.fileOpn, drivetmp+'PDF-temp/', () =>{
-                        res.json('successful');
-                        dbhandle.actlogsCreate(id, Date.now(), 'Upload File', req.cookies.fileAI.trim(), req.ip);
-                      });
+              if (fs.existsSync(path.resolve(drivetmp +'Uploads/' + id + '.drw.png'))) {
+                fs.readFile(drivetmp +'Uploads/' + id + '.drw.png', 'utf-8', (err, data) => {
+                  base64Data = data.replace(/^data:image\/png;base64,/, "");
+                  let buff = new Buffer.from(base64Data,'base64');
+                  fs.writeFile(drivetmp +'PDF-temp/' + id + '.new.drw.png',  buff, (err)=>{
+                    pdflib.addLineDoc(user.group, id, publicstr+req.cookies.fileOpn, drivetmp+'PDF-temp/', () =>{
+                      res.json('successful');
+                      dbhandle.actlogsCreate(id, Date.now(), 'Upload File', req.cookies.fileAI.trim(), req.ip);
                     });
                   });
-                } else res.json('error');
+                });
+              } else res.json('error');
             })
           }
         });

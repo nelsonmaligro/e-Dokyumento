@@ -1,3 +1,10 @@
+/*
+Main app
+
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
 const express = require('express');
 const layouts = require('express-ejs-layouts');
 const dasincoming = require('./controllers/dasincoming');

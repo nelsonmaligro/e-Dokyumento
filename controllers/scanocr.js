@@ -1,3 +1,11 @@
+/*
+Helper Modules for OCR Scanning
+
+@module scanOCR
+@dependency pdf-extract from github.com/nisaacson/pdf-extract
+@copyright 2020
+@license GPL
+*/
 exports.outtext = function outtext(pathPDF, retText){
   const path = require('path')
   const pdf_extract = require('pdf-extract')

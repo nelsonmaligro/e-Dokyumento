@@ -1,0 +1,13 @@
+{"_id":{"$oid":"5f212139c75239969dccb753"},"year":"2020","month":"JUL","branch":"SECRETARY-RECEIVING","count":3,"__v":0}
+{"_id":{"$oid":"5f217cb770fae0b4f4d78f8f"},"year":"2020","month":"JUL","branch":"MARKETING","count":1,"__v":0}
+{"_id":{"$oid":"5f217dd170fae0b4f4d78f95"},"year":"2020","month":"JUL","branch":"FINANCE","count":2,"__v":0}
+{"_id":{"$oid":"5e409fbd0f9c34bc513726c5"},"year":"2020","month":"FEB","branch":"FINANCE","count":1,"__v":0}
+{"_id":{"$oid":"5e4498898bb0280a35c583b2"},"year":"2020","month":"FEB","branch":"LOGISTICS","count":2,"__v":0}
+{"_id":{"$oid":"5e4499c58bb0280a35c583c6"},"year":"2020","month":"FEB","branch":"HR","count":2,"__v":0}
+{"_id":{"$oid":"5e60579826541f1f0ebb00b1"},"year":"2020","month":"MAR","branch":"LOGISTICS","count":1,"__v":0}
+{"_id":{"$oid":"5e6059f5b11817219164c56d"},"year":"2020","month":"MAR","branch":"ACCOUNTING","count":1,"__v":0}
+{"_id":{"$oid":"5ea0db76b11817219164c578"},"year":"2020","month":"APR","branch":"HR","count":1,"__v":0}
+{"_id":{"$oid":"5ea0dd5cb11817219164c593"},"year":"2020","month":"APR","branch":"IT","count":1,"__v":0}
+{"_id":{"$oid":"5ebddcfab11817219164c5b2"},"year":"2020","month":"MAY","branch":"PRODUCTION","count":1,"__v":0}
+{"_id":{"$oid":"5ebdde79b11817219164c5be"},"year":"2020","month":"MAY","branch":"FINANCE","count":3,"__v":0}
+{"_id":{"$oid":"5ee02958df40ca3fe084436f"},"year":"2020","month":"JUN","branch":"IT","count":1,"__v":0}

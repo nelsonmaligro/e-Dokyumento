@@ -1,3 +1,13 @@
+/*
+Controller Module for Processing Incoming Documents
+     - handles operations for all documents inside the incoming folder such as routing, classifying, and Machine Learning.
+     - handles client login, logout, and files checking every interval.
+
+@module Incoming
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
 module.exports = function(app, arrDB) {
   var scanocr = require('./scanocr');
   var routeduty = require('./routeduty');
@@ -13,13 +23,13 @@ module.exports = function(app, arrDB) {
   const utilsdocms = require('./utilsdocms');
   const dateformat = require('dateformat');
   var promise = require('promise');
-
+  //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
-  //var drivetmp = "public/drive/", drive = "D:/drive/";
   var drivetmp = "public/drive/", drive = "D:/Drive/", publicstr='public';
   dbhandle.settingDis((setting)=>{drivetmp = setting.publicdrive;});
   dbhandle.settingDis((setting)=>{publicstr = setting.publicstr;});
+
   //list all document classification and tags
   var docClass = []; var docTag = []; var docBr = [];    var grpUsrs = [];
   dbhandle.generateList(arrDB.class, function (res){ docClass = res; });
@@ -29,37 +39,40 @@ module.exports = function(app, arrDB) {
 
   dbhandle.settingDis((setting)=>{
     drive = setting.maindrive;
-    //post handle send file to user for notification
+    //
+    //---------------------------------- Express app handling starts here --------------------------------------------------
+
+    //post handle show all files in the incoming folder every interval
     app.post('/sendincoming', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         sendIncoming(req, res, id);
       });
     });
-    //post handle send file to user for notification
+    //post handle show all files in the release folder every interval
     app.post('/sendincomingrelease', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         sendIncomingRelease(req, res, id);
       });
     });
-    //get incoming no params
+    //get handle client request for incoming docs no params
     app.get('/incoming', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         getIncoming(req, res, id, false);
       });
     });
-    //get incoming with params
+    //get handle client request for incoming docs with file as param
     app.get('/incoming/:file',function(req,res){
       utilsdocms.validToken(req, res,  function(decoded, id){
         getIncoming(req, res, id, true);
       });
     });
-    //get incoming with params release
+    //get handle client request release files
     app.get('/incoming/:file/:relfile',function(req,res){
       utilsdocms.validToken(req, res,  function(decoded, id){
         getIncoming(req, res, id, true);
       });
     });
-    //post incoming with params
+    //post handle incoming with params
     app.post('/incoming', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function(decoded, id){
         postIncoming(req, res, id);
@@ -118,7 +131,7 @@ module.exports = function(app, arrDB) {
         });
       });
     });
-    //html get login
+    //html get filter access to public drive folder
     app.use('/drive', function(req, res, next){
       utilsdocms.validToken(req, res,  function (decoded, id){
         if (decoded) next();
@@ -130,13 +143,14 @@ module.exports = function(app, arrDB) {
       req.logout();
       return res.render('login', {layout:'empty', error:'Valid'});
     });
-    //html get comment and annotate
+    //html editing document online (not yet supported)
     app.get('/edit',function(req,res){
       utilsdocms.validToken(req, res,  function(decoded){
         res.render('editmce');
       });
     });
-    //////////////////////////////////////FUNCTIONS START HERE///////////////////////////////////////////////
+    //
+    //------------------------------------------FUNCTIONS START HERE----------------------------------------------------
     //process branch incoming files notification
     function sendIncomingRelease(req, res, id) {
       dbhandle.userFind(id, function(user){
@@ -159,11 +173,11 @@ module.exports = function(app, arrDB) {
           if ((user.level.toUpperCase()=='DUTYADMIN') || (user.level.toUpperCase()=='SECRETARY')){
             fs.readdir(drivetmp +'incoming-temp', function(err,items){
               if (!err) {
-                 let sortArr = utilsdocms.checkPermission(items, drivetmp +'incoming-temp/');
-                 let newArr = [];
-                 sortArr.forEach((item)=>{
-                   newArr.push({action:'yes',file:item});
-                  });
+                let sortArr = utilsdocms.checkPermission(items, drivetmp +'incoming-temp/');
+                let newArr = [];
+                sortArr.forEach((item)=>{
+                  newArr.push({action:'yes',file:item});
+                });
                 let outRes = {incoming:newArr,mail:user.mailfiles};
                 res.json(JSON.stringify(outRes));
               }
@@ -255,7 +269,7 @@ module.exports = function(app, arrDB) {
                       if (succ){
                         monitoring.addBrMonitor(req, res, user, path.resolve(drivetmp));
                         if (!req.body.branch.toString().toUpperCase().includes('ALL BRANCHES'))
-                          dbhandle.docDel(drivetmp + user.group + "/" +req.body.fileroute,()=>{});
+                        dbhandle.docDel(drivetmp + user.group + "/" +req.body.fileroute,()=>{});
                       }
                     });
                   }

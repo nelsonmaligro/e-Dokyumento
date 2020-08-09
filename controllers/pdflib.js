@@ -1,3 +1,13 @@
+/*
+Helper Modules for PDF Operations
+    - Handles signing, drawing, merging, and annotating PDF
+
+@module PDFLib
+@author Nelson Maligro
+@dependency PDF-lib from github.com/Hopding/pdf-lib
+@copyright 2020
+@license GPL
+*/
 const fs = require('fs');
 const path = require('path');
 const dateformat = require('dateformat');

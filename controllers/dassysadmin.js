@@ -1,3 +1,11 @@
+/*
+Controller Module for System Administration
+
+@module SysAdmin
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
 module.exports = function(app, arrDB){
   var fs = require('fs');
   var path = require('path');
@@ -9,7 +17,7 @@ module.exports = function(app, arrDB){
   const utilsdocms = require('./utilsdocms');
   const dateformat = require('dateformat');
   var multer = require('multer');
-
+  //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
   var drivetmp = "public/drive/", drive = "D:/Drive/", publicstr = 'public';
@@ -32,7 +40,9 @@ module.exports = function(app, arrDB){
     var avatar = multer({ storage : storage}).single('avatarinput');
     var pngimage = multer({ storage : storage}).single('pnginput');
     var svgimage = multer({ storage : storage}).single('svginput');
-    //post handle registration of users
+    //
+    //---------------------------------- Express app handling starts here --------------------------------------------------
+    //post handle switching user privilege from branch duty to office admin - not applicable for staff and secretary
     app.post('/switchduty', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         switchduty(req, res, id);
@@ -62,49 +72,50 @@ module.exports = function(app, arrDB){
         registeruser(req, res, id);
       });
     });
-    //post handle registration of users
+    //post handle updating of server settings
     app.post('/updateserver', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         updateserver(req, res, id);
       });
     });
-    //get handle administration
+    //get default view for system administration
     app.get('/kalikot', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         getkalikot(req, res, id);
       });
     });
-    //get handle administration
+    //get display profile settings for all users
     app.get('/myprofile', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         getmyprofile(req, res, id);
       });
     });
-    //post update account
+    //post update accounts
     app.post('/updateaccount', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         postupdateaccount(req, res, id);
       });
     });
-    //get handle administration
+    //get handle show all users
     app.get('/viewusers', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         viewusers(req, res, id);
       });
     });
-    //get handle administration
+    //get handle show server settings
     app.get('/configserve/:view', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         configserve(req, res, id);
       });
     });
-    //get handle administration
+    //get handle show logs
     app.get('/showlogs/:view', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         showlogs(req, res, id);
       });
     });
-    //////////////////////////////////////FUNCTIONS START HERE///////////////////////////////////////////////
+    //
+    //------------------------------------------FUNCTIONS START HERE----------------------------------------------------
     //process show logs
     function showlogs(req, res, id){
       dbhandle.userFind(id, function(user){
@@ -208,20 +219,20 @@ module.exports = function(app, arrDB){
     //process update user profile account
     function postupdateaccount(req, res, id){
       dbhandle.userFind(id, function(user){
-          if (req.body.action=='saveqr') {
-            console.log('Update Fullname');
-            dbhandle.userQRUpdate(id, req.body.fullname,()=>{
-              res.json('successful');
-              dbhandle.actlogsCreate(id, Date.now(), 'Update Profile Fullname', 'none', req.ip);
-            });
-          }
-          if (req.body.action=='savepass') {
-            console.log('Update Fullname');
-            dbhandle.userPassUpdate(id, req.body.hash,()=>{
-              res.json('successful');
-              dbhandle.actlogsCreate(id, Date.now(), 'Update Profile Password', 'none', req.ip);
-            });
-          }
+        if (req.body.action=='saveqr') {
+          console.log('Update Fullname');
+          dbhandle.userQRUpdate(id, req.body.fullname,()=>{
+            res.json('successful');
+            dbhandle.actlogsCreate(id, Date.now(), 'Update Profile Fullname', 'none', req.ip);
+          });
+        }
+        if (req.body.action=='savepass') {
+          console.log('Update Fullname');
+          dbhandle.userPassUpdate(id, req.body.hash,()=>{
+            res.json('successful');
+            dbhandle.actlogsCreate(id, Date.now(), 'Update Profile Password', 'none', req.ip);
+          });
+        }
       });
     }
     //process registration of users
@@ -257,8 +268,8 @@ module.exports = function(app, arrDB){
                 });
               }
             });
-              res.json('successful');
-              dbhandle.actlogsCreate(id, Date.now(), 'Clear PDF Folder', 'none', req.ip);
+            res.json('successful');
+            dbhandle.actlogsCreate(id, Date.now(), 'Clear PDF Folder', 'none', req.ip);
           } else if (req.body.action=='addgroup') {
             console.log('Add Branch/ Group');
             dbhandle.addListCall(arrDB.branch,req.body.group, (success)=>{

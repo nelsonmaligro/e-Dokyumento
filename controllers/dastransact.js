@@ -1,18 +1,31 @@
+/*
+Controller Module for Handling Miscellaneous Transactions
+    - It includes merging signed PDF pages, searching reference from monitoring, scanning QR COde
+    merging annotated PDF pages, document DB or metada query, toggle PDF routing, sending mail notification files,
+    redirect access to public drive folder
+
+
+@module docTransactions
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
 module.exports = function(app, arrDB){
   var routeduty = require('./routeduty');
   var fs = require('fs');
   var path = require('path');
   var bodyParser = require('body-parser');
   const cookieParser = require('cookie-parser');
-
+  const express = require('express');
   const dbhandle = require('./dbhandle');
   const dochandle = require('./dochandle');
   const monitoring = require('./monitoring');
   const pdflib = require('./pdflib');
   const utilsdocms = require('./utilsdocms');
   const dateformat = require('dateformat');
-  const express = require('express');
   const jwt = require('jsonwebtoken');
+
+  //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
   var drivetmp = "public/drive/", drive = "D:/Drive/", publicstr='public';
@@ -27,6 +40,8 @@ module.exports = function(app, arrDB){
 
   dbhandle.settingDis((setting)=>{
     drive = setting.maindrive;
+    //
+    //---------------------------------- Express app handling starts here --------------------------------------------------
     //post handle search monitoring for reference and enclosure prior routing
     app.post('/searchrefmonitor', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
@@ -81,16 +96,10 @@ module.exports = function(app, arrDB){
         docQuery(req, res, id);
       });
     });
-    //////////////////////////////////////FUNCTIONS START HERE///////////////////////////////////////////////
-
-    //bootstap static folder
+    //
+    //------------------------------------------FUNCTIONS START HERE----------------------------------------------------
+    //declare bootstap static folder here to redirect access to public drive folder when token not validated
     app.use(express.static('./public'));
-
-
-    //app.use(express.static('./public/vendors'));
-    //app.use(express.static('./public/images'));
-
-
   //process document release after signing
     function mergedrawdoc(req, res, id){
       dbhandle.userFind(id, function(user){

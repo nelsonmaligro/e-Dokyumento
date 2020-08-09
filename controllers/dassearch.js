@@ -1,3 +1,12 @@
+/*
+Controller Module for Searching Documents
+- handles document searching including basic content search, and metadata search.
+
+@module documentSearch
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
 module.exports = function(app, arrDB){
   var fs = require('fs');
   var path = require('path');
@@ -7,9 +16,7 @@ module.exports = function(app, arrDB){
   const dochandle = require('./dochandle');
   const utilsdocms = require('./utilsdocms');
   const dateformat = require('dateformat');
-  //var flexsearch = require("flexsearch");
-  //var storage = require('dom-storage');
-
+  //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
   var allSearches = new Array;
@@ -24,25 +31,28 @@ module.exports = function(app, arrDB){
 
   dbhandle.settingDis((setting)=>{
     drive = setting.maindrive;
-    //get chart monitor
+    //
+    //---------------------------------- Express app handling starts here --------------------------------------------------
+    //get default view for content search
     app.get('/searchbasic', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         getsearchbasic(req, res, id);
       });
     });
-    //post upload file
+    //post handle content searching
     app.post('/searchbasic', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         postsearchbasic(req, res, id);
       });
     });
-    //post upload file
+    //post handle next page content searching
     app.post('/searchnext', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         postsearchnext(req, res, id);
       });
     });
-    ///////////////////////////////////FUNCTIONS START HERE///////////////////////////////////////////////
+    //
+    //------------------------------------------FUNCTIONS START HERE----------------------------------------------------
     //Process post search next
     function postsearchnext(req, res, id){
       let arrSearch = new Array; let x = 0;

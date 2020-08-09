@@ -1,3 +1,14 @@
+/*
+Main App for File and Folder Watch.
+     Files and folders are watched so that when a file is added, deleted, and changed, the index file is automatically
+     updated.
+
+@module Main App for watching files and automatically index
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
+
 const chokidar = require('chokidar');
 const fs = require('fs');
 const textract = require('textract');

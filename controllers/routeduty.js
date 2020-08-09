@@ -1,3 +1,12 @@
+/*
+Helper Modules for Routing Documents
+    - Provides routing utility function for the main app
+
+@module docRouting
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
 const path = require('path');
 const  fs = require('fs');
 const dateformat = require('dateformat');

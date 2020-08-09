@@ -1,3 +1,12 @@
+/*
+Helper Modules for Handling Mongo Database
+
+@module multiple modules involving Database Operations
+@author Nelson Maligro
+@copyright 2020
+@license GPL
+*/
+
 const mongoose = require('mongoose');
 const {Schema} = mongoose;
 const hash = require('jshashes');

@@ -1,3 +1,11 @@
+/*
+Helper Modules for Extracting Content of a File
+
+@module getFileContent
+@dependencies office-to-pdf, word-extractor, textract
+@copyright 2020
+@license GPL
+*/
 const fs = require('fs');
 const textract = require('textract');
 const scanocr = require('./scanocr');
