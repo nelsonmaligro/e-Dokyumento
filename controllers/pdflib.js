@@ -9,6 +9,7 @@ Helper Modules for PDF Operations
 @license GPL
 */
 const fs = require('fs');
+const qrcode = require('qrcode');
 const path = require('path');
 const dateformat = require('dateformat');
 //import { degrees, PDFDocument, rgb, StandardFonts } from 'pdf-lib';
@@ -62,28 +63,39 @@ dbhandle.settingDis((setting)=>{
   };
   //add signature into main documents
   exports.addSignMainDoc = async function (group, id, srcPath, dstPath, disX, disY, nodate, diswidth, disheight, callback) {
-    const url = srcPath
+    const url = srcPath; var serDate = Date.now().toString();
     if (fs.existsSync(url)){
+      //generate QR Code and save to file
+      qrcode.toFile(drive+group+'/Signature/' + id +'.qr.png', serDate, { color: {dark: '#00F', light: '#0000' } }, async function (err) {
         var existingPdfBytes = fs.readFileSync(path.resolve(url));
         const pdfDoc = await PDFDocument.load(existingPdfBytes);
         const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
         const pages = pdfDoc.getPages();
         const firstPage = pages[0];
         const { width, height } = firstPage.getSize();
-
+        //get QR Code file image
+        const pngImgQRBytes = fs.readFileSync(drive+group+'/Signature/' + id +'.qr.png')
+        const pngImgQR = await pdfDoc.embedPng(pngImgQRBytes)
+        //get Signature file Image
         const pngImageBytes = fs.readFileSync(drive+group+'/Signature/' + id +'.png')
         const pngImage = await pdfDoc.embedPng(pngImageBytes)
         const pngDims = pngImage.scale(0.5)
         var varX = (width/parseInt(diswidth,10));
         var varY = (height/parseInt(disheight,10));
-        let serDate = Date.now().toString(); let logfile = dstPath.split('/');
+        let logfile = dstPath.split('/');
         dbhandle.actlogsCreate(id, Date.now(), 'Sign document with e-signature', logfile[logfile.length-1], serDate);
-        firstPage.drawText(serDate, { //date for record number
+        firstPage.drawText(serDate, { //insert date serial for document record number
           x: (parseInt(disX, 10) * varX) -5, //- pngDims.width / 2 + 75,
           y: ((height - (parseInt(disY, 10)  * varY)) - (90 * varY))  + 60, //- pngDims.height,
           size: 5,
           font: helveticaFont,
           color: rgb(0, 0.53, 0.71),
+        });
+        firstPage.drawImage(pngImgQR, {//draw QR into page
+          x: (parseInt(disX, 10) * varX) - 52, //- pngDims.width / 2 + 75,
+          y: ((height - (parseInt(disY, 10)  * varY)) - (90 * varY)) + 20, //- pngDims.height,
+          width: 50,
+          height: 50,
         });
         if (nodate!='true'){
           firstPage.drawText(dateformat(Date.now(),"dd mmm yyyy"), { //date signee
@@ -103,6 +115,7 @@ dbhandle.settingDis((setting)=>{
         const pdfBytes = await pdfDoc.save();
         fs.writeFileSync(dstPath, pdfBytes);
         callback();
+      });
     } else console.log('error');
 
 

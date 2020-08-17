@@ -46,6 +46,7 @@
     "pdf-ocr": "^0.1.0",
     "pdfreader": "^1.0.6",
     "promise": "^8.1.0",
+    "qrcode": "^1.4.4",
     "stopword": "^0.3.4",
     "textract": "^2.5.0",
     "util": "^0.12.1",

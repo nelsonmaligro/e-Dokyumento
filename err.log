@@ -468,3 +468,22 @@ TypeError: Cannot read property 'forEach' of undefined
     at Object.exports.checkPermission (D:\Projects\PN DocMS\controllers\utilsdocms.js:114:9)
     at D:\Projects\PN DocMS\controllers\dasmonitor.js:120:38
     at FSReqCallback.oncomplete (fs.js:146:23)
+await is only valid in async function
+D:\Projects\PN DocMS\controllers\pdflib.js:70
+        const pdfDoc = await PDFDocument.load(existingPdfBytes);
+                       ^^^^^
+
+SyntaxError: await is only valid in async function
+    at Module._compile (internal/modules/cjs/loader.js:895:18)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:995:10)
+    at Module.load (internal/modules/cjs/loader.js:815:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:727:14)
+    at Module.require (internal/modules/cjs/loader.js:852:19)
+    at require (internal/modules/cjs/helpers.js:74:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasroyalty.js:20:18)
+    at D:\Projects\PN DocMS\index.js:51:7
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:697:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2869:28
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
