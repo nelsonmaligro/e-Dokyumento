@@ -1,6 +1,6 @@
 # e-Dokyumento 
 ### Pinoy Electronic Document Management System 
-![ScreenShot](https://github.com/nelsonmaligro/e-Dokyumento/blob/master/public/images/edokyu.png)
+![ScreenShot](https://raw.githubusercontent.com/nelsonmaligro/e-Dokyumento/master/public/images/edokyu.png)
 
 # Overview
 e-Dokyumento is an opensource Document Management System that stores, organizes, indexes, routes, and tracks
