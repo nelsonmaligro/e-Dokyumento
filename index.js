@@ -55,10 +55,13 @@ setTimeout (()=>{
       dassysadmin(app,arrDB);
       dassearch(app,arrDB);
       login(app);
-
+      let keyLoc = 'models/127.0.0.1.key'; let certLoc = 'models/127.0.0.1.cert';
+      if ((fs.existsSync(drive + '127.0.0.1.key')) && (fs.existsSync(drive + '127.0.0.1.cert'))) {
+        keyLoc = drive + '127.0.0.1.key'; certLoc = drive + '127.0.0.1.cert';
+      }
       https.createServer({
-        key: fs.readFileSync(drive + '127.0.0.1.key'),
-        cert: fs.readFileSync(drive + '127.0.0.1.cert')
+        key: fs.readFileSync(keyLoc),
+        cert: fs.readFileSync(certLoc)
       }, app)
       .listen(443, function () {
         console.log('DocMS running at https');

@@ -323,7 +323,13 @@ $(document).ready(function(){
     });
     return false;
   });
-
+  //initialize qr scan and password buttons
+  if ($('#toggleButCam').prop('checked')){
+     $('#app').show();togglecam=true; $('#passapp').hide(); valPass = false;
+  }
+  else {
+     $('#passapp').show(); valPass = true; scanner.stop();$('#app').hide();togglecam=false; $('#verPass').focus()
+  }
 
 
   //initialize for DEP and CO
@@ -350,4 +356,5 @@ $(document).ready(function(){
   }
 
   updateSelectPage();
+
 });
