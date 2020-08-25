@@ -32,6 +32,10 @@ module.exports = function(app){
     app.use(passport.initialize());
     app.use(passport.session());
 
+    //get verify documents QR Code
+    app.get('/verifydoc', function(req, res){
+      return res.render('verifydoc', {layout:'empty'});
+    });
      //post incoming with params
     app.post('/', function(req,res, next) {
       passport.authenticate('login', {session:false}, function (err,passportuser,info){
