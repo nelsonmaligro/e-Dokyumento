@@ -1,3 +1,5 @@
+<button style="margin-top:10px; position: absolute; right: 0;" type="button" class="btn btn-primary btn-flat " onclick="location.href='/'">Back to Login page</button>
+
     <div class="sufee-login d-flex align-content-center flex-wrap">
         <div class="container">
             <div class="login-content">
@@ -14,12 +16,14 @@
                   </div>
                 </div>
                  <br>
-                 <div id="alert" class="alert alert-success" style="width:660px;text-align:center;" role="alert"> Document Verified! Record Exist.
-                </div>
-
+                 <div id="alert">
+                   <div class="alert alert-secondary" style="left:-100px;width:860px;text-align:center;" role="alert"> Scan QR Code of the Document <br> Note: This validates the existence of the document in the e-Dokyumento and not the authenticity of the signature. </div>
+                 </div>
             </div>
         </div>
     </div>
+    <audio  src="/images/noti.wav" type="audio/mpeg" id="soundNoti" autostart="false"></audio>
+
     <script src="/vendors/jquery/dist/jquery.min.js"></script>
     <script type="text/javascript" src="/assets/js/adapter.min.js"></script>
     <script type="text/javascript" src="/assets/js/vue.min.js"></script>

@@ -187,6 +187,14 @@ exports.actlogFindAction = function (action, callback){
     callback(res);
   });
 };
+//find monitoring by title
+exports.actlogFindSerial = function (serial, callback){
+  //find file
+  activitylogsModel.find({serial:{'$regex':'^'+serial+'$','$options':'i'}}, function (err, res){
+    //console.log(res);
+    callback(res);
+  });
+};
 //edit activity logs
 exports.actlogSignEdit = function (Doc, newDoc){
   //Create records

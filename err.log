@@ -487,3 +487,31 @@ SyntaxError: await is only valid in async function
     at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
     at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2869:28
     at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'includes' of undefined
+TypeError: Cannot read property 'includes' of undefined
+    at D:\Projects\PN DocMS\controllers\dastransact.js:114:26
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:195:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\helpers\query\completeMany.js:35:39
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'includes' of undefined
+TypeError: Cannot read property 'includes' of undefined
+    at D:\Projects\PN DocMS\controllers\dastransact.js:114:26
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:195:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\helpers\query\completeMany.js:35:39
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot set headers after they are sent to the client
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (_http_outgoing.js:485:11)
+    at ServerResponse.header (D:\Projects\PN DocMS\node_modules\express\lib\response.js:771:10)
+    at ServerResponse.send (D:\Projects\PN DocMS\node_modules\express\lib\response.js:170:12)
+    at ServerResponse.json (D:\Projects\PN DocMS\node_modules\express\lib\response.js:267:15)
+    at D:\Projects\PN DocMS\controllers\dastransact.js:118:15
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:195:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\helpers\query\completeMany.js:35:39
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)

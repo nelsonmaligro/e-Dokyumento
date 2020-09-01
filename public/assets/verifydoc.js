@@ -12,34 +12,24 @@ function openCam(){
 }
 
 function submitQRPass(content){
-  alert(content);
-  /*
-  var hash = new Hashes.SHA512().b64(content); var branch= "N6"; var action= '6';
-  if ($('#disLevel').val().toUpperCase()=='DEP') {branch = "N6"; action='1';}
-  else if ($('#disLevel').val().toUpperCase()=='EAGM') {branch = "G.M."; action='1';}
-  else if ($('#disLevel').val().toUpperCase()=='DUTYADMIN') branch = "Duty Admin";
-  else branch = "Receiving";
-  var todo = {filename:$('#fileroute').val(),monitfile:$('#fileroute').val(),user:getCookie('me'),hashval:hash, action:action,remark:'', branch:branch,subject:''};
+  var todo = {content:content};
   $.ajax({
     type: 'POST',
-    url: '/scancode',
+    url: '/scanqrdoc',
     data: todo,
     success: function(data){
-      if (data=='successful') {
-        lastQRCode = hash;
-        $('#routeattachPage').hide();
-        var options = {
-          height: "400px",
-        };
-        PDFObject.embed('/drive/PDF-temp/route-'+$('#fileroute').val()+'.pdf', "#routeattachPage",options);
-        scanner.stop();$('#app').hide();$('#passapp').hide(); valPass = false;togglecam=false;
-        releasethisdoc();
+      sound = document.getElementById('soundNoti'); sound.play();
+      if (data!='fail') {
+        let docRes = JSON.parse(data);
+        $('#alert').html('<div class="alert alert-success" style="left:-300px;width:1120px;text-align:center;" role="alert"> Document Verified! Record Exist. <br>' +
+          '<table cellspacing="15" cellpadding="5"><tr syle="padding:0;"><td style="border:1px solid black;">Timestamp:' + docRes.deyt + '</td><td style="border:1px solid black;">Signee:' + docRes.name + '</td><td style="border:1px solid black;">Document:' + docRes.file + '</td></tr></table></div>');
+
       } else {
-        alert('QR Code or Password Fail!');$('#verPass').val('');
+        $('#alert').html('<div class="alert alert-danger" style="width:660px;text-align:center;" role="alert"> Invalid Document! No Record Exist.</div>');
+
       }
     }
   });
-  */
 }
 function closeDialog(){
   scanner.stop();

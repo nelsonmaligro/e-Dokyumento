@@ -60,6 +60,10 @@ module.exports = function(app, arrDB){
         scanCode(req, res, id);
       });
     });
+    //post handle scanning of Document QR Code
+    app.post('/scanqrdoc', urlencodedParser, function(req,res){
+        scanqrdoc(req, res);
+    });
     //post handle send file to user for notification
     app.post('/senduser', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
@@ -100,6 +104,27 @@ module.exports = function(app, arrDB){
     //------------------------------------------FUNCTIONS START HERE----------------------------------------------------
     //declare bootstap static folder here to redirect access to public drive folder when token not validated
     app.use(express.static('./public'));
+
+    //process document scan and verify QR COde
+    function scanqrdoc(req, res){
+      console.log('Scan Document QR Code');
+      dbhandle.actlogFindSerial(req.body.content,(result)=>{
+        if (result){
+          //console.log(result[0].doc);
+          if (result[0].doc.includes('.res.pdf')) return res.json('fail');
+          else {
+            dbhandle.userFind(result[0].user, function(user){
+              let disDeyt = new Date(result[0].deyt);
+              let newDeyt = disDeyt.getMonth() + '/' +disDeyt.getDate() + '/' +  disDeyt.getFullYear() + ' ' + disDeyt.getHours() + disDeyt.getMinutes() + 'H';
+              let docResult = {deyt:newDeyt, name:user.email, file:result[0].doc};
+              return res.json(JSON.stringify(docResult));
+            });
+          }
+        } else return res.json('fail');
+      });
+
+    }
+
   //process document release after signing
     function mergedrawdoc(req, res, id){
       dbhandle.userFind(id, function(user){
