@@ -336,6 +336,7 @@ module.exports = function(app, arrDB) {
     //Process get incoming function
     function getIncoming(req, res, id, boolFile){
       //refresh lists
+      let signRes = [];
       dbhandle.generateList(arrDB.class, function (res){ docClass = res; });
       dbhandle.generateList(arrDB.tag, function (res){ docTag = res; });
       dbhandle.userFind(id, function(user){
@@ -366,19 +367,24 @@ module.exports = function(app, arrDB) {
                   if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
                     if (!notExt.includes(dochandle.getExtension(disFile).toLowerCase())){
                       dochandle.convDoctoPDF(drivetmp + 'incoming-temp/'+ disFile, drivetmp + 'PDF-temp/'+ disFile +'.pdf',function(){
-                        return res.render('incomingadmin', { layout:'layout-receive', realdrive:drive, level:user.level, release:relitems, branch:'incoming-temp', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile + '.pdf', files:items, disp:disFile, docBr:docBr});
+                        return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'incoming-temp', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile + '.pdf', files:items, disp:disFile, docBr:docBr});
                       });
                     } else {
-                      return res.render('incomingadmin', { layout:'layout-receive', realdrive:drive, level:user.level, release:relitems, branch:'incoming-temp', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'No Pending Files.pdf', files:items, disp:disFile, docBr:docBr});
+                      return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'incoming-temp', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'No Pending Files.pdf', files:items, disp:disFile, docBr:docBr});
                     }
-                  } else return res.render('incomingadmin', { layout:'layout-receive', realdrive:drive, level:user.level, release:relitems, branch:'incoming-temp', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'incoming-temp/'+ disFile, files:items, disp:disFile, docBr:docBr});
+                  } else {
+                    if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + 'incoming-temp/' + disFile);
+                    return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'incoming-temp', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'incoming-temp/'+ disFile, files:items, disp:disFile, docBr:docBr});
+                  }
                 } else { //if in release folder
                   if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
                     dochandle.convDoctoPDF(drivetmp + 'Release/'+ disFile, drivetmp + 'PDF-temp/'+ disFile +'.pdf', function(){
-                      return res.render('incomingadmin', { layout:'layout-receive', realdrive:drive, level:user.level, release:relitems, branch:'Release', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile + '.pdf', files:items, disp:disFile, docBr:docBr});
+                      return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'Release', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile + '.pdf', files:items, disp:disFile, docBr:docBr});
                     });
-                  }else return res.render('incomingadmin', { layout:'layout-receive', realdrive:drive, level:user.level, release:relitems, branch:'Release', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'Release/'+ disFile, files:items, disp:disFile, docBr:docBr});
-
+                  }else {
+                    if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + 'Release/'+ disFile);
+                    return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'Release', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'Release/'+ disFile, files:items, disp:disFile, docBr:docBr});
+                  }
                 }
               }).catch((err)=>{ console.log(err);});
             }).catch((err)=>{console.log(err);});
@@ -396,10 +402,12 @@ module.exports = function(app, arrDB) {
                 if (fs.existsSync(drivetmp + 'PDF-temp/'+id+'.res.pdf')) fs.unlink(drivetmp + 'PDF-temp/'+id+'.res.pdf',()=>{});
                 if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
                   dochandle.convDoctoPDF(drivetmp + user.group +'/'+disFile,drivetmp + 'PDF-temp/'+disFile +'.pdf', function(){
-                    return res.render('incomingroyal', {layout:'layout-royal',  realdrive:drive, level:user.level, category:disCat, mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile +'.pdf', files:sortArr, disp:disFile, branch:user.group});
+                    return res.render('incomingroyal', {layout:'layout-royal', signres:signRes, realdrive:drive, level:user.level, category:disCat, mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile +'.pdf', files:sortArr, disp:disFile, branch:user.group});
                   });
-                }else return res.render('incomingroyal', {layout:'layout-royal',  realdrive:drive, level:user.level, category:disCat, mailfiles:user.mailfiles, docPers:groups, path:disDrive + user.group +'/'+ disFile, files:sortArr, disp:disFile, branch:user.group});
-
+                }else {
+                  if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + user.group +'/'+ disFile);
+                  return res.render('incomingroyal', {layout:'layout-royal', signres:signRes, realdrive:drive, level:user.level, category:disCat, mailfiles:user.mailfiles, docPers:groups, path:disDrive + user.group +'/'+ disFile, files:sortArr, disp:disFile, branch:user.group});
+                }
               });
             });
           } else {
@@ -422,9 +430,12 @@ module.exports = function(app, arrDB) {
                   else  runScanAI = 'false';
                   if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
                     dochandle.convDoctoPDF(drivetmp + user.group +'/'+disFile,drivetmp + 'PDF-temp/'+disFile +'.pdf', function(){
-                      return res.render('incomingbranch', {layout:'layout-user', realdrive:drive, level:user.level, runscanai:runScanAI, mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile +'.pdf', files:items, disp:disFile, branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag});
+                      return res.render('incomingbranch', {layout:'layout-user',  signres:signRes, realdrive:drive, level:user.level, runscanai:runScanAI, mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile +'.pdf', files:items, disp:disFile, branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag});
                     });
-                  }else return res.render('incomingbranch', {layout:'layout-user', realdrive:drive, level:user.level,  runscanai:runScanAI, mailfiles:user.mailfiles, docPers:groups, path:disDrive + user.group +'/'+ disFile, files:items, disp:disFile, branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag});
+                  }else {
+                    if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + user.group +'/'+ disFile);
+                    return res.render('incomingbranch', {layout:'layout-user', signres:signRes, realdrive:drive, level:user.level,  runscanai:runScanAI, mailfiles:user.mailfiles, docPers:groups, path:disDrive + user.group +'/'+ disFile, files:items, disp:disFile, branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag});
+                  }
                 });
               });
             });

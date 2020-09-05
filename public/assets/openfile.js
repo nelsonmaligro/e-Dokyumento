@@ -9,12 +9,29 @@ function triggerButFile(){
         url: '/fileopen',
         data: todo,
         success: function(data){
+
             //setCookie('realPath',getCookie('mailpath'));
             togglePanelHide(false);selChose();$('#overlay').hide();
            if (data!="notfound") {
              handleOpenFile(data);
            } //go to openfile.js
-
+           //toggle digital signature verification
+           let parseData = JSON.parse(data);
+           parseData.forEach(function (disData){
+             let signature = disData.signres;
+             if (signature){
+               if (signature.message!='signed'){
+                 $('#disDigCert').hide();
+               } else {
+                 $('#disDigCert').show();
+                 if (signature.verified) {
+                   $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-success" type="button" > <i class="fa fa-check"></i> Valid Digital Signature </button>&nbsp;');
+                 } else {
+                   $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-danger" type="button" > <i class="fa fa-times"></i> Invalid Digital Signature </button>&nbsp;');
+                 }
+               }
+             }
+           });
         }
       });
     setCookie('mailnoti','false');
@@ -37,9 +54,27 @@ function triggerButFile(){
             url: '/fileopen',
             data: todo,
             success: function(data){
+
                 $('#overlay').hide();
                 PDFObject.embed(getCookie('fileOpn'), "#pdf_view");
                 queryDoc();
+                //toggle digital signature verification
+                let parseData = JSON.parse(data);
+                parseData.forEach(function (disData){
+                  let signature = disData.signres;
+                  if (signature){
+                    if (signature.message!='signed'){
+                      $('#disDigCert').hide();
+                    } else {
+                      $('#disDigCert').show();
+                      if (signature.verified) {
+                        $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-success" type="button" > <i class="fa fa-check"></i> Valid Digital Signature </button>&nbsp;');
+                      } else {
+                        $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-danger" type="button" > <i class="fa fa-times"></i> Invalid Digital Signature </button>&nbsp;');
+                      }
+                    }
+                  }
+                });
             }
           });
       }

@@ -24,6 +24,8 @@ module.exports = function(app, arrDB){
   const utilsdocms = require('./utilsdocms');
   const dateformat = require('dateformat');
   const jwt = require('jsonwebtoken');
+  const PDFDocument = require('pdfkit');
+  const nodesign = require('node-pdfsign');
 
   //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
@@ -40,6 +42,8 @@ module.exports = function(app, arrDB){
 
   dbhandle.settingDis((setting)=>{
     drive = setting.maindrive;
+    const signer = new nodesign.SignPdf;
+    const {pdfkitAddPlaceholder, extractSignature, plainAddPlaceholder} = require ('./dist/helpers');
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
     //post handle search monitoring for reference and enclosure prior routing
@@ -125,7 +129,7 @@ module.exports = function(app, arrDB){
 
     }
 
-  //process document release after signing
+  //mergedocument  after annotation
     function mergedrawdoc(req, res, id){
       dbhandle.userFind(id, function(user){
           console.log('Merge document after branch annotation');
@@ -166,7 +170,7 @@ module.exports = function(app, arrDB){
             });
       });
     }
-    //process document release after signing
+    //merge document  after signing
     function mergesigndocenc(req, res, id){
       dbhandle.userFind(id, function(user){
         utilsdocms.validateQRPass(req.body.user,req.body.hashval, function (result){
@@ -175,26 +179,47 @@ module.exports = function(app, arrDB){
             var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
             let disNewFile = req.body.origenc+'.'+req.body.user+'.pdf';
             pdflib.mergePDF(publicstr+req.body.filepath, drivetmp+'PDF-temp/'+disNewFile, drivetmp+'PDF-temp/'+req.body.user+'.res.pdf', parseInt(req.body.num,10), () =>{
-              //copy signed PDF from temp to next branch
-              fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, req.body.realpath + disNewFile); //make a copy to drive folder
-              dbhandle.docFind(drivetmp+user.group+'/'+req.body.origfile, function (found) {
-                let arrEnc = []; let foundEnc = false;
-                if (found) {
-                  found.enclosure.forEach((filename)=>{
-                      if (filename.includes(req.body.origenc)) {arrEnc.push(req.body.realpath + disNewFile); foundEnc = true;}
-                      else arrEnc.push(filename);
-                  })
-                  dbhandle.docUpdateEncOnly(drivetmp+user.group+'/'+req.body.origfile, arrEnc);
-                }
-                if (foundEnc) res.json(disNewFile);
-                else res.json('failref');
-              });
+              //attached digital certificate PKCS 12 format into the PDF
+              new Promise ((resolve,reject)=>{
+                if (fs.existsSync(drive+user.group+'/Signature/' + id +'.cert.p12')) {
+                  let p12Buffer = fs.readFileSync(drive+user.group+'/Signature/' + id +'.cert.p12');
+                  //fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, disNewFile + '.sign.pdf');
+                  dochandle.convDoctoPDF(drivetmp+'PDF-temp/' + disNewFile, drivetmp+'PDF-temp/' + disNewFile + '.sign.pdf', function(){
+                    let pdfBuffer = fs.readFileSync(drivetmp+'PDF-temp/' + disNewFile + '.sign.pdf');
+                    pdfBuffer = plainAddPlaceholder({ pdfBuffer, reason: 'I approved and signed this document.', signatureLength: 1612,});
+                    let buf64 = Buffer.from(req.body.crtx, 'base64')
+                    try {
+                      pdfBuffer = signer.sign(pdfBuffer, p12Buffer, {passphrase:buf64.toString("utf8")},);
+                      fs.writeFileSync(drivetmp+'PDF-temp/' + disNewFile + '.new.sign.pdf',pdfBuffer);
+                      fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile + '.new.sign.pdf', drivetmp+'PDF-temp/'+disNewFile); //make a copy to drive folder
+                      resolve();
+                    } catch {resolve();}
+
+                  });
+                } else resolve();
+
+              }).then(()=>{
+                //copy signed PDF from temp to next branch
+                fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, req.body.realpath + disNewFile); //make a copy to drive folder
+                dbhandle.docFind(drivetmp+user.group+'/'+req.body.origfile, function (found) {
+                  let arrEnc = []; let foundEnc = false;
+                  if (found) {
+                    found.enclosure.forEach((filename)=>{
+                        if (filename.includes(req.body.origenc)) {arrEnc.push(req.body.realpath + disNewFile); foundEnc = true;}
+                        else arrEnc.push(filename);
+                    })
+                    dbhandle.docUpdateEncOnly(drivetmp+user.group+'/'+req.body.origfile, arrEnc);
+                  }
+                  if (foundEnc) res.json(disNewFile);
+                  else res.json('failref');
+                });
+              }).catch((err)=>{console.log(err);});
             });
           } else res.json('fail');
         });
       });
     }
-    //process document release after signing
+    //merge document after annotation
     function mergedrawdocenc(req, res, id){
       dbhandle.userFind(id, function(user){
           console.log('Merge document enclosure after annotation');
@@ -219,7 +244,7 @@ module.exports = function(app, arrDB){
             });
       });
     }
-    //process document release after signing
+    //merge document after signing
     function mergesigndoc(req, res, id){
       dbhandle.userFind(id, function(user){
         utilsdocms.validateQRPass(req.body.user,req.body.hashval, function (result){
@@ -229,29 +254,49 @@ module.exports = function(app, arrDB){
             let disNewFile = req.body.fileroute+'.'+req.body.user+'.pdf';
             //console.log('public'+req.body.filepath);
             pdflib.mergePDF(publicstr+req.body.filepath, drivetmp+'PDF-temp/'+disNewFile, drivetmp+'PDF-temp/'+req.body.user+'.res.pdf', parseInt(req.body.num,10), () =>{
-              //copy signed PDF from temp to next branch
-              fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, req.body.realpath + disNewFile); //make a copy to drive folder
-              dbhandle.docFind(req.body.realpath+req.body.fileroute, function (found) {
-                let newID = utilsdocms.generateID();
-                dbhandle.docFind(req.body.realpath + disNewFile, function (disfound) {
-                  if (!disfound) {
-                    utilsdocms.makeDir(drive + 'Routing Slip/', year, month);
-                    let dstRoutSlip = drive + 'Routing Slip/'+year+'/'+month+'/route-'+disNewFile+'.pdf';
-                    let webdstRoutSlip = drivetmp + 'PDF-temp/route-'+disNewFile+'.pdf';
-                    if (found){
-                      if (fs.existsSync(found.routeslip)) {
-                        fs.copyFileSync(found.routeslip, dstRoutSlip);fs.copyFileSync(found.routeslip, webdstRoutSlip);
-                      } else {fs.copyFileSync(drivetmp+'routeblank.pdf', webdstRoutSlip);fs.copyFileSync(drivetmp+'routeblank.pdf', dstRoutSlip); }
-                      dbhandle.docCreate(newID, disNewFile, req.body.realpath + disNewFile, found.category, found.author, found.projects, found.deyt, found.size, found.content, dstRoutSlip, found.reference, found.enclosure, found.comment);
-                    } else {
-                      fs.copyFileSync(drivetmp+'routeblank.pdf', webdstRoutSlip); fs.copyFileSync(drivetmp+'routeblank.pdf', dstRoutSlip);
-                      dbhandle.docCreate(newID, disNewFile, req.body.realpath + disNewFile, "", "", [], Date.now(), 0, "", dstRoutSlip, [], [], []);
-                    }
-                  }
-                  res.json(disNewFile);
-                });
-              });
+              //attached digital certificate PKCS 12 format into the PDF
+              new Promise ((resolve,reject)=>{
+                if (fs.existsSync(drive+user.group+'/Signature/' + id +'.cert.p12')) {
+                  let p12Buffer = fs.readFileSync(drive+user.group+'/Signature/' + id +'.cert.p12');
+                  //fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, disNewFile + '.sign.pdf');
+                  dochandle.convDoctoPDF(drivetmp+'PDF-temp/' + disNewFile, drivetmp+'PDF-temp/' + disNewFile + '.sign.pdf', function(){
+                    let pdfBuffer = fs.readFileSync(drivetmp+'PDF-temp/' + disNewFile + '.sign.pdf');
+                    pdfBuffer = plainAddPlaceholder({ pdfBuffer, reason: 'I approved and signed this document.', signatureLength: 1612,});
+                    let buf64 = Buffer.from(req.body.crtx, 'base64')
+                    try {
+                      pdfBuffer = signer.sign(pdfBuffer, p12Buffer, {passphrase:buf64.toString("utf8")},);
+                      fs.writeFileSync(drivetmp+'PDF-temp/' + disNewFile + '.new.sign.pdf',pdfBuffer);
+                      fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile + '.new.sign.pdf', req.body.realpath + disNewFile); //make a copy to drive folder
+                      resolve();
+                    } catch {resolve();}
 
+                  });
+                } else {
+                  fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, req.body.realpath + disNewFile); //make a copy to drive folder
+                  resolve();
+                }
+              }).then(()=>{
+                dbhandle.docFind(req.body.realpath+req.body.fileroute, function (found) {
+                  let newID = utilsdocms.generateID();
+                  dbhandle.docFind(req.body.realpath + disNewFile, function (disfound) {
+                    if (!disfound) {
+                      utilsdocms.makeDir(drive + 'Routing Slip/', year, month);
+                      let dstRoutSlip = drive + 'Routing Slip/'+year+'/'+month+'/route-'+disNewFile+'.pdf';
+                      let webdstRoutSlip = drivetmp + 'PDF-temp/route-'+disNewFile+'.pdf';
+                      if (found){
+                        if (fs.existsSync(found.routeslip)) {
+                          fs.copyFileSync(found.routeslip, dstRoutSlip);fs.copyFileSync(found.routeslip, webdstRoutSlip);
+                        } else {fs.copyFileSync(drivetmp+'routeblank.pdf', webdstRoutSlip);fs.copyFileSync(drivetmp+'routeblank.pdf', dstRoutSlip); }
+                        dbhandle.docCreate(newID, disNewFile, req.body.realpath + disNewFile, found.category, found.author, found.projects, found.deyt, found.size, found.content, dstRoutSlip, found.reference, found.enclosure, found.comment);
+                      } else {
+                        fs.copyFileSync(drivetmp+'routeblank.pdf', webdstRoutSlip); fs.copyFileSync(drivetmp+'routeblank.pdf', dstRoutSlip);
+                        dbhandle.docCreate(newID, disNewFile, req.body.realpath + disNewFile, "", "", [], Date.now(), 0, "", dstRoutSlip, [], [], []);
+                      }
+                    }
+                    res.json(disNewFile);
+                  });
+                });
+              }).catch((err)=>{console.log(err);});
             });
           } else res.json('fail');
         });

@@ -95,6 +95,23 @@ function showFile(disFile, disDir, flag){
        success: function(data){
          togglePanelHide(false);$('#overlay').hide()//display spinner
          handleOpenFile(data); //go to openfile.js
+         //toggle digital signature verification
+         let parseData = JSON.parse(data);
+         parseData.forEach(function (disData){
+           let signature = disData.signres;
+           if (signature){
+             if (signature.message!='signed'){
+               $('#disDigCert').hide();
+             } else {
+               $('#disDigCert').show();
+               if (signature.verified) {
+                 $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-success" type="button" > <i class="fa fa-check"></i> Valid Digital Signature </button>&nbsp;');
+               } else {
+                 $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-danger" type="button" > <i class="fa fa-times"></i> Invalid Digital Signature </button>&nbsp;');
+               }
+             }
+           }
+         });
        }
      });
     }

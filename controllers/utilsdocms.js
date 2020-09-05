@@ -15,6 +15,8 @@ const express = require('express');
 const { spawn } = require('child_process');
 const dbhandle = require('./dbhandle');
 const os = require('os');
+const verifyPDF = require('./verify/verifyPDF');
+const VerifyPDFError = require('./verify/VerifyPDFError');
 //var promise = require('promise');
 
 var drivetmp = "public/drive/", drive = "D:/Drive/";
@@ -59,6 +61,15 @@ dbhandle.settingDis((setting)=>{
   //function make dir for year and month
   exports.makeDir =  function(path, year, month) {
     makeDir(path, year, month);
+  };
+  //function verify digital signature
+  exports.verifySign = function(path){
+    let signedPdfBuffer = fs.readFileSync(path);
+    let verifyResult = verifyPDF(signedPdfBuffer);
+    return verifyResult;
+    //var disMeta = verifyResult.meta;
+    //var disCert = disMeta.certs;
+    //console.log(verifyResult);
   };
   //run ML from python
   exports.runPy = function (pathPy, pathtxt){

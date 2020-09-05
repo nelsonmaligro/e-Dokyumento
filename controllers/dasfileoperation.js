@@ -49,6 +49,12 @@ module.exports = function(app, arrDB){
         postFileopen(req, res, id);
       });
     });
+    //get open file no params
+    app.get('/fileopen', function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        getFileopen(req, res, id);
+      });
+    });
     //post handle show file attachments
     app.post('/showfile', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,   function (decoded, id){
@@ -275,12 +281,7 @@ module.exports = function(app, arrDB){
         });
       });
     }
-    //get open file no params
-    app.get('/fileopen', function(req,res){
-      utilsdocms.validToken(req, res,  function (decoded, id){
-        getFileopen(req, res, id);
-      });
-    });
+
     //process show file attachment Function
     function showFile(req, res, id){
       dbhandle.userFind(id, function(user){
@@ -336,7 +337,8 @@ module.exports = function(app, arrDB){
                 }else {
                   fs.copyFile(disPath+disFile, drivetmp + 'PDF-temp/'+ disFile, function(err) {
                     if (err) console.log(err);
-                    var arrBr = [{disComm:disComm, openpath:user.path, realpath:disPath, path:disDrive + 'PDF-temp/'+ disFile,files:sortArr,disp:disFile,branch:user.group,docClass:docClass, docTag:docTag, rout:rout, ref:ref, enc:enc, disClas:disClas, disTag:disTag}];
+                    let signRes = utilsdocms.verifySign(drivetmp + 'PDF-temp/'+ disFile);
+                    var arrBr = [{signres:signRes, disComm:disComm, openpath:user.path, realpath:disPath, path:disDrive + 'PDF-temp/'+ disFile,files:sortArr,disp:disFile,branch:user.group,docClass:docClass, docTag:docTag, rout:rout, ref:ref, enc:enc, disClas:disClas, disTag:disTag}];
                     res.json(JSON.stringify(arrBr));
                   });
                 }

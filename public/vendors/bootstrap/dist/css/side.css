@@ -130,7 +130,13 @@
   left: 350px;
   position: fixed;
 }
-
+.digicert {
+  font-size: 15px;
+  cursor: pointer;
+  top: 72px;
+  left: 890px;
+  position: fixed;
+}
 .annotate2 {
   font-size: 15px;
   cursor: pointer;

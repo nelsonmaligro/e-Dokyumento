@@ -515,3 +515,81 @@ Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the cli
     at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
     at D:\Projects\PN DocMS\node_modules\mongoose\lib\helpers\query\completeMany.js:35:39
     at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot find module '../dist/helpers'
+Require stack:
+- D:\Projects\PN DocMS\controllers\dasroyalty.js
+- D:\Projects\PN DocMS\index.js
+Error: Cannot find module '../dist/helpers'
+Require stack:
+- D:\Projects\PN DocMS\controllers\dasroyalty.js
+- D:\Projects\PN DocMS\index.js
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:797:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:690:27)
+    at Module.require (internal/modules/cjs/loader.js:852:19)
+    at require (internal/modules/cjs/helpers.js:74:18)
+    at D:\Projects\PN DocMS\controllers\dasroyalty.js:43:75
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:705:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2869:28
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+    at runNextTicks (internal/process/task_queues.js:62:3)
+    at processImmediate (internal/timers.js:412:9)
+    at process.topLevelDomainCallback (domain.js:130:23)
+Cannot find module '../dist/helpers'
+Require stack:
+- D:\Projects\PN DocMS\controllers\dasroyalty.js
+- D:\Projects\PN DocMS\index.js
+Error: Cannot find module '../dist/helpers'
+Require stack:
+- D:\Projects\PN DocMS\controllers\dasroyalty.js
+- D:\Projects\PN DocMS\index.js
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:797:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:690:27)
+    at Module.require (internal/modules/cjs/loader.js:852:19)
+    at require (internal/modules/cjs/helpers.js:74:18)
+    at D:\Projects\PN DocMS\controllers\dasroyalty.js:43:75
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:705:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2869:28
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+    at runNextTicks (internal/process/task_queues.js:62:3)
+    at processImmediate (internal/timers.js:412:9)
+    at process.topLevelDomainCallback (domain.js:130:23)
+Cannot find module '../dist/helpers'
+Require stack:
+- D:\Projects\PN DocMS\controllers\dasroyalty.js
+- D:\Projects\PN DocMS\index.js
+Error: Cannot find module '../dist/helpers'
+Require stack:
+- D:\Projects\PN DocMS\controllers\dasroyalty.js
+- D:\Projects\PN DocMS\index.js
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:797:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:690:27)
+    at Module.require (internal/modules/cjs/loader.js:852:19)
+    at require (internal/modules/cjs/helpers.js:74:18)
+    at D:\Projects\PN DocMS\controllers\dasroyalty.js:43:75
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:705:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2869:28
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+    at runNextTicks (internal/process/task_queues.js:62:3)
+    at processImmediate (internal/timers.js:412:9)
+    at process.topLevelDomainCallback (domain.js:130:23)
+ENOENT: no such file or directory, open 'public/drive/N6B/empty'
+Error: ENOENT: no such file or directory, open 'public/drive/N6B/empty'
+    at Object.openSync (fs.js:440:3)
+    at Object.readFileSync (fs.js:342:35)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:67:30)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:435:46
+    at D:\Projects\PN DocMS\controllers\monitoring.js:169:14
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:247:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at model.Query.Query._completeOne (D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2074:12)
+    at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2136:10)
+    at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mquery\lib\utils.js:116:16)
+    at processImmediate (internal/timers.js:439:21)
+    at process.topLevelDomainCallback (domain.js:130:23)

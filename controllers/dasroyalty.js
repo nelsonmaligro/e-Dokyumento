@@ -21,6 +21,9 @@ module.exports = function(app, arrDB){
   const utilsdocms = require('./utilsdocms');
   const dateformat = require('dateformat');
   var multer = require('multer');
+
+  const PDFDocument = require('pdfkit');
+  const nodesign = require('node-pdfsign');
   //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
@@ -36,6 +39,8 @@ module.exports = function(app, arrDB){
       filename: function (req, file, callback) { callback(null, file.originalname);}
     });
     var upload = multer({ storage : storage}).single('image');
+    const signer = new nodesign.SignPdf;
+    const {pdfkitAddPlaceholder, extractSignature, plainAddPlaceholder} = require ('./dist/helpers');
 
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
@@ -81,45 +86,65 @@ module.exports = function(app, arrDB){
             console.log('Release Document');
             var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
             pdflib.mergePDF(publicstr+req.body.filepath, drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp+'PDF-temp/'+req.body.user+'.res.pdf', parseInt(req.body.num,10), () =>{
-              //ensure folders exists
-              if (!fs.existsSync(drive+user.group)) fs.mkdirSync(drive+user.group);
-              if (!fs.existsSync(drive+user.group+'/Released')) fs.mkdirSync(drive+user.group+'/Released');
-              utilsdocms.makeDir(drive+user.group+'/Released/', year, month);
-              //copy signed PDF from temp to next branch
-              let dstFile = req.body.fileroute;
-              if (fs.existsSync(drivetmp+'PDF-temp/'+req.body.user+'.res.pdf')) {
-                if (fs.existsSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf')){
-                  fs.copyFileSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drive+user.group+'/Released/'+year+'/'+month+'/'+req.body.fileroute+'.pdf'); //make a copy to drive folder
-                  if (fs.existsSync(drivetmp+'PDF-temp/'+req.body.user+'.res.pdf')) fs.unlinkSync(drivetmp+'PDF-temp/'+req.body.user+'.res.pdf');
+              new Promise ((resolve,reject)=>{
+                if (fs.existsSync(drive+user.group+'/Signature/' + id +'.cert.p12')) {
+                  let p12Buffer = fs.readFileSync(drive+user.group+'/Signature/' + id +'.cert.p12');
+                  //fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, disNewFile + '.sign.pdf');
+                  dochandle.convDoctoPDF(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf' + '.sign.pdf', function(){
+                    let pdfBuffer = fs.readFileSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf' + '.sign.pdf');
+                    pdfBuffer = plainAddPlaceholder({ pdfBuffer, reason: 'I approved and signed this document.', signatureLength: 1612,});
+                    let buf64 = Buffer.from(req.body.crtx, 'base64')
+                    try {
+                      pdfBuffer = signer.sign(pdfBuffer, p12Buffer, {passphrase:buf64.toString("utf8")},);
+                      fs.writeFileSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf'+'.new.sign.pdf', pdfBuffer);
+                      fs.copyFileSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf' + '.new.sign.pdf', drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf'); //make a copy to drive folder
+                      resolve();
+                    } catch {resolve();}
+
+                  });
+                } else resolve();
+
+              }).then(()=>{
+                //ensure folders exists
+                if (!fs.existsSync(drive+user.group)) fs.mkdirSync(drive+user.group);
+                if (!fs.existsSync(drive+user.group+'/Released')) fs.mkdirSync(drive+user.group+'/Released');
+                utilsdocms.makeDir(drive+user.group+'/Released/', year, month);
+                //copy signed PDF from temp to next branch
+                let dstFile = req.body.fileroute;
+                if (fs.existsSync(drivetmp+'PDF-temp/'+req.body.user+'.res.pdf')) {
+                  if (fs.existsSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf')){
+                    fs.copyFileSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drive+user.group+'/Released/'+year+'/'+month+'/'+req.body.fileroute+'.pdf'); //make a copy to drive folder
+                    if (fs.existsSync(drivetmp+'PDF-temp/'+req.body.user+'.res.pdf')) fs.unlinkSync(drivetmp+'PDF-temp/'+req.body.user+'.res.pdf');
+                  }
+                  if (dochandle.getExtension(req.body.fileroute)!='.pdf') dstFile = req.body.fileroute+'.pdf';
+                  if (req.body.branch=='Originator'){
+                    monitoring.getOriginator(req.body.fileroute, function(branch){
+                      routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + branch + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
+                    });
+                  } else if (req.body.branch=='Boss'){
+                    dbhandle.settingDis((setting)=>{
+                      routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + setting.topmgmt + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
+                    });
+                  } else routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + req.body.branch + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
+                } else {
+                  if (req.body.branch=='Boss'){
+                    dbhandle.settingDis((setting)=>{
+                      routeduty.routRoyal(req,res,drivetmp+user.group+'/'+req.body.fileroute, drivetmp + setting.topmgmt + '/' + req.body.fileroute, req.body.fileroute, drivetmp+user.group+'/'+req.body.fileroute);
+                    });
+                  } else routeduty.routRoyal(req,res,drivetmp+user.group+'/'+req.body.fileroute, drivetmp + req.body.branch + '/' + req.body.fileroute, req.body.fileroute, drivetmp+user.group+'/'+req.body.fileroute);
                 }
-                if (dochandle.getExtension(req.body.fileroute)!='.pdf') dstFile = req.body.fileroute+'.pdf';
-                if (req.body.branch=='Originator'){
-                  monitoring.getOriginator(req.body.fileroute, function(branch){
-                    routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + branch + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
-                  });
-                } else if (req.body.branch=='Boss'){
-                  dbhandle.settingDis((setting)=>{
-                    routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + setting.topmgmt + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
-                  });
-                } else routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + req.body.branch + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
-              } else {
-                if (req.body.branch=='Boss'){
-                  dbhandle.settingDis((setting)=>{
-                    routeduty.routRoyal(req,res,drivetmp+user.group+'/'+req.body.fileroute, drivetmp + setting.topmgmt + '/' + req.body.fileroute, req.body.fileroute, drivetmp+user.group+'/'+req.body.fileroute);
-                  });
-                } else routeduty.routRoyal(req,res,drivetmp+user.group+'/'+req.body.fileroute, drivetmp + req.body.branch + '/' + req.body.fileroute, req.body.fileroute, drivetmp+user.group+'/'+req.body.fileroute);
-              }
-              dbhandle.monitorFindFile(req.body.fileroute, function(result){ //delete in monitoring
-                if (result) {
-                  deyt = dateformat(Date.now(),"dd mmm yyyy HH:MM");
-                  if ((user.level.toUpperCase()=="CO") || (user.level.toUpperCase()=="GM")) dbhandle.actlogsCreate(id, Date.now(), 'Released signed document and forward to duty Admin', req.body.fileroute, req.ip);
-                  else if ((user.level.toUpperCase()=="DEP") || (user.level.toUpperCase()=="EAGM")) dbhandle.actlogsCreate(id, Date.now(), 'Released Document and forward to the Boss Incoming', req.body.fileroute, req.ip);
-                  dbhandle.settingDis((setting)=>{
-                    result.route.push({deyt:deyt,branch:setting.topmgmt});
-                    dbhandle.monitorAddRoute(dstFile, req.body.fileroute, result.route, path.resolve(drivetmp));
-                  });
-                }
-              });
+                dbhandle.monitorFindFile(req.body.fileroute, function(result){ //delete in monitoring
+                  if (result) {
+                    deyt = dateformat(Date.now(),"dd mmm yyyy HH:MM");
+                    if ((user.level.toUpperCase()=="CO") || (user.level.toUpperCase()=="GM")) dbhandle.actlogsCreate(id, Date.now(), 'Released signed document and forward to duty Admin', req.body.fileroute, req.ip);
+                    else if ((user.level.toUpperCase()=="DEP") || (user.level.toUpperCase()=="EAGM")) dbhandle.actlogsCreate(id, Date.now(), 'Released Document and forward to the Boss Incoming', req.body.fileroute, req.ip);
+                    dbhandle.settingDis((setting)=>{
+                      result.route.push({deyt:deyt,branch:setting.topmgmt});
+                      dbhandle.monitorAddRoute(dstFile, req.body.fileroute, result.route, path.resolve(drivetmp));
+                    });
+                  }
+                });
+              }).catch((err)=>{console.log(err);});
             });
           } else res.json('fail');
         });

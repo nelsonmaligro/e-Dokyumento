@@ -25,4 +25,20 @@
           });
         </script>
         <!-- /content -->
+        <!-- Digital Signature Floating -->
+        <% if (signres!=[]) { %>
+          <div id='disDigCert' class="digicert" style='<% if (signres.message!='signed') {%>display:none;<%}%>border:1;background-color:Gray;border-radius:6px;width:200px;height:40px;padding-left:10px;padding-top:4px;'>
+            <% if (signres.verified) { %>
+            <button  id="digcertDraw" class="btn btn-sm btn-success" type="button" >
+              <i class="fa fa-check"></i> Valid Digital Signature
+            </button>&nbsp;
+            <% } else {%>
+              <button  id="digcertDraw" class="btn btn-sm btn-danger" type="button" >
+                <i class="fa fa-times"></i> Invalid Digital Signature
+              </button>&nbsp;
+            <% } %>
+          </div>
+        <% } %>
+
+        <!-- /Digital Signature FLoating -->
 </div><!-- ./wrapper -->

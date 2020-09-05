@@ -656,7 +656,6 @@ exports.userUpdPass = function (UserN, PassW, Email, Group, Level, Path, Files){
 exports.validatePassword = function (name, hashVal, callback){
   //var hashVal = new hash.SHA512().b64(password);
   userModel.findOne({ userN:{'$regex':'^'+name+'$','$options':'i'} }, function(err, user){
-
     var passCrypt = crypto.pbkdf2Sync(hashVal, user.salt, 10000, 512, 'sha512').toString('hex');
     callback(user.hashP === passCrypt);
   });
