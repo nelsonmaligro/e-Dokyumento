@@ -1,7 +1,7 @@
 {
   "name": "pn-docms",
   "version": "1.0.0",
-  "description": "Phlippine Navy Document Management System",
+  "description": "Electronic Document Management System",
   "scripts": {
     "test": "node_modules/.bin/mocha --reporter spec"
   },

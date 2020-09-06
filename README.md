@@ -1,9 +1,9 @@
 # e-Dokyumento 
-### Pinoy Electronic Document Management System 
+### Web-based Electronic Document Management System 
 ![ScreenShot](https://raw.githubusercontent.com/nelsonmaligro/e-Dokyumento/master/public/images/edokyu.png)
 
 # Overview
-e-Dokyumento is an opensource Document Management System that stores, organizes, indexes, routes, and tracks
+e-Dokyumento is a web-based Document Management System that stores, organizes, indexes, routes, and tracks
 electronic documents. It automates the basic office document workflow such as receiving, filing, routing, and approving
 of hard-printed documents through capturing (scanning), digitizing (OCR Reading), storing, tagging, and electronically routing 
 and approving (e-signature) of documents. 
@@ -62,10 +62,17 @@ and approving (e-signature) of documents.
   7. Customizable Workflow
   9. Android and IOS Versions
 
-# Note
-Currently, the source code is admittedly un-structured and introduces several vulnerabilities, inconsistencies, repetitions and 
-deep nested algorithms. The author welcomes critics and feedbacks from end users, co-developers, security researchers, and 
-other open source collaborators.
+# Credit
+
+1. node-pdfsign
+2. @ninja-labs/verify-pdf
+3. Tensor Flow and Keras for the Machine Learning
+4. Hopding/pdf-lib
+5. nisaacson/pdf-extract
+6. nextapps-de/flexsearch
+7. paulmillr/chokidar
+8. schmich/instascan
+
 
 # License
 GPL
