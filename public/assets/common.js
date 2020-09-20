@@ -1,5 +1,22 @@
 var disWindow = null; var disClock = null;
 
+function displaycertinfo(){
+  let digicert = JSON.parse(getCookie('digitalcert'));
+  alert(digicert.message);
+}
+function displaycertinfoparam(data){
+  let digicert = JSON.parse(data);
+  //[signres.authenticity,signres.integrity,signres.expired,signres.meta.certs[0].issuedBy,signres.meta.certs[0].issuedTo, signres.meta.certs[0].validityPeriod]
+  $('#certmodDisp').html('<h6>Intermediate/Signing CA Verified:&nbsp;&nbsp;'+ JSON.stringify(digicert[0]).toUpperCase()+'</h6>' +
+                         '<h6> Document Integrity             :  '+ JSON.stringify(digicert[1]).toUpperCase()+'</h6>' +
+                         '<hr />' +
+                         '<h6>Certificate Details :</h6>' +
+                         '<br>Issued By:&nbsp;' + JSON.stringify(digicert[3].commonName) +',' + JSON.stringify(digicert[3].organizationName) +
+                         '<br>Issued To:&nbsp;' + JSON.stringify(digicert[4].commonName) +',' + JSON.stringify(digicert[4].organizationName) +
+                         '<br>Validity Period:&nbsp;' + JSON.stringify(digicert[5].notAfter)
+                       );
+  $('#certtoggleDialog').click();
+}
 //query document database to populate metadata
 function queryDoc(){
   let disPath = '';
@@ -345,6 +362,7 @@ function deleteDocu(){
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
+
 //Load when html renders
 $(document).ready(function(){
     //assign picture based on id ME
@@ -421,6 +439,8 @@ $('#disLogout').on('click', function(){
     //event.preventDefault();
     deleteDocu();
   });
+
+
 //start auto refresh Notification
 checkFiles();
 setInterval('checkFiles();',20000);

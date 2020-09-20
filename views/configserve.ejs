@@ -16,20 +16,39 @@
     <button id="butSaveDrive" type="button" class="offset-md-9 btn btn-primary btn-flat float-right"> &nbsp;&nbsp; Save&nbsp;&nbsp;</button>
   </div>
   <% } else if (view=='setting') {  %>
-    <div id="viewSetting" class="row col-md-6 offset-md-3">
+    <div id="viewSetting" class="row col-md-9 offset-md-2">
       <div class="col-md-12">&nbsp;&nbsp;</div>
+    <!-- Upload Signing Certificate-->
+      <div style='left:20px;min-height:260px;background-color:gold;' class='col-md-11 twt-feed'>
+          <div class="corner-ribon black-ribon"><i class="fa fa-certificate"></i></div>
+            <div class="fa fa-twitter wtt-mark"></div>
+
+            <div class="col col-md-9">
+              <div class="card">
+                <div class="card-header bg-secondary">
+                  <strong class="card-title text-light">Upload Signing or Intermediate CA Certificate (PEM Format)</strong>
+                </div>
+                <div class="card-body text-white bg-primary">
+                  <div class="row form-group">
+                    <form id="uploadCACert" enctype="multipart/form-data" method="post" >
+                      <div class="col col-md-12"><input type="file" id="cacertinput" name="cacertinput" class="form-control-file"></div>
+                      <div class="col col-md-6 ml-auto">
+                        <br>
+                        <button id="butUploadCACert"type="submit" class="btn btn-warning btn-md "><i class="fa fa-cloud-upload"></i>&nbsp; Upload Certificate</button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+      <!-- Upload Signing Certificate-->
+      <div class="col-md-12"><hr /> &nbsp;&nbsp;</div>
       <div class="col-md-6 checkbox">
         <label><input id='enableAI' type="checkbox" <% if (JSON.parse(setting).ai == "true") { %> checked <% } %> >&nbsp;&nbsp;Enable Machine Learning</label>
         </div>
       <div class="col-md-2 ">
         <button id="butSaveAI" type="button" class="offset-md-9 btn btn-primary btn-flat float-right"> &nbsp;&nbsp; Save&nbsp;&nbsp;</button>
-      </div>
-      <div class="col-md-12"><hr /></div>
-      <div class="col-md-4 ">Top Management</div>
-      <div class="col-md-5 "> <input class="col-md-12" id="topMgmt" type="text" class="form-control-sm"  value="<%= JSON.parse(setting).topmgmt %>">
-      </div>
-      <div class="col-md-2 ">
-        <button id="butSaveMgmt" type="button" class="offset-md-9 btn btn-primary btn-flat float-right"> &nbsp;&nbsp; Save&nbsp;&nbsp;</button>
       </div>
       <div class="col-md-12"><hr /></div>
       <div class="col-md-6 ">
@@ -38,6 +57,14 @@
       <div class="col-md-2 ">
         <button id="butClearPDF" type="button" class="offset-md-9 btn btn-primary btn-flat float-right"> &nbsp;&nbsp; Clear&nbsp;&nbsp;</button>
       </div>
+      <div class="col-md-12"><hr /></div>
+      <div class="col-md-4 ">Top Management</div>
+      <div class="col-md-5 "> <input class="col-md-12" id="topMgmt" type="text" class="form-control-sm"  value="<%= JSON.parse(setting).topmgmt %>">
+      </div>
+      <div class="col-md-2 ">
+        <button id="butSaveMgmt" type="button" class="offset-md-9 btn btn-primary btn-flat float-right"> &nbsp;&nbsp; Save&nbsp;&nbsp;</button>
+      </div>
+
 
     </div>
   <% } else if (view=='logs') {  %>

@@ -22,9 +22,27 @@ const verifyRootCert = (chainRootInForgeFormat) => {
 	let disFiles = fs.readdirSync('./controllers/verify/helpers/CAcert/');
 	disFiles.forEach((files)=>{
 		if (files.includes('.crt')){
-			let getPEM = fs.readFileSync('./controllers/verify/helpers/CAcert/'+files,'utf-8');
-			let disCert = forge.pki.certificateFromPem(getPEM);
-			if (disCert.issued(chainRootInForgeFormat)) retIssued = true; 
+			
+			let ca = [];
+			//let getPEM = fs.readFileSync('./controllers/verify/helpers/CAcert/'+files,'utf-8');
+			let chain = fs.readFileSync('./controllers/verify/helpers/CAcert/'+files, 'utf-8');
+			chain = chain.split("\n");
+			let cert = [];
+			try{
+				chain.forEach((line)=>{
+					cert.push(line);
+					if (line.toUpperCase().includes('-END CERTIFICATE-')) {
+						ca.push(cert.join("\n"));
+						cert = [];
+					}
+				});
+				ca.forEach((getPEM)=>{
+					try{
+						let disCert = forge.pki.certificateFromPem(getPEM);
+						if (disCert.issued(chainRootInForgeFormat)) retIssued = true; 
+					}catch(err){};
+				});
+			}catch(err){}
 		}
 	});
 	return retIssued;

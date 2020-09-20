@@ -58,19 +58,22 @@ $(document).ready(function(){
         $('#disAnnotate2').show();drawclick = true;
         $('#disContent').hide();$('#disFrame').show();
       }
-      $('#butReturn').hide();$('#butRelease2').hide();$('#divToggleSign').hide();
+      $('#butReturn').hide();$('#butRelease2').hide();$('#divToggleSign').hide();$('#butApprove').hide();
     }
   }
+  //handle annotate draw click
     $('#annoDraw').on('click',function(event){
       setCookie('drawtool','draw',1);
       invokeAnnotate();
       window.localStorage.setItem('message','draw');
     });
+    //handle annotate text click
     $('#annoText').on('click',function(event){
       setCookie('drawtool','text',1);
       invokeAnnotate();
       window.localStorage.setItem('message','text');
     });
+    //handle annotate erase click
     $('#annoErase').on('click',function(event){
       setCookie('drawtool','erase',1);
       invokeAnnotate();
@@ -85,7 +88,7 @@ $(document).ready(function(){
            $('#disAnnotate2').hide();drawclick = false;
            $('#disContent').show();$('#disFrame').hide();
              if (mainfiledis) {
-               $('#butReturn').show();$('#butRelease2').show();$('#divToggleSign').show();
+               $('#butReturn').show();$('#butRelease2').show();$('#divToggleSign').show();$('#butApprove').show();
              }
          }
        });

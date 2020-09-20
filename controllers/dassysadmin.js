@@ -21,6 +21,7 @@ module.exports = function(app, arrDB){
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
   var drivetmp = "public/drive/", drive = "D:/Drive/", publicstr = 'public';
+  var cacertdrive = 'controllers/verify/helpers/CAcert/';
   dbhandle.settingDis((setting)=>{drivetmp = setting.publicdrive;});
   dbhandle.settingDis((setting)=>{publicstr = setting.publicstr;});
 
@@ -40,6 +41,8 @@ module.exports = function(app, arrDB){
     var avatar = multer({ storage : storage}).single('avatarinput');
     var pngimage = multer({ storage : storage}).single('pnginput');
     var svgimage = multer({ storage : storage}).single('svginput');
+    var certfile = multer({ storage : storage}).single('certinput');
+    var cacertfile = multer({ storage : storage}).single('cacertinput');
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
     //post handle switching user privilege from branch duty to office admin - not applicable for staff and secretary
@@ -64,6 +67,18 @@ module.exports = function(app, arrDB){
     app.post('/svgupload', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         postsvgUpload(req, res, id);
+      });
+    });
+    //post upload svg signature
+    app.post('/certupload', urlencodedParser, function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        postcertUpload(req, res, id);
+      });
+    });
+    //post upload svg signature
+    app.post('/cacertupload', urlencodedParser, function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        postcacertUpload(req, res, id);
       });
     });
     //post handle registration of users
@@ -157,11 +172,12 @@ module.exports = function(app, arrDB){
       avatar(req, res, function(err){
         if (err) res.json('error');
         else {
-          if (fs.existsSync(drivetmp +'Uploads/' + req.cookies.fileAI))
-          fs.copyFileSync(drivetmp +'Uploads/' + req.cookies.fileAI, publicstr+'/images/' + id +'.jpg')
-          fs.unlinkSync(drivetmp +'Uploads/' + req.cookies.fileAI);
-          res.json('successful');
-          dbhandle.actlogsCreate(id, Date.now(), 'Upload profile picture', 'none', req.ip);
+          if (fs.existsSync(drivetmp +'Uploads/' + req.cookies.fileAI)) {
+            fs.copyFileSync(drivetmp +'Uploads/' + req.cookies.fileAI, publicstr+'/images/' + id +'.jpg')
+            fs.unlinkSync(drivetmp +'Uploads/' + req.cookies.fileAI);
+            res.json('successful');
+            dbhandle.actlogsCreate(id, Date.now(), 'Upload profile picture', 'none', req.ip);
+          }
         }
       });
     }
@@ -171,14 +187,15 @@ module.exports = function(app, arrDB){
       pngimage(req, res, function(err){
         if (err) res.json('error');
         else {
-          if (fs.existsSync(drivetmp +'Uploads/' + req.cookies.fileAI))
-          dbhandle.userFind(id, function(user){
-            if (!fs.existsSync(drive+user.group+'/Signature/')) fs.mkdirSync(drive+user.group+'/Signature');
-            fs.copyFileSync(drivetmp +'Uploads/' + req.cookies.fileAI, drive+user.group+'/Signature/' + id +'.png')
-            fs.unlinkSync(drivetmp +'Uploads/' + req.cookies.fileAI);
-            res.json('successful');
-            dbhandle.actlogsCreate(id, Date.now(), 'User upload PNG image for signature', 'none', req.ip);
-          });
+          if (fs.existsSync(drivetmp +'Uploads/' + req.cookies.fileAI)) {
+            dbhandle.userFind(id, function(user){
+              if (!fs.existsSync(drive+user.group+'/Signature/')) fs.mkdirSync(drive+user.group+'/Signature');
+              fs.copyFileSync(drivetmp +'Uploads/' + req.cookies.fileAI, drive+user.group+'/Signature/' + id +'.png')
+              fs.unlinkSync(drivetmp +'Uploads/' + req.cookies.fileAI);
+              res.json('successful');
+              dbhandle.actlogsCreate(id, Date.now(), 'User upload PNG image for signature', 'none', req.ip);
+            });
+          }
         }
       });
     }
@@ -188,11 +205,47 @@ module.exports = function(app, arrDB){
       svgimage(req, res, function(err){
         if (err) res.json('error');
         else {
-          if (fs.existsSync(drivetmp +'Uploads/' + req.cookies.fileAI))
-          fs.copyFileSync(drivetmp +'Uploads/' + req.cookies.fileAI, publicstr+'/images/' + id +'.svg')
-          fs.unlinkSync(drivetmp +'Uploads/' + req.cookies.fileAI);
-          res.json('successful');
-          dbhandle.actlogsCreate(id, Date.now(), 'User upload SVG image for signature', 'none', req.ip);
+          if (fs.existsSync(drivetmp +'Uploads/' + req.cookies.fileAI)) {
+            fs.copyFileSync(drivetmp +'Uploads/' + req.cookies.fileAI, publicstr+'/images/' + id +'.svg')
+            fs.unlinkSync(drivetmp +'Uploads/' + req.cookies.fileAI);
+            res.json('successful');
+            dbhandle.actlogsCreate(id, Date.now(), 'User upload SVG image for signature', 'none', req.ip);
+          }
+        }
+      });
+    }
+    //Process post certificate upload function
+    function postcertUpload(req, res, id){
+      console.log("uploading digital certificate signature");
+      certfile(req, res, function(err){
+        if (err) res.json('error');
+        else {
+          if (fs.existsSync(drivetmp +'Uploads/' + req.cookies.fileAI)) {
+            dbhandle.userFind(id, function(user){
+              if (!fs.existsSync(drive+user.group+'/Signature/')) fs.mkdirSync(drive+user.group+'/Signature');
+              fs.copyFileSync(drivetmp +'Uploads/' + req.cookies.fileAI, drive+user.group+'/Signature/' + id +'.cert.p12')
+              fs.unlinkSync(drivetmp +'Uploads/' + req.cookies.fileAI);
+              res.json('successful');
+              dbhandle.actlogsCreate(id, Date.now(), 'User upload Digital Certificate for signature', 'none', req.ip);
+            });
+          }
+        }
+      });
+    }
+    //Process post certificate upload function
+    function postcacertUpload(req, res, id){
+      console.log("uploading Signing or Intermediate CA certificate");
+      cacertfile(req, res, function(err){
+        if (err) res.json('error');
+        else {
+          if (fs.existsSync(drivetmp +'Uploads/' + req.cookies.fileAI)) {
+            dbhandle.userFind(id, function(user){
+              fs.copyFileSync(drivetmp +'Uploads/' + req.cookies.fileAI, cacertdrive + req.cookies.fileAI + '.crt')
+              fs.unlinkSync(drivetmp +'Uploads/' + req.cookies.fileAI);
+              res.json('successful');
+              dbhandle.actlogsCreate(id, Date.now(), 'Admin upload Signing CA Certificate for signature', 'none', req.ip);
+            });
+          }
         }
       });
     }

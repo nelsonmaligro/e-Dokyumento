@@ -593,3 +593,73 @@ Error: ENOENT: no such file or directory, open 'public/drive/N6B/empty'
     at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mquery\lib\utils.js:116:16)
     at processImmediate (internal/timers.js:439:21)
     at process.topLevelDomainCallback (domain.js:130:23)
+Cannot read property 'includes' of undefined
+TypeError: Cannot read property 'includes' of undefined
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:411:39
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:397:15
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at model.Query.Query._completeOne (D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2074:12)
+    at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2136:10)
+    at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mquery\lib\utils.js:116:16)
+    at processImmediate (internal/timers.js:439:21)
+    at process.topLevelDomainCallback (domain.js:130:23)
+Cannot read property 'includes' of undefined
+TypeError: Cannot read property 'includes' of undefined
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:411:57
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:397:15
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at model.Query.Query._completeOne (D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2074:12)
+    at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2136:10)
+    at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mquery\lib\utils.js:116:16)
+    at processImmediate (internal/timers.js:439:21)
+    at process.topLevelDomainCallback (domain.js:130:23)
+Cannot read property 'includes' of undefined
+TypeError: Cannot read property 'includes' of undefined
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:411:79
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:397:15
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at model.Query.Query._completeOne (D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2074:12)
+    at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2136:10)
+    at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mquery\lib\utils.js:116:16)
+    at processImmediate (internal/timers.js:439:21)
+    at process.topLevelDomainCallback (domain.js:130:23)
+Cannot read property 'includes' of undefined
+TypeError: Cannot read property 'includes' of undefined
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:411:81
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:397:15
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at model.Query.Query._completeOne (D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2074:12)
+    at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2136:10)
+    at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mquery\lib\utils.js:116:16)
+    at processImmediate (internal/timers.js:439:21)
+    at process.topLevelDomainCallback (domain.js:130:23)
+Cannot read property 'includes' of undefined
+TypeError: Cannot read property 'includes' of undefined
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:411:81
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:397:15
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at model.Query.Query._completeOne (D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2074:12)
+    at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2136:10)
+    at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mquery\lib\utils.js:116:16)
+    at processImmediate (internal/timers.js:439:21)
+    at process.topLevelDomainCallback (domain.js:130:23)
+EISDIR: illegal operation on a directory, read
+Error: EISDIR: illegal operation on a directory, read
+    at Object.readSync (fs.js:506:3)
+    at tryReadSync (fs.js:331:20)
+    at Object.readFileSync (fs.js:368:19)
+    at Object.exports.convDoctoPDF (D:\Projects\PN DocMS\controllers\dochandle.js:21:25)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:333:29
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:247:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at model.Query.Query._completeOne (D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2074:12)
+    at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2136:10)
+    at Immediate.<anonymous> (D:\Projects\PN DocMS\node_modules\mquery\lib\utils.js:116:16)
+    at processImmediate (internal/timers.js:439:21)
+    at process.topLevelDomainCallback (domain.js:130:23)

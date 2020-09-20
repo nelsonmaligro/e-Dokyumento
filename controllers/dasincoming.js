@@ -374,6 +374,7 @@ module.exports = function(app, arrDB) {
                     }
                   } else {
                     if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + 'incoming-temp/' + disFile);
+                    if (JSON.stringify(signRes)!='[]') { if (signRes.message.includes("subfilter")) signRes = [];}
                     return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'incoming-temp', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'incoming-temp/'+ disFile, files:items, disp:disFile, docBr:docBr});
                   }
                 } else { //if in release folder
@@ -383,6 +384,7 @@ module.exports = function(app, arrDB) {
                     });
                   }else {
                     if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + 'Release/'+ disFile);
+                    if (JSON.stringify(signRes)!='[]') { if (signRes.message.includes("subfilter")) signRes = [];}
                     return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'Release', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'Release/'+ disFile, files:items, disp:disFile, docBr:docBr});
                   }
                 }
@@ -406,6 +408,7 @@ module.exports = function(app, arrDB) {
                   });
                 }else {
                   if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + user.group +'/'+ disFile);
+                  if (JSON.stringify(signRes)!='[]') { if (signRes.message.includes("subfilter")) signRes = [];}
                   return res.render('incomingroyal', {layout:'layout-royal', signres:signRes, realdrive:drive, level:user.level, category:disCat, mailfiles:user.mailfiles, docPers:groups, path:disDrive + user.group +'/'+ disFile, files:sortArr, disp:disFile, branch:user.group});
                 }
               });
@@ -434,6 +437,7 @@ module.exports = function(app, arrDB) {
                     });
                   }else {
                     if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + user.group +'/'+ disFile);
+                    if (JSON.stringify(signRes)!='[]') { if (signRes.message.includes("subfilter")) signRes = [];}
                     return res.render('incomingbranch', {layout:'layout-user', signres:signRes, realdrive:drive, level:user.level,  runscanai:runScanAI, mailfiles:user.mailfiles, docPers:groups, path:disDrive + user.group +'/'+ disFile, files:items, disp:disFile, branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag});
                   }
                 });

@@ -202,4 +202,26 @@ $(document).ready(function(){
         }
       });
   });
+  //handle button Certificate upload clicked
+  $('#butUploadCACert').on('click', function(e){
+    let files = $('#cacertinput').val().split('\\'); let filename = files[files.length-1];
+    $('#overlay').show();
+    let upFiles = new FormData();setCookie('fileAI',filename,1);
+    upFiles.append('cacertinput',$('#cacertinput')[0].files[0]);
+    $.ajax({
+      type: 'POST',
+      url: '/cacertupload',
+      processData: false,
+      contentType: false,
+      async:false,
+      cache:false,
+      mimeTypes: "multipart/form-data",
+      data: upFiles,
+      success: function(data){
+        $('#overlay').hide();
+        if (data=='successful') location.reload();
+      }
+    });
+    return false;
+  });
 });

@@ -97,4 +97,26 @@ $(document).ready(function(){
     });
     return false;
   });
+  //handle button Certificate upload clicked
+  $('#butUploadCert').on('click', function(e){
+    let files = $('#certinput').val().split('\\'); let filename = files[files.length-1];
+    $('#overlay').show();
+    let upFiles = new FormData();setCookie('fileAI',filename,1);
+    upFiles.append('certinput',$('#certinput')[0].files[0]);
+    $.ajax({
+      type: 'POST',
+      url: '/certupload',
+      processData: false,
+      contentType: false,
+      async:false,
+      cache:false,
+      mimeTypes: "multipart/form-data",
+      data: upFiles,
+      success: function(data){
+        $('#overlay').hide();
+        if (data=='successful') location.reload();
+      }
+    });
+    return false;
+  });
 });

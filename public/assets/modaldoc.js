@@ -104,10 +104,11 @@ function showFile(disFile, disDir, flag){
                $('#disDigCert').hide();
              } else {
                $('#disDigCert').show();
+               setCookie('digitalcert', JSON.stringify(signature),1);
                if (signature.verified) {
-                 $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-success" type="button" > <i class="fa fa-check"></i> Valid Digital Signature </button>&nbsp;');
+                 $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-success" type="button" onclick="displaycertinfo()" > <i class="fa fa-check"></i> Valid Digital Signature </button>&nbsp;');
                } else {
-                 $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-danger" type="button" > <i class="fa fa-times"></i> Invalid Digital Signature </button>&nbsp;');
+                 $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-danger" type="button" onclick="displaycertinfo()" > <i class="fa fa-times"></i> Invalid Digital Signature </button>&nbsp;');
                }
              }
            }
