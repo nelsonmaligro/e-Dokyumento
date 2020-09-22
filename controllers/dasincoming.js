@@ -391,6 +391,7 @@ module.exports = function(app, arrDB) {
               }).catch((err)=>{ console.log(err);});
             }).catch((err)=>{console.log(err);});
           } else if ((user.level.toUpperCase()==='DEP') || (user.level.toUpperCase()==='CO') || (user.level.toUpperCase()==='EAGM') || (user.level.toUpperCase()==='GM')) {
+            if (!fs.existsSync(drivetmp + user.group)) fs.mkdirSync(drivetmp + user.group);
             fs.readdir(drivetmp + user.group, function(err,items){
               let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
               if (err) console.log(err); var def="empty";
@@ -414,6 +415,7 @@ module.exports = function(app, arrDB) {
               });
             });
           } else {
+            if (!fs.existsSync(drivetmp + user.group)) fs.mkdirSync(drivetmp + user.group);
             fs.readdir(drivetmp + user.group, function(err,items){
               let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
               if (err) console.log(err);var def="empty";
