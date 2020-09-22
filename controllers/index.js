@@ -48,10 +48,12 @@ const watcher = chokidar.watch('file, dir, glob, or array', {
 });
 
 var d = domain.create();
-d.on('error', function(err) {
-  fs.appendFileSync('dirwatch.log',err.message + '\n' + err.stack + '\n');
-  throw err;
-});
+setTimeout (()=>{
+
+  d.on('error', function(err) {
+    fs.appendFileSync('direrr.log',err.message + '\n' + err.stack + '\n');
+    throw err;
+  });
 
 d.run(function() {
 
@@ -292,3 +294,4 @@ d.run(function() {
 
 
 });
+},1000);
