@@ -34,11 +34,11 @@ try:
             labels = np.array(['AAR','Bulletin','Circular','Civilian Letter','Conf Notice','Disposition Form','LOI','Letter Directive','Manual','Memorandum','Military Letter','Naval Letter','Radio Message','SOP'])
 
             # load our saved model
-            model = load_model('AI\\ClassDoc\\n6.h5')
+            model = load_model('AI/ClassDoc/n6.h5')
 
             # load tokenizer
             tokenizer = Tokenizer()
-            with open('AI\\ClassDoc\\tokenizer.pickle', 'rb') as handle:
+            with open('AI/ClassDoc/tokenizer.pickle', 'rb') as handle:
                 tokenizer = pickle.load(handle)
 
             test_files = [argum]

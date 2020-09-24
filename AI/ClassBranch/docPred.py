@@ -34,11 +34,11 @@ try:
             labels = np.array(['N6A','N6B','N6C','N6D','N6E','N6F'])
 
             # load our saved model
-            model = load_model('AI\\ClassBranch\\n6.h5')
+            model = load_model('AI/ClassBranch/n6.h5')
 
             # load tokenizer
             tokenizer = Tokenizer()
-            with open('AI\\ClassBranch\\tokenizer.pickle', 'rb') as handle:
+            with open('AI/ClassBranch/tokenizer.pickle', 'rb') as handle:
                 tokenizer = pickle.load(handle)
 
             test_files = [argum]
