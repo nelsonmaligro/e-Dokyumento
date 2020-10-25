@@ -95,7 +95,7 @@
     <div class="corner-ribon black-ribon"><i class="fa fa-certificate"></i></div>
       <div class="fa fa-twitter wtt-mark"></div>
 
-      <div class="col col-md-5">
+      <div class="col col-md-10">
         <div class="card">
           <div class="card-header bg-secondary">
             <strong class="card-title text-light">Upload Digital Certificate (PEM Format)</strong>
@@ -103,8 +103,14 @@
           <div class="card-body text-white bg-primary">
             <div class="row form-group">
               <form id="uploadCert" enctype="multipart/form-data" method="post" >
-                <div class="col col-md-12"><input type="file" id="certinput" name="certinput" class="form-control-file"></div>
-                <div class="col col-md-6 ml-auto">
+                <div class="col col-md-4">
+                  <input type="file" id="certinput" name="certinput" class="form-control-file">
+                </div>
+                <div class="col col-md-2" style="left:40px;"> Password </div>
+                <div class="col col-md-4">
+                  <input type='password' id='passCert' style='width:270px;'>
+                </div>
+                <div class="row col-md-3 ml-auto">
                   <br>
                   <button id="butUploadCert"type="submit" class="btn btn-warning btn-md "><i class="fa fa-cloud-upload"></i>&nbsp; Upload Certificate</button>
                 </div>

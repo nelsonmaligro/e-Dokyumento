@@ -27,7 +27,7 @@ function brsubmitQRPass(content){
   var realpath = getCookie('realpath');
   var user = getCookie('me');
   //let buffCont = new Buffer(content);
-  var todo = {hashval:hash, filepath:$('#disPath').val(), crtx:window.btoa(content), realpath:realpath, num:parseInt($('#selPageSign').val(),10)-1,fileroute: fileroute.val(), user:user};
+  var todo = {hashval:hash, filepath:$('#disPath').val(), realpath:realpath, num:parseInt($('#selPageSign').val(),10)-1,fileroute: fileroute.val(), user:user};
   if (fileroute.val()!='empty'){
     $.ajax({
       type: 'POST',

@@ -225,6 +225,7 @@ module.exports = function(app, arrDB){
               if (!fs.existsSync(drive+user.group+'/Signature/')) fs.mkdirSync(drive+user.group+'/Signature');
               fs.copyFileSync(drivetmp +'Uploads/' + req.cookies.fileAI, drive+user.group+'/Signature/' + id +'.cert.p12')
               fs.unlinkSync(drivetmp +'Uploads/' + req.cookies.fileAI);
+              fs.writeFileSync(drive+user.group+'/Signature/' + id +'.cert.psk',req.cookies.passCert);
               res.json('successful');
               dbhandle.actlogsCreate(id, Date.now(), 'User upload Digital Certificate for signature', 'none', req.ip);
             });

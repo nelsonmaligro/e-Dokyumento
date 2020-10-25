@@ -100,8 +100,8 @@ $(document).ready(function(){
   //handle button Certificate upload clicked
   $('#butUploadCert').on('click', function(e){
     let files = $('#certinput').val().split('\\'); let filename = files[files.length-1];
-    $('#overlay').show();
-    let upFiles = new FormData();setCookie('fileAI',filename,1);
+    $('#overlay').show();let passHash = window.btoa($('#passCert').val().trim());
+    let upFiles = new FormData();setCookie('fileAI',filename,1);setCookie('passCert',passHash,1);
     upFiles.append('certinput',$('#certinput')[0].files[0]);
     $.ajax({
       type: 'POST',

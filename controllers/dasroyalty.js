@@ -93,7 +93,9 @@ module.exports = function(app, arrDB){
                   dochandle.convDoctoPDF(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf' + '.sign.pdf', function(){
                     let pdfBuffer = fs.readFileSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf' + '.sign.pdf');
                     pdfBuffer = plainAddPlaceholder({ pdfBuffer, reason: 'I approved and signed this document.', signatureLength: 1612,});
-                    let buf64 = Buffer.from(req.body.crtx, 'base64')
+                    //let buf64 = Buffer.from(req.body.crtx, 'base64')
+                    let buf64 = fs.readFileSync(drive+user.group+'/Signature/' + id +'.cert.psk',"utf8");
+                    buf64 = Buffer.from(buf64, 'base64');
                     try {
                       pdfBuffer = signer.sign(pdfBuffer, p12Buffer, {passphrase:buf64.toString("utf8")},);
                       fs.writeFileSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf'+'.new.sign.pdf', pdfBuffer);

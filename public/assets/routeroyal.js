@@ -116,7 +116,7 @@ function releasethisdoc(){
     if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="EAGM")) distime = 5000;
     sleep(distime).then(()=>{
       var arrComm = getCookie('arrComm');
-      var todo = {comments:arrComm, crtx:window.btoa(disPass), hashval:lastQRCode, filepath:$('#disPath').val(), num:parseInt($('#selPage').val(),10)-1,fileroute: fileroute.val(), branch:releaseTo, user:user};
+      var todo = {comments:arrComm, hashval:lastQRCode, filepath:$('#disPath').val(), num:parseInt($('#selPage').val(),10)-1,fileroute: fileroute.val(), branch:releaseTo, user:user};
       if (fileroute.val()!='empty'){
         $.ajax({
           type: 'POST',
@@ -138,7 +138,7 @@ function releasethisdoc(){
     var realpath = getCookie('realpath');
     var user = getCookie('me');
     let branch
-    var todo = {hashval:lastQRCode, crtx:window.btoa(disPass), filepath:$('#disPath').val(), origenc:getCookie('origEncFile'), origfile: $('#fileroute').val(), realpath:realpath, num:parseInt($('#selPage').val(),10)-1, user:user};
+    var todo = {hashval:lastQRCode, filepath:$('#disPath').val(), origenc:getCookie('origEncFile'), origfile: $('#fileroute').val(), realpath:realpath, num:parseInt($('#selPage').val(),10)-1, user:user};
     $.ajax({
       type: 'POST',
       url: '/mergesigndocenc',

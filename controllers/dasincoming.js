@@ -416,7 +416,7 @@ module.exports = function(app, arrDB) {
             });
           } else {
             if (!fs.existsSync(drivetmp + user.group)) fs.mkdirSync(drivetmp + user.group);
-            fs.readdir(drivetmp + user.group, function(err,items){
+            fs.readdir(drivetmp + user.group, function(err,items) {
               let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
               if (err) console.log(err);var def="empty";
               if (sortArr.length > 0) {def=sortArr[0];} var disDrive = '/drive/';var disFile = def;

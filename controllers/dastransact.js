@@ -187,7 +187,10 @@ module.exports = function(app, arrDB){
                   dochandle.convDoctoPDF(drivetmp+'PDF-temp/' + disNewFile, drivetmp+'PDF-temp/' + disNewFile + '.sign.pdf', function(){
                     let pdfBuffer = fs.readFileSync(drivetmp+'PDF-temp/' + disNewFile + '.sign.pdf');
                     pdfBuffer = plainAddPlaceholder({ pdfBuffer, reason: 'I approved and signed this document.', signatureLength: 1612,});
-                    let buf64 = Buffer.from(req.body.crtx, 'base64')
+                    //let buf64 = Buffer.from(req.body.crtx, 'base64')
+                    let buf64 = fs.readFileSync(drive+user.group+'/Signature/' + id +'.cert.psk',"utf8");
+                    buf64 = Buffer.from(buf64, 'base64');
+                    console.log(buf64.toString("utf8"));
                     try {
                       pdfBuffer = signer.sign(pdfBuffer, p12Buffer, {passphrase:buf64.toString("utf8")},);
                       fs.writeFileSync(drivetmp+'PDF-temp/' + disNewFile + '.new.sign.pdf',pdfBuffer);
@@ -262,14 +265,15 @@ module.exports = function(app, arrDB){
                   dochandle.convDoctoPDF(drivetmp+'PDF-temp/' + disNewFile, drivetmp+'PDF-temp/' + disNewFile + '.sign.pdf', function(){
                     let pdfBuffer = fs.readFileSync(drivetmp+'PDF-temp/' + disNewFile + '.sign.pdf');
                     pdfBuffer = plainAddPlaceholder({ pdfBuffer, reason: 'I approved and signed this document.', signatureLength: 1612,});
-                    let buf64 = Buffer.from(req.body.crtx, 'base64')
+                    //let buf64 = Buffer.from(req.body.crtx, 'base64');
+                    let buf64 = fs.readFileSync(drive+user.group+'/Signature/' + id +'.cert.psk',"utf8");
+                    buf64 = Buffer.from(buf64, 'base64');
                     try {
                       pdfBuffer = signer.sign(pdfBuffer, p12Buffer, {passphrase:buf64.toString("utf8")},);
                       fs.writeFileSync(drivetmp+'PDF-temp/' + disNewFile + '.new.sign.pdf',pdfBuffer);
                       fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile + '.new.sign.pdf', req.body.realpath + disNewFile); //make a copy to drive folder
                       resolve();
                     } catch {resolve();}
-
                   });
                 } else {
                   fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, req.body.realpath + disNewFile); //make a copy to drive folder
