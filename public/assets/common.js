@@ -2,7 +2,12 @@ var disWindow = null; var disClock = null;
 
 function displaycertinfo(){
   let digicert = JSON.parse(getCookie('digitalcert'));
-  alert(digicert.message);
+  alert("Digital Signature Status: " +digicert.message + "\n" +
+        "Verified:"+digicert.verified + "     Authenticity:"+digicert.verified + "     Integrity:" +digicert.integrity + "\n" + 
+        "=======================================" + "\n" +
+        "Issued By: " + digicert.meta.certs[0].issuedBy.commonName+','+digicert.meta.certs[0].issuedBy.organizationName + '\n' +
+        "Issued By: " + digicert.meta.certs[0].issuedTo.commonName+','+digicert.meta.certs[0].issuedTo.organizationName + '\n' +
+        "Validity Period: " + digicert.meta.certs[0].validityPeriod.notAfter);
 }
 function displaycertinfoparam(data){
   let digicert = JSON.parse(data);
