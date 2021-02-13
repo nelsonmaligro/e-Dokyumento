@@ -66,6 +66,10 @@ dbhandle.settingDis((setting)=>{
     const url = srcPath; var serDate = Date.now().toString();
     if (fs.existsSync(url)){
       //generate QR Code and save to file
+      if (!fs.existsSync(drive+group+'/Signature')) fs.mkdirSync(drive+group+'/Signature');
+      if (!fs.existsSync(drive+group+'/Signature/' + id +'.png')) fs.copyFileSync('temp/signature/default.png',drive+group+'/Signature/' + id +'.png');
+      if (!fs.existsSync(drive+group+'/Signature/' + id +'.qr.png')) fs.copyFileSync('temp/signature/default.qr.png',drive+group+'/Signature/' + id +'.qr.png');
+
       qrcode.toFile(drive+group+'/Signature/' + id +'.qr.png', serDate, { color: {dark: '#00F', light: '#0000' } }, async function (err) {
         var existingPdfBytes = fs.readFileSync(path.resolve(url));
         const pdfDoc = await PDFDocument.load(existingPdfBytes);
