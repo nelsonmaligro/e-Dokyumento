@@ -1,0 +1,78 @@
+listen EADDRINUSE: address already in use :::443
+Error: listen EADDRINUSE: address already in use :::443
+    at Server.setupListenHandle [as _listen2] (net.js:1318:16)
+    at listenInCluster (net.js:1366:12)
+    at Server.listen (net.js:1452:7)
+    at D:\Projects\PN DocMS\index.js:66:8
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:704:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2869:28
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+listen EADDRINUSE: address already in use :::443
+Error: listen EADDRINUSE: address already in use :::443
+    at Server.setupListenHandle [as _listen2] (net.js:1318:16)
+    at listenInCluster (net.js:1366:12)
+    at Server.listen (net.js:1452:7)
+    at D:\Projects\PN DocMS\index.js:66:8
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:704:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2869:28
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+listen EADDRINUSE: address already in use :::443
+Error: listen EADDRINUSE: address already in use :::443
+    at Server.setupListenHandle [as _listen2] (net.js:1318:16)
+    at listenInCluster (net.js:1366:12)
+    at Server.listen (net.js:1452:7)
+    at D:\Projects\PN DocMS\index.js:66:8
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:704:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2869:28
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+ENOENT: no such file or directory, mkdir '/drive/IT/Signature'
+Error: ENOENT: no such file or directory, mkdir '/drive/IT/Signature'
+    at Object.mkdirSync (fs.js:987:3)
+    at D:\Projects\PN DocMS\controllers\dassysadmin.js:192:70
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:541:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2869:28
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+ENOENT: no such file or directory, mkdir '/drive/IT/Signature'
+Error: ENOENT: no such file or directory, mkdir '/drive/IT/Signature'
+    at Object.mkdirSync (fs.js:987:3)
+    at D:\Projects\PN DocMS\controllers\dassysadmin.js:192:70
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:541:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2869:28
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+ENOENT: no such file or directory, mkdir '/drive/IT/Signature'
+Error: ENOENT: no such file or directory, mkdir '/drive/IT/Signature'
+    at Object.mkdirSync (fs.js:987:3)
+    at D:\Projects\PN DocMS\controllers\dassysadmin.js:192:70
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:541:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2869:28
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+ENOENT: no such file or directory, mkdir 'D:/drive/IT/Signature'
+Error: ENOENT: no such file or directory, mkdir 'D:/drive/IT/Signature'
+    at Object.mkdirSync (fs.js:987:3)
+    at D:\Projects\PN DocMS\controllers\dassysadmin.js:192:70
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:541:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2869:28
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+ENOENT: no such file or directory, mkdir 'D:/drive/MARKETING/Signature'
+Error: ENOENT: no such file or directory, mkdir 'D:/drive/MARKETING/Signature'
+    at Object.mkdirSync (fs.js:987:3)
+    at D:\Projects\PN DocMS\controllers\dassysadmin.js:192:70
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:541:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:4827:16
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:4390:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\query.js:2869:28
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
