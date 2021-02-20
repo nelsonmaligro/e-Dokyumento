@@ -18,9 +18,11 @@ and approving (e-signature) of documents.
 ### 4. Annotations 
    - managers and bosses can draw and add text into the document when correcting. Upon saving of the annotated document, 
    he/she can return it to the originator.
-### 5. Electronic Signature 
+### 5. PKI-based Digital Signature 
    - managers and bosses can electronically sign to approve the document. Every document signed has a corresponding control number 
-   for tracking and non-repudiation. This is not a PKI-based signature but can be a good alternative next to nothing.
+   for tracking. 
+   - Users can upload Digital Certificate (p12 format) to embed digital signature into the document. 
+   (note: administrator must first upload the CA certificate in order to validate the user certificates)
 ### 6. Content Searching 
    - Files are scanned using Optical Character Recognition (OCR) and indexed to allow searching of files or documents through its content.
 ### 7. Store and index multiple file format 
@@ -32,35 +34,46 @@ and approving (e-signature) of documents.
 ### 10. Send document to other users 
    - documents can be sent directly to users much like an email. This is ideal for documents to be internally communicated between the staff and manager within the department.
 ### 11. Intelligent Document classification using Machine Learning
+### 12. Document Tracking using QR Code
 
-# Installation
+# Installation 
+  ###Ubuntu Linux: https://sourceforge.net/projects/e-dokyumento/files/Install%20e-Dokyumento%20on%20Ubuntu%20Linux.pdf/download
+  ####or
+  ###Docker Container
+  1. Clone https://github.com/nelsonmaligro/e-Dokyumento.
+  2. Edit the file "controllers/dbhandle.js" and change the mongodb connection from "mongodb://localhost/docMS" to "mongodb://mongo/docMS".
+  3. Build the image - "docker-compose build". 
+  4. Run the image - "docker-compose up" 
+     note: Dont forget to shutdown the container upon exit - "docker-compose down". This is to prevent error in mongoDB. 
+  ####or
+  ###Using the ISO
   1. Download the ISO file from https://sourceforge.net/projects/e-dokyumento/files/e-dokyumento.iso/download
   2. Login with root and p@ssword123
   3. move drive folder from /opt to root :  "mv /opt/drive /"
   4. During installation, delete the drive and create a SWAP and root (/) drives
-
+  
 # Demo
-  https://34.67.81.154/
+  ###Pull e-Dokyumento from Docker hub : "docker pull nelsonmaligro/edokyumento"
+  ###Run the image: docker run -p 443:443 -it nelsonmaligro/edokyumento
   <pre><code>
-  Accounts:
+  Default Accounts:
   Username                        Password            Privilege           Department/Branch
    1. staff-marketing             staff@123           STAFF               MARKETING
    2. manager-finance             manager@123         MANAGER             FINANCE
    3. staff-secretary             staff@123           SECRETARY           SECRETARY-RECEIVING
    4. boss                        boss@123            GM                  G.M.
    5. boss.wannabe                boss@123            EAGM                ASST.G.M.
+   6. administrator               admin@123           ADMIN
 </code></pre>
 
 # Roadmap
 
   1. Automate re-training of Machine Learning for improved document classification
-  2. PKI-based digital signature
-  3. QR Code document tracking
-  4. Advance Searching or search files through date, size, classifications, tags, etc.
-  5. Online or web-based editing
-  6. Integration with MS Active Directory for improved file server security
-  7. Customizable Workflow
-  9. Android and IOS Versions
+  2. Advance Searching or search files through date, size, classifications, tags, etc.
+  3. Online or web-based editing
+  4. Integration with MS Active Directory for improved file server security
+  5. Customizable Workflow
+  6. Android and IOS Versions
 
 # Credit
 
