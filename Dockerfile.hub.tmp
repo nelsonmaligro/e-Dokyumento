@@ -1,11 +1,13 @@
 #install nodejs
-FROM ubuntu
+FROM ubuntu:20.04
+EXPOSE 80:80
+EXPOSE 443:443
 RUN apt-get update
-#RUN apt-get install -y software-properties-common
-#RUN add-apt-repository ppa:libreoffice/ppa
-#RUN apt-get update
-#RUN apt-get install -y --force-yes libreoffice
-#RUN apt-get clean
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository ppa:libreoffice/ppa
+RUN apt-get update
+RUN apt-get install -y --force-yes libreoffice
+RUN apt-get clean
 
 RUN apt-get install -y nodejs npm
 RUN apt-get install -y pdftk
@@ -23,22 +25,14 @@ RUN npm install
 COPY . /edokyu
 COPY /temp/drive/. /drive
 
-#RUN apt-get purge mongodb
-#RUN apt-get install -y gnupg
-#RUN apt-get install -y wget
-#RUN wget -qO - http://www.mongodb.org/static/pgp/server-4.4.asc | apt-key add -
-#RUN echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu focal/mongodb-org/4.4 multiverse" | tee /etc/apt/sources.list.d/mongodb-org-4.4.list
-#RUN apt-get update
-#RUN apt-get install -y --force-yes mongodb-org
-#RUN /etc/init.d/mongodb start
-#RUN systemctl enable mongodb
+RUN apt-get install -y mongodb
+#RUN service mongodb start
 
 #RUN /etc/init.d/mongodb start
-#RUN /edokyu/data/restore.sh
+RUN chmod ugo+x data/restore.sh
+RUN data/restore.sh
 
-EXPOSE 80
-EXPOSE 443
+#CMD ["sh", "/edokyu/data/restore.sh"]
 #CMD ["sh", "/etc/init.d/mongodb start"]
-#CMD ["node", "index.js"]
-
+CMD ["sh", "start.sh"]
 
