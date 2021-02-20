@@ -14,7 +14,7 @@ const crypto = require('crypto');
 
 
 //Get the default connection
-mongoose.connect('mongodb://mongo:27017/docMS', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect('mongodb://localhost/docMS', { useNewUrlParser: true, useUnifiedTopology: true });
 var db = mongoose.connection;
 //Bind connection to error event (to get notification of connection errors)
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
