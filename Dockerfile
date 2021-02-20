@@ -18,9 +18,9 @@ RUN mkdir -p /edokyu
 RUN mkdir -p /drive
 
 WORKDIR /edokyu
-COPY package.json /edokyu
-RUN npm install
-COPY . /edokyu
+#COPY package.json /edokyu
+#RUN npm install
+#COPY . /edokyu
 EXPOSE 80
 EXPOSE 443
 

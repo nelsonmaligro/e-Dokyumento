@@ -11,6 +11,7 @@ services:
      - mongo
    volumes:
      - "./temp/drive:/drive"
+     - ".:/edokyu"
 
  mongo:
    container_name: mongo
