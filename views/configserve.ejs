@@ -44,25 +44,28 @@
       </div>
       <!-- Upload Signing Certificate-->
       <div class="col-md-12"><hr /> &nbsp;&nbsp;</div>
-      <div class="col-md-6 checkbox">
+      <div class="col-md-4 checkbox">
         <label><input id='enableAI' type="checkbox" <% if (JSON.parse(setting).ai == "true") { %> checked <% } %> >&nbsp;&nbsp;Enable Machine Learning</label>
         </div>
       <div class="col-md-2 ">
         <button id="butSaveAI" type="button" class="offset-md-9 btn btn-primary btn-flat float-right"> &nbsp;&nbsp; Save&nbsp;&nbsp;</button>
       </div>
+      <div class="col-md-2 ">
+        <button id="butRetrainAI" type="button" class="offset-md-9 btn btn-success btn-flat float-right"> &nbsp;&nbsp; Retrain AI&nbsp;&nbsp;</button>
+      </div>
       <div class="col-md-12"><hr /></div>
-      <div class="col-md-6 ">
+      <div class="col-md-4 ">
         <label>&nbsp;&nbsp;Clear Temporary PDF Files&nbsp;&nbsp;</label>
         </div>
       <div class="col-md-2 ">
         <button id="butClearPDF" type="button" class="offset-md-9 btn btn-primary btn-flat float-right"> &nbsp;&nbsp; Clear&nbsp;&nbsp;</button>
       </div>
       <div class="col-md-12"><hr /></div>
-      <div class="col-md-4 ">Top Management</div>
-      <div class="col-md-5 "> <input class="col-md-12" id="topMgmt" type="text" class="form-control-sm"  value="<%= JSON.parse(setting).topmgmt %>">
+      <div class="col-md-5 ">Default Top Management Branch/Department  </div>
+      <div class="col-md-3 "> <input class="col-md-12" id="topMgmt" type="text" class="form-control-sm"  value="<%= JSON.parse(setting).topmgmt %>">
       </div>
       <div class="col-md-2 ">
-        <button id="butSaveMgmt" type="button" class="offset-md-9 btn btn-primary btn-flat float-right"> &nbsp;&nbsp; Save&nbsp;&nbsp;</button>
+        <button id="butSaveMgmt" type="button" class="offset-md-9 btn btn-primary btn-flat float-left"> &nbsp;&nbsp; Save&nbsp;&nbsp;</button>
       </div>
 
 
