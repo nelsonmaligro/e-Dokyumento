@@ -133,6 +133,23 @@ $(document).ready(function(){
         }
       });
   });
+  //handle retrain AI
+    $('#butRetrainAI').on('click', function(event){
+      var todo = {action:'retrainai'};$('#overlay').show();
+        $.ajax({
+          type: 'POST',
+          url: '/updateserver',
+          data: todo,
+          success: function(data){
+            if (data=='successful'){$('#overlay').hide();
+              $('#mstrmodDisp').html('Machine Learning/ AI successfully retrained!')
+              $('#mstrtoggleDialog').click();$('#mstrstaticModal').show();
+            } else alert('Retraining Failed!')
+
+          }
+        });
+    });
+
   //handle add classification
   $('#butSaveClass').on('click', function(event){
     if ($('#newClass').val().trim()=='') return;
