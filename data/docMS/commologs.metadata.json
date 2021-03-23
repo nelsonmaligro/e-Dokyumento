@@ -1,0 +1,1 @@
+{"options":{},"indexes":[{"v":{"$numberInt":"2"},"key":{"_id":{"$numberInt":"1"}},"name":"_id_","ns":"docMS.commologs"}],"uuid":"e078efb6fe294f118238a5f02be70021"}
