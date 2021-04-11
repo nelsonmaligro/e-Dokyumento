@@ -53,6 +53,12 @@ function dispAttach(disDir, disFile){
                 }
               });
             }
+            //check if mobile browser
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+              document.getElementById('disContent').style.display="none";
+              document.getElementById('disContentMobile').style.display="";
+              loadPDFtoCanvas(newData.filepath);
+            }
         }
       });
       //determine of page is toggled for main or attachment. This is for the annotation
@@ -113,6 +119,12 @@ function showFile(disFile, disDir, flag){
              }
            }
          });
+         //check if mobile browser
+         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+           document.getElementById('disContent').style.display="none";
+           document.getElementById('disContentMobile').style.display="";
+           loadPDFtoCanvas($('#disPath').val());
+         }
        }
      });
     }
