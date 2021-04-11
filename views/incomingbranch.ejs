@@ -28,6 +28,11 @@
     </div>
   </div>
 </div>
+<div style="top:40px;" class="col-12" id="disContentMobile" style="display:none;">
+  <div class="col-2">Page</div>
+  <div class="col-4"> <select id="selPageMobile" class="form-control-sm form-control"></select></div>
+    <canvas class="col-12" id='canvasPDFMobile'></canvas>
+</div>
 <script type="text/javascript">
   $(document).ready(function(){
     <% if (disp!= 'empty'){%>
@@ -41,7 +46,7 @@
    <% if ((level.toUpperCase()=='OICBRANCH' ) || (level.toUpperCase()=='DEP' ) || (level.toUpperCase()=='CO' ) || (level.toUpperCase()=='MANAGER') || (level.toUpperCase()=='EAGM' ) || (level.toUpperCase()=='GM' )) {  %>
     <!-- Annotation Floating -->
     <div id='disAnnotate' class="annotate" style='border:1;background-color:GreenYellow;border-radius:6px;width:305px;height:40px;padding-left:10px;padding-top:4px;'>
-      <i style='color:black;'>&nbsp;Annotate&nbsp;&nbsp;</i>
+      <i id="annotateHere" style='color:black;'>&nbsp;Annotate&nbsp;&nbsp;</i>
       <button  id="annoDraw" class="btn btn-sm btn-danger" type="button" >
         <i class="fa fa-pencil"></i> Line
       </button>&nbsp;
@@ -56,17 +61,41 @@
 
     <!-- Annotation Floating -->
 
-    <div id='disAnnotate2' class="annotate2" style='display:none;border:1;background-color:Yellow;border-radius:6px;width:330px;height:40px;padding-left:2px;padding-top:4px;'>
-      <div  class="col col-sm-1"><button  id="butDrawCancel" class="btn btn-danger btn-sm" type="button" >
+    <div id='disAnnotate2' class="annotate2 " style='display:none;border:1;background-color:Yellow;border-radius:6px;width:330px;height:40px;padding-left:2px;padding-top:4px;'>
+      <div  class="col-1"><button  id="butDrawCancel" class="btn btn-danger btn-sm" type="button" >
         <i class="fa fa-times"></i> &nbsp;Cancel
       </button></div>
-      <div  class="col col-sm-3" style="left:55px;"><button  id="butDrawSave" class="btn btn-primary btn-sm" type="button" >
+      <div  class="col-3" style="left:55px;"><button  id="butDrawSave" class="btn btn-primary btn-sm" type="button" >
         <i class="fa fa-upload"></i>&nbsp; Save
-      </button></div>  <div class="col-sm-1" style="left:70px;">Page:&nbsp;</div>
-      <div class="col-sm-4" style="left:80px;width:140px;"> <select id="selPageDraw" class="form-control-sm form-control"></select></div>
+      </button></div>  <div class="col-1" style="left:70px;">Page:&nbsp;</div>
+      <div class="col-3" style="left:80px;width:140px;"> <select id="selPageDraw" class="form-control-sm form-control"></select></div>
 
     </div>
   <% } %>
+  <!-- Mobile Friendly -->
+  <script>
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+      document.getElementById('disContent').style.display="none";
+      document.getElementById('disContentMobile').style.display="";
+      if (window.matchMedia('screen and (max-width: 768px)').matches) {
+        document.getElementById('disAnnotate').style.left = '10px';
+        document.getElementById('annotateHere').style.display="none";
+        document.getElementById('disAnnotate').style.width="225px";
+        document.getElementById('disAnnotate').style.top="95px";
+        document.getElementById('disAnnotate2').style.left="250px";
+        document.getElementById('disAnnotate2').style.top="95px";
+      } else {
+        document.getElementById('disAnnotate').style.left = '230px';
+        document.getElementById('disAnnotate2').style.left="550px";
+        document.getElementById('disAnnotate').style.top = '50px';
+        document.getElementById('disAnnotate2').style.top="50px";
+      }
+    } else {
+      document.getElementById('disContentMobile').style.display="none";
+    }
+   </script>
+      <!-- /Mobile Friendly -->
+
   <!-- Digital Signature Floating -->
   <% if (JSON.stringify(signres)!='[]') { let mainnfo = [signres.authenticity,signres.integrity,signres.expired,signres.meta.certs[0].issuedBy,signres.meta.certs[0].issuedTo, signres.meta.certs[0].validityPeriod];  %>
     <div id='disDigCert' class="digicert" style='<% if (signres.message!='signed') {%>display:none;<%}%>border:1;background-color:Gray;border-radius:6px;width:200px;height:40px;padding-left:10px;padding-top:4px;'>

@@ -48,8 +48,8 @@
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
           <i class="fa fa-bars"></i>
         </button>
-        <a class="navbar-brand" href="./"><img src="/images/logo.png" alt="Logo"></a>
-        <a class="navbar-brand hidden" href="./"><img src="/images/logo2.png" alt="Logo"></a>
+        <a class="navbar-brand" href="/dashlogs"><img src="/images/logo.png" alt="Logo"></a>
+        <a class="navbar-brand hidden" href="/dashlogs"><img src="/images/logo2.png" alt="Logo"></a>
       </div>
 
       <div id="main-menu" class="main-menu collapse navbar-collapse">
@@ -94,6 +94,7 @@
       <div class="header-menu">
 
         <div class="col-sm-12">
+
           <a id="menuToggle" class="menutoggle pull-left"><i class="fa fa fa-tasks"></i></a>
           <div class="header-left">
 
@@ -117,14 +118,15 @@
                   </div>
                 </div>
               </div>
+
               <form name="formroute" id="formroute">
                 <!-- form send to branch-->
-                <div class="col col-sm-3 float-left"><input value= "<%= disp %>" type="text" id="newfile" name="newfile" class="input-sm form-control-sm form-control"></div>
-                <div class=" float-left"><input value= "<%= disp %>" type="hidden" id="fileroute"  name="fileroute"></div>
+                <div id="filenameHere" class="col col-sm-3 float-left"><input value= "<%= disp %>" type="text" id="newfile" name="newfile" class="input-sm form-control-sm form-control" ></div>
+                <div class=" float-left"><input value= "<%= disp %>" type="hidden" id="fileroute"  name="fileroute" ></div>
                 <!-- for signing-->
                 <div class="col col-sm-6 float-left row" style="display:none;width:480px;" id='divSign'>
                   <div  class="col col-sm-1"><button id="butCancelSign" type="button" class="btn btn-danger btn-sm"><i class="fa fa-times"></i>&nbsp;Cancel</button></div>
-                  <div  class="col col-sm-2" style="left:50px;"><button  id="butRelease1" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#routingModal"><i class="fa fa-upload"></i>&nbsp; Save</button></div>
+                  <div  class="col col-sm-2" style="left:50px;"><button  id="butRelease1" type="button" class6"btn btn-primary btn-sm" data-toggle="modal" data-target="#routingModal"><i class="fa fa-upload"></i>&nbsp; Save</button></div>
                   <div class="col col-sm-6 row" style="border:dashed;left:190px;">
                     <div  class="col-sm-1" style="left:-25px;top:2px;"><h6>Page:</h6></div>
                     <div  class="col-sm-3" style="left:-12px;"><select name="selPageSign" id="selPageSign" class="form-control-sm form-control"></select></div>
@@ -133,92 +135,116 @@
                 </div>
                 <!-- if AI completes-->
                 <div id='origButtons'>
-                  <div id="actBr" class="float-left" style="display: none;">
-                    <span class="badge badge-info">Correspondence</span>
-                  </div>
-
-                  <button id= "butScan" class="col col-sm-3 btn btn-primary float-left btn-sm" type="button" disabled>
-                    <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
-                    <span clas="col-sm-0 " id="txtscan" >&nbsp;Scanning document using OCR...</span>
-                  </button>
-
-
-                  <div class="col-sm-2 float-left" id='selDiv' style="display: none;">
-                    <select id="selClas" name="selClas" data-placeholder="Select Classification" class="standardSelect" tabindex="5">
-                      <% for (var i=0; i < docClass.length; i++){ %>
-                        <option><%= docClass[i] %></option>
-                        <% } %>
-
-                      </select>
-
+                  <div id='headerHere'>
+                    <div id="actBr" class="float-left" style="display: none;">
+                      <span class="badge badge-info">Correspondence</span>
                     </div>
-                    <!-- if AI completes-->
-                    <div id="actTag" class="float-left" style="display: none;">
-                      <span class="badge badge-info">#Tag</span>
-                    </div>
-                    <div class="col-sm-3 float-left" id='divTag' style="display: none;">
-                      <select id="selTag" data-placeholder="add tag here" class="disSelect form-control" multiple="multiple" name="selTag">
-                        <% for (var i=0; i < docTag.length; i++){ %>
-                          <option><%= docTag[i] %></option>
+
+                    <button id= "butScan" class="col col-sm-3 btn btn-primary float-left btn-sm" type="button" disabled>
+                      <span class="spinner-border spinner-border-sm " role="status" aria-hidden="true"></span>
+                      <span clas="col-sm-0 " id="txtscan" >&nbsp;Scanning document using OCR...</span>
+                    </button>
+
+
+                    <div class="col-sm-2 float-left" id='selDiv' style="display: none;">
+                      <select id="selClas" name="selClas" data-placeholder="Select Classification" class="standardSelect" tabindex="5">
+                        <% for (var i=0; i < docClass.length; i++){ %>
+                          <option><%= docClass[i] %></option>
                           <% } %>
+
                         </select>
+
                       </div>
-                      <div class="user-area dropdown float-left" id='butDiv' style="display: none;">
+                      <!-- if AI completes-->
+                      <div id="actTag" class="float-left" style="display: none;">
+                        <span class="badge badge-info">#Tag</span>
+                      </div>
+                      <div class="col-sm-3 float-left" id='divTag' style="display: none;">
+                        <select id="selTag" data-placeholder="add tag here" class="disSelect form-control" multiple="multiple" name="selTag">
+                          <% for (var i=0; i < docTag.length; i++){ %>
+                            <option><%= docTag[i] %></option>
+                            <% } %>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="user-area dropdown float-left " id='butDiv' style="display: none;">
                         <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><button type="button" id = "butAction" class="btn btn-success btn-sm"><i class="fa fa-magic"></i>&nbsp;Action&nbsp;<i class="fa fa-angle-down"></i></button></a>
-                        <div class="user-menu dropdown-menu">
+                        <div  class="user-menu dropdown-menu">
                           <li><a id='docSave' class="dropdown-item bg-flat-color-5" href="#">Save</a></li>
                           <li> <a id='docEdit' class="dropdown-item"  style="background-color:AquaMarine;color:black;" onmouseover="this.style.background='white';this.style.color='black';" onmouseout="this.style.background='AquaMarine';this.style.color='black';" href="#">
                             Edit Document</a></li>
-                          <li class="dropdown-submenu bg-flat-color-3">
-                            <a class="dropdown-item dropdown-toggle bg-flat-color-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><i class="fa fa-angle-left"></i>&nbsp;&nbsp;Route to Branch&nbsp;&nbsp;</a>
-                            <ul class="dropdown-menu">
-                              <% for (var i=0; i < docBr.length; i++) { %>
-                                <%  if ((docBr[i].toUpperCase()=='ALL BRANCHES') || (docBr[i].toUpperCase()=='EXO') || (docBr[i].toUpperCase()=='DN6') || (docBr[i].toUpperCase()=='N6') || (docBr[i].toUpperCase()=='ASST.G.M.') || (docBr[i].toUpperCase()=='G.M.')) { %>
-                                  <div style="height:1px;border-color:black;"> </div>
-                                  <li><a class="<% if (docBr[i].toUpperCase()==branch.toUpperCase()) { %> disabled <% } %>  dropdown-item bg-flat-color-4" onclick="routeBr('<%= docBr[i] %>')" href="#" data-toggle="modal" data-target="#routingModal"><%= docBr[i] %></a></li>
-                                  <% } else { %>
-                                    <li><a class="<% if (docBr[i].toUpperCase()==branch.toUpperCase()) { %> disabled <% } %> dropdown-item bg-flat-color-3" onclick="routeBr('<%= docBr[i] %>')" href="#" data-toggle="modal" data-target="#routingModal"><%= docBr[i] %></a></li>
-                                    <% } } %>
-                                  </ul>
-                                </li>
-                                <li class="dropdown-submenu bg-flat-color-1">
-                                  <a id="docSend" style="display: none;" class="dropdown-item dropdown-toggle bg-flat-color-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><i class="fa fa-angle-left"></i>&nbsp;&nbsp;Send to (Person)&nbsp;&nbsp;</a>
-                                  <ul class="dropdown-menu">
-                                    <li><a class="dropdown-item bg-flat-color-0">Branch Users</a></li>
-                                    <% docPers.forEach(function (pers){ pers.branch.sort(); pers.others.sort();
-                                      pers.branch.forEach(function (branch){ %>
-                                        <li><a class="dropdown-item bg-flat-color-1" onclick="sendUser('<%= branch %>')" href="#" class="btn btn-success btn-sm"><%= branch %></a></li>
-                                        <% }); %>
-                                        <li><a class="dropdown-item bg-flat-color-0">Other Users</a></li>
-                                        <li id='othSelect'><span><select id="selOthers" class="standardSelect" tabindex="6">
-                                          <% pers.others.forEach (function (others){ %>
-                                            <option ><%= others %></option>
-                                            <% }); %>
-                                          </select>
-                                          <a id='othSend' class="float-right badge badge-info" href="#">Send</a>
-                                        </span></li>
-                                        <% }); %>
-                                      </ul>
-                                    </li>
-                                    <li class="dropdown-submenu bg-flat-color-4">
-                                      <a class="dropdown-item dropdown-toggle bg-flat-color-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><i class="fa fa-angle-left"></i>&nbsp;&nbsp;File Operation&nbsp;&nbsp;</a>
-                                      <ul class="dropdown-menu">
-                                        <li><a id='docDelete' href="#" class="dropdown-item bg-flat-color-4">Delete File</a></li>
-                                        <li><a id='docDownload' href="#" class="dropdown-item bg-flat-color-4" >Download File</a></li>
-                                      </ul>
-                                    </li>
-                                    <% if ((level.toUpperCase()=='OICBRANCH' ) || (level.toUpperCase()=='DEP' ) || (level.toUpperCase()=='CO' ) || (level.toUpperCase()=='GM' ) || (level.toUpperCase()=='EAGM') || (level.toUpperCase()=='MANAGER')) { %>
-                                      <li> <a id="signDocBut" class="dropdown-item"  style="background-color:purple;color:white;display:none;" onmouseover="this.style.background='white';this.style.color='black';" onmouseout="this.style.background='purple';this.style.color='white';" href="#">
-                                        Sign Document</a></li>
-                                        <% } %>
+                            <li class="dropdown-submenu bg-flat-color-3">
+                              <a class="dropdown-item dropdown-toggle bg-flat-color-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><i class="fa fa-angle-left"></i>&nbsp;&nbsp;Route to Branch&nbsp;&nbsp;</a>
+                              <ul class="dropdown-menu">
+                                <% for (var i=0; i < docBr.length; i++) { %>
+                                  <%  if ((docBr[i].toUpperCase()=='ALL BRANCHES') || (docBr[i].toUpperCase()=='EXO') || (docBr[i].toUpperCase()=='DN6') || (docBr[i].toUpperCase()=='N6') || (docBr[i].toUpperCase()=='ASST.G.M.') || (docBr[i].toUpperCase()=='G.M.')) { %>
+                                    <div style="height:1px;border-color:black;"> </div>
+                                    <li><a class="<% if (docBr[i].toUpperCase()==branch.toUpperCase()) { %> disabled <% } %>  dropdown-item bg-flat-color-4" onclick="routeBr('<%= docBr[i] %>')" href="#" data-toggle="modal" data-target="#routingModal"><%= docBr[i] %></a></li>
+                                    <% } else { %>
+                                      <li><a class="<% if (docBr[i].toUpperCase()==branch.toUpperCase()) { %> disabled <% } %> dropdown-item bg-flat-color-3" onclick="routeBr('<%= docBr[i] %>')" href="#" data-toggle="modal" data-target="#routingModal"><%= docBr[i] %></a></li>
+                                      <% } } %>
+                                    </ul>
+                                  </li>
+                                  <li class="dropdown-submenu bg-flat-color-1">
+                                    <a id="docSend" style="display: none;" class="dropdown-item dropdown-toggle bg-flat-color-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><i class="fa fa-angle-left"></i>&nbsp;&nbsp;Send to (Person)&nbsp;&nbsp;</a>
+                                    <ul class="dropdown-menu">
+                                      <li><a class="dropdown-item bg-flat-color-0">Branch Users</a></li>
+                                      <% docPers.forEach(function (pers){ pers.branch.sort(); pers.others.sort();
+                                        pers.branch.forEach(function (branch){ %>
+                                          <li><a class="dropdown-item bg-flat-color-1" onclick="sendUser('<%= branch %>')" href="#" class="btn btn-success btn-sm"><%= branch %></a></li>
+                                          <% }); %>
+                                          <li><a class="dropdown-item bg-flat-color-0">Other Users</a></li>
+                                          <li id='othSelect'><span><select id="selOthers" class="standardSelect" tabindex="6">
+                                            <% pers.others.forEach (function (others){ %>
+                                              <option ><%= others %></option>
+                                              <% }); %>
+                                            </select>
+                                            <a id='othSend' class="float-right badge badge-info" href="#">Send</a>
+                                          </span></li>
+                                          <% }); %>
+                                        </ul>
+                                      </li>
+                                      <li class="dropdown-submenu bg-flat-color-4">
+                                        <a class="dropdown-item dropdown-toggle bg-flat-color-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><i class="fa fa-angle-left"></i>&nbsp;&nbsp;File Operation&nbsp;&nbsp;</a>
+                                        <ul class="dropdown-menu">
+                                          <li><a id='docDelete' href="#" class="dropdown-item bg-flat-color-4">Delete File</a></li>
+                                          <li><a id='docDownload' href="#" class="dropdown-item bg-flat-color-4" >Download File</a></li>
+                                        </ul>
+                                      </li>
+                                      <% if ((level.toUpperCase()=='OICBRANCH' ) || (level.toUpperCase()=='DEP' ) || (level.toUpperCase()=='CO' ) || (level.toUpperCase()=='GM' ) || (level.toUpperCase()=='EAGM') || (level.toUpperCase()=='MANAGER')) { %>
+                                        <li> <a id="signDocBut" class="dropdown-item"  style="background-color:purple;color:white;display:none;" onmouseover="this.style.background='white';this.style.color='black';" onmouseout="this.style.background='purple';this.style.color='white';" href="#">
+                                          Sign Document</a></li>
+                                          <% } %>
+                                        </div>
                                       </div>
                                     </div>
-                                  </div>
-                                </form>
+                                  </form>
+                                  <div id="avatarHere" class="header-right"> <div style="width:100px;display:none;"  id="bufferHere"></div>
+                                <script>
+                                  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+                                    document.getElementById('avatarHere').className = 'col-sm-11 mr-auto';
+                                    document.getElementById('bufferHere').style.display = '';
+                                    document.getElementById('headerHere').style.display = 'none';
+                                    document.getElementById('filenameHere').className = 'col-2';
+                                    document.getElementById('newfile').style.width = '167px';
+                                    document.getElementById('butDiv').className ="user-area dropdown col-5 float-right";
 
-                                <div class="header-right">
+                                    if (window.matchMedia('screen and (max-width: 768px)').matches) {
+                                      document.getElementById('butDiv').className ="user-area dropdown float-left col-2";
+                                      document.getElementById('butDiv').style.left = '145px';
+                                      document.getElementById('avatarHere').style.left = '250px';
 
-                                  <div class="user-area dropdown float-right">
+                                    } else {
+                                      document.getElementById('butDiv').className ="user-area dropdown float-left col-6";
+                                      document.getElementById('butDiv').style.left = '145px';
+                                      document.getElementById('avatarHere').style.left = '0px'
+                                      document.getElementById('avatarHere').className = 'col-2 header-right';
+                                    }
+                                    if (window.location.toString().includes("/incoming")) document.getElementById('bufferHere').style.width = '0px';
+                                  } </script>
+
+                                  <div style="left:-30px;" class="user-area dropdown float-right">
                                     <a id= 'userProf' href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                       <img id="pixID" class="user-avatar rounded-circle" src="/images/nelson.jpg" alt="User Avatar">
                                       <span id='countPix' class="count"><%= mailfiles.length %></span>
@@ -234,357 +260,357 @@
                                               var fileArr = file.split('/'); filename = fileArr[fileArr.length - 1].substring(0,20); %>
                                               <li><button type='button' onclick="delNotiFile('<%= file %>')" class='btn btn-danger btn-sm fa fa-times' href="#"></button><button button type='button' class="btn btn-link btn-sm" onclick="openDisFile('<%= file %>')" href="#"><%= filename %></button></li>
                                               <% }); %>
-                                          </div>
+                                            </div>
                                           </ul>
                                         </li>
                                         <% if ((level.toUpperCase()=='DUTYADMIN') || (level.toUpperCase()=='DUTYBRANCH') ) { %>
                                           <li><a id="switchDuty" class="nav-link"  href="#"><i class="fa fa-random"></i> Toggle Duty</a></li>
-                                        <% } %>
-                                        <li><a id="disCheckDrive" class="nav-link"  href="#"><i class="fa fa-cog"></i> Check map drive</a></li>
-                                        <li><a id="disLogout" class="nav-link" href="#"><i class="fa fa-power-off"></i> Logout</a></li>
+                                          <% } %>
+                                          <li><a id="disCheckDrive" class="nav-link"  href="#"><i class="fa fa-cog"></i> Check map drive</a></li>
+                                          <li><a id="disLogout" class="nav-link" href="#"><i class="fa fa-power-off"></i> Logout</a></li>
+                                        </div>
+                                      </div>
+
+
+
+                                    </div>
+                                  </div>
+
+                                </header><!-- /header -->
+
+                                <!-- Layout for Content-->
+                                <%-body%>
+
+
+                                <!-- Folder Browse -->
+                                <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true" >
+                                  <div class="modal-dialog modal-lg" role="document" >
+                                    <div style="height:500px;" class="modal-content" >
+                                      <div class=" float-left"><input type="hidden" id="refTrue"  name="refTrue"></div>
+                                      <div class="modal-header">
+                                        <h5 class="modal-title" id="largeModalLabel">Attachments</h5>
+                                        <button id="topClose"type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div id='modal-body' class="modal-body">
+                                        <div class="card-body">
+                                          <ul class="nav nav-tabs" id="myTab" role="tablist">
+                                            <li class="nav-item">
+                                              <a class="nav-link active" id="File-tab" data-toggle="tab" href="#File" role="tab" aria-controls="File" aria-selected="true">File</a>
+                                            </li>
+                                            <li class="nav-item">
+                                              <a class="nav-link" id="Page-tab" data-toggle="tab" href="#Page" role="tab" aria-controls="Page" aria-selected="false">Page</a>
+                                            </li>
+                                          </ul>
+                                          <div  class="tab-content pl-3 p-1" id="myTabContent">
+                                            <div  class="tab-pane fade show active" id="File" role="tabpanel" aria-labelledby="File">
+                                              <ul class="file-tree">
+                                                <div class='driveList' style="height:250px;overflow-y:auto;overflow-x:auto;white-space:nowrap;">
+                                                </div>
+                                              </ul>
+
+                                              <div class="modal-footer">
+                                                <button id='modButCanc' type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                                              </div>
+                                            </div>
+
+                                            <div class="tab-pane fade" id="Page" role="tabpanel" aria-labelledby="Page">
+                                              <div class="col-lg-12">
+                                                <div class="col col-md-4">
+                                                  <a>Select Page Number</a>
+                                                </div>
+                                                <div class="col col-md-2">
+                                                  <select  onclick='pointPage()' name="selPage" id="selPage" class="form-control-sm form-control">
+                                                  </select>
+                                                </div>
+                                              </div>
+                                              <div id='attachPage' class='col-lg-12' style="height:250px;overflow-y:auto;overflow-x:auto;white-space:nowrap;">
+                                              </div>
+                                              <div id='pdfPage' style="display:none"></div>
+                                              <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                                <button id='butConfirm' type="button" class="btn btn-primary">Confirm</button>
+                                                <button style="display:none;" id='butmodClose' type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                  <span aria-hidden="true">&times;</span>
+                                                </button>
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
                                       </div>
                                     </div>
-
-
-
                                   </div>
                                 </div>
 
-                              </header><!-- /header -->
+                                <!-- Folder Browse -->
 
-                              <!-- Layout for Content-->
-                              <%-body%>
+                                <!-- sidebar -->
+                                <div id="sideToggle" class="hamburger">
+                                  <button  id="sideBut" class="btn btn-sm btn-warning" type="button" onclick="openNav()" >
+                                    <i class="fa fa-paperclip"></i> Attachments
+                                  </button>
+                                  <button  id="hideBut" style="display: none;" class="btn btn-sm btn-warning" type="button" onclick="closeNav()" >
+                                    <i class="fa ti-angle-double-right"></i> hide this
+                                  </button>
+                                </div>
+
+                                <div id="mySidenav" class="sidenav">
+                                  <a id='butRoutSlip' style="font-family:arial;" href="#" data-toggle="modal" data-target="#routingModal"><i class="fa fa-paper-plane"></i>&nbsp;&nbsp;Routing Slip</a>
+                                  <a id='mainFile' style="font-family:arial;" href="#" onclick='gotoMain()'><i class="fa fa-tasks"></i>&nbsp;&nbsp;Main File</a>
+                                  <a style="font-family:arial;"><i class="fa fa-files-o"></i> &nbsp;&nbsp;References&nbsp;&nbsp;<button style="margin-top: -15px;" id="butRef" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#largeModal">Add</button></a>
+                                  <hr align="right" width="90%" style="margin-top:-5px;border-width:1px;border-color:white;">
+
+                                  <div id="divRef">
+
+                                  </div>
+                                  <a style="font-family:arial;"><i class="fa fa-book"></i>&nbsp;&nbsp;Enclosures&nbsp;&nbsp;<button style="margin-top: -15px;" id="butEnc" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#largeModal">Add</button></a>
+                                  <hr align="right" width="90%" style="margin-top:-5px;border-width:1px;border-color:white;">
+                                  <div id="divEnc">
+
+                                  </div>
+                                </div>
+                                <!-- /sidebar -->
+                                <!-- Processing Spinner Overlay -->
+                                <div id='overlay' class='overlay'style="display:none">
+                                  <div id='showProgress'class="sufee-alert alert with-close alert-primary alert-dismissible fade show" >
+                                    <span class=" spinner-border spinner-border-lg badge badge-pill badge-primary" role="status" aria-hidden="true">  </span>
+                                    &nbsp;&nbsp;Loading File...
+                                  </div>
+                                </div>
+                                <!-- /Processing Spinner Overlay -->
+                                <!-- comment sidebar -->
+                                <div id='commentToggle' class="commentburger">
+                                  <button  id="showCommentBut" class="btn btn-sm btn-info" type="button" onclick="openComment()" >
+                                    <i class="fa fa-comments"></i> Show comments
+                                  </button>
+                                  <button  id="hideCommentBut" style="display: none;" class="btn btn-sm btn-info" type="button" onclick="closeComment()" >
+                                    <i class="fa ti-angle-double-right"></i> Hide comments
+                                  </button>
+                                </div>
+
+                                <div id="commentnav" class="sidenav">
+                                  <a style="font-family:arial;"><i class="fa fa-tag"></i>&nbsp;&nbsp;Comments<i onclick="closeComment()" style='margin-top:-8px;color:white;'class="btn btn-lg float-right fa fa-times"></i></i></a>
+                                  <div style="width:400px;" class="row">
+                                    <textarea id="commentinput" rows="2" placeholder="Input comment..." class="float-right col-9 form-control"></textarea>
+                                    <div class="col-1"></div>
+                                    <button  id="addCommentBut" class="col-2 float-right btn btn-sm btn-info" type="button" onclick="addComment()" >
+                                      <i class="fa fa-comments"></i> Add
+                                    </button>
+                                  </div>
+                                  <br/>
+                                  <div id='allComments' >
+
+                                  </div>
+
+                                </div>
+                                <!-- /comment sidebar -->
 
 
-                              <!-- Folder Browse -->
-                              <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true" >
-                                <div class="modal-dialog modal-lg" role="document" >
-                                  <div style="height:500px;" class="modal-content" >
-                                    <div class=" float-left"><input type="hidden" id="refTrue"  name="refTrue"></div>
+                              </div><!-- /#right-panel -->
+
+
+                              <!-- Modal Dialog Box -->
+                              <button id='mstrtoggleDialog' style='display:none' type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#mstrstaticModal"> </button>
+                              <div  class="modal fade" id="mstrstaticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
+                                <div class="modal-dialog modal-sm"  role="document">
+                                  <div class="modal-content" style='min-width:350px;' >
                                     <div class="modal-header">
-                                      <h5 class="modal-title" id="largeModalLabel">Attachments</h5>
-                                      <button id="topClose"type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                      <h5 class="modal-title">Information</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                       </button>
                                     </div>
-                                    <div id='modal-body' class="modal-body">
-                                      <div class="card-body">
-                                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                                          <li class="nav-item">
-                                            <a class="nav-link active" id="File-tab" data-toggle="tab" href="#File" role="tab" aria-controls="File" aria-selected="true">File</a>
-                                          </li>
-                                          <li class="nav-item">
-                                            <a class="nav-link" id="Page-tab" data-toggle="tab" href="#Page" role="tab" aria-controls="Page" aria-selected="false">Page</a>
-                                          </li>
-                                        </ul>
-                                        <div  class="tab-content pl-3 p-1" id="myTabContent">
-                                          <div  class="tab-pane fade show active" id="File" role="tabpanel" aria-labelledby="File">
-                                            <ul class="file-tree">
-                                              <div class='driveList' style="height:250px;overflow-y:auto;overflow-x:auto;white-space:nowrap;">
-                                              </div>
-                                            </ul>
+                                    <div id= 'mstrmodDisp' class="modal-body">
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <!-- Modal Dialog Box -->
 
-                                            <div class="modal-footer">
-                                              <button id='modButCanc' type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                              <!-- Routing Slip -->
+                              <div style="top:-20px;" class="modal fade" id="routingModal" tabindex="-1" role="dialog" aria-labelledby="routingModalLabel" aria-hidden="true" >
+                                <div  class="modal-dialog modal-lg"  role="document" >
+                                  <div style="background: rgba(50, 50, 0, .5); border:solid;color:white;" class="modal-content" >
+                                    <div style="height:30px;">
+                                      <a  style="margin-top:5px;margin-right:15px;color:white;" data-dismiss="modal" aria-label="Close" id="routingTopClose" href="#" aria-hidden="true" class="btn btn-lg float-right fa fa-times"></a>
+                                    </div>
+                                    <div id='routing-modal-body'  class="modal-body">
 
-                                            </div>
+                                      <div id="routeBody" style="min-width:620px;margin-top:-30px;" class="row col-md-11">
+                                        <div style="left:-10px;" class="col-md-11">
+
+                                          <div id='divSubject'style="display:none;min-width:610px;" class="row col-md-12">
+                                            <a class="col-md-2" style="font-size:14px;">Subject:&nbsp;</a>
+                                            <input style="width:230px;" type="text" id="routeSubject" class="input-sm col-md-10 float-right">
                                           </div>
 
-                                          <div class="tab-pane fade" id="Page" role="tabpanel" aria-labelledby="Page">
-                                            <div class="col-lg-12">
-                                              <div class="col col-md-4">
-                                                <a>Select Page Number</a>
+                                          <div style="height:2px" class="col-md-12"></div>
+                                          <div class = "row col-md-12">
+                                            <a class="col-md-2" style="font-size:14px;">Branch:&nbsp;</a>
+                                            <div style="left:-14px;min-width:70px;" id='divRoutSelBr' class="col-md-4">
+                                              <select  id="routeselBr" data-placeholder="Select Branch" multiple class="standardSelect" tabindex="5">
+                                                <% for (var i=0; i < docBr.length; i++){ %>
+                                                  <% if (docBr[i].toUpperCase()!=branch.toUpperCase()) {%>
+                                                    <option value= "<%= docBr[i] %>" id= "<%= docBr[i] %>" ><%= docBr[i] %></option>
+                                                    <%} } %>
+                                                  </select>
+                                                </div>
+                                                <a style="left:-17px;" class="col-md-1" style="font-size:14px;">Required:&nbsp;</a>
+                                                <div style="left:12px;min-width:220px;" class="col-md-5">
+                                                  <select  id="routeselAct" data-placeholder="Required Action" multiple class="standardSelect" tabindex="5">
+                                                    <option value= "1">1 - Approval/Signature</option>
+                                                    <option value= "2">2 - Appropriate Action</option>
+                                                    <option value= "3">3 - Comment/Recommend</option>
+                                                    <option value= "4">4 - Study/Investigate</option>
+                                                    <option value= "5">5 - Rewrite/Retype</option>
+                                                    <option value= "6">6 - Dispatch/Forward/File</option>
+                                                    <option value= "7">7 - Notation/Information</option>
+                                                    <option value= "8">8 - Disseminate</option>
+                                                    <option value= "9">9 - Please Print</option>
+
+                                                  </select>
+
+                                                </div>
+                                                <div style="height:2px" class="col-md-12"></div>
                                               </div>
-                                              <div class="col col-md-2">
-                                                <select  onclick='pointPage()' name="selPage" id="selPage" class="form-control-sm form-control">
-                                                </select>
+                                              <div  style="min-width:610px;" class = "row col-md-12">
+                                                <a class="col-md-2" style="font-size:14px;">Remark:&nbsp;</a>
+                                                <input style="width:230px;"  class="input-sm col-md-10 " type="text" id="routeRemark">
+
                                               </div>
                                             </div>
-                                            <div id='attachPage' class='col-lg-12' style="height:250px;overflow-y:auto;overflow-x:auto;white-space:nowrap;">
+                                            <div id="divCamPass"style="left:-30px;top:5px;" class="col-md-1">
+                                              <div style="top:10px;" class="col-md-1" >
+                                                <input id="toggleButCam" data-size="mini" data-width="108" type="checkbox" data-style="ios1" data-toggle="toggle" data-on="Password&nbsp;&nbsp;" data-off="&nbsp;&nbsp;QR Code" data-onstyle="warning" data-offstyle="secondary">
+                                              </div>
+                                              <div class="col-md-1" style="top:15px;">
+                                                <button style="height:40px;margin-right:60px;" id="qrCamBut" class="btn btn-sm btn-info" type="button" onclick="openCam()" >
+                                                  <i class="fa fa-camera"></i>&nbsp;&nbsp;Scan QR Code&nbsp;
+                                                </button>
+                                              </div>
                                             </div>
-                                            <div id='pdfPage' style="display:none"></div>
-                                            <div class="modal-footer">
-                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                              <button id='butConfirm' type="button" class="btn btn-primary">Confirm</button>
-                                              <button style="display:none;" id='butmodClose' type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <div style="height:5px" class="col-md-12"></div>
+                                          </div>
+
+                                          <div id="disrouteTitle" class="col-md-9" style="top:-25px;display:none;">
+                                            <H6  >Scan QR Code to validate the signature of this document.&nbsp;</H6>
+                                          </div>
+                                          <div id="divroyalCam" style="display:none;left:-30px;top:-25px;" class="col-md-2" style="top:10px;">
+                                            <input id="toggleButCamRoyal" data-size="mini" data-width="108" type="checkbox" data-style="ios1" data-toggle="toggle" data-on="Password&nbsp;&nbsp;" data-off="&nbsp;&nbsp;QR Code" data-onstyle="warning" data-offstyle="secondary">
+                                          </div>
+                                          <div style="display:none;background:#263238;  align-items: stretch;justify-content:stretch;height:100%;" class='col-lg-12' id="app">
+                                            <div class="preview-container" style="align-items:center;justify-content: center;">
+                                              <video id="preview"></video>
+                                            </div>
+                                          </div>
+                                          <div style="background:#263238; display:none; align-items: stretch;justify-content:stretch;height:100%;"  id="passapp">
+                                            <div class='row col-md-12' style="left:15px;align-items:center;justify-content: center;padding-top:8px;padding-bottom:8px;border:solid;">
+                                              <a class="col-md-3">Type-in password:</a> <input type="password" id="verPass" class="col-md-6 input-sm form-control-sm form-control">&nbsp;&nbsp;
+                                              <button id='validatePass' type="button" style="align-items:right;" class="btn btn-warning btn-sm col-md-2" ><i class="fa fa-lock"></i>&nbsp; Validate</button>
+                                            </div>
+                                          </div>
+                                          <div style="background:#263238; display:none; align-items: stretch;justify-content:stretch;height:100%;"  id="passapproyal">
+                                            <div class='row col-md-12' style="left:15px;align-items:center;justify-content: center;padding-top:8px;padding-bottom:8px;border:solid;">
+                                              <a class="col-md-3">Type-in password:</a> <input type="password" id="verPassroyal" class="col-md-6 input-sm form-control-sm form-control">&nbsp;&nbsp;
+                                              <button id='validatePassroyal' type="button" style="align-items:right;" class="btn btn-warning btn-sm col-md-2" ><i class="fa fa-lock"></i>&nbsp; Validate</button>
+                                            </div>
+                                          </div>
+                                          <div id='routeattachPage' class='col-lg-12' style="opacity:.8;height:390px;overflow-y:auto;overflow-x:auto;white-space:nowrap;">
+                                          </div>
+
+                                          <div  style="height:50px;" class=" col-md-12 modal-footer">
+                                            <div style="width:700px;" class="row d-flex">
+                                              <div style="top:-10px;display:none;border:solid;padding-top:7px;align-items:left;" id='disContRout' class="col-sm-8 p-8">
+
+                                                <div class = "col-sm-8">
+                                                  <input style="display:none" type="text" id="lbltmp" class="input-sm col-md-10 float-right">
+                                                  <label id="lblContRout" value="test">Continue Previous Routing ? [Yes]</label>
+                                                </div>
+                                                <label id="lblToggle"class="float-left switch switch-pill switch-text switch-3d switch-warning mr-3"><input id="chkboxRout" type="checkbox" class="switch-input" checked> <span data-on="Yes" data-off="No" class="switch-label"></span> <span  class="switch-handle"></span></label>
+
+                                              </div >
+
+                                              <div style="align-items:right;margin-top:-15px;" class="ml-auto p-2">
+                                                <button  id='routeButCanc' type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                              </div>
+                                              <div style="align-items:right;margin-top:-15px;" class="p-2">
+                                                <button id='routebutConfirm' type="button" class="btn btn-primary">Confirm</button>
+                                              </div>
+                                              <button style="display:none;" id='routemodClose' type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                               </button>
                                             </div>
                                           </div>
+
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                  </div>
+
+                                  <!-- Routing Slip -->
+                                  <!-- Password Modal Dialog Box -->
+                                  <button id='passwtoggleDialog' style='display:none' type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#passwstaticModal"> </button>
+                                  <div  class="modal fade" id="passwstaticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
+                                    <div class="modal-dialog modal-sm"  role="document">
+                                      <div class="modal-content" style='min-width:350px;' >
+                                        <div class="modal-header">
+                                          <h5 class="modal-title" id="passwstaticModalLabel">Confirmation</h5>
+                                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                          </button>
+                                        </div>
+                                        <div id= 'passwmodDisp' class="modal-body">
+                                          <p id='lblResult' class='h4'></p>
+                                          <p class='h6'>Re-enter your password for validation:<input type='password' id='passwmodPass' class='input-sm form-control-sm form-control'></p>
+                                        </div>
+                                        <div class="modal-footer">
+                                          <button id='passwmodCancel' type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                                          <button id='passwbutConfirm' type="button" class="btn btn-primary">Confirm</button>
                                         </div>
                                       </div>
                                     </div>
                                   </div>
-                                </div>
-                              </div>
+                                  <!-- Password Modal Dialog Box -->
 
-                              <!-- Folder Browse -->
-
-                              <!-- sidebar -->
-                              <div id="sideToggle" class="hamburger">
-                                <button  id="sideBut" class="btn btn-sm btn-warning" type="button" onclick="openNav()" >
-                                  <i class="fa fa-paperclip"></i> Attachments
-                                </button>
-                                <button  id="hideBut" style="display: none;" class="btn btn-sm btn-warning" type="button" onclick="closeNav()" >
-                                  <i class="fa ti-angle-double-right"></i> hide this
-                                </button>
-                              </div>
-
-                              <div id="mySidenav" class="sidenav">
-                                <a id='butRoutSlip' style="font-family:arial;" href="#" data-toggle="modal" data-target="#routingModal"><i class="fa fa-paper-plane"></i>&nbsp;&nbsp;Routing Slip</a>
-                                <a id='mainFile' style="font-family:arial;" href="#" onclick='gotoMain()'><i class="fa fa-tasks"></i>&nbsp;&nbsp;Main File</a>
-                                <a style="font-family:arial;"><i class="fa fa-files-o"></i> &nbsp;&nbsp;References&nbsp;&nbsp;<button style="margin-top: -15px;" id="butRef" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#largeModal">Add</button></a>
-                                <hr align="right" width="90%" style="margin-top:-5px;border-width:1px;border-color:white;">
-
-                                <div id="divRef">
-
-                                </div>
-                                <a style="font-family:arial;"><i class="fa fa-book"></i>&nbsp;&nbsp;Enclosures&nbsp;&nbsp;<button style="margin-top: -15px;" id="butEnc" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#largeModal">Add</button></a>
-                                <hr align="right" width="90%" style="margin-top:-5px;border-width:1px;border-color:white;">
-                                <div id="divEnc">
-
-                                </div>
-                              </div>
-                              <!-- /sidebar -->
-                              <!-- Processing Spinner Overlay -->
-                              <div id='overlay' class='overlay'style="display:none">
-                                <div id='showProgress'class="sufee-alert alert with-close alert-primary alert-dismissible fade show" >
-                                  <span class=" spinner-border spinner-border-lg badge badge-pill badge-primary" role="status" aria-hidden="true">  </span>
-                                  &nbsp;&nbsp;Loading File...
-                                </div>
-                              </div>
-                              <!-- /Processing Spinner Overlay -->
-                              <!-- comment sidebar -->
-                              <div id='commentToggle' class="commentburger">
-                                <button  id="showCommentBut" class="btn btn-sm btn-info" type="button" onclick="openComment()" >
-                                  <i class="fa fa-comments"></i> Show comments
-                                </button>
-                                <button  id="hideCommentBut" style="display: none;" class="btn btn-sm btn-info" type="button" onclick="closeComment()" >
-                                  <i class="fa ti-angle-double-right"></i> Hide comments
-                                </button>
-                              </div>
-
-                              <div id="commentnav" class="sidenav">
-                                <a style="font-family:arial;"><i class="fa fa-tag"></i>&nbsp;&nbsp;Comments<i onclick="closeComment()" style='margin-top:-8px;color:white;'class="btn btn-lg float-right fa fa-times"></i></i></a>
-                                <div style="width:400px;" class="row">
-                                  <textarea id="commentinput" rows="2" placeholder="Input comment..." class="float-right col-md-9 form-control"></textarea>
-                                  <div class="col-md-1"></div>
-                                  <button  id="addCommentBut" class="col-md-2 float-right btn btn-sm btn-info" type="button" onclick="addComment()" >
-                                    <i class="fa fa-comments"></i> Add
-                                  </button>
-                                </div>
-                                <br/>
-                                <div id='allComments' >
-
-                                </div>
-
-                              </div>
-                              <!-- /comment sidebar -->
+                                  <!-- store branch -->
+                                  <div class=" float-left"><input value= "<%= branch.toUpperCase() %>" type="hidden" id="disBranch"  name="disBranch"></div>
+                                  <div class=" float-left"><input value= "<%= realdrive %>" type="hidden" id="realdrive"  name="realdrive"></div>
+                                  <audio  src="/images/noti.wav" type="audio/mpeg" id="soundNoti" autostart="false"></audio>
 
 
-                            </div><!-- /#right-panel -->
+                                  <!-- Right Panel -->
+
+                                  <script src="/vendors/jquery/dist/jquery.min.js"></script>
+                                  <script src="/vendors/popper.js/dist/umd/popper.min.js"></script>
+                                  <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+                                  <script src="/assets/js/main.js"></script>
+
+                                  <script src="/vendors/bootstrap/dist/js/select2.min.js"></script>
+                                  <script type="text/javascript" src="/assets/js/adapter.min.js"></script>
+                                  <script type="text/javascript" src="/assets/js/vue.min.js"></script>
+                                  <script type="text/javascript" src="/assets/js/instascan.min.js"></script>
+
+                                  <script src="/vendors/bootstrap/dist/js/pdf.min.js"></script>
+                                  <script src="/vendors/bootstrap/dist/js/pdf.worker.min.js"></script>
+                                  <script src="/vendors/bootstrap/dist/js/file-explore.js"></script>
+                                  <script src="/vendors/bootstrap/dist/js/side.js"></script>
+                                  <script src="/vendors/bootstrap/dist/js/bootstrap-toggle.min.js"></script>
+                                  <script src="/assets/js/dashboard.js"></script>
+                                  <script src="/assets/cookie.js"></script>
+                                  <script src="/assets/modaldoc.js"></script>
+                                  <script src="/assets/common.js"></script>
+                                  <script src="/assets/routeclas.js"></script>
+
+                                  <script src="/vendors/chosen/chosen.jquery.min.js"></script>
+                                  <script type="text/javascript" src="/assets/app.js"></script>
 
 
-                            <!-- Modal Dialog Box -->
-                            <button id='mstrtoggleDialog' style='display:none' type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#mstrstaticModal"> </button>
-                            <div  class="modal fade" id="mstrstaticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
-                              <div class="modal-dialog modal-sm"  role="document">
-                                <div class="modal-content" style='min-width:350px;' >
-                                  <div class="modal-header">
-                                    <h5 class="modal-title">Information</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                      <span aria-hidden="true">&times;</span>
-                                    </button>
-                                  </div>
-                                  <div id= 'mstrmodDisp' class="modal-body">
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <!-- Modal Dialog Box -->
+                                </body>
 
-                            <!-- Routing Slip -->
-                            <div style="top:-20px;" class="modal fade" id="routingModal" tabindex="-1" role="dialog" aria-labelledby="routingModalLabel" aria-hidden="true" >
-                              <div  class="modal-dialog modal-lg"  role="document" >
-                                <div style="background: rgba(50, 50, 0, .5); border:solid;color:white;" class="modal-content" >
-                                  <div style="height:30px;">
-                                    <a  style="margin-top:5px;margin-right:15px;color:white;" data-dismiss="modal" aria-label="Close" id="routingTopClose" href="#" aria-hidden="true" class="btn btn-lg float-right fa fa-times"></a>
-                                  </div>
-                                  <div id='routing-modal-body'  class="modal-body">
-
-                                    <div id="routeBody" style="min-width:620px;margin-top:-30px;" class="row col-md-11">
-                                      <div style="left:-10px;" class="col-md-11">
-
-                                        <div id='divSubject'style="display:none;min-width:610px;" class="row col-md-12">
-                                          <a class="col-md-2" style="font-size:14px;">Subject:&nbsp;</a>
-                                          <input style="width:230px;" type="text" id="routeSubject" class="input-sm col-md-10 float-right">
-                                        </div>
-
-                                        <div style="height:2px" class="col-md-12"></div>
-                                        <div class = "row col-md-12">
-                                          <a class="col-md-2" style="font-size:14px;">Branch:&nbsp;</a>
-                                          <div style="left:-14px;min-width:70px;" id='divRoutSelBr' class="col-md-4">
-                                            <select  id="routeselBr" data-placeholder="Select Branch" multiple class="standardSelect" tabindex="5">
-                                              <% for (var i=0; i < docBr.length; i++){ %>
-                                                <% if (docBr[i].toUpperCase()!=branch.toUpperCase()) {%>
-                                                  <option value= "<%= docBr[i] %>" id= "<%= docBr[i] %>" ><%= docBr[i] %></option>
-                                                  <%} } %>
-                                                </select>
-                                              </div>
-                                              <a style="left:-17px;" class="col-md-1" style="font-size:14px;">Required:&nbsp;</a>
-                                              <div style="left:12px;min-width:220px;" class="col-md-5">
-                                                <select  id="routeselAct" data-placeholder="Required Action" multiple class="standardSelect" tabindex="5">
-                                                  <option value= "1">1 - Approval/Signature</option>
-                                                  <option value= "2">2 - Appropriate Action</option>
-                                                  <option value= "3">3 - Comment/Recommend</option>
-                                                  <option value= "4">4 - Study/Investigate</option>
-                                                  <option value= "5">5 - Rewrite/Retype</option>
-                                                  <option value= "6">6 - Dispatch/Forward/File</option>
-                                                  <option value= "7">7 - Notation/Information</option>
-                                                  <option value= "8">8 - Disseminate</option>
-                                                  <option value= "9">9 - Please Print</option>
-
-                                                </select>
-
-                                              </div>
-                                              <div style="height:2px" class="col-md-12"></div>
-                                            </div>
-                                            <div  style="min-width:610px;" class = "row col-md-12">
-                                              <a class="col-md-2" style="font-size:14px;">Remark:&nbsp;</a>
-                                              <input style="width:230px;"  class="input-sm col-md-10 " type="text" id="routeRemark">
-
-                                            </div>
-                                          </div>
-                                          <div id="divCamPass"style="left:-30px;top:5px;" class="col-md-1">
-                                            <div style="top:10px;" class="col-md-1" >
-                                              <input id="toggleButCam" data-size="mini" data-width="108" type="checkbox" data-style="ios1" data-toggle="toggle" data-on="Password&nbsp;&nbsp;" data-off="&nbsp;&nbsp;QR Code" data-onstyle="warning" data-offstyle="secondary">
-                                            </div>
-                                            <div class="col-md-1" style="top:15px;">
-                                              <button style="height:40px;margin-right:60px;" id="qrCamBut" class="btn btn-sm btn-info" type="button" onclick="openCam()" >
-                                                <i class="fa fa-camera"></i>&nbsp;&nbsp;Scan QR Code&nbsp;
-                                              </button>
-                                            </div>
-                                          </div>
-                                          <div style="height:5px" class="col-md-12"></div>
-                                        </div>
-
-                                        <div id="disrouteTitle" class="col-md-9" style="top:-25px;display:none;">
-                                          <H6  >Scan QR Code to validate the signature of this document.&nbsp;</H6>
-                                        </div>
-                                        <div id="divroyalCam" style="display:none;left:-30px;top:-25px;" class="col-md-2" style="top:10px;">
-                                          <input id="toggleButCamRoyal" data-size="mini" data-width="108" type="checkbox" data-style="ios1" data-toggle="toggle" data-on="Password&nbsp;&nbsp;" data-off="&nbsp;&nbsp;QR Code" data-onstyle="warning" data-offstyle="secondary">
-                                        </div>
-                                        <div style="display:none;background:#263238;  align-items: stretch;justify-content:stretch;height:100%;" class='col-lg-12' id="app">
-                                          <div class="preview-container" style="align-items:center;justify-content: center;">
-                                            <video id="preview"></video>
-                                          </div>
-                                        </div>
-                                        <div style="background:#263238; display:none; align-items: stretch;justify-content:stretch;height:100%;"  id="passapp">
-                                          <div class='row col-md-12' style="left:15px;align-items:center;justify-content: center;padding-top:8px;padding-bottom:8px;border:solid;">
-                                            <a class="col-md-3">Type-in password:</a> <input type="password" id="verPass" class="col-md-6 input-sm form-control-sm form-control">&nbsp;&nbsp;
-                                            <button id='validatePass' type="button" style="align-items:right;" class="btn btn-warning btn-sm col-md-2" ><i class="fa fa-lock"></i>&nbsp; Validate</button>
-                                          </div>
-                                        </div>
-                                        <div style="background:#263238; display:none; align-items: stretch;justify-content:stretch;height:100%;"  id="passapproyal">
-                                          <div class='row col-md-12' style="left:15px;align-items:center;justify-content: center;padding-top:8px;padding-bottom:8px;border:solid;">
-                                            <a class="col-md-3">Type-in password:</a> <input type="password" id="verPassroyal" class="col-md-6 input-sm form-control-sm form-control">&nbsp;&nbsp;
-                                            <button id='validatePassroyal' type="button" style="align-items:right;" class="btn btn-warning btn-sm col-md-2" ><i class="fa fa-lock"></i>&nbsp; Validate</button>
-                                          </div>
-                                        </div>
-                                        <div id='routeattachPage' class='col-lg-12' style="opacity:.8;height:390px;overflow-y:auto;overflow-x:auto;white-space:nowrap;">
-                                        </div>
-
-                                        <div  style="height:50px;" class=" col-md-12 modal-footer">
-                                          <div style="width:700px;" class="row d-flex">
-                                            <div style="top:-10px;display:none;border:solid;padding-top:7px;align-items:left;" id='disContRout' class="col-sm-8 p-8">
-
-                                              <div class = "col-sm-8">
-                                                <input style="display:none" type="text" id="lbltmp" class="input-sm col-md-10 float-right">
-                                                <label id="lblContRout" value="test">Continue Previous Routing ? [Yes]</label>
-                                              </div>
-                                              <label id="lblToggle"class="float-left switch switch-pill switch-text switch-3d switch-warning mr-3"><input id="chkboxRout" type="checkbox" class="switch-input" checked> <span data-on="Yes" data-off="No" class="switch-label"></span> <span  class="switch-handle"></span></label>
-
-                                            </div >
-
-                                            <div style="align-items:right;margin-top:-15px;" class="ml-auto p-2">
-                                              <button  id='routeButCanc' type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                            </div>
-                                            <div style="align-items:right;margin-top:-15px;" class="p-2">
-                                              <button id='routebutConfirm' type="button" class="btn btn-primary">Confirm</button>
-                                            </div>
-                                            <button style="display:none;" id='routemodClose' type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                              <span aria-hidden="true">&times;</span>
-                                            </button>
-                                          </div>
-                                        </div>
-
-                                      </div>
-                                    </div>
-
-                                  </div>
-                                </div>
-
-                                <!-- Routing Slip -->
-                                <!-- Password Modal Dialog Box -->
-                                <button id='passwtoggleDialog' style='display:none' type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#passwstaticModal"> </button>
-                                <div  class="modal fade" id="passwstaticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
-                                  <div class="modal-dialog modal-sm"  role="document">
-                                    <div class="modal-content" style='min-width:350px;' >
-                                      <div class="modal-header">
-                                        <h5 class="modal-title" id="passwstaticModalLabel">Confirmation</h5>
-                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                          <span aria-hidden="true">&times;</span>
-                                        </button>
-                                      </div>
-                                      <div id= 'passwmodDisp' class="modal-body">
-                                        <p id='lblResult' class='h4'></p>
-                                        <p class='h6'>Re-enter your password for validation:<input type='password' id='passwmodPass' class='input-sm form-control-sm form-control'></p>
-                                      </div>
-                                      <div class="modal-footer">
-                                        <button id='passwmodCancel' type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                                        <button id='passwbutConfirm' type="button" class="btn btn-primary">Confirm</button>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                                <!-- Password Modal Dialog Box -->
-
-                                <!-- store branch -->
-                                <div class=" float-left"><input value= "<%= branch.toUpperCase() %>" type="hidden" id="disBranch"  name="disBranch"></div>
-                                <div class=" float-left"><input value= "<%= realdrive %>" type="hidden" id="realdrive"  name="realdrive"></div>
-                                <audio  src="/images/noti.wav" type="audio/mpeg" id="soundNoti" autostart="false"></audio>
-
-
-                                <!-- Right Panel -->
-
-                                <script src="/vendors/jquery/dist/jquery.min.js"></script>
-                                <script src="/vendors/popper.js/dist/umd/popper.min.js"></script>
-                                <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-                                <script src="/assets/js/main.js"></script>
-
-                                <script src="/vendors/bootstrap/dist/js/select2.min.js"></script>
-                                <script type="text/javascript" src="/assets/js/adapter.min.js"></script>
-                                <script type="text/javascript" src="/assets/js/vue.min.js"></script>
-                                <script type="text/javascript" src="/assets/js/instascan.min.js"></script>
-
-                                <script src="/vendors/bootstrap/dist/js/pdf.min.js"></script>
-                                <script src="/vendors/bootstrap/dist/js/pdf.worker.min.js"></script>
-                                <script src="/vendors/bootstrap/dist/js/file-explore.js"></script>
-                                <script src="/vendors/bootstrap/dist/js/side.js"></script>
-                                <script src="/vendors/bootstrap/dist/js/bootstrap-toggle.min.js"></script>
-                                <script src="/assets/js/dashboard.js"></script>
-                                <script src="/assets/cookie.js"></script>
-                                <script src="/assets/modaldoc.js"></script>
-                                <script src="/assets/common.js"></script>
-                                <script src="/assets/routeclas.js"></script>
-
-                                <script src="/vendors/chosen/chosen.jquery.min.js"></script>
-                                <script type="text/javascript" src="/assets/app.js"></script>
-
-
-                              </body>
-
-                              </html>
+                                </html>

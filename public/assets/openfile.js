@@ -33,6 +33,12 @@ function triggerButFile(){
                }
              }
            });
+           //check if mobile browser
+           if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+             document.getElementById('disContent').style.display="none";
+             document.getElementById('disContentMobile').style.display="";
+             loadPDFtoCanvas($('#disPath').val());
+           }
         }
       });
     setCookie('mailnoti','false');
@@ -77,6 +83,11 @@ function triggerButFile(){
                     }
                   }
                 });
+                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+                  document.getElementById('disContent').style.display="none";
+                  document.getElementById('disContentMobile').style.display="";
+                  loadPDFtoCanvas($('#disPath').val());
+                }
             }
           });
       }

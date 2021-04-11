@@ -64,7 +64,7 @@
   position: fixed;
   z-index: 1;
   top: 105px;
-  right: 0;
+  right: 0px;
   color: black; background: rgba(50, 50, 0, .5); 
   overflow-x: auto;
   overflow-y: auto;

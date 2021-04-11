@@ -7,16 +7,20 @@
   </div>
 </div>
 <div class="col-md-7">
-
-      <iframe height='240px' class="iframe-preview" width="100%" src="/chartmonitornolayout">
-      </iframe>
-
+    <iframe  height='280px' class="iframe-preview" width="100%" src="/chartmonitornolayout"> </iframe>
 </div>
-<div style="top:-15px;"class="col-md-12">
+<div class="col-md-12">
   <div class="card">
     <div class="card-body">
       <h6 style="font-size:14px;" id="titleBar" class="mb-3">Total Documents Routed</h6>
       <canvas style="margin-top:-25px;" id="barChart" height='75px'></canvas>
+      <script>
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+          document.getElementById('barChart').height = 250;
+          document.getElementById('pieChart').height = 220;
+      }
+    </script>
+
     </div>
   </div>
 </div>

@@ -64,19 +64,19 @@ $(document).ready(function(){
   //handle annotate draw click
     $('#annoDraw').on('click',function(event){
       setCookie('drawtool','draw',1);
-      invokeAnnotate();
+      invokeAnnotate();  $('#disContentMobile').hide();
       window.localStorage.setItem('message','draw');
     });
     //handle annotate text click
     $('#annoText').on('click',function(event){
       setCookie('drawtool','text',1);
-      invokeAnnotate();
+      invokeAnnotate();  $('#disContentMobile').hide();
       window.localStorage.setItem('message','text');
     });
     //handle annotate erase click
     $('#annoErase').on('click',function(event){
       setCookie('drawtool','erase',1);
-      invokeAnnotate();
+      invokeAnnotate();  $('#disContentMobile').hide();
       window.localStorage.setItem('message','erase');
     });
     //cancel draw incoming branch
@@ -85,11 +85,19 @@ $(document).ready(function(){
          type: 'POST',
          url: '/cancelsign',
          success: function(data) {
-           $('#disAnnotate2').hide();drawclick = false;
-           $('#disContent').show();$('#disFrame').hide();
-             if (mainfiledis) {
-               $('#butReturn').show();$('#butRelease2').show();$('#divToggleSign').show();$('#butApprove').show();
-             }
+           if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+             $('#disAnnotate2').hide();drawclick = false;
+             $('#disContentMobile').show();$('#disContent').hide();$('#disFrame').hide();
+               if (mainfiledis) {
+                 $('#butReturn').show();$('#butRelease2').show();$('#divToggleSign').show();$('#butApprove').show();
+               }
+           } else {
+             $('#disAnnotate2').hide();drawclick = false;
+             $('#disContent').show();$('#disFrame').hide();
+               if (mainfiledis) {
+                 $('#butReturn').show();$('#butRelease2').show();$('#divToggleSign').show();$('#butApprove').show();
+               }
+           }
          }
        });
     });

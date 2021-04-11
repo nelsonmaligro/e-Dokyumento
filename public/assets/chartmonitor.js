@@ -176,7 +176,9 @@ function updateCanvas(data){
          //alert(JSON.stringify(sets));
         //$('#tableCanvas').append("<tr><td><div style='width:99%;'><canvas id='canvas-"+bodyCount.toString()+"' height=300px ></canvas></div></td></tr>");
         //tableBody.push("<div style='width:99%;'><canvas id='canvas-"+bodyCount.toString()+"' height=300px ></canvas></div>");
-        myTable.row.add([" <div  style='width:98%;'><canvas ondblclick='openChartFile(event)' id='canvas-"+bodyCount.toString()+"' height=137px ></canvas></div>"]).draw();
+        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) myTable.row.add([" <div  style='width:98%;'><canvas ondblclick='openChartFile(event)' id='canvas-"+bodyCount.toString()+"' height=250px ></canvas></div>"]).draw();
+        else myTable.row.add([" <div  style='width:98%;'><canvas ondblclick='openChartFile(event)' id='canvas-"+bodyCount.toString()+"' height=137px ></canvas></div>"]).draw();
+
         tableCanvas.push({x:newDatasets,y:disFiles});
         bodyCount= bodyCount + 1; count = 0; newDatasets=[]; disFiles=[];
         //alert('test');

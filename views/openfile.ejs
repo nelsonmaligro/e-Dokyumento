@@ -33,6 +33,23 @@
         });
       </script>
     </div>
+    <div style="top:40px;" class="col-12" id="disContentMobile" style="display:none;">
+      <div class="col-2">Page</div>
+      <div class="col-4"> <select id="selPageMobile" class="form-control-sm form-control"></select></div>
+      <canvas class="col-12" id='canvasPDFMobile'></canvas>
+    </div>
+    <!-- Mobile Friendly -->
+    <script>
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+        document.getElementById('avatarHere').className = 'col-2 mr-auto';
+        document.getElementById('disContent').style.display="none";
+        document.getElementById('disContentMobile').style.display="";
+      } else {
+        document.getdocument.getElementById('avatarHere').className = 'col-sm-10 mr-auto';ElementById('disContentMobile').style.display="none";
+      }
+    </script>
+
+    <!-- /Mobile Friendly -->
     <!-- /content -->
   </div><!-- ./wrapper -->
   <!-- Digital Signature Floating -->
@@ -42,7 +59,7 @@
     </button>&nbsp;
   </div>
   <!-- /Digital Signature FLoating -->
-  
+
   <button style="margin-top:-15px; display:none;" id="butFileopen" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#largeModal">Add File</button>
 
   <script src="/assets/openfile.js"></script
