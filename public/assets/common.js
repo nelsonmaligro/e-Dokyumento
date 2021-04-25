@@ -249,13 +249,7 @@ function gotoMain(){
   PDFObject.embed(getCookie('fileOpn'), "#pdf_view");
   setCookie('newpathdraw',getCookie('fileOpn'), 1);
   $('#divToggleSign').show();$('#butReturn').show();
-  //check if mobile browser
-  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
-    document.getElementById('disContent').style.display="none";
-    document.getElementById('disContentMobile').style.display="";
-    loadPDFtoCanvas($('#disPath').val());
-  }
-  if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="CO") || ($('#disLevel').val().toUpperCase()=="EAGM") || ($('#disLevel').val().toUpperCase()=="GM")) {
+  if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="CO") || ($('#disLevel').val().toUpperCase()=="AGM") || ($('#disLevel').val().toUpperCase()=="GM")) {
     $('#selPage').empty();
     loadPDF(getCookie('fileOpn')).then(function(res) {
       $('#selPage').empty();
@@ -264,7 +258,7 @@ function gotoMain(){
     });
     $('#disContent').show();$('#disFrame').hide();
     $('#divSign').hide();
-    if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="EAGM")) {
+    if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) {
       $('#butApprove').hide();$('#butRelease2').show();
     } else {
       $('#butApprove').show();$('#butRelease2').hide();
@@ -275,6 +269,12 @@ function gotoMain(){
   else togglepage = false;
   mainfiledis = true; //variable is in annotate draw js
   $('#disAnnotate').show();
+  //check if mobile browser
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+    document.getElementById('disContent').style.display="none";
+    document.getElementById('disContentMobile').style.display="";
+    loadPDFtoCanvas($('#disPath').val());
+  }
 }
 //handle close popup disWindow
 function closWindow(){

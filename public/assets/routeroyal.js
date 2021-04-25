@@ -26,7 +26,7 @@ $('#toggleButCam').on('change', function(event){
 function submitQRPass(content){
   var hash = new Hashes.SHA512().b64(content); var branch= "N6"; var action= '6';
   if ($('#disLevel').val().toUpperCase()=='DEP') {branch = "N6"; action='1';}
-  else if ($('#disLevel').val().toUpperCase()=='EAGM') {branch = "G.M."; action='1';}
+  else if ($('#disLevel').val().toUpperCase()=='AGM') {branch = "GM"; action='1';}
   else if ($('#disLevel').val().toUpperCase()=='DUTYADMIN') branch = "Duty Admin";
   else branch = "Receiving";
   var todo = {filename:$('#fileroute').val(),monitfile:$('#fileroute').val(),user:getCookie('me'),hashval:hash, action:action,remark:'', branch:branch,subject:''};
@@ -113,7 +113,7 @@ function releasethisdoc(){
     var fileroute = $('#fileroute');
     var user = getCookie('me');
     var distime = 1000;
-    if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="EAGM")) distime = 5000;
+    if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) distime = 5000;
     sleep(distime).then(()=>{
       var arrComm = getCookie('arrComm');
       var todo = {comments:arrComm, hashval:lastQRCode, filepath:$('#disPath').val(), num:parseInt($('#selPage').val(),10)-1,fileroute: fileroute.val(), branch:releaseTo, user:user};
@@ -173,19 +173,20 @@ $('#butRelease3').on('click', async function(event){
   openCam();$('#routeattachPage').hide();
 });
 $('#butRelease1').on('click', async function(event){
-  if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="EAGM")) releaseTo = 'Boss';
+  if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) releaseTo = 'Boss';
   else releaseTo = 'Release';
   $('#disrouteTitle').show();routetoBranchApp();togglecam=false; valPass=false;
   $('#divroyalCam').show();//$('#royalbutConfirm').show();
   openCam();$('#routeattachPage').hide();
 });
 $('#butRelease2').on('click', async function(event){
-  if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="EAGM")) releaseTo = 'Boss';
+  if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) releaseTo = 'Boss';
   else releaseTo = 'Release';
   $('#disrouteTitle').show();routetoBranchApp();togglecam=false; valPass=false;
   $('#divroyalCam').show();//$('#royalbutConfirm').show();
   openCam();$('#routeattachPage').hide();
 });
+//Sign Document
 $('#butApprove').on('click', function(event){
   var todo = {num:0,filepath: $('#disPath').val(),user:getCookie('me')};
   $.ajax({
@@ -198,12 +199,13 @@ $('#butApprove').on('click', function(event){
       $('#butApprove').hide();$('#butRelease2').hide();
       $('#divSign').show();$('#butReturn').hide();
       $('#divToggleSign').hide();$('#divToggledate').show();
+      document.getElementById('disContentMobile').style.display="none";
       //alert($('#disPath').val());
       $('#disAnnotate').hide();
       if (!$('#disPath').val().toUpperCase().includes($('#fileroute').val().toUpperCase())) $('#butRelease1').html("<i class='fa fa-save'></i>&nbsp; Save");
       else {
         $('#divretbranch').show();
-        if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="EAGM")) $('#butRelease1').html("<i class='fa fa-upload'></i>&nbsp;Release to Boss");
+        if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) $('#butRelease1').html("<i class='fa fa-upload'></i>&nbsp;Release to Boss");
         else $('#butRelease1').html("<i class='fa fa-upload'></i>&nbsp;Release this");
       }
     }
@@ -215,16 +217,20 @@ $('#butCancelSign').on('click', function(event){
     url: '/cancelsign',
     success: function(data) {
       $('#disAnnotate').show();
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+        $('#disContentMobile').show();$('#disContent').hide();
+      } else {
+        $('#disContentMobile').hide();$('#disContent').show();
+      }
+      $('#disFrame').hide();$('#butRelease2').hide();
+      $('#butApprove').show();
+      $('#divretbranch').hide();$('#divSign').hide();
       if ($('#disPath').val().toUpperCase().includes($('#fileroute').val().toUpperCase())) {
-        $('#disContent').show();$('#disFrame').hide();
-        $('#butApprove').show();$('#butRelease2').hide();$('#divretbranch').hide();
-        $('#divSign').hide();$('#butReturn').show();
+        $('#butReturn').show();
         $('#divToggleSign').show();$('#divToggledate').hide();
       } else {
-        $('#disContent').show();$('#disFrame').hide();
-        $('#divSign').hide();
-        $('#divToggleSign').hide();$('#divretbranch').hide();
-        $('#butApprove').show();$('#butRelease2').hide();$('#butReturn').hide();
+        $('#divToggleSign').hide();
+        $('#butReturn').hide();
       }
     }
   });
@@ -340,7 +346,7 @@ $(document).ready(function(){
   setCookie('realPath',$('#disPath').val(),1);
   setCookie('fileAI',$('#newfile').val(),1);
   setCookie('noDate','true',1); setCookie('category',$('#disCateg').val(),1);
-  if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="EAGM")) {
+  if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) {
     $('#butRelease2').html("<i class='fa fa-upload'></i>&nbsp;Release to Boss");
     $('#toggleRelease').bootstrapToggle('toggle');
     $('#butApprove').hide();$('#butRelease2').show();

@@ -210,6 +210,11 @@ $(document).ready(function(){
     document.getElementById('canvasPDF').src = "/assets/signcanvas.html";
     $('#divSign').show(); $('#origButtons').hide();
     $('#disContent').hide();$('#disFrame').show();
+    document.getElementById('disContentMobile').style.display="none";
+    updateSelectPage();
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+      if (window.matchMedia("(orientation: portrait)").matches) document.getElementById('avatarHere').style.top="-70px";
+   }
   });
   $('#butCancelSign').on('click', function(event){
     $.ajax({
@@ -218,6 +223,11 @@ $(document).ready(function(){
        success: function(data) {
          $('#divSign').hide(); $('#origButtons').show();
          $('#disContent').show();$('#disFrame').hide();
+         //check if mobile browser
+         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+           document.getElementById('disContent').style.display="none";
+           document.getElementById('disContentMobile').style.display="";
+        }
        }
      });
   });
