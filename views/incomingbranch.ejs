@@ -6,14 +6,13 @@
   <div class=" float-left"><input value= "<%= path %>" type="hidden" id="disPath"  name="disPath"></div>
   <div class=" float-left"><input value= "<%= runscanai %>" type="hidden" id="disScanAI"></div>
   <div class=" float-left"><input type="hidden" id="disLevel" ></div>
-
-  <div id="disFrame" style="display:none;">
+  <div id="disFrame" style="display:none;" >
     <iframe id="canvasPDF"
     name="canvasPDF"
     style="margin-left:20px;height:560px;width:950px;"
     src="/assets/signcanvas.html">
-  </iframe>
-</div>
+   </iframe>
+ </div>
 
 <div id="disContent">
   <script src="/assets/js/jquery.213.min.js"></script>
@@ -77,7 +76,12 @@
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
       document.getElementById('disContent').style.display="none";
       document.getElementById('disContentMobile').style.display="";
-      if (window.matchMedia('screen and (max-width: 768px)').matches) {
+      //document.getElementById('disFrame').style.width="170%";
+      //var disCanvas = document.getElementById('canvasPDF');
+      //disCanvas.style.height="600px";
+      //disCanvas.style.width="52%";
+
+      if (window.matchMedia("(orientation: portrait)").matches) {
         document.getElementById('disAnnotate').style.left = '10px';
         document.getElementById('annotateHere').style.display="none";
         document.getElementById('disAnnotate').style.width="225px";

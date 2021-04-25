@@ -125,11 +125,11 @@
                 <div class=" float-left"><input value= "<%= disp %>" type="hidden" id="fileroute"  name="fileroute" ></div>
                 <!-- for signing-->
                 <div class="col col-sm-6 float-left row" style="display:none;width:480px;" id='divSign'>
-                  <div  class="col col-sm-1"><button id="butCancelSign" type="button" class="btn btn-danger btn-sm"><i class="fa fa-times"></i>&nbsp;Cancel</button></div>
-                  <div  class="col col-sm-2" style="left:50px;"><button  id="butRelease1" type="button" class6"btn btn-primary btn-sm" data-toggle="modal" data-target="#routingModal"><i class="fa fa-upload"></i>&nbsp; Save</button></div>
-                  <div class="col col-sm-6 row" style="border:dashed;left:190px;">
-                    <div  class="col-sm-1" style="left:-25px;top:2px;"><h6>Page:</h6></div>
-                    <div  class="col-sm-3" style="left:-12px;"><select name="selPageSign" id="selPageSign" class="form-control-sm form-control"></select></div>
+                  <div  id = "divButCancelMobile" class="col col-sm-1"><button id="butCancelSign" type="button" class="btn btn-danger btn-sm"><i class="fa fa-times"></i>&nbsp;Cancel</button></div>
+                  <div  id = "divButReleaseMobile" class="col col-sm-2" style="left:50px;"><button  id="butRelease1" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#routingModal"><i class="fa fa-upload"></i>&nbsp; Save</button></div>
+                  <div id = "divButPageMobile" class="col col-sm-6 row" style="border:dashed;left:190px;">
+                    <div id = "divButLblMobile" class="col-sm-1" style="left:-25px;top:2px;"><h6>Page:</h6></div>
+                    <div id = "divButNrMobile" class="col-sm-3" style="left:-12px;"><select name="selPageSign" id="selPageSign" class="form-control-sm form-control"></select></div>
                     <div id="divToggledate"  style="left:15px;" class="col-sm-1"><input data-height="20px" id="toggledate"  data-size="mini" data-width="92" type="checkbox" data-style="ios2"checked data-toggle="toggle" data-on="no date&nbsp;" data-off="&nbsp;&nbsp;w/  date" data-onstyle="warning" data-offstyle="secondary"></div>
                   </div>
                 </div>
@@ -230,18 +230,36 @@
                                     document.getElementById('newfile').style.width = '167px';
                                     document.getElementById('butDiv').className ="user-area dropdown col-5 float-right";
 
-                                    if (window.matchMedia('screen and (max-width: 768px)').matches) {
+                                    if (window.matchMedia("(orientation: portrait)").matches) {
                                       document.getElementById('butDiv').className ="user-area dropdown float-left col-2";
                                       document.getElementById('butDiv').style.left = '145px';
                                       document.getElementById('avatarHere').style.left = '250px';
+                                      document.getElementById('divButCancelMobile').style.left = '15px';
+                                      document.getElementById('divButCancelMobile').className = 'col-1';
+                                      document.getElementById('divButReleaseMobile').style.left = '57px';
+                                      document.getElementById('divButReleaseMobile').className = 'col-1';
+                                      document.getElementById('divButPageMobile').style.left = '95px';
+                                      document.getElementById('divButPageMobile').className = 'col-6';
+                                      document.getElementById('divButLblMobile').style.left = '5px';
+                                      document.getElementById('divButNrMobile').className = 'col-sm-3';
+                                      document.getElementById('divButNrMobile').style.left = '18px';
+                                      document.getElementById('divToggledate').style.left = '25px';
 
                                     } else {
                                       document.getElementById('butDiv').className ="user-area dropdown float-left col-6";
                                       document.getElementById('butDiv').style.left = '145px';
                                       document.getElementById('avatarHere').style.left = '0px'
                                       document.getElementById('avatarHere').className = 'col-2 header-right';
+                                      document.getElementById('divButCancelMobile').style.left = '20px';
+                                      document.getElementById('divButReleaseMobile').style.left = '65px';
+                                      document.getElementById('divButPageMobile').style.left = '100px';
+                                      document.getElementById('divButLblMobile').style.display = 'none';
+                                      document.getElementById('divButNrMobile').className = 'col-6';
+                                      document.getElementById('divButNrMobile').style.left = '-30px';
+                                      document.getElementById('divToggledate').style.left = '-50px';
                                     }
                                     if (window.location.toString().includes("/incoming")) document.getElementById('bufferHere').style.width = '0px';
+
                                   } </script>
 
                                   <div style="left:-30px;" class="user-area dropdown float-right">
@@ -460,8 +478,8 @@
                                                     <%} } %>
                                                   </select>
                                                 </div>
-                                                <a style="left:-17px;" class="col-md-1" style="font-size:14px;">Required:&nbsp;</a>
-                                                <div style="left:12px;min-width:220px;" class="col-md-5">
+                                                <a id="requiredMobile" style="left:-17px;" class="col-md-1" style="font-size:14px;">Required:&nbsp;</a>
+                                                <div id="actionMobile" style="left:12px;min-width:220px;" class="col-md-5">
                                                   <select  id="routeselAct" data-placeholder="Required Action" multiple class="standardSelect" tabindex="5">
                                                     <option value= "1">1 - Approval/Signature</option>
                                                     <option value= "2">2 - Appropriate Action</option>
@@ -478,7 +496,7 @@
                                                 </div>
                                                 <div style="height:2px" class="col-md-12"></div>
                                               </div>
-                                              <div  style="min-width:610px;" class = "row col-md-12">
+                                              <div id="remarkMobile" style="min-width:610px;" class = "row col-md-12">
                                                 <a class="col-md-2" style="font-size:14px;">Remark:&nbsp;</a>
                                                 <input style="width:230px;"  class="input-sm col-md-10 " type="text" id="routeRemark">
 
@@ -520,8 +538,10 @@
                                               <button id='validatePassroyal' type="button" style="align-items:right;" class="btn btn-warning btn-sm col-md-2" ><i class="fa fa-lock"></i>&nbsp; Validate</button>
                                             </div>
                                           </div>
+                                          <div id='bufferrouteMobile' class='col-lg-12' style="display:none"></div>
                                           <div id='routeattachPage' class='col-lg-12' style="opacity:.8;height:390px;overflow-y:auto;overflow-x:auto;white-space:nowrap;">
                                           </div>
+
 
                                           <div  style="height:50px;" class=" col-md-12 modal-footer">
                                             <div style="width:700px;" class="row d-flex">
@@ -552,7 +572,26 @@
 
                                     </div>
                                   </div>
+                                  <!--check if mobile user -->
+                                  <script>
 
+                                    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+                                      document.getElementById('bufferrouteMobile').style.display = '';
+                                      document.getElementById('bufferrouteMobile').style.height = '20px';
+                                      document.getElementById('routeattachPage').style.height = '10px';
+                                      document.getElementById('requiredMobile').style.display = 'none';
+                                      document.getElementById('remarkMobile').style.display = 'none';
+                                      document.getElementById('actionMobile').style.display = 'none';
+                                      if (window.matchMedia("(orientation: portrait)").matches) {
+
+                                      } else {
+                                        //document.getElementById('divSubject').className = 'row col-md-12';
+                                        document.getElementById('routeSubject').className = 'class="input-sm col-4 float-left';
+                                        document.getElementById('divRoutSelBr').style.left = '30px';
+
+                                      }
+                                      if (window.location.toString().includes("/incoming")) document.getElementById('bufferHere').style.width = '0px';
+                                    } </script>
                                   <!-- Routing Slip -->
                                   <!-- Password Modal Dialog Box -->
                                   <button id='passwtoggleDialog' style='display:none' type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#passwstaticModal"> </button>

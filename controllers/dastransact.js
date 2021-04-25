@@ -71,6 +71,7 @@ module.exports = function(app, arrDB){
     //post handle send file to user for notification
     app.post('/senduser', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
+
         sendUser(req, res, id);
       });
     });
@@ -433,12 +434,13 @@ module.exports = function(app, arrDB){
     function sendUser(req, res, id){
       console.log('Send File to user for notification');
       dbhandle.userFind(req.body.user, function (user){
-        //console.log(found);
         if (user){
           dbhandle.userFind(req.body.send, function(disuser){
             if (disuser) {
+               if (!fs.existsSync(drive + user.group)) fs.mkdirSync(drive + user.group);
                 routeduty.updateThis(req, res, drive + user.group + "/", (succ)=>{
                   if (succ) {
+
                     let found = disuser.mailfiles.find((element)=> {return element.toUpperCase()==(req.body.path+req.body.newfile).toUpperCase();});
                     if (!found) disuser.mailfiles.push(req.body.path+req.body.newfile);
                     dbhandle.userUpdate(disuser.userN, disuser.hashP, disuser.email, disuser.salt, disuser.group, disuser.level, disuser.path, disuser.mailfiles, ()=>{

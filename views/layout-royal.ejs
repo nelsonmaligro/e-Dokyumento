@@ -90,10 +90,32 @@
 
     <!-- Header-->
     <header id="header" class="header">
-
       <div class="header-menu">
-
         <div class="col-sm-12">
+          <div id="avatarHere"  class="header-right"> <div style="width:100px;display:none;"  id="bufferHere"></div>
+          <div class="user-area dropdown float-right">
+            <a id= 'userProf' href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <img id="pixID" class="user-avatar rounded-circle" src="/images/nelson.jpg" alt="User Avatar">
+              <span class="count"><%= mailfiles.length %></span>
+            </a>
+
+            <div class="user-menu dropdown-menu">
+              <li><a class="nav-link" href="/myprofile"><i class="fa fa-user"></i> My Profile</a></li>
+              <li class="dropdown-submenu">
+                <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><i class="fa fa-envelope"></i> Mail <span class="count"><%= mailfiles.length %></span></a>
+                <ul id='mailnoti'class="dropdown-menu" style="left:-220px!important;width:210px!important;padding-left:5px;">
+                  <% mailfiles.forEach (function (file){
+                    var fileArr = file.split('/'); filename = fileArr[fileArr.length - 1].substring(0,20); %>
+                    <li><button type='button' onclick="delNotiFile('<%= file %>')" class='btn btn-danger btn-sm fa fa-times' href="#"></button><button button type='button' class="btn btn-link btn-sm" onclick="openDisFile('<%= file %>')" href="#"><%= filename %></button></li>
+                    <% }); %>
+                  </ul>
+                </li>
+                <li><a id="disCheckDrive" class="nav-link"  href="#"><i class="fa fa-cog"></i> Check map drive</a></li>
+                <li><a id="disLogout" class="nav-link" href="#"><i class="fa fa-power-off"></i> Logout</a></li>
+              </div>
+            </div>
+          </div>
+
           <a id="menuToggle" class="menutoggle pull-left"><i class="fa fa fa-tasks"></i></a>
           <div class="header-left">
 
@@ -121,110 +143,118 @@
                 <!-- form send to branch-->
                 <div class="col col-sm-3 float-left"><input value= "<%= disp %>" type="text" id="newfile" name="newfile" class="input-sm form-control-sm form-control"></div>
                 <div class=" float-left"><input value= "<%= disp %>" type="hidden" id="fileroute"  name="fileroute"></div>
-                <div class="col col-sm-2 float-left"><button id="butReturn" type="button" class="btn btn-danger btn-sm"><i class="fa fa-thumbs-down"></i>&nbsp;Return to Branch</button></div>
-                <div class="col col-sm-6 float-left row" style="display:none;width:480px;" id='divSign'>
-                  <div  class="col col-sm-1"><button id="butCancelSign" type="button" class="btn btn-danger btn-sm"><i class="fa fa-times"></i>&nbsp;Cancel</button></div>
-                  <div  class="col col-sm-2" style="left:330px;"><button  style='font-style:Arial;' id="butRelease1" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#routingModal"><i class="fa fa-upload"></i>&nbsp;Release</button></div>
-                  <div class="col col-sm-6 row" style="border:dashed;left:50px;">
-                    <div  class="col-sm-1" style="left:-25px;top:2px;"><h6>Page:</h6></div>
-                    <div  class="col-sm-3" style="left:-12px;"><select name="selPage" id="selPage" class="form-control-sm form-control"></select></div>
-                    <div id="divToggledate"  style="left:15px;" class="col-sm-1"><input data-height="20px" id="toggledate"  data-size="mini" data-width="92" type="checkbox" data-style="ios2"checked data-toggle="toggle" data-on="w/  date&nbsp;" data-off="&nbsp;&nbsp;no date" data-onstyle="warning" data-offstyle="secondary"></div>
+                <div class="col-1 float-left" id='headerbuffer1' style='display:none;'></div>
+                <div id='headerHere1'>
+                  <div class="col col-sm-2 float-left"><button id="butReturn" type="button" class="btn btn-danger btn-sm"><i class="fa fa-thumbs-down"></i>&nbsp;Return to Branch</button></div>
+                  <div class="col col-sm-6 float-left row" style="display:none;width:480px;" id='divSign'>
+                    <div  id = "divButCancelMobile" class="col col-sm-1"><button id="butCancelSign" type="button" class="btn btn-danger btn-sm"><i class="fa fa-times"></i>&nbsp;Cancel</button></div>
+                    <div  id = "divButReleaseMobile" class="col col-sm-2" style="left:330px;"><button  style='font-style:Arial;' id="butRelease1" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#routingModal"><i class="fa fa-upload"></i>&nbsp;Release</button></div>
+                    <div id = "divButPageMobile" class="col col-sm-6 row" style="border:dashed;left:50px;">
+                      <div  id = "divButLblMobile" class="col-sm-1" style="left:-25px;top:2px;"><h6>Page:</h6></div>
+                      <div  id = "divButNrMobile" class="col-sm-3" style="left:-12px;"><select name="selPage" id="selPage" class="form-control-sm form-control"></select></div>
+                      <div id="divToggledate"  style="left:15px;" class="col-sm-1"><input data-height="20px" id="toggledate"  data-size="mini" data-width="92" type="checkbox" data-style="ios2"checked data-toggle="toggle" data-on="w/  date&nbsp;" data-off="&nbsp;&nbsp;no date" data-onstyle="warning" data-offstyle="secondary"></div>
+                    </div>
+                    <div id='pdfPage' class="col col-sm-2 float-left" style="display:none"></div>
                   </div>
-                  <div id='pdfPage' class="col col-sm-2 float-left" style="display:none"></div>
+                  <div id='butapproveMobile'class="col col-sm-2"><button style="display:none;" id="butApprove" type="button" class="btn btn-primary btn-sm"><i class="fa ti-slice"></i>&nbsp; Sign this</button></div>
+                  <div id='divretbranch' class="col col-sm-1" style='display:none;left:50px;'><button  id="butRelease3" style='font-style:Arial;' type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#routingModal" ><i class="fa fa-upload"></i>&nbsp;Return to Branch</button></div>
+                  <div class="col-1" style='display:none;' id='headerbuffer2'>&nbsp;</div>
+                  <div class="col col-sm-2" =><button  id="butRelease2" style='font-style:Arial;' type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#routingModal"><i class="fa fa-upload"></i>&nbsp;Release this</button></div>
+                  <div class="col-sm-6" style='display:none;' id='headerbuffer3'>&nbsp;</div>
+                  <div id="divToggleSign"class="col col-sm-1 float-left"><input data-height="20px" id="toggleRelease"  data-size="mini" data-width="92" type="checkbox" data-style="ios"checked data-toggle="toggle" data-on="Release&nbsp;" data-off="&nbsp;&nbsp;Sign" data-onstyle="warning" data-offstyle="secondary"></div>
                 </div>
-                <div class="col col-sm-2"><button style="display:none;" id="butApprove" type="button" class="btn btn-primary btn-sm"><i class="fa ti-slice"></i>&nbsp; Sign this document</button></div>
-                <div id='divretbranch' class="col col-sm-1" style='display:none;left:50px;'><button  id="butRelease3" style='font-style:Arial;' type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#routingModal" ><i class="fa fa-upload"></i>&nbsp;Return to Branch</button></div>
-                <div  class="col col-sm-2" =><button  id="butRelease2" style='font-style:Arial;' type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#routingModal"><i class="fa fa-upload"></i>&nbsp;Release this</button></div>
-                <div id="divToggleSign"class="col col-sm-1 float-left"><input data-height="20px" id="toggleRelease"  data-size="mini" data-width="92" type="checkbox" data-style="ios"checked data-toggle="toggle" data-on="Release&nbsp;" data-off="&nbsp;&nbsp;Sign" data-onstyle="warning" data-offstyle="secondary"></div>
-
               </form>
 
-              <div class="header-right">
-
-                <div class="user-area dropdown float-right">
-                  <a id= 'userProf' href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <img id="pixID" class="user-avatar rounded-circle" src="/images/nelson.jpg" alt="User Avatar">
-                    <span class="count"><%= mailfiles.length %></span>
-                  </a>
-
-                  <div class="user-menu dropdown-menu">
-                    <li><a class="nav-link" href="/myprofile"><i class="fa fa-user"></i> My Profile</a></li>
-                    <li class="dropdown-submenu">
-                      <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><i class="fa fa-envelope"></i> Mail <span class="count"><%= mailfiles.length %></span></a>
-                      <ul id='mailnoti'class="dropdown-menu" style="left:-220px!important;width:210px!important;padding-left:5px;">
-                        <% mailfiles.forEach (function (file){
-                          var fileArr = file.split('/'); filename = fileArr[fileArr.length - 1].substring(0,20); %>
-                          <li><button type='button' onclick="delNotiFile('<%= file %>')" class='btn btn-danger btn-sm fa fa-times' href="#"></button><button button type='button' class="btn btn-link btn-sm" onclick="openDisFile('<%= file %>')" href="#"><%= filename %></button></li>
-                          <% }); %>
-                        </ul>
-                      </li>
-                      <li><a id="disCheckDrive" class="nav-link"  href="#"><i class="fa fa-cog"></i> Check map drive</a></li>
-                      <li><a id="disLogout" class="nav-link" href="#"><i class="fa fa-power-off"></i> Logout</a></li>
-                    </div>
-                  </div>
-
-                  <button class="search-trigger float-right"><i class="fa fa-search"></i></button>
-                  <div class="form-inline">
-                    <form class="search-form">
-                      <input class="form-control mr-sm-2" type="text" placeholder="Search ..." aria-label="Search">
-                      <button class="search-close" type="submit"><i class="fa fa-close"></i></button>
-                    </form>
-                  </div>
+              <script>
+              if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+                document.getElementById('headerHere1').className = 'col-sm-12 float-left';
+                document.getElementById('headerHere1').style.left = '-5px';
+                document.getElementById('headerbuffer1').style.display = '';
+                document.getElementById('headerbuffer1').className = 'col-10';
+                document.getElementById('headerbuffer1').style.width = '200px';
+                document.getElementById('headerbuffer2').style.display = '';
+                document.getElementById('headerbuffer2').className = 'col-10';
+                document.getElementById('headerbuffer2').style.width = '140px';
+                document.getElementById('divToggleSign').style.left = '30px';
+                if (window.matchMedia("(orientation: portrait)").matches) {
+                  document.getElementById('butapproveMobile').style.left = '20px';
+                  document.getElementById('headerbuffer2').style.display = 'none';
+                  document.getElementById('headerbuffer3').style.display = '';
+                  document.getElementById('headerbuffer3').style.width = '175px';
+                  document.getElementById('divToggleSign').style.left = '0px';
+                  document.getElementById('divButCancelMobile').style.left = '15px';
+                  document.getElementById('divButCancelMobile').className = 'col-1';
+                  document.getElementById('divButReleaseMobile').style.left = '57px';
+                  document.getElementById('divButReleaseMobile').className = 'col-1';
+                  document.getElementById('divButPageMobile').style.left = '135px';
+                  document.getElementById('divButPageMobile').className = 'col-5';
+                  document.getElementById('divButLblMobile').style.display = 'none';
+                  document.getElementById('divButNrMobile').className = 'col-sm-3';
+                  document.getElementById('divButNrMobile').style.left = '18px';
+                  document.getElementById('divToggledate').style.left = '25px';
 
 
+                } else {
+                  document.getElementById('headerbuffer2').style.left = '270px'
+                  document.getElementById('butapproveMobile').style.left = '60px';
+                  document.getElementById('headerHere1').style.left = '-25px';
+
+                }
+
+                if (window.location.toString().includes("/incoming")) document.getElementById('bufferHere').style.width = '0px';
+              } </script>
+
+            </div>
+
+          </header><!-- /header -->
+          <!-- Layout for Content-->
+          <%-body%>
+          <!-- Folder Browse -->
+          <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true" >
+            <div class="modal-dialog modal-lg" role="document" >
+              <div style="height:500px;" class="modal-content" >
+                <div class=" float-left"><input type="hidden" id="refTrue"  name="refTrue"></div>
+                <div class="modal-header">
+                  <h5 class="modal-title" id="largeModalLabel">Attachments</h5>
+                  <button id="topClose"type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
                 </div>
-              </div>
-
-            </header><!-- /header -->
-            <!-- Layout for Content-->
-            <%-body%>
-            <!-- Folder Browse -->
-            <div class="modal fade" id="largeModal" tabindex="-1" role="dialog" aria-labelledby="largeModalLabel" aria-hidden="true" >
-              <div class="modal-dialog modal-lg" role="document" >
-                <div style="height:500px;" class="modal-content" >
-                  <div class=" float-left"><input type="hidden" id="refTrue"  name="refTrue"></div>
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="largeModalLabel">Attachments</h5>
-                    <button id="topClose"type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
-                  <div id='modal-body' class="modal-body">
-                    <div class="card-body">
-                      <ul class="nav nav-tabs" id="myTab" role="tablist">
-                        <li class="nav-item">
-                          <a class="nav-link active" id="File-tab" data-toggle="tab" href="#File" role="tab" aria-controls="File" aria-selected="true">File</a>
-                        </li>
-                        <li class="nav-item">
-                          <a class="nav-link" id="Page-tab" data-toggle="tab" href="#Page" role="tab" aria-controls="Page" aria-selected="false">Page</a>
-                        </li>
-                      </ul>
-                      <div  class="tab-content pl-3 p-1" id="myTabContent">
-                        <div  class="tab-pane fade show active" id="File" role="tabpanel" aria-labelledby="File">
-                          <ul class="file-tree">
-                            <div class='driveList' style="height:250px;overflow-y:auto;overflow-x:auto;white-space:nowrap;">
-                            </div>
-                          </ul>
-                          <div class="modal-footer">
-                            <button id='modButCanc' type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <div id='modal-body' class="modal-body">
+                  <div class="card-body">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="File-tab" data-toggle="tab" href="#File" role="tab" aria-controls="File" aria-selected="true">File</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="Page-tab" data-toggle="tab" href="#Page" role="tab" aria-controls="Page" aria-selected="false">Page</a>
+                      </li>
+                    </ul>
+                    <div  class="tab-content pl-3 p-1" id="myTabContent">
+                      <div  class="tab-pane fade show active" id="File" role="tabpanel" aria-labelledby="File">
+                        <ul class="file-tree">
+                          <div class='driveList' style="height:250px;overflow-y:auto;overflow-x:auto;white-space:nowrap;">
                           </div>
+                        </ul>
+                        <div class="modal-footer">
+                          <button id='modButCanc' type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                         </div>
-                        <div class="tab-pane fade" id="Page" role="tabpanel" aria-labelledby="Page">
-                          <div class="col-lg-12">
-                            <div class="col col-md-4">
-                              <a>Select Page Number</a>
-                            </div>
+                      </div>
+                      <div class="tab-pane fade" id="Page" role="tabpanel" aria-labelledby="Page">
+                        <div class="col-lg-12">
+                          <div class="col col-md-4">
+                            <a>Select Page Number</a>
+                          </div>
 
-                          </div>
-                          <div id='attachPage' class='col-lg-12' style="height:250px;overflow-y:auto;overflow-x:auto;white-space:nowrap;">
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                            <button id='butConfirm' type="button" class="btn btn-primary">Confirm</button>
-                            <button style="display:none;" id='butmodClose' type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                            </button>
-                          </div>
+                        </div>
+                        <div id='attachPage' class='col-lg-12' style="height:250px;overflow-y:auto;overflow-x:auto;white-space:nowrap;">
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                          <button id='butConfirm' type="button" class="btn btn-primary">Confirm</button>
+                          <button style="display:none;" id='butmodClose' type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -232,196 +262,202 @@
                 </div>
               </div>
             </div>
+          </div>
 
-            <!-- Folder Browse -->
+          <!-- Folder Browse -->
 
-            <!-- sidebar -->
-            <div id="sideToggle" class="hamburger">
-              <button  id="sideBut" class="btn btn-sm btn-warning" type="button" onclick="openNav()" >
-                <i class="fa fa-paperclip"></i> Attachments
-              </button>
-              <button  id="hideBut" style="display: none;" class="btn btn-sm btn-warning" type="button" onclick="closeNav()" >
-                <i class="fa ti-angle-double-right"></i> hide this
+          <!-- sidebar -->
+          <div id="sideToggle" class="hamburger">
+            <button  id="sideBut" class="btn btn-sm btn-warning" type="button" onclick="openNav()" >
+              <i class="fa fa-paperclip"></i> Attachments
+            </button>
+            <button  id="hideBut" style="display: none;" class="btn btn-sm btn-warning" type="button" onclick="closeNav()" >
+              <i class="fa ti-angle-double-right"></i> hide this
+            </button>
+          </div>
+
+          <div id="mySidenav" class="sidenav">
+            <a id='butRoutSlip' style="font-family:arial;" href="#" data-toggle="modal" data-target="#routingModal"><i class="fa fa-paper-plane"></i>&nbsp;&nbsp;Routing Slip</a>
+            <a id='mainFile' style="font-family:arial;" href="#" onclick='gotoMain()'><i class="fa fa-tasks"></i>&nbsp;&nbsp;Main File</a>
+            <a style="font-family:arial;"><i class="fa fa-files-o"></i> &nbsp;&nbsp;References&nbsp;&nbsp;<button style="margin-top: -15px;" id="butRef" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#largeModal">Add</button></a>
+            <hr align="right" width="90%" style="margin-top:-5px;border-width:1px;border-color:white;">
+
+            <div id="divRef">
+
+            </div>
+            <a style="font-family:arial;"><i class="fa fa-book"></i>&nbsp;&nbsp;Enclosures&nbsp;&nbsp;<button style="margin-top: -15px;" id="butEnc" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#largeModal">Add</button></a>
+            <hr align="right" width="90%" style="margin-top:-5px;border-width:1px;border-color:white;">
+            <div id="divEnc">
+
+            </div>
+          </div>
+          <div id='overlay' class='overlay'style="display:none">
+            <div id='showProgress'class="sufee-alert alert with-close alert-primary alert-dismissible fade show" >
+              <span class=" spinner-border spinner-border-lg badge badge-pill badge-primary" role="status" aria-hidden="true">  </span>
+              &nbsp;&nbsp;Loading File...
+            </div>
+          </div>
+          <!-- /sidebar -->
+
+          <!-- comment sidebar -->
+          <div id='commentToggle' class="commentburger">
+            <button  id="showCommentBut" class="btn btn-sm btn-info" type="button" onclick="openComment()" >
+              <i class="fa fa-comments"></i> Comments
+            </button>
+            <button  id="hideCommentBut" style="display: none;" class="btn btn-sm btn-info" type="button" onclick="closeComment()" >
+              <i class="fa ti-angle-double-right"></i> Hide this
+            </button>
+          </div>
+
+          <div id="commentnav" class="sidenav">
+            <a style="font-family:arial;"><i class="fa fa-tag"></i>&nbsp;&nbsp;Comments<i onclick="closeComment()" style='margin-top:-8px;color:white;'class="btn btn-lg float-right fa fa-times"></i></i></a>
+            <div style="width:400px;" class="row">
+              <textarea id="commentinput" rows="2" placeholder="Input comment..." class="float-right col-md-9 form-control"></textarea>
+              <div class="col-1"></div>
+              <button  id="addCommentBut" class="col-md-2 float-right btn btn-sm btn-info" type="button" onclick="addComment()" >
+                <i class="fa fa-comments"></i> Add
               </button>
             </div>
+            <br/>
+            <div id='allComments' >
 
-            <div id="mySidenav" class="sidenav">
-              <a id='butRoutSlip' style="font-family:arial;" href="#" data-toggle="modal" data-target="#routingModal"><i class="fa fa-paper-plane"></i>&nbsp;&nbsp;Routing Slip</a>
-              <a id='mainFile' style="font-family:arial;" href="#" onclick='gotoMain()'><i class="fa fa-tasks"></i>&nbsp;&nbsp;Main File</a>
-              <a style="font-family:arial;"><i class="fa fa-files-o"></i> &nbsp;&nbsp;References&nbsp;&nbsp;<button style="margin-top: -15px;" id="butRef" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#largeModal">Add</button></a>
-              <hr align="right" width="90%" style="margin-top:-5px;border-width:1px;border-color:white;">
-
-              <div id="divRef">
-
-              </div>
-              <a style="font-family:arial;"><i class="fa fa-book"></i>&nbsp;&nbsp;Enclosures&nbsp;&nbsp;<button style="margin-top: -15px;" id="butEnc" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#largeModal">Add</button></a>
-              <hr align="right" width="90%" style="margin-top:-5px;border-width:1px;border-color:white;">
-              <div id="divEnc">
-
-              </div>
-            </div>
-            <div id='overlay' class='overlay'style="display:none">
-              <div id='showProgress'class="sufee-alert alert with-close alert-primary alert-dismissible fade show" >
-                <span class=" spinner-border spinner-border-lg badge badge-pill badge-primary" role="status" aria-hidden="true">  </span>
-                &nbsp;&nbsp;Loading File...
-              </div>
-            </div>
-            <!-- /sidebar -->
-
-            <!-- comment sidebar -->
-            <div id='commentToggle' class="commentburger">
-              <button  id="showCommentBut" class="btn btn-sm btn-info" type="button" onclick="openComment()" >
-                <i class="fa fa-comments"></i> Show comments
-              </button>
-              <button  id="hideCommentBut" style="display: none;" class="btn btn-sm btn-info" type="button" onclick="closeComment()" >
-                <i class="fa ti-angle-double-right"></i> Hide comments
-              </button>
             </div>
 
-            <div id="commentnav" class="sidenav">
-              <a style="font-family:arial;"><i class="fa fa-tag"></i>&nbsp;&nbsp;Comments<i onclick="closeComment()" style='margin-top:-8px;color:white;'class="btn btn-lg float-right fa fa-times"></i></i></a>
-              <div style="width:400px;" class="row">
-                <textarea id="commentinput" rows="2" placeholder="Input comment..." class="float-right col-md-9 form-control"></textarea>
-                <div class="col-md-1"></div>
-                <button  id="addCommentBut" class="col-md-2 float-right btn btn-sm btn-info" type="button" onclick="addComment()" >
-                  <i class="fa fa-comments"></i> Add
+          </div>
+          <!-- /comment sidebar -->
+
+
+        </div><!-- /#right-panel -->
+
+
+        <!-- Modal Dialog Box -->
+        <button id='mstrtoggleDialog' style='display:none' type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#mstrstaticModal"> </button>
+        <div  class="modal fade" id="mstrstaticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
+          <div class="modal-dialog modal-sm"  role="document">
+            <div class="modal-content" style='min-width:350px;' >
+              <div class="modal-header">
+                <h5 class="modal-title">Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <br/>
-              <div id='allComments' >
-
+              <div id= 'mstrmodDisp' class="modal-body">
               </div>
-
+              <div class="modal-footer">
+                <button id='successbut' type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+              </div>
             </div>
-            <!-- /comment sidebar -->
+          </div>
+        </div>
+        <!-- Modal Dialog Box -->
 
+        <!-- Routing Slip -->
+        <div style="top:-20px;" class="modal fade" id="routingModal" tabindex="-1" role="dialog" aria-labelledby="routingModalLabel" aria-hidden="true" >
+          <div  class="modal-dialog modal-lg"  role="document" >
+            <div style="background: rgba(50, 50, 0, .5); border:solid;color:white;" class="modal-content" >
+              <div style="height:30px;">
+                <a  style="margin-top:5px;margin-right:15px;color:white;" data-dismiss="modal" aria-label="Close" id="routingTopClose" href="#" aria-hidden="true" class="btn btn-lg float-right fa fa-times"></a>
+              </div>
+              <div id='routing-modal-body'  class="modal-body">
+                <div id="disrouteTitle" class="col-md-9" style="top:-25px;">
+                  <H6  >Scan QR Code to validate the signature and/or release of this document.&nbsp;</H6>
+                </div>
+                <div id="divroyalCam" style="display:none;left:-30px;top:-25px;" class="col-md-2" style="top:10px;">
+                  <input id="toggleButCam" data-size="mini" data-width="108" type="checkbox" data-style="ios1" data-toggle="toggle" data-on="Password&nbsp;&nbsp;" data-off="&nbsp;&nbsp;QR Code" data-onstyle="warning" data-offstyle="secondary">
+                </div>
+                <div style="display:none;background:#263238;  align-items: stretch;justify-content:stretch;height:100%;" class='col-lg-12' id="app">
+                  <div class="preview-container" style="align-items:center;justify-content: center;">
+                    <video id="preview"></video>
+                  </div>
+                </div>
+                <div style="background:#263238; display:none; align-items: stretch;justify-content:stretch;height:100%;"  id="passapp">
+                  <div class='row col-md-12' style="left:15px;align-items:center;justify-content: center;padding-top:8px;padding-bottom:8px;border:solid;">
+                    <a class="col-md-3">Type-in password:</a> <input type="password" id="verPass" class="col-md-6 input-sm form-control-sm form-control">&nbsp;&nbsp;
+                    <button id='validatePass' type="button" style="align-items:right;" class="btn btn-warning btn-sm col-md-2" ><i class="fa fa-lock"></i>&nbsp; Validate</button>
+                  </div>
+                </div>
+                <div id='routeattachPage' class='col-lg-12' style="opacity:.8;height:450px;overflow-y:auto;overflow-x:auto;white-space:nowrap;">
+                </div>
 
-          </div><!-- /#right-panel -->
+                <div  style="height:50px;" class=" col-md-12 modal-footer">
 
-
-          <!-- Modal Dialog Box -->
-          <button id='mstrtoggleDialog' style='display:none' type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#mstrstaticModal"> </button>
-          <div  class="modal fade" id="mstrstaticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
-            <div class="modal-dialog modal-sm"  role="document">
-              <div class="modal-content" style='min-width:350px;' >
-                <div class="modal-header">
-                  <h5 class="modal-title">Information</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <div style="align-items:right;margin-top:-15px;" class="ml-auto p-2">
+                    <button  id='routeButCanc' type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                  </div>
+                  <div style="align-items:right;margin-top:-15px;display:none;" class="p-2">
+                    <button id='royalbutConfirm' type="button" class="btn btn-primary">Confirm</button>
+                  </div>
+                  <button style="display:none;" id='routemodClose' type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
-                <div id= 'mstrmodDisp' class="modal-body">
-                </div>
-                <div class="modal-footer">
-                  <button id='successbut' type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
-                </div>
+
+              </div>
+            </div>
+
+          </div>
+        </div>
+        <script>
+          //if mobile user
+          if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+            document.getElementById('routeattachPage').style.height = '10px';
+          }
+        </script>
+        <!-- Routing Slip -->
+        <!-- Password Modal Dialog Box -->
+        <button id='passwtoggleDialog' style='display:none' type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#passwstaticModal"> </button>
+        <div  class="modal fade" id="passwstaticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
+          <div class="modal-dialog modal-sm"  role="document">
+            <div class="modal-content" style='min-width:350px;' >
+              <div class="modal-header">
+                <h5 class="modal-title" id="passwstaticModalLabel">Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div id= 'passwmodDisp' class="modal-body">
+                <p id='lblResult' class='h4'></p>
+                <p class='h6'>Re-enter your password for validation:<input type='password' id='passwmodPass' class='input-sm form-control-sm form-control'></p>
+              </div>
+              <div class="modal-footer">
+                <button id='passwmodCancel' type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+                <button id='passwbutConfirm' type="button" class="btn btn-primary">Confirm</button>
               </div>
             </div>
           </div>
-          <!-- Modal Dialog Box -->
+        </div>
+        <!-- Password Modal Dialog Box -->
+        <!-- store branch -->
+        <div class=" float-left"><input value= "<%= branch.toUpperCase() %>" type="hidden" id="disBranch"  name="disBranch"></div>
+        <div class=" float-left"><input value= "<%= realdrive %>" type="hidden" id="realdrive"  name="realdrive"></div>
+        <audio  src="/images/noti.wav" type="audio/mpeg" id="soundNoti" autostart="false"></audio>
+        <!-- Right Panel -->
 
-          <!-- Routing Slip -->
-          <div style="top:-20px;" class="modal fade" id="routingModal" tabindex="-1" role="dialog" aria-labelledby="routingModalLabel" aria-hidden="true" >
-            <div  class="modal-dialog modal-lg"  role="document" >
-              <div style="background: rgba(50, 50, 0, .5); border:solid;color:white;" class="modal-content" >
-                <div style="height:30px;">
-                  <a  style="margin-top:5px;margin-right:15px;color:white;" data-dismiss="modal" aria-label="Close" id="routingTopClose" href="#" aria-hidden="true" class="btn btn-lg float-right fa fa-times"></a>
-                </div>
-                <div id='routing-modal-body'  class="modal-body">
-                  <div id="disrouteTitle" class="col-md-9" style="top:-25px;">
-                    <H6  >Scan QR Code to validate the signature and/or release of this document.&nbsp;</H6>
-                  </div>
-                  <div id="divroyalCam" style="display:none;left:-30px;top:-25px;" class="col-md-2" style="top:10px;">
-                    <input id="toggleButCam" data-size="mini" data-width="108" type="checkbox" data-style="ios1" data-toggle="toggle" data-on="Password&nbsp;&nbsp;" data-off="&nbsp;&nbsp;QR Code" data-onstyle="warning" data-offstyle="secondary">
-                  </div>
-                  <div style="display:none;background:#263238;  align-items: stretch;justify-content:stretch;height:100%;" class='col-lg-12' id="app">
-                    <div class="preview-container" style="align-items:center;justify-content: center;">
-                      <video id="preview"></video>
-                    </div>
-                  </div>
-                  <div style="background:#263238; display:none; align-items: stretch;justify-content:stretch;height:100%;"  id="passapp">
-                    <div class='row col-md-12' style="left:15px;align-items:center;justify-content: center;padding-top:8px;padding-bottom:8px;border:solid;">
-                      <a class="col-md-3">Type-in password:</a> <input type="password" id="verPass" class="col-md-6 input-sm form-control-sm form-control">&nbsp;&nbsp;
-                      <button id='validatePass' type="button" style="align-items:right;" class="btn btn-warning btn-sm col-md-2" ><i class="fa fa-lock"></i>&nbsp; Validate</button>
-                    </div>
-                  </div>
-                  <div id='routeattachPage' class='col-lg-12' style="opacity:.8;height:450px;overflow-y:auto;overflow-x:auto;white-space:nowrap;">
-                  </div>
+        <script src="/vendors/jquery/dist/jquery.min.js"></script>
+        <script src="/vendors/popper.js/dist/umd/popper.min.js"></script>
+        <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
+        <script src="/assets/js/main.js"></script>
 
-                  <div  style="height:50px;" class=" col-md-12 modal-footer">
+        <script src="/vendors/bootstrap/dist/js/select2.min.js"></script>
+        <script type="text/javascript" src="/assets/js/adapter.min.js"></script>
+        <script type="text/javascript" src="/assets/js/vue.min.js"></script>
+        <script type="text/javascript" src="/assets/js/instascan.min.js"></script>
 
-                    <div style="align-items:right;margin-top:-15px;" class="ml-auto p-2">
-                      <button  id='routeButCanc' type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                    </div>
-                    <div style="align-items:right;margin-top:-15px;display:none;" class="p-2">
-                      <button id='royalbutConfirm' type="button" class="btn btn-primary">Confirm</button>
-                    </div>
-                    <button style="display:none;" id='routemodClose' type="button" class="close" data-dismiss="modal" aria-label="Close">
-                      <span aria-hidden="true">&times;</span>
-                    </button>
-                  </div>
+        <script src="/vendors/bootstrap/dist/js/pdf.min.js"></script>
+        <script src="/vendors/bootstrap/dist/js/pdf.worker.min.js"></script>
+        <script src="/vendors/bootstrap/dist/js/file-explore.js"></script>
+        <script src="/vendors/bootstrap/dist/js/side.js"></script>
+        <script src="/vendors/bootstrap/dist/js/bootstrap-toggle.min.js"></script>
+        <script src="/assets/js/dashboard.js"></script>
+        <script src="/assets/cookie.js"></script>
+        <script src="/assets/modaldoc.js"></script>
+        <script src="/assets/common.js"></script>
+        <script src="/assets/routeroyal.js"></script>
 
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          <!-- Routing Slip -->
-          <!-- Password Modal Dialog Box -->
-          <button id='passwtoggleDialog' style='display:none' type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#passwstaticModal"> </button>
-          <div  class="modal fade" id="passwstaticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
-            <div class="modal-dialog modal-sm"  role="document">
-              <div class="modal-content" style='min-width:350px;' >
-                <div class="modal-header">
-                  <h5 class="modal-title" id="passwstaticModalLabel">Confirmation</h5>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
-                </div>
-                <div id= 'passwmodDisp' class="modal-body">
-                  <p id='lblResult' class='h4'></p>
-                  <p class='h6'>Re-enter your password for validation:<input type='password' id='passwmodPass' class='input-sm form-control-sm form-control'></p>
-                </div>
-                <div class="modal-footer">
-                  <button id='passwmodCancel' type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                  <button id='passwbutConfirm' type="button" class="btn btn-primary">Confirm</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <!-- Password Modal Dialog Box -->
-          <!-- store branch -->
-          <div class=" float-left"><input value= "<%= branch.toUpperCase() %>" type="hidden" id="disBranch"  name="disBranch"></div>
-          <div class=" float-left"><input value= "<%= realdrive %>" type="hidden" id="realdrive"  name="realdrive"></div>
-          <audio  src="/images/noti.wav" type="audio/mpeg" id="soundNoti" autostart="false"></audio>
-          <!-- Right Panel -->
-
-          <script src="/vendors/jquery/dist/jquery.min.js"></script>
-          <script src="/vendors/popper.js/dist/umd/popper.min.js"></script>
-          <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>
-          <script src="/assets/js/main.js"></script>
-
-          <script src="/vendors/bootstrap/dist/js/select2.min.js"></script>
-          <script type="text/javascript" src="/assets/js/adapter.min.js"></script>
-          <script type="text/javascript" src="/assets/js/vue.min.js"></script>
-          <script type="text/javascript" src="/assets/js/instascan.min.js"></script>
-
-          <script src="/vendors/bootstrap/dist/js/pdf.min.js"></script>
-          <script src="/vendors/bootstrap/dist/js/pdf.worker.min.js"></script>
-          <script src="/vendors/bootstrap/dist/js/file-explore.js"></script>
-          <script src="/vendors/bootstrap/dist/js/side.js"></script>
-          <script src="/vendors/bootstrap/dist/js/bootstrap-toggle.min.js"></script>
-          <script src="/assets/js/dashboard.js"></script>
-          <script src="/assets/cookie.js"></script>
-          <script src="/assets/modaldoc.js"></script>
-          <script src="/assets/common.js"></script>
-          <script src="/assets/routeroyal.js"></script>
-
-          <script src="/vendors/chosen/chosen.jquery.min.js"></script>
+        <script src="/vendors/chosen/chosen.jquery.min.js"></script>
 
 
 
-        </body>
+      </body>
 
-        </html>
+      </html>

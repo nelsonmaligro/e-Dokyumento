@@ -86,18 +86,16 @@ $(document).ready(function(){
          url: '/cancelsign',
          success: function(data) {
            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
-             $('#disAnnotate2').hide();drawclick = false;
-             $('#disContentMobile').show();$('#disContent').hide();$('#disFrame').hide();
-               if (mainfiledis) {
-                 $('#butReturn').show();$('#butRelease2').show();$('#divToggleSign').show();$('#butApprove').show();
-               }
+             $('#disContentMobile').show();$('#disContent').hide();
            } else {
-             $('#disAnnotate2').hide();drawclick = false;
-             $('#disContent').show();$('#disFrame').hide();
-               if (mainfiledis) {
-                 $('#butReturn').show();$('#butRelease2').show();$('#divToggleSign').show();$('#butApprove').show();
-               }
+             $('#disContentMobile').hide();$('#disContent').show();
+
            }
+           $('#disAnnotate2').hide();drawclick = false;$('#disFrame').hide();
+           if (mainfiledis) {
+             $('#butReturn').show();$('#butRelease2').show();$('#divToggleSign').show();$('#butApprove').show();
+           }
+           $('#butRelease2').hide();
          }
        });
     });
