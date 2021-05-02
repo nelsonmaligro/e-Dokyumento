@@ -1,0 +1,66 @@
+<link rel="stylesheet" href="/vendors/font-awesome-4.7/css/font-awesome.min.css">
+<script src="/assets/js/jquery.213.min.js"></script>
+<script src="/assets/js/pdfobject.min.js"></script>
+
+<div class="col-md-4">
+  <div class="card" >
+    <div class="card-body" style="background-color:azure;border: 1px solid gold;">
+      <h6 style="font-size:14px;" class="mb-3">Folders</h6>
+       <ul class="file-tree">
+            <a href="/explorer"> <i style="color:gold;" class="fa fa-folder-open" ></i> root </a>
+         <div id="disFolderTree" class='driveList col-12' width="100%" style="left:-20px;height:530px;overflow:scroll;white-space:nowrap;">
+
+         </div>
+       </ul>
+    </div>
+  </div>
+</div>
+<div class="col-md-5">
+  <div class="card">
+    <div class="card-body" style="background-color:whitesmoke;border: 1px solid blue;">
+      <h6 style="font-size:14px;" class="mb-3">Files</h6>
+      <ul class="file-tree">
+        <div id="disFileTree" class='col-12' style="left:-20px;height:560px;overflow:scroll;white-space:nowrap;">
+        </div>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="col-md-3">
+  <div class="card">
+    <div class="card-body" style="background-color:cornsilk;border:1px solid red;">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-body" style="background-color:pink;border: 2px solid red;">
+              <button id="butExploreView" type="button" class="btn btn-sm btn-link" style="color:purple"><i class="fa fa-eye"></i>&nbsp; View &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+              <button id="butExploreEdit" type="button" class="btn btn-sm btn-link" style="color:blue"><i class="fa fa-edit"></i>&nbsp; Edit (map drive)</button>
+              <button type="button" class="btn btn-sm btn-link" style="color:brown"><i class="fa fa-share"></i>&nbsp; Route to Branch</button>
+              <button type="button" class="btn btn-sm btn-link" style="color:green"><i class="fa fa-user"></i>&nbsp; Share to (Person)</button>
+              <button type="button" class="btn btn-sm btn-link" style="color:gray"><i class="fa fa-cloud-download"></i>&nbsp; Download &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+              <button type="button" class="btn btn-sm btn-link" style="color:red"><i class="fa fa-thumbs-down"></i>&nbsp; Delete &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+         <h6 style="font-size:14px;" class="mb-3">Metadata</h6>
+         <div class="col-12"><div class="col-sm-3" style="left:-50px;"><label class="col-form-label-sm">Author</label></div><div class="col-sm-9"><input style="width:170px;" type="text" id="metaAuthor" class="input-sm form-control-sm form-control"></div></div>
+         <div class="col-12"><div class="col-sm-3" style="left:-50px;"><label class="col-form-label-sm">Date&nbsp;Modified</label></div><div class="col-sm-9"><input  style="width:170px;" type="text" id="metaDeyt" class="input-sm form-control-sm form-control"></div></div>
+         <div class="col-12"><div class="col-sm-3" style="left:-50px;"><label class="col-form-label-sm">Size</label></div><div class="col-sm-9"><input style="width:170px;" type="text" id="metaSize" class="input-sm form-control-sm form-control"></div></div>
+         <div class="col-12"><div class="col-sm-3" style="left:-50px;"><label class="col-form-label-sm">Classification</label></div><div class="col-sm-9"><input style="width:170px;" type="text" id="metaClass" class="input-sm form-control-sm form-control"></div></div>
+         <div class="col-12"><div class="col-sm-3" style="left:-50px;"><label class="col-form-label-sm">Tags</label></div><div class="col-sm-9">
+           <select id="metaTags" style="width:170px;" class="form-control-sm form-control"></select></div></div>
+         <div class="col-12"><div class="col-sm-3" style="left:-50px;"><label class="col-form-label-sm">Reference</label></div><div class="col-sm-9">
+           <select id="metaRef" style="width:170px;" class="form-control-sm form-control"></select></div></div>
+         <div class="col-12"><div class="col-sm-3" style="left:-50px;"><label class="col-form-label-sm">Enclosure</label></div><div class="col-sm-9">
+           <select id="metaEnc" style="width:170px;" class="form-control-sm form-control"></select></div></div>
+         <div class="col-12"><div class="col-sm-3" style="left:-50px;"><label class="col-form-label-sm">Comments</label></div><div class="col-sm-9">
+           <select id="metaComment" style="width:170px;" class="form-control-sm form-control"></select></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <script src="/assets/explorer.js"></script>

@@ -49,6 +49,7 @@ $(document).ready(function(){
         }
         //alert(JSON.stringify($(".uploadTree")));
         $(".uploadTree").filetree();
+        $('#overlay').hide();
       }
     });
 

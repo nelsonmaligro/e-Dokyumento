@@ -76,11 +76,6 @@
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
       document.getElementById('disContent').style.display="none";
       document.getElementById('disContentMobile').style.display="";
-      //document.getElementById('disFrame').style.width="170%";
-      //var disCanvas = document.getElementById('canvasPDF');
-      //disCanvas.style.height="600px";
-      //disCanvas.style.width="52%";
-
       if (window.matchMedia("(orientation: portrait)").matches) {
         document.getElementById('disAnnotate').style.left = '10px';
         document.getElementById('annotateHere').style.display="none";

@@ -12,7 +12,7 @@
 }
 .file-list li a{
     text-decoration: none;
-    color:#444;  
+    color:#444;
 }
 .file-list li a:before{
     display:block;
