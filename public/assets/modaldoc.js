@@ -93,7 +93,8 @@ function showFile(disFile, disDir, flag){
  }else {//if click on File Open
    //setCookie('realPath',disDir + '/');
    togglePanelHide(true);$('#overlay').show()//display spinner
-   var todo = {path:disDir + '/',file:newFile};
+   if (disDir.substring(disDir.length - 1) != "/") disDir = disDir + '/';
+   var todo = {path:disDir,file:newFile};
      $.ajax({
        type: 'POST',
        url: '/fileopen',

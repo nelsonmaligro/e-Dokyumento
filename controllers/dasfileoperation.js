@@ -43,6 +43,18 @@ module.exports = function(app, arrDB){
     var upload = multer({ storage : storage}).single('fileinput');
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
+    //post handle explorer show file
+    app.post('/explorershow', urlencodedParser, function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        postExplorerShow(req, res, id);
+      });
+    });
+    //get handle Explorer
+    app.get('/explorer', function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        getExplorer(req, res, id);
+      });
+    });
     //post handle file open with params
     app.post('/fileopen', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
@@ -125,6 +137,44 @@ module.exports = function(app, arrDB){
     });
     //
     //------------------------------------------FUNCTIONS START HERE----------------------------------------------------
+    //process post explorer show file function
+    function postExplorerShow(req, res, id){
+      console.log('Show File Explorer');
+          var disDrive = '/drive/';
+          let newDrive = req.body.path;
+          if (newDrive.toUpperCase().includes('D:/DRIVE')){
+            let drivePre = newDrive.substring(0,8);
+            newDrive = newDrive.replace(drivePre,drive.substring(0,drive.length-1));
+          }
+          var disFile = req.body.file; var disPath= newDrive;
+          dbhandle.docFind(disPath+disFile, async function (found){
+            rout= "";ref = [];enc = []; disClas = ""; disTag = []; disComm = [];disAuthor="";disDeyt="";disSize=0;
+            if (found){
+              disComm= found.comment;disAuthor=found.author;disDeyt=found.deyt;disSize=found.size; rout= found.routeslip;ref = found.reference;enc = found.enclosure; disClas = found.category; disTag = found.projects;
+            }
+            var arrBr = [{disComm:disComm, disAuthor:disAuthor, disDeyt:disDeyt, disSize:disSize, realpath:disPath,disp:disFile, rout:rout, ref:ref, enc:enc, disClas:disClas, disTag:disTag}];
+            res.json(JSON.stringify(arrBr));
+          });
+    }
+
+    //Process get Explorer Function
+    function getExplorer(req, res, id){
+      //refresh lists
+      console.log('Get Explorer');
+      dbhandle.generateList(arrDB.class, function (res){ docClass = res; });
+      dbhandle.generateList(arrDB.tag, function (res){ docTag = res; });
+      dbhandle.userFind(id, function(user){
+        dbhandle.groupFind(user.group, function (groups){
+          fs.readdir(drivetmp + user.group, function(err,items){
+            let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
+            if (err) console.log(err);var def="empty";
+            var disDrive = '/drive/';rout= "";ref = [];enc = []; disComm = [];
+            if (sortArr.length > 0) {def=sortArr[0];}
+            res.render('explorer', {layout:'layout-browse', realdrive:drive, level:user.level, mailfiles:user.mailfiles, docPers:groups, path:disDrive +'No Pending Files.pdf', files:sortArr, disp:"Empty File", branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag, rout:rout, ref:ref, enc:enc, disComm:disComm });
+          });
+        });
+      });
+    }
     //handle edit incoming documents
     function editincoming(req,res,id){
       dbhandle.userFind(id, function (user){

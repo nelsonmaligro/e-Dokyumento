@@ -37,6 +37,7 @@
   <link href="/vendors/bootstrap/dist/css/bootstrap-toggle.min.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="/assets/hashes.js"></script>
 
+
 </head>
 
 <body>
@@ -45,15 +46,18 @@
     <nav class="navbar navbar-expand-sm navbar-default">
 
       <div class="navbar-header">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
-          <i class="fa fa-bars"></i>
+        <button type="button" class="navbar-toggler"  data-toggle="collapse" data-target="#main-menu" aria-controls="main-menu" aria-expanded="false" aria-label="Toggle navigation">
+          <i  class="fa fa-bars"></i>
         </button>
         <a class="navbar-brand" href="/dashlogs"><img src="/images/logo.png" alt="Logo"></a>
         <a class="navbar-brand hidden" href="/dashlogs"><img src="/images/logo2.png" alt="Logo"></a>
       </div>
 
-      <div id="main-menu" class="main-menu collapse navbar-collapse">
+      <div id="main-menu" class="main-menu collapse  navbar-collapse">
         <ul class="nav navbar-nav">
+          <li class="active">
+            <a id="menuExplorer" href="/explorer" > <i class="menu-icon fa fa-sitemap" ></i>Explorer </a>
+          </li>
           <h3 class="menu-title">Communications</h3>
           <li class="active">
             <a id="menuIncoming" href="/incoming"> <i class="menu-icon fa fa-envelope"></i>Routing </a>

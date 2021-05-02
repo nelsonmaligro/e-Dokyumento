@@ -45,7 +45,7 @@ function submitSign(filepath,disX, disY){
 
 
 
-//handle canvas signing
+//handle canvas signing with mouse pointer
   let shiftX = 0;
   let shiftY = 0;
   ball.style.position = 'absolute';
@@ -66,7 +66,6 @@ function submitSign(filepath,disX, disY){
   }
 
   function onDocMouseMove(event) {
-
     docMoveAt(event.pageX, event.pageY);
   }
   function docMoveAt(pageX, pageY) {
@@ -101,6 +100,47 @@ function submitSign(filepath,disX, disY){
   ball.ondragstart = function() {
     return false;
   };
+
+  // For Touhscreen javascript
+  var touchX,touchY;
+  if (ctx) {
+      // React to touch events on the canvas
+      canvas.addEventListener('touchstart', sketchpad_touchStart, false);
+      canvas.addEventListener('touchmove', sketchpad_touchMove, false);
+      canvas.addEventListener('touchend', sketchpad_touchEnd, false);
+  }
+  function sketchpad_touchStart(e) {
+    getTouchPos(e);
+    mousePressed = true;
+    Draw(touchX, touchY, false);
+    // Prevents an additional mousedown event being triggered
+    event.preventDefault();
+  }
+  function sketchpad_touchEnd() {
+      mousePressed = false;
+
+  }
+
+  function sketchpad_touchMove(e) {
+    getTouchPos(e);
+    Draw(touchX, touchY, true);
+    // Prevent a scrolling action as a result of this touchmove triggering.
+    event.preventDefault();
+  }
+
+  function getTouchPos(e) {
+    if (!e)
+    var e = event;
+    if (e.touches) {
+      if (e.touches.length == 1) { // Only deal with one finger
+        var touch = e.touches[0]; // Get the information for finger #1
+        touchX=touch.pageX-touch.target.offsetLeft;
+        touchY=touch.pageY-touch.target.offsetTop;
+      }
+    }
+  }
+
+
  $(document).ready(function(){
    $('#ballImg').prop('src',"/images/"+getCookie('me')+".svg");
  });
