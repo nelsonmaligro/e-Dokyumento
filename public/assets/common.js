@@ -3,7 +3,7 @@ var disWindow = null; var disClock = null;
 function displaycertinfo(){
   let digicert = JSON.parse(getCookie('digitalcert'));
   alert("Digital Signature Status: " +digicert.message + "\n" +
-        "Verified:"+digicert.verified + "     Authenticity:"+digicert.verified + "     Integrity:" +digicert.integrity + "\n" + 
+        "Verified:"+digicert.verified + "     Authenticity:"+digicert.verified + "     Integrity:" +digicert.integrity + "\n" +
         "=======================================" + "\n" +
         "Issued By: " + digicert.meta.certs[0].issuedBy.commonName+','+digicert.meta.certs[0].issuedBy.organizationName + '\n' +
         "Issued By: " + digicert.meta.certs[0].issuedTo.commonName+','+digicert.meta.certs[0].issuedTo.organizationName + '\n' +
@@ -249,7 +249,7 @@ function gotoMain(){
   PDFObject.embed(getCookie('fileOpn'), "#pdf_view");
   setCookie('newpathdraw',getCookie('fileOpn'), 1);
   $('#divToggleSign').show();$('#butReturn').show();
-  if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="CO") || ($('#disLevel').val().toUpperCase()=="EAGM") || ($('#disLevel').val().toUpperCase()=="GM")) {
+  if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="CO") || ($('#disLevel').val().toUpperCase()=="AGM") || ($('#disLevel').val().toUpperCase()=="GM")) {
     $('#selPage').empty();
     loadPDF(getCookie('fileOpn')).then(function(res) {
       $('#selPage').empty();
@@ -258,7 +258,7 @@ function gotoMain(){
     });
     $('#disContent').show();$('#disFrame').hide();
     $('#divSign').hide();
-    if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="EAGM")) {
+    if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) {
       $('#butApprove').hide();$('#butRelease2').show();
     } else {
       $('#butApprove').show();$('#butRelease2').hide();
@@ -269,6 +269,12 @@ function gotoMain(){
   else togglepage = false;
   mainfiledis = true; //variable is in annotate draw js
   $('#disAnnotate').show();
+  //check if mobile browser
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+    document.getElementById('disContent').style.display="none";
+    document.getElementById('disContentMobile').style.display="";
+    loadPDFtoCanvas($('#disPath').val());
+  }
 }
 //handle close popup disWindow
 function closWindow(){
@@ -370,7 +376,7 @@ function sleep(ms) {
 
 //Load when html renders
 $(document).ready(function(){
-    //assign picture based on id ME
+  //assign picture based on id ME
   var disID = getCookie('me');
   $('#pixID').attr("src","/images/"+disID+".jpg");
   //handle click open file menu
@@ -449,4 +455,56 @@ $('#disLogout').on('click', function(){
 //start auto refresh Notification
 checkFiles();
 setInterval('checkFiles();',20000);
+//For mobile browser Load the PDF to Convas
+loadPDFtoCanvas($('#disPath').val());
+
+});
+
+
+
+//For mobile browser
+//Load the PDF
+function loadPDFtoCanvas(url){
+  //populate page numbers SelectionBox
+  if (url!=undefined){
+    $('#overlay').show()//display spinner
+    loadPDF(url).then(function(res) {
+      $('#selPageMobile').empty();
+      for (var i=1; i<=res; i++) {$('#selPageMobile').append("<option value='"+i.toString()+"'>"+i.toString()+"</option>");}
+      //$('#selPage').trigger("chosen:updated
+        $('#overlay').hide()//display spinner
+    });
+  pdfjsLib.getDocument(url)
+    .then(function(pdf){
+      return pdf.getPage(1);
+    }).then(function(page){
+      renderPage(page)
+    });
+  }
+
+}
+// For Mobile handle render page into canvasPDF
+function renderPage(page){
+  var scale = 2;
+  var viewport = page.getViewport({ scale: scale, });
+
+  var canvas = document.getElementById('canvasPDFMobile');
+  var context = canvas.getContext('2d');
+  canvas.height = viewport.height;
+  canvas.width = viewport.width;
+  var renderContext = {
+    canvasContext: context,
+    viewport: viewport
+  };
+  page.render(renderContext);
+}
+
+//For Mobile select page
+$('#selPageMobile').on('change', function(event){
+  pdfjsLib.getDocument($('#disPath').val())
+    .then(function(pdf){
+      return pdf.getPage(parseInt($('#selPageMobile').val(),10));
+    }).then(function(page){
+      renderPage(page)
+    });
 });

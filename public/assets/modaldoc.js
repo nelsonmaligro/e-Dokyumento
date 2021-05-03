@@ -53,6 +53,12 @@ function dispAttach(disDir, disFile){
                 }
               });
             }
+            //check if mobile browser
+            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+              document.getElementById('disContent').style.display="none";
+              document.getElementById('disContentMobile').style.display="";
+              loadPDFtoCanvas(newData.filepath);
+            }
         }
       });
       //determine of page is toggled for main or attachment. This is for the annotation
@@ -87,7 +93,8 @@ function showFile(disFile, disDir, flag){
  }else {//if click on File Open
    //setCookie('realPath',disDir + '/');
    togglePanelHide(true);$('#overlay').show()//display spinner
-   var todo = {path:disDir + '/',file:newFile};
+   if (disDir.substring(disDir.length - 1) != "/") disDir = disDir + '/';
+   var todo = {path:disDir,file:newFile};
      $.ajax({
        type: 'POST',
        url: '/fileopen',
@@ -113,6 +120,12 @@ function showFile(disFile, disDir, flag){
              }
            }
          });
+         //check if mobile browser
+         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+           document.getElementById('disContent').style.display="none";
+           document.getElementById('disContentMobile').style.display="";
+           loadPDFtoCanvas($('#disPath').val());
+         }
        }
      });
     }

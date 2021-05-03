@@ -33,6 +33,12 @@ function triggerButFile(){
                }
              }
            });
+           //check if mobile browser
+           if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+             document.getElementById('disContent').style.display="none";
+             document.getElementById('disContentMobile').style.display="";
+             loadPDFtoCanvas($('#disPath').val());
+           }
         }
       });
     setCookie('mailnoti','false');
@@ -77,6 +83,11 @@ function triggerButFile(){
                     }
                   }
                 });
+                if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+                  document.getElementById('disContent').style.display="none";
+                  document.getElementById('disContentMobile').style.display="";
+                  loadPDFtoCanvas($('#disPath').val());
+                }
             }
           });
       }
@@ -86,7 +97,6 @@ function triggerButFile(){
 //handle open file from modaldoc.js
 function handleOpenFile(data){
     //Load all file metadata
-
     var arrData = JSON.parse(data);
     arrData.forEach(function (disData){
         PDFObject.embed(disData.path, "#pdf_view");
@@ -182,15 +192,24 @@ function updateSelectPage(){
 }
 //Load when html renders
 $(document).ready(function(){
-  //initialize
-  triggerButFile();
+  //initialize....check if file already selected from explorer page
+  if (getCookie('showExploreFile')=='true'){
+    setCookie('showExploreFile','false',1);
+    showFile(getCookie('fileAI'), getCookie('realpath'), 'fileopen');
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+      document.getElementById('disContent').style.display="none";
+      document.getElementById('disContentMobile').style.display="";
+      loadPDFtoCanvas($('#disPath').val());
+    }
+  } else triggerButFile();
+
+
   var disID = getCookie('me');
   document.getElementById('docSave').innerHTML = "Save Metadata";
   document.getElementById('docEdit').style.display = "block";
   document.getElementById('docSend').style.display = "block";
   $('#signDocBut').show();
       //document.getElementById('signDocBut').style.display = "block";
-
   setCookie('noDate','true',1);
 
 
@@ -199,6 +218,11 @@ $(document).ready(function(){
     document.getElementById('canvasPDF').src = "/assets/signcanvas.html";
     $('#divSign').show(); $('#origButtons').hide();
     $('#disContent').hide();$('#disFrame').show();
+    document.getElementById('disContentMobile').style.display="none";
+    updateSelectPage();
+    if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+      if (window.matchMedia("(orientation: portrait)").matches) document.getElementById('avatarHere').style.top="-70px";
+   }
   });
   $('#butCancelSign').on('click', function(event){
     $.ajax({
@@ -207,6 +231,11 @@ $(document).ready(function(){
        success: function(data) {
          $('#divSign').hide(); $('#origButtons').show();
          $('#disContent').show();$('#disFrame').hide();
+         //check if mobile browser
+         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+           document.getElementById('disContent').style.display="none";
+           document.getElementById('disContentMobile').style.display="";
+        }
        }
      });
   });
@@ -216,8 +245,15 @@ $(document).ready(function(){
       if (!$('#newfile').val().includes('.')) {alert ('File extension not recognized!'); return false;}
         event.preventDefault(); // Recommended to stop the link from doing anything else
         var newPath = getCookie('newPath');
-        if (newPath.toUpperCase().includes('D:/DRIVE')) newPath = newPath.toUpperCase().replace('D:/DRIVE','Z:');
-        if (newPath.toUpperCase().substring(0,2)=='D:') newPath = newPath.toUpperCase().replace(newPath.substring(0,2),'Z:');
+        var splitChar = [];
+        if (newPath.includes('/')) splitChar = newPath.split('/');
+        else if (newPath.includes('\\')) splitChar = newPath.split('\\');
+        var allPath = 'Z:/';
+        if (splitChar[0].includes(':')) { for (x=2;x < splitChar.length; x++) {allPath = allPath + splitChar[x] + '/';}}
+        else { for (x=1;x < splitChar.length; x++) {allPath = allPath + splitChar[x] + '/';}}
+
+        //if (newPath.toUpperCase().includes('D:/DRIVE')) newPath = newPath.toUpperCase().replace('D:/DRIVE','Z:');
+        //if (newPath.toUpperCase().substring(0,2)=='D:') newPath = newPath.toUpperCase().replace(newPath.substring(0,2),'Z:');
 
         var newfile = $('#newfile').val();
         disWindow = window.open("ie:"+newPath+newfile+"","disWindow","width=5px,heigh=5px");
