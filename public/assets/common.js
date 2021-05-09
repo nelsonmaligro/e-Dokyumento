@@ -232,11 +232,8 @@ function selChose(){
     width: "100%",
     tokenSeparators: [',', '\n']
   });
-    $("#selOthers").chosen({
-        //disable_search_threshold: 10,
-        no_results_text: "Oops, nothing found!",
-        width: "100%"
-    });
+
+
     $("#selBr").chosen({
         //disable_search_threshold: 10,
         no_results_text: "Oops, nothing found!",
@@ -302,9 +299,12 @@ function delNotiFile(filepath){
       url: '/delnotifile',
       data: todo,
       success: function(data){
-        setCookie('fileAI','',1);
-        location.replace('/incoming');
-        //location.replace('/incoming');
+        if (getCookie('realpath').toUpperCase()+getCookie('fileAI').toUpperCase() ==  filepath.toUpperCase()) {
+          setCookie('fileAI','',1);location.replace('/explorer');
+        }
+        else {
+          location.reload();
+        }
       }
     });
 }

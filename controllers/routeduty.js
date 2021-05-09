@@ -24,7 +24,6 @@ dbhandle.settingDis((setting)=>{
       var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
       makeDir(driveMain + 'Routing Slip/',year, month);
       getcontent.getContent(dst + req.body.newfile,req.body.newfile,function (discontent){
-        //olddst = dst; dst = dst + req.body.fileroute;
         //console.log(req.body.fileroute+':'+req.body.newfile);
         if (fs.existsSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf')) fs.copyFileSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf',driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.newfile+'.pdf');
         var routslipTemp = driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.newfile+'.pdf';
@@ -43,6 +42,7 @@ dbhandle.settingDis((setting)=>{
         arrComment.forEach(function (comment){
           newComm.push({branch:comment.branch, content:comment.content});
         });
+        //console.log( dst+req.body.newfile+'#'+req.body.class+':'+req.body.tag+':'+newRef+':'+newEnc+':'+newComm)
         if (!res) dbhandle.docCreate (generateID(), req.body.newfile, dst+req.body.newfile, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(dst + req.body.newfile).size, discontent, routslipTemp, newRef, newEnc, newComm);
         else  dbhandle.docEdit (res.id,req.body.newfile, dst+req.body.newfile, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(dst + req.body.newfile).size, discontent, routslipTemp, newRef, newEnc, newComm);
       });

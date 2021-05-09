@@ -199,12 +199,12 @@
                                           <li><a class="dropdown-item bg-flat-color-1" onclick="sendUser('<%= branch %>')" href="#" class="btn btn-success btn-sm"><%= branch %></a></li>
                                           <% }); %>
                                           <li><a class="dropdown-item bg-flat-color-0">Other Users</a></li>
-                                          <li id='othSelect'><span><select id="selOthers" class="standardSelect" tabindex="6">
+                                          <li id='othSelect'><span><select style="width:120px;" id="selOthers" class="standardSelect" tabindex="6">
                                             <% pers.others.forEach (function (others){ %>
                                               <option ><%= others %></option>
                                               <% }); %>
                                             </select>
-                                            <a id='othSend' class="float-right badge badge-info" href="#">Send</a>
+                                            <a id='othSend' class="float-right badge badge-info" href="#" style="height:25px;">Send</a>
                                           </span></li>
                                           <% }); %>
                                         </ul>

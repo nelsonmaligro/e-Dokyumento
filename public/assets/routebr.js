@@ -173,7 +173,7 @@ $(document).ready(function(){
         if ($('#routeselBr').val()==null) {
           alert('Input Branch to Route!'); return;
         }
-        if (qrClick){
+        if (qrClick){ //if routing slip is signed with password or QR Code
           $('#routemodClose').click();
             togglePanelProc(true);
 
