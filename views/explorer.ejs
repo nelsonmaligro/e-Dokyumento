@@ -5,11 +5,10 @@
 <div class="col-md-4">
   <div class="card" >
     <div class="card-body" style="background-color:azure;border: 1px solid gold;">
-      <h6 style="font-size:14px;" class="mb-3">Folders</h6>
+      <h6 style="font-size:14px;" class="mb-3 col-12">Folders</h6>
+      <a href="/explorer"> <i style="color:gold;" class="fa fa-folder-open" ></i> root </a>
        <ul class="file-tree">
-            <a href="/explorer"> <i style="color:gold;" class="fa fa-folder-open" ></i> root </a>
-         <div id="disFolderTree" class='driveList col-12' width="100%" style="left:-20px;height:530px;overflow:scroll;white-space:nowrap;">
-
+         <div id="disFolderTree" class='driveList col-12' style="overflow:scroll;left:-20px;height:530px;white-space:nowrap;">
          </div>
        </ul>
     </div>
@@ -31,13 +30,42 @@
     <div class="card-body" style="background-color:cornsilk;border:1px solid red;">
       <div class="col-12">
         <div class="card">
-          <div class="card-body" style="background-color:pink;border: 2px solid red;">
+          <div class="card-body " style="background-color:pink;border: 2px solid red;">
               <button id="butExploreView" type="button" class="btn btn-sm btn-link" style="color:purple"><i class="fa fa-eye"></i>&nbsp; View &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
               <button id="butExploreEdit" type="button" class="btn btn-sm btn-link" style="color:blue"><i class="fa fa-edit"></i>&nbsp; Edit (map drive)</button>
-              <button type="button" class="btn btn-sm btn-link" style="color:brown"><i class="fa fa-share"></i>&nbsp; Route to Branch</button>
-              <button type="button" class="btn btn-sm btn-link" style="color:green"><i class="fa fa-user"></i>&nbsp; Share to (Person)</button>
-              <button type="button" class="btn btn-sm btn-link" style="color:gray"><i class="fa fa-cloud-download"></i>&nbsp; Download &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
-              <button type="button" class="btn btn-sm btn-link" style="color:red"><i class="fa fa-thumbs-down"></i>&nbsp; Delete &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+              <div class="dropdown-submenu">
+              <button id="butExploreRoute" type="button" class="dropdown-toggle btn btn-sm btn-link" style="color:brown"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-share"></i>&nbsp; Route to Branch</button>
+                <div id="disDropRoutemenuMobile" class="dropdown-menu" style="margin-left:-230px;" aria-labelledby="disDropRoutemenuMobile">
+                  <% for (var i=0; i < docBr.length; i++) { %>
+                    <%  if ((docBr[i].toUpperCase()=='ALL BRANCHES') || (docBr[i].toUpperCase()=='EXO') || (docBr[i].toUpperCase()=='DN6') || (docBr[i].toUpperCase()=='N6') || (docBr[i].toUpperCase()=='ASST.G.M.') || (docBr[i].toUpperCase()=='G.M.')) { %>
+                      <div style="height:1px;border-color:black;"> </div>
+                      <li><a class="<% if (docBr[i].toUpperCase()==branch.toUpperCase()) { %> disabled <% } %>  dropdown-item bg-flat-color-4" onclick="routetoBranchExplore('<%= docBr[i] %>')" href="#" data-toggle="modal" data-target="#routingModal"><%= docBr[i] %></a></li>
+                      <% } else { %>
+                        <li><a class="<% if (docBr[i].toUpperCase()==branch.toUpperCase()) { %> disabled <% } %> dropdown-item bg-flat-color-3" onclick="routetoBranchExplore('<%= docBr[i] %>')" href="#" data-toggle="modal" data-target="#routingModal"><%= docBr[i] %></a></li>
+                        <% } } %>
+                </div>
+              </div>
+              <div class="dropdown-submenu">
+              <button id="butExploreShare" type="button" style="color:green" class="dropdown-toggle btn btn-sm btn-link"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i>&nbsp; Share to (Person)</button>
+                  <div id="disDropmenuMobile" class="dropdown-menu" style="margin-left:-170px;" aria-labelledby="disDropmenuMobile">
+                    <li><a class="dropdown-item bg-flat-color-0">Branch Users</a></li>
+                    <% docPers.forEach(function (pers){ pers.branch.sort(); pers.others.sort();
+                    pers.branch.forEach(function (branch){ %>
+                      <li><a class="dropdown-item bg-flat-color-1" onclick="sendExploreUser('<%= branch %>')" href="#" class="btn btn-success btn-sm"><%= branch %></a></li>
+                      <% }); %>
+                      <li><a class="dropdown-item bg-flat-color-0">Other Users</a></li>
+                      <li id='othExploreSelect'><span><select id="selExploreOthers" style="width:120px;" class="standardSelect" tabindex="6">
+                        <% pers.others.forEach (function (others){ %>
+                          <option ><%= others %></option>
+                          <% }); %>
+                        </select>
+                        <a id='othExploreSend' class="float-right badge badge-info" style="height:25px;" href="#">Send</a>
+                      </span></li>
+                      <% }); %>
+                    </div>
+                </div>
+              <button id="butExploreDownload" type="button" class="btn btn-sm btn-link" style="color:gray"><i class="fa fa-cloud-download"></i>&nbsp; Download &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
+              <button id="butExploreDelete" type="button" class="btn btn-sm btn-link" style="color:red"><i class="fa fa-thumbs-down"></i>&nbsp; Delete &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</button>
 
 
           </div>
@@ -61,6 +89,19 @@
     </div>
   </div>
 </div>
-
+<!-- Mobile Friendly -->
+<script>
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+    if (window.matchMedia("(orientation: portrait)").matches) {
+      document.getElementById('disDropmenuMobile').style.marginLeft = '0px';
+      document.getElementById('disDropmenuMobile').style.marginTop = '70px';
+      document.getElementById('disDropRoutemenuMobile').style.marginLeft = '0px';
+      document.getElementById('disDropRoutemenuMobile').style.marginTop = '100px';
+    } else {}
+  } else {
+    document.getElementById('disContentMobile').style.display="none";
+  }
+ </script>
+    <!-- /Mobile Friendly -->
 
   <script src="/assets/explorer.js"></script>
