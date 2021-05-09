@@ -39,9 +39,9 @@
                   <% for (var i=0; i < docBr.length; i++) { %>
                     <%  if ((docBr[i].toUpperCase()=='ALL BRANCHES') || (docBr[i].toUpperCase()=='EXO') || (docBr[i].toUpperCase()=='DN6') || (docBr[i].toUpperCase()=='N6') || (docBr[i].toUpperCase()=='ASST.G.M.') || (docBr[i].toUpperCase()=='G.M.')) { %>
                       <div style="height:1px;border-color:black;"> </div>
-                      <li><a class="<% if (docBr[i].toUpperCase()==branch.toUpperCase()) { %> disabled <% } %>  dropdown-item bg-flat-color-4" onclick="routetoBranchExplore('<%= docBr[i] %>')" href="#" data-toggle="modal" data-target="#routingModal"><%= docBr[i] %></a></li>
+                      <li><a class="<% if (docBr[i].toUpperCase()==branch.toUpperCase()) { %> disabled <% } %>  dropdown-item bg-flat-color-4" onclick="routetoBranchExplore(event,'<%= docBr[i] %>')" href="#" data-toggle="modal" data-target="#routingModal"><%= docBr[i] %></a></li>
                       <% } else { %>
-                        <li><a class="<% if (docBr[i].toUpperCase()==branch.toUpperCase()) { %> disabled <% } %> dropdown-item bg-flat-color-3" onclick="routetoBranchExplore('<%= docBr[i] %>')" href="#" data-toggle="modal" data-target="#routingModal"><%= docBr[i] %></a></li>
+                        <li><a class="<% if (docBr[i].toUpperCase()==branch.toUpperCase()) { %> disabled <% } %> dropdown-item bg-flat-color-3" onclick="routetoBranchExplore(event,'<%= docBr[i] %>')" href="#" data-toggle="modal" data-target="#routingModal"><%= docBr[i] %></a></li>
                         <% } } %>
                 </div>
               </div>
