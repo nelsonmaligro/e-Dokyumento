@@ -167,7 +167,7 @@ function sendExploreUser(userbranch){
     var arrComm = getCookie('arrComm');
     var user = getCookie('me');
     let realPath = getCookie('realpath');
-    var todo = {path: realPath, newfile:fileclick, send:userbranch, user:user, fileroute: fileclick, class:branch, tag:JSON.stringify(tag), refs:arrRef, encs:arrEnc, comments:arrComm};
+    var todo = {path: realPath, newfile:fileclick, send:userbranch, user:user, fileroute: fileclick, class:branch, tag:tag, refs:arrRef, encs:arrEnc, comments:arrComm};
       $.ajax({
         type: 'POST',
         url: '/senduser',
@@ -183,7 +183,7 @@ function sendExploreUser(userbranch){
 
 }
 //handle function for routing to branch Explorer
-function routetoBranchExplore(branch){
+function routetoBranchExplore(e, branch){
   let fileclick = getCookie('fileAI');
   if ((fileclick!='Empty File') && (fileclick!='')){
     brscanner.stop();scanner.stop();$('#app').hide();togglecam=false;brtogglecam=false;
@@ -205,8 +205,9 @@ function routetoBranchExplore(branch){
         PDFObject.embed('/drive/PDF-temp/route-'+getCookie('fileAI')+'.pdf', "#routeattachPage",options);
         $('#routeselBr').trigger("chosen:updated");
   } else {
-    $('#routeButCanc').click();
-    closeDialog();
+    e.stopPropagation();
+    //$('#routeButCanc').click();
+    //closeDialog();
 
   }
 }
