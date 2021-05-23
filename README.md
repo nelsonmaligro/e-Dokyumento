@@ -37,24 +37,31 @@ and approving (digital signature) of documents.
 ### 12. Document Tracking using QR Code
 
 # Installation 
-  ### Ubuntu Linux: https://sourceforge.net/projects/e-dokyumento/files/Install%20e-Dokyumento%20on%20Ubuntu%20Linux.pdf/download
-  #### or
-  ### Docker Container
-  1. Clone https://github.com/nelsonmaligro/e-Dokyumento.
-  2. Edit the file "controllers/dbhandle.js" and change the mongodb connection from "mongodb://localhost/docMS" to "mongodb://mongo/docMS".
-  3. Build the image - "docker-compose build". 
-  4. Run the image - "docker-compose up" 
-     note: Dont forget to shutdown the container upon exit - "docker-compose down". This is to prevent error in mongoDB. 
-  #### or
-  ### Using the ISO
-  1. Download the ISO file from https://sourceforge.net/projects/e-dokyumento/files/e-dokyumento.iso/download
-  2. Login with root and p@ssword123
-  3. move drive folder from /opt to root :  "mv /opt/drive /"
-  4. During installation, delete the drive and create a SWAP and root (/) drives
+### Method 1:  Using the ISO
+
+     1. Download the ISO file from https://sourceforge.net/projects/e-dokyumento/files/e-DokyuV2.iso/download
+     2. Burn ISO to CD or Boot on a VM and choose "Boot System Installer" 
+     3. If asked to login, username: root and password: admin@123 
+     4. During installation, delete any existing partition and create 2 partitions for SWAP and root (/) mount  
+     5. Login and open the terminal. type "su" hit enter and type "admin@123" (or password entered during installation). 
+     6. move drive folder from /opt/drive to root :  "mv /opt/drive /"
+  
+### Method 2:  Install on new Ubuntu Linux; download:
+
+https://sourceforge.net/projects/e-dokyumento/files/Install%20e-Dokyumento%20on%20Ubuntu%20Linux.pdf/download
+
+### Method 3:  Docker Container
+
+     1. Clone https://github.com/nelsonmaligro/e-Dokyumento. 
+     2. Edit the file "controllers/dbhandle.js" and change the mongodb connection from "mongodb://localhost/docMS" to "mongodb://mongo/docMS".
+     3. Build the image - "docker-compose build".
+     4. Run the image - "docker-compose up" 
+        note: Dont forget to shutdown the container upon exit - "docker-compose down". This is to prevent error in mongoDB. 
+  
   
 # Demo
-  ### Pull e-Dokyumento from Docker hub : "docker pull nelsonmaligro/edokyumento"
-  ### Run the image: docker run -p 443:443 -it nelsonmaligro/edokyumento
+### Pull e-Dokyumento from Docker hub : "docker pull nelsonmaligro/edokyumento"
+### Run the image: docker run -p 443:443 -it nelsonmaligro/edokyumento
   <pre><code>
   Default Accounts:
   Username                        Password            Privilege           Department/Branch
