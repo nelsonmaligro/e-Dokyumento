@@ -15,6 +15,7 @@ try:
 
     from keras.preprocessing.text import Tokenizer
     from keras.models import Sequential, load_model
+    from keras.callbacks import ModelCheckpoint
     from keras.layers import Activation, Dense, Dropout
     from sklearn.preprocessing import LabelBinarizer
     import sklearn.datasets as skds
@@ -106,29 +107,26 @@ try:
 
             y_train = encoder.transform(train_tags)
             y_test = encoder.transform(test_tags)
-            #if new model build the model
-            if not (os.path.exists('AI/ClassDoc/n6.h5n6.h5')):
-                print('New AI model')
-                model = Sequential()
-                model.add(Dense(512, input_shape=(vocab_size,)))
-                model.add(Activation('relu'))
-                model.add(Dropout(0.3))
-                model.add(Dense(512))
-                model.add(Activation('relu'))
-                model.add(Dropout(0.3))
-                model.add(Dense(num_labels))
-                model.add(Activation('softmax'))
-                model.summary()
-                model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-            else:
-                print ('AI model exist')
-                #retrain the model
-                model = load_model('AI/ClassDoc/n6.h5')
+            # this will help to automatically save the best epoch
+            checkpoint = ModelCheckpoint(filepath='AI/ClassDoc/n6.h5',
+                                         monitor='val_loss',
+                                         verbose=1,
+                                         save_best_only=True,
+                                         mode='min')
+            # Initialize the model
+            model = Sequential()
+            model.add(Dense(512, input_shape=(vocab_size,)))
+            model.add(Activation('relu'))
+            model.add(Dropout(0.3))
+            model.add(Dense(512))
+            model.add(Activation('relu'))
+            model.add(Dropout(0.3))
+            model.add(Dense(num_labels))
+            model.add(Activation('softmax'))
+            model.summary()
+            model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+            history = model.fit(x_train, y_train, batch_size=batch_size, epochs=20, verbose=1, validation_split=0.1, callbacks=[checkpoint])
 
-            history = model.fit(x_train, y_train, batch_size=batch_size, epochs=20, verbose=1, validation_split=0.1)
-
-            # creates a HDF5 file 'my_model.h5'
-            model.save('AI/ClassDoc/n6.h5')
 
             # Save Tokenizer i.e. Vocabulary
             with open('AI/ClassDoc/tokenizer.pickle', 'wb') as handle:

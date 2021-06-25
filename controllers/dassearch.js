@@ -80,7 +80,7 @@ module.exports = function(app, arrDB){
         dbhandle.actlogsCreate(id, Date.now(), 'Content Search', req.body.query, req.ip);
         dochandle.findDocFromDir (req.body.query, drive, disFolder, (docResult, bolFrst)=>{
           let disPromise = new Promise((resolve, reject)=>{
-            if (bolFrst){
+            if (bolFrst){ //if callback returns true then return or respond the queries
               docResult.forEach((items, idx)=>{
                 let first = items.content.toUpperCase().indexOf(req.body.query.toUpperCase());let last = first;
                 if ((first - 300) < 0) first = 0;
@@ -90,8 +90,9 @@ module.exports = function(app, arrDB){
                 arrSearch.push({filename:items.path+items.title, content:items.content.substring(first,last)});
               });
               res.json(JSON.stringify(arrSearch));
-            } else resolve(docResult);
+            } else resolve(docResult); //if callback returns false then save to array
           }).then((docResult)=>{
+              //save search answers to array
               let index = allSearches.findIndex(srcitems=>srcitems.user===id);
               if (index!=-1) allSearches.splice(index,1);
             docResult.forEach((items, idx)=>{
