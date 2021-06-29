@@ -1,7 +1,7 @@
 var arrSearches = [];
 //handle searching
 function searchQuery(query){
-  $('#overlay').show();
+  $('#overlay').show();arrSearches = [];
   let cntSrch = 0;
   var todo = {query:query};
     $.ajax({
@@ -20,8 +20,9 @@ function searchQuery(query){
           //arrSearches.push({page:cntSrch,search:arrResult});
         } else {
           $('#tableSearch').empty();
-          $('#tableSearch').append("<tr><td>No Result Found!</td></tr>");
-          $('#divButBackNext').hide();$('#pageLbl').hide();
+          $('#tableSearch').append("<tr><td></td></tr>");
+          $('#tableSearch').append("<hr>");
+		  $('#divButBackNext').show();//$('#pageLbl').show();
         }
       }
     });

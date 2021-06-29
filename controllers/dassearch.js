@@ -19,7 +19,7 @@ module.exports = function(app, arrDB){
   //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
-  var allSearches = new Array;
+  global.allSearches = new Array;
   var drivetmp = "public/drive/", drive = "D:/Drive/";
   dbhandle.settingDis((setting)=>{drivetmp = setting.publicdrive;});
 
@@ -58,17 +58,18 @@ module.exports = function(app, arrDB){
       let arrSearch = new Array; let x = 0;
       console.log('Post Search Next')
       dbhandle.userFind(id, function(user){
-        let idx = allSearches.findIndex(srcitems=>srcitems.user===id);
+        let idx = global.allSearches.findIndex(srcitems=>srcitems.user===id);
         if (idx!=-1){
-          let items = allSearches[idx].search;
+          let items = global.allSearches[idx].search;
           while ((x<10) && (x<=items.length-1)) {
             arrSearch.push({filename:items[x].filename, content:items[x].content});
             ++x;
           }
           if (x==1) x=2;
           items.splice(0,x);
-        }
-        res.json(JSON.stringify(arrSearch));
+		  res.json(JSON.stringify(arrSearch));
+        } else res.json('Empty');
+        
       });
     }
     //Process post search
@@ -78,9 +79,12 @@ module.exports = function(app, arrDB){
         let folders = drive.split('/');let disFolder = folders[folders.length - 2];
         let arrSearch = new Array;
         dbhandle.actlogsCreate(id, Date.now(), 'Content Search', req.body.query, req.ip);
-        dochandle.findDocFromDir (req.body.query, drive, disFolder, (docResult, bolFrst)=>{
-          let disPromise = new Promise((resolve, reject)=>{
-            if (bolFrst){ //if callback returns true then return or respond the queries
+        dochandle.findDocFromDir (req.body.query, drive, disFolder, id, (docResult, bolFrst)=>{
+			let index = global.allSearches.findIndex(srcitems=>srcitems.user===id);
+            if (index!=-1) global.allSearches.splice(index,1);
+			 //console.log(global.allSearches.length);
+		   let disPromise = new Promise((resolve, reject)=>{
+            if (bolFrst){
               docResult.forEach((items, idx)=>{
                 let first = items.content.toUpperCase().indexOf(req.body.query.toUpperCase());let last = first;
                 if ((first - 300) < 0) first = 0;
@@ -89,24 +93,9 @@ module.exports = function(app, arrDB){
                 else last = last + 300;
                 arrSearch.push({filename:items.path+items.title, content:items.content.substring(first,last)});
               });
+			  //console.log(arrSearch); 
               res.json(JSON.stringify(arrSearch));
-            } else resolve(docResult); //if callback returns false then save to array
-          }).then((docResult)=>{
-              //save search answers to array
-              let index = allSearches.findIndex(srcitems=>srcitems.user===id);
-              if (index!=-1) allSearches.splice(index,1);
-            docResult.forEach((items, idx)=>{
-              let first = items.content.toUpperCase().indexOf(req.body.query.toUpperCase());let last = first;
-              if ((first - 300) < 0) first = 0;
-              else first = first - 300;
-              if ((last + 300) > items.content.length-1) last = items.content.length -1;
-              else last = last + 300;
-                let sidx = allSearches.findIndex(srcitems=>srcitems.user===id);
-                if (sidx == -1) allSearches.push({user:id,query:req.body.query,search:[{filename:items.path+items.title, content:items.content.substring(first,last)}]});
-                else allSearches[sidx].search.push({filename:items.path+items.title, content:items.content.substring(first,last)});
-            });
-            //let indx = allSearches.findIndex(srcitems=>srcitems.user===id);
-            //console.log(allSearches[indx].search.length);
+            } //else resolve(docResult);
           }).catch((err)=>{});
         });
       });
