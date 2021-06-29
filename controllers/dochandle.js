@@ -65,7 +65,7 @@ function storageExp(localStorage, serBool, value, index, boolDoc, callback){
 //Create index file and add to array
 function updCollIdx(Path, FilIdx, FilDoc, Folder, callback){
   //shift some index to save memory
-  while (collIndex.length > 10) {
+  while (collIndex.length > 30) {
     collIndex.shift();
   }
   //initialize storage and Schema
@@ -154,35 +154,7 @@ exports.delDocu = function delDocu(Path, FilDoc, FilIdx, Title, Folder){
 
   });
 };
-/*
-//Add Document to the index
-exports.addDocu = function addDocu(id, Path, FilDoc, FilIdx, disContent, Title, Folder) {
-  //initialize storage and Schema
-  var localstoreIDX = new storage(Path + FilIdx, { strict: false, ws: '  ' });
-  var localstoreDOC = new storage(Path + FilDoc, { strict: false, ws: '  ' });
-  //Prepare index and doc..Generate unique numeric ID
-    var doc =[{
-          id:id,
-          title:Title,
-          content:disContent
-        }];
-  //If index file exist
-  updCollIdx(Path, FilIdx, FilDoc, Folder, function(n6Index){
-    //Add to index
-    new Promise((resolve, reject)=>{
-      let found = n6Index.find({title:Title}); resolve(found);
-    }).then((found)=>{
-      if (!found) {
-        n6Index.add(doc);
-        updateCollIndex(Path, n6Index);
-        storageExp(localstoreIDX,true,Folder,n6Index, false, function(){
-             storageExp(localstoreDOC,false,Folder,n6Index, true, function(){});
-         });
-      }
-    }).catch((err)=>{});
-  });
-};
-*/
+
 //edit Document from the index file
 exports.findTitle = function(Path, FilDoc, FilIdx, Folder, Title, callback){
     updCollIdx(Path, FilIdx, FilDoc, Folder, function(n6Index){
@@ -264,10 +236,11 @@ exports.findDocFromDir = function (query, dir, folder, callback) {
     let localstoreDOC = null; let localstoreIDX = null;
     let filIdx = null; let filDoc = null; //let directories = [];
     let files = fs.readdirSync(currentPath);
-
+    // set timeout for search query to exit callback
     let disTime = setTimeout(()=>{
       //console.log(searchResult.length);
       if ((!bolOutres)) {
+         //console.log(searchResult.length);
          callboy(searchResult, true);bolOutres = true;
       }
     },10000);
@@ -302,21 +275,18 @@ exports.findDocFromDir = function (query, dir, folder, callback) {
                 result.forEach((item)=> {
                   if ((item!=undefined) && (item!=null)) searchResult.push({id:item.id, title:item.title, content:item.content, path:currentPath});
                 });
+                //remove index in the collection to prevent RAM Exhaustion
+                collIndex =  collIndex.filter(function(item) { return item.name == currentPath; });
             }
-            localstoreDOC = null; localstoreIDX = null; //console.log(searchResult.length);
-            //console.log(searchResult.length);
+            //clear DOM local storage to free up space
+            localstoreDOC.clear();localstoreIDX.clear();
+            localstoreDOC = null; localstoreIDX = null;
+              //console.log(searchResult.length);
               callboy(searchResult, false);
-            //callboy(searchResult, false);
         });
       });
     }
-    //utilsdocms.sleep(1000).then(()=>{
-    //  if (!bolOutres) {
-    //    callboy(searchResult, true);
-        //bolOutres = true;
-        //searchResult = [];
-    //  }
-    //});
+
   };
   walkDir(dir, folder, (searchRes, bolFirst)=>{
     //console.log(searchRes,bolFirst);

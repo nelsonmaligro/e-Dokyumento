@@ -91,7 +91,7 @@ function submitQRPass(content){
           height: "400px",
         };
       PDFObject.embed('/drive/PDF-temp/route-'+$('#fileroute').val()+'.pdf', "#routeattachPage",options);
-      qrClick = true;
+      qrClick = true; //set signed routing slip to true
     } else alert('QR Code or Password Fail!');
     }
   });

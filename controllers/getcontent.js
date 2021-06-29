@@ -41,7 +41,7 @@ exports.getContent = async function getContent(path, disFile, callback){
               callback(disContent);
             });
           } else {
-            callback(disContent);
+              callback(disContent);
           }
         });
     }

@@ -208,6 +208,8 @@ module.exports = function(app, arrDB) {
       dbhandle.userFind(req.body.user, function(user){
         var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
         utilsdocms.makeDir(drive + 'Routing Slip/',year, month);
+        if (!fs.existsSync(drivetmp + user.group)) fs.mkdirSync(drivetmp + user.group);
+
         if (((user.level.toUpperCase()=='DUTYADMIN') || (user.level.toUpperCase()=='SECRETARY')) && (req.body.save=='incomingroute')){
           utilsdocms.validateQRPass(req.body.user,req.body.hashval, function (valid){
             if (valid) {
