@@ -13,10 +13,10 @@ try:
     import numpy as np
     import pickle
 
-    from keras.preprocessing.text import Tokenizer
-    from keras.models import Sequential, load_model
-    from keras.callbacks import ModelCheckpoint
-    from keras.layers import Activation, Dense, Dropout
+    from tensorflow.keras.preprocessing.text import Tokenizer
+    from tensorflow.keras.models import Sequential, load_model
+    from tensorflow.keras.callbacks import ModelCheckpoint
+    from tensorflow.keras.layers import Activation, Dense, Dropout
     from sklearn.preprocessing import LabelBinarizer
     import sklearn.datasets as skds
     from pathlib import Path
@@ -147,13 +147,15 @@ try:
         except:
             print(sys.exc_info()[0])
 
+    if __name__ == '__main__':
+        main(sys.argv[1:])
+    
 except:
    print(sys.exc_info()[0])
    pass
 
 
-if __name__ == '__main__':
-    main(sys.argv[1:])
+
 
 
 

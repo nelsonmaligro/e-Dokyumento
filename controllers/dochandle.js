@@ -16,6 +16,7 @@ var path = require('path');
 const toPdf = require("office-to-pdf");
 const utilsdocms = require('./utilsdocms');
 
+
 //convert office document to PDF
 exports.convDoctoPDF = function (Src, Dst, callback) {
     var wordBuffer = fs.readFileSync(Src);
@@ -65,7 +66,7 @@ function storageExp(localStorage, serBool, value, index, boolDoc, callback){
 //Create index file and add to array
 function updCollIdx(Path, FilIdx, FilDoc, Folder, callback){
   //shift some index to save memory
-  while (collIndex.length > 30) {
+  while (collIndex.length > 10) {
     collIndex.shift();
   }
   //initialize storage and Schema
@@ -226,75 +227,88 @@ exports.findDoc = function (Path, FilDoc, FilIdx, Folder, Query, callback) {
     });
   });
 };
+//Delay Function
+function waitforme(ms)  {
+  return new Promise( resolve => { setTimeout(resolve, ms); });
+}
 //recursively search through directories
-exports.findDocFromDir = function (query, dir, folder, callback) {
+exports.findDocFromDir = function (query, dir, folder, id, callback) {
   collIndex = [];
   let searchResult = new Array;let idxDType = ['.idxD']; let idxIType = ['.idxI'];let bolOutres = false;
   searchResult.push({id:0, title:'X', content:'XXXXXXXXXXX', path:''});let bolOutFin = false;
-  function walkDir(currentPath, disFolder, callboy) {
-    currentPath = currentPath.replace(/\\/g,'/');
-    let localstoreDOC = null; let localstoreIDX = null;
-    let filIdx = null; let filDoc = null; //let directories = [];
-    let files = fs.readdirSync(currentPath);
-    // set timeout for search query to exit callback
-    let disTime = setTimeout(()=>{
-      //console.log(searchResult.length);
-      if ((!bolOutres)) {
-         //console.log(searchResult.length);
-         callboy(searchResult, true);bolOutres = true;
-      }
-    },10000);
+  
+  async function walkDir(currentPath, disFolder, callboy) {
+		
+		currentPath = currentPath.replace(/\\/g,'/');
+		let localstoreDOC = null; let localstoreIDX = null;
+		let filIdx = null; let filDoc = null; //let directories = [];
+		let files = fs.readdirSync(currentPath);
+		let disTime = setTimeout(()=>{
+		  if ((!bolOutres)) {
+			 callboy(searchResult, true);bolOutres = true;
+		  }
+		},10000);
 
-    for (let i in files) {
-      let curFile = currentPath + files[i];
-      try{
-        if ((fs.statSync(curFile).isFile()) && (idxDType.indexOf(path.extname(curFile)) != -1)) {
-          localstoreDOC = new storage(curFile, { strict: false, ws: '  ' });
-          filDoc = files[i];
-        } else if ((fs.statSync(curFile).isFile()) && (idxIType.indexOf(path.extname(curFile)) != -1)) {
-          localstoreIDX = new storage(curFile, { strict: false, ws: '  ' });
-          filIdx = files[i];
-        }  else if (fs.statSync(curFile).isDirectory()) {
-          if ((files[i].toUpperCase()!='INCOMING') && (files[i].toUpperCase()!='TEXTML') && (files[i].toUpperCase()!='ROUTING SLIP')  && (files[i].toUpperCase()!='RECOVERHERE') && (files[i].toUpperCase()!='RECYCLE BIN')) {
-              walkDir(curFile +'/', files[i], (searchRes, bolFrst)=>{
-                if ((searchResult.length >= 10 ) && (!bolOutres)) {
-                  callboy(searchResult, true);bolOutres = true;
-                }
-              });
-          }
-        }
-      } catch (err){}
+		for (let i in files) {
+			  await waitforme(100);
+			  let curFile = currentPath + files[i];
+			  try{
+				if ((fs.statSync(curFile).isFile()) && (idxDType.indexOf(path.extname(curFile)) != -1)) {
+				  localstoreDOC = new storage(curFile, { strict: false, ws: '  ' });
+				  filDoc = files[i];
+				} else if ((fs.statSync(curFile).isFile()) && (idxIType.indexOf(path.extname(curFile)) != -1)) {
+				  localstoreIDX = new storage(curFile, { strict: false, ws: '  ' });
+				  filIdx = files[i];
+				}  else if (fs.statSync(curFile).isDirectory()) {
+				  if ((files[i].toUpperCase()!='INCOMING') && (files[i].toUpperCase()!='TEXTML') && (files[i].toUpperCase()!='ROUTING SLIP')  && (files[i].toUpperCase()!='RECOVERHERE') && (files[i].toUpperCase()!='RECYCLE BIN')) {
+					  walkDir(curFile +'/', files[i], (searchRes, bolFrst)=>{
+						if ((searchResult.length >= 10 ) && (!bolOutres)) {
+						    callboy(searchResult, true);bolOutres = true;
+						}
+					  });
+				  }
+				}
+			  } catch (err){}
+		}
+		if ((localstoreDOC != null) && (localstoreIDX != null)) {
+		  updCollIdx(currentPath, filIdx, filDoc, disFolder, function(n6Index){
+			n6Index.search(query, function (result){
+				if (result.length > 0) {
+					result.forEach((item)=> {
+					  if ((item!=undefined) && (item!=null)) searchResult.push({id:item.id, title:item.title, content:item.content, path:currentPath});
+					});
+					//remove index in the collection to prevent RAM Exhaustion
+					collIndex =  collIndex.filter(function(item) { return item.name == currentPath; });
+				}
+				//clear DOM local storage to free up space
+				localstoreDOC.clear();localstoreIDX.clear();
+				localstoreDOC = null; localstoreIDX = null;
+						   if (searchResult.length > 1) {
+							   let index = global.allSearches.findIndex(srcitems=>srcitems.user===id);
+								if (index!=-1) global.allSearches.splice(index,1);
+								searchResult.forEach((items, idx)=>{
+									let first = items.content.toUpperCase().indexOf(query.toUpperCase());let last = first;
+									if ((first - 300) < 0) first = 0; else first = first - 300;
+									if ((last + 300) > items.content.length-1) last = items.content.length -1; else last = last + 300;
+									let sidx = global.allSearches.findIndex(srcitems=>srcitems.user===id);
+									if (sidx == -1) global.allSearches.push({user:id,query:query,search:[{filename:items.path+items.title, content:items.content.substring(first,last)}]});
+									else global.allSearches[sidx].search.push({filename:items.path+items.title, content:items.content.substring(first,last)});
+								});
+							}
+							if ((searchResult.length >= 10 ) && (!bolOutres)) {
+						    callboy(searchResult, true);bolOutres = true;
+						}
+			});
+		  });
+		}
+   };
+	
+	walkDir(dir, folder, (searchRes, bolFirst)=>{
+		if ((!bolOutFin) && (!bolFirst)) callback(searchRes, true);
+		else callback(searchRes, bolFirst);
 
-    }
-    if ((localstoreDOC != null) && (localstoreIDX != null)) {
-      updCollIdx(currentPath, filIdx, filDoc, disFolder, function(n6Index){
-        //console.log(n6Index);
-        n6Index.search(query, function (result){
-          //console.log(query,result);
-            if (result.length > 0) {
-                result.forEach((item)=> {
-                  if ((item!=undefined) && (item!=null)) searchResult.push({id:item.id, title:item.title, content:item.content, path:currentPath});
-                });
-                //remove index in the collection to prevent RAM Exhaustion
-                collIndex =  collIndex.filter(function(item) { return item.name == currentPath; });
-            }
-            //clear DOM local storage to free up space
-            localstoreDOC.clear();localstoreIDX.clear();
-            localstoreDOC = null; localstoreIDX = null;
-              //console.log(searchResult.length);
-              callboy(searchResult, false);
-        });
-      });
-    }
-
-  };
-  walkDir(dir, folder, (searchRes, bolFirst)=>{
-    //console.log(searchRes,bolFirst);
-    if ((!bolOutFin) && (!bolFirst)) callback(searchRes, true);
-    else callback(searchRes, bolFirst);
-    searchResult = [];
-    bolOutFin = true;
-    //callback(searchRes, bolFirst);
-  });
+		searchResult = [];
+		bolOutFin = true;
+	});
 
 }

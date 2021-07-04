@@ -47,7 +47,7 @@ dbhandle.settingDis((setting)=>{
     var token = req.cookies['token'];
     if (!token) { return res.render('login', {layout:'empty', error:'Valid'});}
     jwt.verify(token.token, 'secret', function (err, decoded){
-      if (err) { return res.render('login', {layout:'empty', error:'Valid'});}
+      if (err) { console.log('token error'); return res.render('login', {layout:'empty', error:'Valid'});}
       callback(decoded, req.cookies['me']);
     });
   };
@@ -153,5 +153,5 @@ dbhandle.settingDis((setting)=>{
       fs.mkdirSync(path+year+'/'+month);
     }
   }
-  
+
 });
