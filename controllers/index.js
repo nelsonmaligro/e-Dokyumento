@@ -31,8 +31,10 @@ dbhandle.generateList(classModel, function (res){ docClass = res; });
 dbhandle.generateList(tagModel, function (res){ docTag = res; });
 dbhandle.generateList(brModel, function (res){ docBr = res; });
 var months = ['JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
-
+var express = require('express');
 var extractor = new wordextractor();
+
+
 
 // Initialize watcher.
 const watcher = chokidar.watch('file, dir, glob, or array', {

@@ -20,6 +20,14 @@ var http = require('http');
 var https = require('https');
 const fs = require('fs');
 var domain = require('domain');
+
+var morgan = require('morgan')
+// create a write stream (in append mode)
+var accessLogStream = fs.createWriteStream('access-'+Date.now()+'.log',{flags: 'a'});
+
+
+
+
 var d = domain.create();
 setTimeout (()=>{
 
@@ -34,7 +42,8 @@ setTimeout (()=>{
       drive = setting.maindrive;
       var app = express();
       const httpApp = express();
-
+      // setup the logger
+      app.use(morgan('combined', {stream: accessLogStream}))
       //View Engine
       app.set('view engine','ejs');
 

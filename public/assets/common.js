@@ -143,38 +143,39 @@ function togglePanelProc(disBool){
 }
 //Auto refresh Notification
 function checkFiles(){
-  let todo = {cntMail:$('#countMail').html(), cntComm:$('#notiNr').html()};
+
   $.ajax({
     type: 'post',
-    data: todo,
     url: '/sendincoming',
     success: function(data){
-      arrOut = JSON.parse(data);
-      //populate incoming
-      arrFiles = arrOut.incoming;
-      if (arrFiles.length > parseInt($('#notiNr').html(),10)) {sound = document.getElementById('soundNoti'); sound.play();}
+      if (data!='null') {
+        arrOut = JSON.parse(data);
+        //populate incoming
+        arrFiles = arrOut.incoming;
+        if (arrFiles != 'null') {
+          if (arrFiles.length > parseInt($('#notiNr').html(),10)) {sound = document.getElementById('soundNoti'); sound.play();}
 
-      $('#notiNr').html(arrFiles.length);
-      $('#notiLabel').html('&nbsp;&nbsp;You have '+ arrFiles.length +' incoming files pending');
-      $('#addHere').empty();
-      arrFiles.forEach(function (item){
-        let file = item.file; let info = item.action;
-        if (info!='yes') $('#addHere').append("<li><a style='background-color:DimGray;color:white;' class='dropdown-item media ' href='/incoming/"+file+"'><i class='fa fa-info'></i><p style='color:white;'>"+ file +"</p></a></li>");
-        else $('#addHere').append("<li><a style='background-color:Red;color:white;' class='dropdown-item media' href='/incoming/"+file+"'><i class='fa fa-check'></i><p style='color:white;'>"+ file +"</p></a></li>");
-      });
-      //populate mailfiles
-      arrMails = arrOut.mail;
-      if (arrMails.length > parseInt($('#countPix').html(),10)) {sound = document.getElementById('soundNoti'); sound.play();}
+          $('#notiNr').html(arrFiles.length);
+          $('#notiLabel').html('&nbsp;&nbsp;You have '+ arrFiles.length +' incoming files pending');
+          $('#addHere').empty();
+          arrFiles.forEach(function (item){
+            let file = item.file; let info = item.action;
+            if (info!='yes') $('#addHere').append("<li><a style='background-color:DimGray;color:white;' class='dropdown-item media ' href='/incoming/"+file+"'><i class='fa fa-info'></i><p style='color:white;'>"+ file +"</p></a></li>");
+            else $('#addHere').append("<li><a style='background-color:Red;color:white;' class='dropdown-item media' href='/incoming/"+file+"'><i class='fa fa-check'></i><p style='color:white;'>"+ file +"</p></a></li>");
+          });
+        }
+        //populate mailfiles
+        arrMails = arrOut.mail;
+        if (arrMails.length > parseInt($('#countPix').html(),10)) {sound = document.getElementById('soundNoti'); sound.play();}
 
-      $('#countMail').html(arrMails.length);$('#countPix').html(arrMails.length);
-      arrMails.reverse(); $('#addMailHere').empty();
-      arrMails.forEach (function (file){
-        let fileArr = file.split('/'); let filename = fileArr[fileArr.length - 1].substring(0,20);
-        file = file.replace(/ /g,"___");file = file.replace(/\./g,'---');
-        $('#addMailHere').append("<li><button type='button' onclick=delNotiFile('"+file+"') class='btn btn-danger btn-sm fa fa-times' href='#'></button><button button type='button' class='btn btn-link btn-sm' onclick=openDisFile('"+file+"') href='#'>"+ filename +"</button></li>");
-      });
-
-
+        $('#countMail').html(arrMails.length);$('#countPix').html(arrMails.length);
+        arrMails.reverse(); $('#addMailHere').empty();
+        arrMails.forEach (function (file){
+          let fileArr = file.split('/'); let filename = fileArr[fileArr.length - 1].substring(0,20);
+          file = file.replace(/ /g,"___");file = file.replace(/\./g,'---');
+          $('#addMailHere').append("<li><button type='button' onclick=delNotiFile('"+file+"') class='btn btn-danger btn-sm fa fa-times' href='#'></button><button button type='button' class='btn btn-link btn-sm' onclick=openDisFile('"+file+"') href='#'>"+ filename +"</button></li>");
+        });
+      }
     }
   });
   //$("#notifyme").load(location.href+" #notifyme");
