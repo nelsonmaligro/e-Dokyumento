@@ -1,5 +1,6 @@
 //function show file explorer on clicked
 function showFiles(disFile, disDir){
+  $('#overlay').show();
   newFile = disFile.replace(/___/g," ");newFile = newFile.replace(/---/g,'.');
   var olddisDir = disDir;
   disDir=disDir.replace(/x--/g,':');disDir=disDir.replace(/z--/g,'.');disDir=disDir.replace(/---/g,"/");disDir=disDir.replace(/___/g," ");
@@ -11,6 +12,7 @@ function showFiles(disFile, disDir){
       url: '/explorershow',
       data: todo,
       success: function(data){
+        $('#overlay').hide();
         let parseData = JSON.parse(data);
         parseData.forEach(function (disData){
           $('#metaAuthor').val(disData.disAuthor);
@@ -53,7 +55,14 @@ function showFiles(disFile, disDir){
             arrComm.push({branch:item.branch,content:item.content});
           });
           setCookie('arrComm',JSON.stringify(arrComm),1);
-          //setCookie('realpath',disData.realpath,1);setCookie('fileAI',disData.disp,1);
+          //Display Preview
+          PDFObject.embed(disData.tempPath, "#pdf_view");
+          //if mobile phone used
+          if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+            document.getElementById('pdf_view').style.display="none";
+            document.getElementById('disContentMobile').style.display="";
+            loadPDFtoCanvas(disData.tempPath);
+          }
         });
       }
     });
@@ -318,4 +327,9 @@ $(document).ready(function(e){
            alert('Please scan your QR Code or type-in passwword to sign the routing slip');
          }
       });
+      //if mobile phone used
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+        document.getElementById('pdf_view').style.display="none";
+        document.getElementById('disContentMobile').style.display="";
+      }
 });
