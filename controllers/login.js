@@ -53,7 +53,9 @@ module.exports = function(app){
           res.cookie('me',user.userN);
           res.cookie('fileAI','');
           if (user.level.toUpperCase()=='SYSADMIN') res.redirect('/kalikot');
-          else res.redirect('/dashlogs');
+          else if ((user.level.toUpperCase()!='DUTYADMIN') && (user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='GM') && (user.level.toUpperCase()!='EAGM') && (user.level.toUpperCase()!='CO') && (user.level.toUpperCase()!='DEP')) {
+            res.redirect('/explorer');
+          } else res.redirect('/dashlogs');
 
         }
       })(req, res, next);

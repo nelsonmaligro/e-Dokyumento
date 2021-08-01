@@ -109,33 +109,51 @@ module.exports = function(app, arrDB){
     function postdashlogs(req, res, id){
       dbhandle.generateList(arrDB.branch, function (res){ docBr = res; });
       let year = dateformat(Date.now(),'yyyy');
-      dbhandle.commologsGen(year, docBr, (result)=>{
-        dbhandle.genMonitor(async (disMonitor)=>{
-          arrBranch = new Array;
-          docBr.forEach((branch)=>{
-            var count = 0;
-            disMonitor.forEach((item)=>{
-              let disBranch = item.route[item.route.length-1].branch;
-              if ((disBranch[disBranch.length-1]).toUpperCase()=="ALL BRANCHES") {
-                if ((disBranch[0]).toUpperCase()==branch.toUpperCase()) ++count;
-              } else if ((disBranch[disBranch.length-1]).toUpperCase()==branch.toUpperCase()) ++count;
+      dbhandle.userFind(id, function(user) {
+        //filter dashboard monitoring to specific user level
+        if ((user.level.toUpperCase()!='DUTYADMIN') && (user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='GM') && (user.level.toUpperCase()!='EAGM') && (user.level.toUpperCase()!='CO') && (user.level.toUpperCase()!='DEP')) {
+          docBr = []; docBr.push(user.group.toUpperCase()); // set single branch only if not authorized
+        }
+        dbhandle.commologsGen(year, docBr, (result)=>{
+          dbhandle.genMonitor(async (disMonitor)=>{
+            arrBranch = new Array;
+            docBr.forEach((branch)=>{
+              var count = 0;
+              disMonitor.forEach((item)=>{
+                let disBranch = item.route[item.route.length-1].branch;
+                if ((disBranch[disBranch.length-1]).toUpperCase()=="ALL BRANCHES") {
+                  if ((disBranch[0]).toUpperCase()==branch.toUpperCase()) ++count;
+                } else if ((disBranch[disBranch.length-1]).toUpperCase()==branch.toUpperCase()) ++count;
+              });
+              arrBranch.push({branch:branch,count:count});
             });
-            arrBranch.push({branch:branch,count:count});
+            await res.json(JSON.stringify({commologs:result, current:arrBranch}));
           });
-          await res.json(JSON.stringify({commologs:result, current:arrBranch}));
         });
       });
       console.log('Post logs dashboard');
     }
     //process get logs dashboard
     function getdashlogs(req, res, id){
+      dbhandle.generateList(arrDB.class, function (res){ docClass = res; });
+      dbhandle.generateList(arrDB.tag, function (res){ docTag = res; });
       dbhandle.userFind(id, function(user){
         console.log('GET logs dashboard');
         fs.readdir(drivetmp + user.group, function(err,items){
           let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
           if (err) console.log(err);
-          //console.log(result);
-          return res.render('commologs', {layout:'layout-user', realdrive:drive, level:user.level, docPers:[], branch:user.group, files:sortArr, disp:"Empty File", mailfiles:user.mailfiles, docBr:docBr, docClass:docClass, docTag:docTag});
+          //show explorer if not authorized
+          if ((user.level.toUpperCase()!='DUTYADMIN') && (user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='GM') && (user.level.toUpperCase()!='EAGM') && (user.level.toUpperCase()!='CO') && (user.level.toUpperCase()!='DEP')) {
+              dbhandle.groupFind(user.group, function (groups){
+                fs.readdir(drivetmp + user.group, function(err,items){
+                  let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
+                  if (err) console.log(err);var def="empty";
+                  var disDrive = '/drive/';rout= "";ref = [];enc = []; disComm = [];
+                  if (sortArr.length > 0) {def=sortArr[0];}
+                  return res.render('explorer', {layout:'layout-browse', realdrive:drive, level:user.level, mailfiles:user.mailfiles, docPers:groups, path:disDrive +'No Pending Files.pdf', files:sortArr, disp:"Empty File", branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag, rout:rout, ref:ref, enc:enc, disComm:disComm });
+                });
+              });
+          } else return res.render('commologs', {layout:'layout-user', realdrive:drive, level:user.level, docPers:[], branch:user.group, files:sortArr, disp:"Empty File", mailfiles:user.mailfiles, docBr:docBr, docClass:docClass, docTag:docTag});
         });
       });
     }
@@ -192,9 +210,20 @@ module.exports = function(app, arrDB){
     }
     //Process post chart Monitoring function
     function postChartMonitor(req, res, id){
-      dbhandle.genMonitor(function(result){
-        result.reverse();
-        res.json(JSON.stringify(result));
+      dbhandle.userFind(id, function(user) {
+        let arrRes = [];
+        dbhandle.genMonitor(function(result){
+          result.reverse();
+          result.forEach((item, i) => {
+            //filter chart monitor to specific user level
+            if ((user.level.toUpperCase()!='DUTYADMIN') && (user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='GM') && (user.level.toUpperCase()!='EAGM') && (user.level.toUpperCase()!='CO') && (user.level.toUpperCase()!='DEP')) {
+              if (item.route[0].branch[0].toUpperCase()==user.group.toUpperCase()) {
+                arrRes.push(item); //add to array for this branch only
+              }
+            } else arrRes.push(item);
+          });
+          res.json(JSON.stringify(arrRes));
+        });
       });
       console.log('Post Query Chart Monitor');
     }
@@ -239,6 +268,7 @@ module.exports = function(app, arrDB){
       //refresh lists
       dbhandle.generateList(arrDB.class, function (res){ docClass = res; });
       dbhandle.generateList(arrDB.tag, function (res){ docTag = res; });
+      let arrRes = [];
       dbhandle.userFind(id, function(user){
         dbhandle.groupFind(user.group, function (groups){
           fs.readdir(drivetmp + user.group, function(err,items){
@@ -248,7 +278,15 @@ module.exports = function(app, arrDB){
             if (sortArr.length > 0) {def=sortArr[0];}
             dbhandle.genMonitor(function(result){
               result.reverse();
-              res.render('tablemonitor', {layout:'layout-user', realdrive:drive, level:user.level, mailfiles:user.mailfiles, docPers:groups, monitor:JSON.stringify(result),path:disDrive +'No Pending Files.pdf', files:sortArr, disp:"Empty File", branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag, rout:rout, ref:ref, enc:enc});
+              result.forEach((item, i) => {
+                //filter chart monitor to specific user level
+                if ((user.level.toUpperCase()!='DUTYADMIN') && (user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='GM') && (user.level.toUpperCase()!='EAGM') && (user.level.toUpperCase()!='CO') && (user.level.toUpperCase()!='DEP')) {
+                  if (item.route[0].branch[0].toUpperCase()==user.group.toUpperCase()) {
+                    arrRes.push(item); //add to array for this branch only
+                  }
+                } else arrRes.push(item);
+              });
+              res.render('tablemonitor', {layout:'layout-user', realdrive:drive, level:user.level, mailfiles:user.mailfiles, docPers:groups, monitor:JSON.stringify(arrRes),path:disDrive +'No Pending Files.pdf', files:sortArr, disp:"Empty File", branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag, rout:rout, ref:ref, enc:enc});
             });
           });
         });

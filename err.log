@@ -18981,3 +18981,111 @@ SyntaxError: Unexpected token u in JSON at position 0
     at processImmediate (internal/timers.js:461:21)
     at process.topLevelDomainCallback (domain.js:144:15)
     at process.callbackTrampoline (internal/async_hooks.js:129:14)
+allBranch.forEach is not a function
+TypeError: allBranch.forEach is not a function
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:737:21
+    at Array.forEach (<anonymous>)
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:736:18
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+allBranch.forEach is not a function
+TypeError: allBranch.forEach is not a function
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:737:21
+    at Array.forEach (<anonymous>)
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:736:18
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property '0' of undefined
+TypeError: Cannot read property '0' of undefined
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:207:35
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:228:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+item.route[0].branch.toUpperCase is not a function
+TypeError: item.route[0].branch.toUpperCase is not a function
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:208:40
+    at Array.forEach (<anonymous>)
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:205:18
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:228:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+item.route[0].branch.toUpperCase is not a function
+TypeError: item.route[0].branch.toUpperCase is not a function
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:209:40
+    at Array.forEach (<anonymous>)
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:205:18
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:228:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property '0' of undefined
+TypeError: Cannot read property '0' of undefined
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:208:44
+    at Array.forEach (<anonymous>)
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:205:18
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:228:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property '0' of undefined
+TypeError: Cannot read property '0' of undefined
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:208:44
+    at Array.forEach (<anonymous>)
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:205:18
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:228:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'toUpperCase' of undefined
+TypeError: Cannot read property 'toUpperCase' of undefined
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:209:37
+    at Array.forEach (<anonymous>)
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:205:18
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:228:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'toUpperCase' of undefined
+TypeError: Cannot read property 'toUpperCase' of undefined
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:209:37
+    at Array.forEach (<anonymous>)
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:205:18
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:228:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'toUpperCase' of undefined
+TypeError: Cannot read property 'toUpperCase' of undefined
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:209:37
+    at Array.forEach (<anonymous>)
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:205:18
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:228:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'toUpperCase' of undefined
+TypeError: Cannot read property 'toUpperCase' of undefined
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:208:70
+    at Array.forEach (<anonymous>)
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:205:18
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:228:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'toUpperCase' of undefined
+TypeError: Cannot read property 'toUpperCase' of undefined
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:207:37
+    at Array.forEach (<anonymous>)
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:205:18
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:228:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'toUpperCase' of undefined
+TypeError: Cannot read property 'toUpperCase' of undefined
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:209:70
+    at Array.forEach (<anonymous>)
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:205:18
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:228:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'toUpperCase' of undefined
+TypeError: Cannot read property 'toUpperCase' of undefined
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:209:70
+    at Array.forEach (<anonymous>)
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:205:18
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:228:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
