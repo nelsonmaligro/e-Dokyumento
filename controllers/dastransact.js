@@ -1,8 +1,8 @@
 /*
 Controller Module for Handling Miscellaneous Transactions
-    - It includes merging signed PDF pages, searching reference from monitoring, scanning QR COde
-    merging annotated PDF pages, document DB or metada query, toggle PDF routing, sending mail notification files,
-    redirect access to public drive folder
+- It includes merging signed PDF pages, searching reference from monitoring, scanning QR COde
+merging annotated PDF pages, document DB or metada query, toggle PDF routing, sending mail notification files,
+redirect access to public drive folder
 
 
 @module docTransactions
@@ -66,7 +66,7 @@ module.exports = function(app, arrDB){
     });
     //post handle scanning of Document QR Code
     app.post('/scanqrdoc', urlencodedParser, function(req,res){
-        scanqrdoc(req, res);
+      scanqrdoc(req, res);
     });
     //post handle send file to user for notification
     app.post('/senduser', urlencodedParser, function(req,res){
@@ -130,45 +130,45 @@ module.exports = function(app, arrDB){
 
     }
 
-  //mergedocument  after annotation
+    //mergedocument  after annotation
     function mergedrawdoc(req, res, id){
       dbhandle.userFind(id, function(user){
-          console.log('Merge document after branch annotation');
-            var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
-            let disNewFile = req.body.fileroute+'.'+req.body.user+'.pdf';
-            let splitFile = req.cookies.fileOpn.split('/');
-            let newfileOpn = req.cookies.fileOpn.replace(splitFile[splitFile.length-1],disNewFile);
-            pdflib.mergePDF(publicstr+req.cookies.fileOpn, drivetmp+'PDF-temp/'+disNewFile, drivetmp+'PDF-temp/'+req.body.user+'.res.pdf', parseInt(req.body.num,10), () =>{
-              //copy signed PDF from temp to next branch
-              fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, drivetmp+user.group+'/'+disNewFile); //make a copy to drive folder
-              //if (fs.existsSync(drive + 'Routing Slip/'+year+'/'+month+'/route-'+req.body.fileroute+'.pdf'))
-              dbhandle.docFind(drivetmp+user.group+'/'+req.body.fileroute, function (found) {
-                let newID = utilsdocms.generateID();
-                dbhandle.docFind(drivetmp+user.group+'/'+disNewFile, function (disfound) {
-                  if (!disfound) {
-                    utilsdocms.makeDir(drive + 'Routing Slip/', year, month);
-                    let dstRoutSlip = drive + 'Routing Slip/'+year+'/'+month+'/route-'+disNewFile+'.pdf';
-                    let webdstRoutSlip = drivetmp + 'PDF-temp/route-'+disNewFile+'.pdf';
-                    if (found){
-                      if (fs.existsSync(found.routeslip)) {
-                        fs.copyFileSync(found.routeslip, dstRoutSlip);fs.copyFileSync(found.routeslip, webdstRoutSlip);
-                      } else {fs.copyFileSync(drivetmp+'routeblank.pdf', webdstRoutSlip);fs.copyFileSync(drivetmp+'routeblank.pdf', dstRoutSlip); }
-                      dbhandle.docCreate(newID, disNewFile, drivetmp+user.group+'/'+disNewFile, found.category, found.author, found.projects, found.deyt, found.size, found.content, dstRoutSlip, found.reference, found.enclosure, found.comment);
-                    } else {
-                      fs.copyFileSync(drivetmp+'routeblank.pdf', webdstRoutSlip); fs.copyFileSync(drivetmp+'routeblank.pdf', dstRoutSlip);
-                      dbhandle.docCreate(newID, disNewFile, drivetmp+user.group+'/'+disNewFile, "", "", [], Date.now(), 0, "", dstRoutSlip, [], [], []);
-                    }
-                  }
-                  dbhandle.monitorFindFile(req.body.fileroute, function(result){ //delete in monitoring
-                    if (result) {
-                      dbhandle.monitorUpdateFilename(req.body.fileroute, disNewFile);
-                    }
-                  });
-                  res.json(disNewFile);
-                  fs.unlinkSync(drivetmp+user.group+'/'+req.body.fileroute);
-                });
+        console.log('Merge document after branch annotation');
+        var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
+        let disNewFile = req.body.fileroute+'.'+req.body.user+'.pdf';
+        let splitFile = req.cookies.fileOpn.split('/');
+        let newfileOpn = req.cookies.fileOpn.replace(splitFile[splitFile.length-1],disNewFile);
+        pdflib.mergePDF(publicstr+req.cookies.fileOpn, drivetmp+'PDF-temp/'+disNewFile, drivetmp+'PDF-temp/'+req.body.user+'.res.pdf', parseInt(req.body.num,10), () =>{
+          //copy signed PDF from temp to next branch
+          fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, drivetmp+user.group+'/'+disNewFile); //make a copy to drive folder
+          //if (fs.existsSync(drive + 'Routing Slip/'+year+'/'+month+'/route-'+req.body.fileroute+'.pdf'))
+          dbhandle.docFind(drivetmp+user.group+'/'+req.body.fileroute, function (found) {
+            let newID = utilsdocms.generateID();
+            dbhandle.docFind(drivetmp+user.group+'/'+disNewFile, function (disfound) {
+              if (!disfound) {
+                utilsdocms.makeDir(drive + 'Routing Slip/', year, month);
+                let dstRoutSlip = drive + 'Routing Slip/'+year+'/'+month+'/route-'+disNewFile+'.pdf';
+                let webdstRoutSlip = drivetmp + 'PDF-temp/route-'+disNewFile+'.pdf';
+                if (found){
+                  if (fs.existsSync(found.routeslip)) {
+                    fs.copyFileSync(found.routeslip, dstRoutSlip);fs.copyFileSync(found.routeslip, webdstRoutSlip);
+                  } else {fs.copyFileSync(drivetmp+'routeblank.pdf', webdstRoutSlip);fs.copyFileSync(drivetmp+'routeblank.pdf', dstRoutSlip); }
+                  dbhandle.docCreate(newID, disNewFile, drivetmp+user.group+'/'+disNewFile, found.category, found.author, found.projects, found.deyt, found.size, found.content, dstRoutSlip, found.reference, found.enclosure, found.comment);
+                } else {
+                  fs.copyFileSync(drivetmp+'routeblank.pdf', webdstRoutSlip); fs.copyFileSync(drivetmp+'routeblank.pdf', dstRoutSlip);
+                  dbhandle.docCreate(newID, disNewFile, drivetmp+user.group+'/'+disNewFile, "", "", [], Date.now(), 0, "", dstRoutSlip, [], [], []);
+                }
+              }
+              dbhandle.monitorFindFile(req.body.fileroute, function(result){ //delete in monitoring
+                if (result) {
+                  dbhandle.monitorUpdateFilename(req.body.fileroute, disNewFile);
+                }
               });
+              res.json(disNewFile);
+              fs.unlinkSync(drivetmp+user.group+'/'+req.body.fileroute);
             });
+          });
+        });
       });
     }
     //merge document  after signing
@@ -209,8 +209,8 @@ module.exports = function(app, arrDB){
                   let arrEnc = []; let foundEnc = false;
                   if (found) {
                     found.enclosure.forEach((filename)=>{
-                        if (filename.includes(req.body.origenc)) {arrEnc.push(req.body.realpath + disNewFile); foundEnc = true;}
-                        else arrEnc.push(filename);
+                      if (filename.includes(req.body.origenc)) {arrEnc.push(req.body.realpath + disNewFile); foundEnc = true;}
+                      else arrEnc.push(filename);
                     })
                     dbhandle.docUpdateEncOnly(drivetmp+user.group+'/'+req.body.origfile, arrEnc);
                   }
@@ -226,26 +226,26 @@ module.exports = function(app, arrDB){
     //merge document after annotation
     function mergedrawdocenc(req, res, id){
       dbhandle.userFind(id, function(user){
-          console.log('Merge document enclosure after annotation');
-            var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
-            let disNewFile = req.body.origenc+'.'+req.body.user+'.pdf';
-            //console.log(req.body.filepath, req.body.realpath, req.body.origenc,req.body.origfile);
-            pdflib.mergePDF(publicstr+req.body.filepath, drivetmp+'PDF-temp/'+disNewFile, drivetmp+'PDF-temp/'+req.body.user+'.res.pdf', parseInt(req.body.num,10), () =>{
-              //copy signed PDF from temp to next branch
-              fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, req.body.realpath + disNewFile); //make a copy to drive folder
-              dbhandle.docFind(drivetmp+user.group+'/'+req.body.origfile, function (found) {
-                let arrEnc = []; let foundEnc = false;
-                if (found) {
-                  found.enclosure.forEach((filename)=>{
-                      if (filename.includes(req.body.origenc)) {arrEnc.push(req.body.realpath + disNewFile); foundEnc = true;}
-                      else arrEnc.push(filename);
-                  })
-                  dbhandle.docUpdateEncOnly(drivetmp+user.group+'/'+req.body.origfile, arrEnc);
-                }
-                if (foundEnc) res.json(disNewFile);
-                else res.json('failref');
-              });
-            });
+        console.log('Merge document enclosure after annotation');
+        var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
+        let disNewFile = req.body.origenc+'.'+req.body.user+'.pdf';
+        //console.log(req.body.filepath, req.body.realpath, req.body.origenc,req.body.origfile);
+        pdflib.mergePDF(publicstr+req.body.filepath, drivetmp+'PDF-temp/'+disNewFile, drivetmp+'PDF-temp/'+req.body.user+'.res.pdf', parseInt(req.body.num,10), () =>{
+          //copy signed PDF from temp to next branch
+          fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, req.body.realpath + disNewFile); //make a copy to drive folder
+          dbhandle.docFind(drivetmp+user.group+'/'+req.body.origfile, function (found) {
+            let arrEnc = []; let foundEnc = false;
+            if (found) {
+              found.enclosure.forEach((filename)=>{
+                if (filename.includes(req.body.origenc)) {arrEnc.push(req.body.realpath + disNewFile); foundEnc = true;}
+                else arrEnc.push(filename);
+              })
+              dbhandle.docUpdateEncOnly(drivetmp+user.group+'/'+req.body.origfile, arrEnc);
+            }
+            if (foundEnc) res.json(disNewFile);
+            else res.json('failref');
+          });
+        });
       });
     }
     //merge document after signing
@@ -437,19 +437,19 @@ module.exports = function(app, arrDB){
         if (user){
           dbhandle.userFind(req.body.send, function(disuser){
             if (disuser) {
-               if (!fs.existsSync(drive + user.group)) fs.mkdirSync(drive + user.group);
-                routeduty.updateThis(req, res, drive + user.group + "/", (succ)=>{
-                  if (succ) {
+              if (!fs.existsSync(drive + user.group)) fs.mkdirSync(drive + user.group);
+              routeduty.updateThis(req, res, drive + user.group + "/", (succ)=>{
+                if (succ) {
 
-                    let found = disuser.mailfiles.find((element)=> {return element.toUpperCase()==(req.body.path+req.body.newfile).toUpperCase();});
-                    if (!found) disuser.mailfiles.push(req.body.path+req.body.newfile);
-                    dbhandle.userUpdate(disuser.userN, disuser.hashP, disuser.email, disuser.salt, disuser.group, disuser.level, disuser.path, disuser.mailfiles, ()=>{
-                      monitoring.updateMonitor(req, res);
-                      utilsdocms.addTag(arrDB.tag,req.body.tag); //add additional hash tags for the documents
-                    });
-                  }
-                });
-                dbhandle.actlogsCreate(id, Date.now(), 'Send File to User/Person: ' + req.body.send, req.body.newfile, req.ip);
+                  let found = disuser.mailfiles.find((element)=> {return element.toUpperCase()==(req.body.path+req.body.newfile).toUpperCase();});
+                  if (!found) disuser.mailfiles.push(req.body.path+req.body.newfile);
+                  dbhandle.userUpdate(disuser.userN, disuser.hashP, disuser.email, disuser.salt, disuser.group, disuser.level, disuser.path, disuser.mailfiles, ()=>{
+                    monitoring.updateMonitor(req, res);
+                    utilsdocms.addTag(arrDB.tag,req.body.tag); //add additional hash tags for the documents
+                  });
+                }
+              });
+              dbhandle.actlogsCreate(id, Date.now(), 'Send File to User/Person: ' + req.body.send, req.body.newfile, req.ip);
             } else res.json('notfound');
           });
         }

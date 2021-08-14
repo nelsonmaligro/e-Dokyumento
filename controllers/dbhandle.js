@@ -53,9 +53,9 @@ const monitorSchema = new Schema({
   filename: String,
   filepath: String,
   route:[{
-        deyt: String,
-        branch: [],
-      }],
+    deyt: String,
+    branch: [],
+  }],
 });
 //Monitoring DB
 const tempmonitorSchema = new Schema({
@@ -63,9 +63,9 @@ const tempmonitorSchema = new Schema({
   filename: String,
   filepath: String,
   route:[{
-        deyt: String,
-        branch: [],
-      }],
+    deyt: String,
+    branch: [],
+  }],
 });
 //server settings
 const settingSchema = new Schema({
@@ -159,11 +159,11 @@ exports.addListCall = function addList(disModel, title, callback){
 //Remove documents
 exports.delList = function (disModel, title, callback){
   //find file
-      disModel.deleteMany({name:{'$regex':'^'+title+'$','$options':'i'}},function (err){
+  disModel.deleteMany({name:{'$regex':'^'+title+'$','$options':'i'}},function (err){
 
-        console.log('Deleted successfully!');
-        callback();
-      });
+    console.log('Deleted successfully!');
+    callback();
+  });
 };
 //add activity logs
 exports.actlogsCreate = function (User, Deyt, Action, Doc, Serial){
@@ -272,9 +272,9 @@ exports.monitorCreate = function monitorCreate(Title, Filename, Deyt, Branch, Fi
     filename: Filename,
     filepath: Filepath,
     route:[{
-          deyt: Deyt,
-          branch: Branch,
-        }],
+      deyt: Deyt,
+      branch: Branch,
+    }],
   });
   newDoc.save(function(err){
     console.log('Added successfully!')
@@ -300,9 +300,9 @@ exports.monitorEdit = function monitorEdit(Title, Filename, Deyt, Branch, Filepa
     filename: Title,
     filepath: Filepath,
     route:[{
-          deyt: Deyt,
-          branch: Branch,
-        }],
+      deyt: Deyt,
+      branch: Branch,
+    }],
   };
   monitorModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
     console.log('Updated successfully!');
@@ -391,9 +391,15 @@ exports.tempmonitorCreate = function (Title, Filename, Route, Filepath){
 };
 
 
-//find document
+//find document through filename
 exports.docFind = function docFind(filename, callback){
   docModel.findOne({filename:{'$regex':'^'+filename+'$','$options':'i'}}, function (err, res){
+    if (!err) callback(res);
+  });
+};
+//find document through classification
+exports.docFindClass = function docFindClass(categ, callback){
+  docModel.find({category:{'$regex':'^'+categ+'$','$options':'i'}}, {title:1, filename:1}, function (err, res){
     if (!err) callback(res);
   });
 };
@@ -520,7 +526,20 @@ exports.docEdit = function docEdit(Id, Title, Filename, Category, Author, Projec
     console.log('Updated successfully!');
   });
 };
-
+//Update Document metadata, reference, and enclosure
+exports.docUpdateMeta = function docEdit(Filename, Category, Projects, Ref, Encl, Comment){
+  //Create records
+  var disDoc = {
+    category:Category,
+    projects:Projects,
+    reference: Ref,
+    enclosure: Encl,
+    comment:Comment
+  };
+  docModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
+    console.log('Metadata Updated successfully!');
+  });
+};
 //Remove documents
 exports.docDel = function docDel(filename, callback){
   //find file
@@ -573,7 +592,7 @@ exports.groupFind = function (name, callback){
 };
 //Create User AccountsS
 exports.userCreate = function (UserN, PassW, Email, Group, Level, Path, Files) {
-    //Create records
+  //Create records
   //var hashVal = new hash.SHA512().b64(PassW);
   var hashVal = PassW;
   var salt = crypto.randomBytes(16).toString('hex');
@@ -634,7 +653,7 @@ exports.userPassUpdate = function (UserN, PassW, callback) {
   var salt = crypto.randomBytes(16).toString('hex');
   var passCrypt = crypto.pbkdf2Sync(hashVal, salt, 10000, 512, 'sha512').toString('hex');
   var disUser = {hashP:passCrypt, salt:salt}
-   userModel.updateOne({userN:{'$regex':'^'+UserN+'$','$options':'i'}},[{$set:disUser}], function(err){
+  userModel.updateOne({userN:{'$regex':'^'+UserN+'$','$options':'i'}},[{$set:disUser}], function(err){
     console.log('Updated successfully!');
     callback();
   });
@@ -667,81 +686,81 @@ exports.validateFullname = function (name, pass, callback){
     callback(hashemail === pass);
   });
 };
-  //create setting
-  exports.settingCreate = function (Maindrive, Publicdrive, Publicstr, AI) {
-    var newSetting = new settingModel({server:'localhost', maindrive:Maindrive, publicdrive:Publicdrive, publicstr:Publicstr, ai:AI});
-     newSetting.save(function(err){
-      console.log('setting saved successfully!')
-    });
-  };
-  //Update setting
-  exports.settingUpdate = function (Maindrive, Publicdrive, Publicstr, callback) {
-    var disSetting = {maindrive:Maindrive, publicdrive:Publicdrive, publicstr:Publicstr};
-    settingModel.updateOne({server:'localhost'},[{$set:disSetting}], function(err){
-      console.log('setting updated successfully!')
-      callback();
-    });
-  };
-  //Update setting AI
-  exports.settingAIUpdate = function (AI, callback) {
-    var disSetting = {ai:AI};
-    settingModel.updateOne({server:'localhost'},[{$set:disSetting}], function(err){
-      console.log('setting updated successfully!')
-      callback();
-    });
-  };
-  //Update setting AI
-  exports.settingmgmtUpdate = function (mgmt, callback) {
-    var disSetting = {topmgmt:mgmt};
-    settingModel.updateOne({server:'localhost'},[{$set:disSetting}], function(err){
-      console.log('setting updated successfully!')
-      callback();
-    });
-  };
-  //create show settings
-  exports.settingDis = function (callback) {
-    settingModel.findOne({ server:'localhost' }, function(err, setting){
-      callback(setting);
-    });
-  };
-  //update commo logs
-  exports.commologsUpdate = function (Year, Month, Branch, callback) {
-    commologsModel.findOne({year:Year, month:Month, branch:Branch}, function (err, disLog){
-      if (!disLog) {
-        let newCommologs = new commologsModel({year:Year, month:Month, branch:Branch, count:1});
-        newCommologs.save(function(err){
+//create setting
+exports.settingCreate = function (Maindrive, Publicdrive, Publicstr, AI) {
+  var newSetting = new settingModel({server:'localhost', maindrive:Maindrive, publicdrive:Publicdrive, publicstr:Publicstr, ai:AI});
+  newSetting.save(function(err){
+    console.log('setting saved successfully!')
+  });
+};
+//Update setting
+exports.settingUpdate = function (Maindrive, Publicdrive, Publicstr, callback) {
+  var disSetting = {maindrive:Maindrive, publicdrive:Publicdrive, publicstr:Publicstr};
+  settingModel.updateOne({server:'localhost'},[{$set:disSetting}], function(err){
+    console.log('setting updated successfully!')
+    callback();
+  });
+};
+//Update setting AI
+exports.settingAIUpdate = function (AI, callback) {
+  var disSetting = {ai:AI};
+  settingModel.updateOne({server:'localhost'},[{$set:disSetting}], function(err){
+    console.log('setting updated successfully!')
+    callback();
+  });
+};
+//Update setting AI
+exports.settingmgmtUpdate = function (mgmt, callback) {
+  var disSetting = {topmgmt:mgmt};
+  settingModel.updateOne({server:'localhost'},[{$set:disSetting}], function(err){
+    console.log('setting updated successfully!')
+    callback();
+  });
+};
+//create show settings
+exports.settingDis = function (callback) {
+  settingModel.findOne({ server:'localhost' }, function(err, setting){
+    callback(setting);
+  });
+};
+//update commo logs
+exports.commologsUpdate = function (Year, Month, Branch, callback) {
+  commologsModel.findOne({year:Year, month:Month, branch:Branch}, function (err, disLog){
+    if (!disLog) {
+      let newCommologs = new commologsModel({year:Year, month:Month, branch:Branch, count:1});
+      newCommologs.save(function(err){
 
-         console.log('Commo logs saved successfully!')
-         return callback();
-        });
-      } else {
-        let count = disLog.count; ++count;
-        let commologs = {count:count}
-        commologsModel.updateOne({year:Year, month:Month, branch:Branch},[{$set:commologs}], function(err){
+        console.log('Commo logs saved successfully!')
+        return callback();
+      });
+    } else {
+      let count = disLog.count; ++count;
+      let commologs = {count:count}
+      commologsModel.updateOne({year:Year, month:Month, branch:Branch},[{$set:commologs}], function(err){
 
-          console.log('Commo logs updated successfully!')
-          return callback();
-        });
-      }
-    });
-  };
-  //Generate commo logs for the year
-  exports.commologsGen = function (Year, allBranch, callback) {
-    let allMonth = ['Jan', 'Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
-    let outData = [];
-    commologsModel.findOne({year:Year}, function (err, disYear){
-      if (!disYear) {
-        callback(null);
-      } else {
-        allMonth.forEach((resMonth, monthIdx)=>{
-          allBranch.forEach((resBranch, branchIdx)=>{
-            commologsModel.findOne({year:Year, month:resMonth.toUpperCase(), branch:resBranch}, (err,disLog)=>{
-              if (!disLog) outData.push({month:resMonth,branch:resBranch,count:0});
-              else outData.push({month:resMonth,branch:resBranch,count:disLog.count});
-              if ((branchIdx==allBranch.length-1) && (monthIdx==allMonth.length-1)) callback(outData);
-            });
+        console.log('Commo logs updated successfully!')
+        return callback();
+      });
+    }
+  });
+};
+//Generate commo logs for the year
+exports.commologsGen = function (Year, allBranch, callback) {
+  let allMonth = ['Jan', 'Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  let outData = [];
+  commologsModel.findOne({year:Year}, function (err, disYear){
+    if (!disYear) {
+      callback(null);
+    } else {
+      allMonth.forEach((resMonth, monthIdx)=>{
+        allBranch.forEach((resBranch, branchIdx)=>{
+          commologsModel.findOne({year:Year, month:resMonth.toUpperCase(), branch:resBranch}, (err,disLog)=>{
+            if (!disLog) outData.push({month:resMonth,branch:resBranch,count:0});
+            else outData.push({month:resMonth,branch:resBranch,count:disLog.count});
+            if ((branchIdx==allBranch.length-1) && (monthIdx==allMonth.length-1)) callback(outData);
           });
-        })
-      }
-    });
-  };
+        });
+      })
+    }
+  });
+};

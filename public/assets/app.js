@@ -1,24 +1,24 @@
 ///For Branch Signing Documnent
 var brscanner = new Instascan.Scanner({ video: document.getElementById('preview') });
 brscanner.addListener('scan', function (content, image) {
-      brsubmitQRPass(content);
+  brsubmitQRPass(content);
 });
 var brtogglecam = false; var brvalPass = false;
 function openCamBranch(){
-        if ($('#toggleButCamRoyal').prop('checked')){
-          if (!brtogglecam){
-            Instascan.Camera.getCameras().then(function (cameras) {
-                   if (cameras.length > 0) {
-                     brscanner.start(cameras[0]);$('#passapproyal').hide();
-                     $('#app').show();brtogglecam=true;brvalPass = false;
-                   }
-                 });
-          }
-        }else {
-          if (!brvalPass){
-            $('#passapproyal').show(); $('#verPassroyal').focus(); brvalPass = true;$('#app').hide();brscanner.stop();brtogglecam = false;
-          }
+  if ($('#toggleButCamRoyal').prop('checked')){
+    if (!brtogglecam){
+      Instascan.Camera.getCameras().then(function (cameras) {
+        if (cameras.length > 0) {
+          brscanner.start(cameras[0]);$('#passapproyal').hide();
+          $('#app').show();brtogglecam=true;brvalPass = false;
         }
+      });
+    }
+  }else {
+    if (!brvalPass){
+      $('#passapproyal').show(); $('#verPassroyal').focus(); brvalPass = true;$('#app').hide();brscanner.stop();brtogglecam = false;
+    }
+  }
 }
 function brsubmitQRPass(content){
   $('#overlay').show();
@@ -35,11 +35,11 @@ function brsubmitQRPass(content){
       data: todo,
       success: function(data){
         if (data!='fail'){
-            closeDialog();$('#routemodClose').click();
-            setCookie('fileOpn','/drive/PDF-temp/'+data,1);
-            setCookie('fileAI',data,1); $('#passapproyal').hide();
-            $('#app').hide();sleep(10000);
-            triggerButFile();$('#butCancelSign').click();
+          closeDialog();$('#routemodClose').click();
+          setCookie('fileOpn','/drive/PDF-temp/'+data,1);
+          setCookie('fileAI',data,1); $('#passapproyal').hide();
+          $('#app').hide();sleep(10000);
+          triggerButFile();$('#butCancelSign').click();
         } else {alert('QR Code or Password Invalid!'); $('#verPassroyal').val('');}
         $('#overlay').hide();
       }
@@ -50,28 +50,28 @@ function brsubmitQRPass(content){
 //For routing slip
 var togglecam = false; var qrClick = false;var valPass = false;
 var scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-      scanner.addListener('scan', function (content, image) {
-          submitQRPass(content);
-            scanner.stop();$('#app').hide();togglecam=false;
-      });
+scanner.addListener('scan', function (content, image) {
+  submitQRPass(content);
+  scanner.stop();$('#app').hide();togglecam=false;
+});
 
 function openCam(){
   if ($('#toggleButCam').prop('checked')){
     if (!togglecam){
       Instascan.Camera.getCameras().then(function (cameras) {
-             if (cameras.length > 0) {
-               scanner.start(cameras[0]);$('#app').show();togglecam=true;
-             }
-           });
+        if (cameras.length > 0) {
+          scanner.start(cameras[0]);$('#app').show();togglecam=true;
+        }
+      });
     }else {
-        scanner.stop();$('#app').hide();togglecam=false;
+      scanner.stop();$('#app').hide();togglecam=false;
     }
   }else {
     if (!valPass){
-        $('#passapp').show(); valPass = true; $('#verPass').focus();
-      } else {
-        $('#passapp').hide(); valPass = false;
-      }
+      $('#passapp').show(); valPass = true; $('#verPass').focus();
+    } else {
+      $('#passapp').hide(); valPass = false;
+    }
   }
 }
 
@@ -90,9 +90,9 @@ function submitQRPass(content){
         var options = {
           height: "400px",
         };
-      PDFObject.embed('/drive/PDF-temp/route-'+$('#fileroute').val()+'.pdf', "#routeattachPage",options);
-      qrClick = true; //set signed routing slip to true
-    } else alert('QR Code or Password Fail!');
+        PDFObject.embed('/drive/PDF-temp/route-'+$('#fileroute').val()+'.pdf', "#routeattachPage",options);
+        qrClick = true; //set signed routing slip to true
+      } else alert('QR Code or Password Fail!');
     }
   });
 }
@@ -120,7 +120,7 @@ function routetoBranchApp(branch){
   setCookie('tempPass','',1);
   //alert(branch);
   $('#routeselBr').val(branch);
-//  $('#routeselBr').prop('value')==branch;
+  //  $('#routeselBr').prop('value')==branch;
 
   var arrRef = getCookie('arrRef');
   var arrEnc = getCookie('arrEnc');
@@ -143,10 +143,10 @@ function routetoBranchApp(branch){
         document.getElementById('divCamPass').style.top="-20px";
         document.getElementById('routeBody').style="margin-top:-10px;";
       } else if (resData.result == 'routed') {
-          $('#disContRout').hide();$('#lbltmp').val($('#fileroute').val());
-          document.getElementById('chkboxRout').checked= true; $('#divSubject').hide();
-          document.getElementById('divCamPass').style.top="-20px";
-          document.getElementById('routeBody').style="margin-top:-10px;";
+        $('#disContRout').hide();$('#lbltmp').val($('#fileroute').val());
+        document.getElementById('chkboxRout').checked= true; $('#divSubject').hide();
+        document.getElementById('divCamPass').style.top="-20px";
+        document.getElementById('routeBody').style="margin-top:-10px;";
       } else {
         $('#disContRout').hide();$('#lbltmp').val($('#fileroute').val());
         $('#divSubject').show();
@@ -169,27 +169,27 @@ function routetoBranchApp(branch){
 
 
 $(document).ready(function(){
-    var disID = getCookie('me');
-    //initialize qr scan and password buttons
-    if ($('#toggleButCam').prop('checked')){
-       $('#qrCamBut').html("<i class='fa fa-camera'></i>&nbsp;&nbsp;Scan QR Code&nbsp;");
-       $('#passapp').hide(); valPass = false;
-    }
-    else{
-        $('#qrCamBut').html("<i class='fa fa-pencil'></i>&nbsp;Sign w/ Password");
-        brscanner.stop();scanner.stop();$('#app').hide();togglecam=false;brtogglecam=false;
-    }
+  var disID = getCookie('me');
+  //initialize qr scan and password buttons
+  if ($('#toggleButCam').prop('checked')){
+    $('#qrCamBut').html("<i class='fa fa-camera'></i>&nbsp;&nbsp;Scan QR Code&nbsp;");
+    $('#passapp').hide(); valPass = false;
+  }
+  else{
+    $('#qrCamBut').html("<i class='fa fa-pencil'></i>&nbsp;Sign w/ Password");
+    brscanner.stop();scanner.stop();$('#app').hide();togglecam=false;brtogglecam=false;
+  }
   //initialize all fields
   $("#routeselBr").chosen({
-      //disable_search_threshold: 10,
-      no_results_text: "Oops, nothing found!",
-      width: "150px"
+    //disable_search_threshold: 10,
+    no_results_text: "Oops, nothing found!",
+    width: "150px"
   });
   $("#routeselAct").chosen({
     no_results_text: "Oops, nothing found!",
     width: "230px"
   });
-//handle previous routing checkbox toggle
+  //handle previous routing checkbox toggle
   $('#chkboxRout').on('change',function(event){
     var todo = {toggle:$('#chkboxRout').prop('checked').toString(), filename:$('#fileroute').val()};
     $.ajax({
@@ -212,48 +212,48 @@ $(document).ready(function(){
     });
 
   });
-//handle routing slip button clicked
+  //handle routing slip button clicked
   $('#butRoutSlip').on('click', function(event){
-     routetoBranchApp()
+    routetoBranchApp()
   });
   //handle toggle QR Cam button
   $('#toggleButCam').on('change', function(event){
     if ($(this).prop('checked')){
-       $('#qrCamBut').html("<i class='fa fa-camera'></i>&nbsp;&nbsp;Scan QR Code&nbsp;");
-       $('#passapp').hide(); valPass = false;
+      $('#qrCamBut').html("<i class='fa fa-camera'></i>&nbsp;&nbsp;Scan QR Code&nbsp;");
+      $('#passapp').hide(); valPass = false;
     }
     else{
-        $('#qrCamBut').html("<i class='fa fa-pencil'></i>&nbsp;Sign w/ Password");
-        brscanner.stop();scanner.stop();$('#app').hide();togglecam=false;brtogglecam=false;
+      $('#qrCamBut').html("<i class='fa fa-pencil'></i>&nbsp;Sign w/ Password");
+      brscanner.stop();scanner.stop();$('#app').hide();togglecam=false;brtogglecam=false;
     }
   });
-//handle validate password click for routing slip
-$('#verPass').keypress(function(e){
-  if (e.which==13) {
+  //handle validate password click for routing slip
+  $('#verPass').keypress(function(e){
+    if (e.which==13) {
+      $('#passapp').hide(); valPass = false;
+      submitQRPass($('#verPass').val()); $('#verPass').val('');
+    }
+  })
+  $('#validatePass').on('click', function (event){
     $('#passapp').hide(); valPass = false;
     submitQRPass($('#verPass').val()); $('#verPass').val('');
-  }
-})
-$('#validatePass').on('click', function (event){
-    $('#passapp').hide(); valPass = false;
-    submitQRPass($('#verPass').val()); $('#verPass').val('');
-});
-//handle validate password click for OIC signature
-$('#verPassroyal').keypress(function(e){
-  if (e.which==13) {
+  });
+  //handle validate password click for OIC signature
+  $('#verPassroyal').keypress(function(e){
+    if (e.which==13) {
+      brvalPass = false;brsubmitQRPass($('#verPassroyal').val()); $('#verPassroyal').val('');
+    }
+  })
+  $('#validatePassroyal').on('click', function (event){
     brvalPass = false;brsubmitQRPass($('#verPassroyal').val()); $('#verPassroyal').val('');
-  }
-})
-$('#validatePassroyal').on('click', function (event){
-    brvalPass = false;brsubmitQRPass($('#verPassroyal').val()); $('#verPassroyal').val('');
-});
+  });
 
-$('#routeButCanc').on('click', function(event){
-  closeDialog();
-});
-$('#routingTopClose').on('click', function(event){
-  closeDialog();
-});
+  $('#routeButCanc').on('click', function(event){
+    closeDialog();
+  });
+  $('#routingTopClose').on('click', function(event){
+    closeDialog();
+  });
 
   //$('#routeselAct').trigger("chosen:updated");
 });

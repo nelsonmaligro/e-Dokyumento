@@ -23,7 +23,7 @@ var domain = require('domain');
 
 var morgan = require('morgan')
 // create a write stream (in append mode)
-var accessLogStream = fs.createWriteStream('access-'+Date.now()+'.log',{flags: 'a'});
+//var accessLogStream = fs.createWriteStream('access-'+Date.now()+'.log',{flags: 'a'});
 
 
 
@@ -43,7 +43,7 @@ setTimeout (()=>{
       var app = express();
       const httpApp = express();
       // setup the logger
-      app.use(morgan('combined', {stream: accessLogStream}))
+      //app.use(morgan('combined', {stream: accessLogStream}))
       //View Engine
       app.set('view engine','ejs');
 

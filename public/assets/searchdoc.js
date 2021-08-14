@@ -4,28 +4,28 @@ function searchQuery(query){
   $('#overlay').show();arrSearches = [];
   let cntSrch = 0;
   var todo = {query:query};
-    $.ajax({
-      type: 'POST',
-      url: '/searchbasic',
-      data: todo,
-      success: function(data){
-        $('#overlay').hide();
-        //alert('result');
-        let arrResult = JSON.parse(data);
-        if (arrResult.length > 1) {
-          dispSearch(arrResult);
-          ++cntSrch;
-          $('#pageLbl').html('Page ' + cntSrch.toString())
-          arrSearches = [{page:cntSrch,search:arrResult}];
-          //arrSearches.push({page:cntSrch,search:arrResult});
-        } else {
-          $('#tableSearch').empty();
-          $('#tableSearch').append("<tr><td></td></tr>");
-          $('#tableSearch').append("<hr>");
-		  $('#divButBackNext').show();//$('#pageLbl').show();
-        }
+  $.ajax({
+    type: 'POST',
+    url: '/searchbasic',
+    data: todo,
+    success: function(data){
+      $('#overlay').hide();
+      //alert('result');
+      let arrResult = JSON.parse(data);
+      if (arrResult.length > 1) {
+        dispSearch(arrResult);
+        ++cntSrch;
+        $('#pageLbl').html('Page ' + cntSrch.toString())
+        arrSearches = [{page:cntSrch,search:arrResult}];
+        //arrSearches.push({page:cntSrch,search:arrResult});
+      } else {
+        $('#tableSearch').empty();
+        $('#tableSearch').append("<tr><td></td></tr>");
+        $('#tableSearch').append("<hr>");
+        $('#divButBackNext').show();//$('#pageLbl').show();
       }
-    });
+    }
+  });
   return false;
 }
 //display searches
@@ -82,21 +82,21 @@ $(document).ready(function(){
       }
     } else {
       var todo = {query:$('#inputSearch').val().trim()};
-        $.ajax({
-          type: 'POST',
-          url: '/searchnext',
-          data: todo,
-          success: function(data){
-            $('#overlay').hide();
-            let arrResult = JSON.parse(data);
-            if (arrResult.length>0){
-              dispSearch(arrResult);
-              ++cntSrch;
-              $('#pageLbl').html('Page ' + cntSrch.toString())
-              arrSearches.push({page:cntSrch,search:arrResult});
-            }
+      $.ajax({
+        type: 'POST',
+        url: '/searchnext',
+        data: todo,
+        success: function(data){
+          $('#overlay').hide();
+          let arrResult = JSON.parse(data);
+          if (arrResult.length>0){
+            dispSearch(arrResult);
+            ++cntSrch;
+            $('#pageLbl').html('Page ' + cntSrch.toString())
+            arrSearches.push({page:cntSrch,search:arrResult});
           }
-        });
+        }
+      });
     }
     return false;
   })

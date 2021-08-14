@@ -1,7 +1,7 @@
 /*
 Controller Module for Processing Incoming Documents
-     - handles operations for all documents inside the incoming folder such as routing, classifying, and Machine Learning.
-     - handles client login, logout, and files checking every interval.
+- handles operations for all documents inside the incoming folder such as routing, classifying, and Machine Learning.
+- handles client login, logout, and files checking every interval.
 
 @module Incoming
 @author Nelson Maligro
@@ -171,47 +171,47 @@ module.exports = function(app, arrDB) {
 
     //process branch incoming files notification
     function sendIncoming(req, res, id){
-       try {
-         dbhandle.userFind(id, function(user){
-           if (user){
-             if ((user.level.toUpperCase()=='DUTYADMIN') || (user.level.toUpperCase()=='SECRETARY')){
-                 fs.readdir(drivetmp +'incoming-temp', function(err,items){
-                   if (!err) {
-                     if (items.length > 0) {
-                       let sortArr = utilsdocms.checkPermission(items, drivetmp +'incoming-temp/');
-                       let newArr = [];
-                       sortArr.forEach((item)=>{
-                         newArr.push({action:'yes',file:item});
-                       });
-                       let outRes = {incoming:newArr,mail:user.mailfiles};
-                       res.json(JSON.stringify(outRes));
-                     } else res.json(JSON.stringify({incoming:'null',mail:user.mailfiles}));
-                   } else res.json(JSON.stringify({incoming:'null',mail:user.mailfiles}));
-                 });
-             } else {
-                 fs.readdir(drivetmp + user.group, function(err,items){
-                   if (!err) {
-                     if (items.length > 0) {
-                       let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
-                       let newArr = [];
-                       sortArr.forEach((item, idx)=>{
-                         monitoring.findLastBranch(item, user.group, function(found){
-                           if (found) newArr.splice(idx,0,{action:'yes',file:item});
-                           else newArr.splice(idx,0,{action:'no',file:item});
-                           if (newArr.length == sortArr.length) {
-                             let outRes = {incoming:newArr,mail:user.mailfiles};
-                             res.json(JSON.stringify(outRes));
-                           }
-                         });
-                       });
-                     } else res.json(JSON.stringify({incoming:'null',mail:user.mailfiles}));
+      try {
+        dbhandle.userFind(id, function(user){
+          if (user){
+            if ((user.level.toUpperCase()=='DUTYADMIN') || (user.level.toUpperCase()=='SECRETARY')){
+              fs.readdir(drivetmp +'incoming-temp', function(err,items){
+                if (!err) {
+                  if (items.length > 0) {
+                    let sortArr = utilsdocms.checkPermission(items, drivetmp +'incoming-temp/');
+                    let newArr = [];
+                    sortArr.forEach((item)=>{
+                      newArr.push({action:'yes',file:item});
+                    });
+                    let outRes = {incoming:newArr,mail:user.mailfiles};
+                    res.json(JSON.stringify(outRes));
+                  } else res.json(JSON.stringify({incoming:'null',mail:user.mailfiles}));
+                } else res.json(JSON.stringify({incoming:'null',mail:user.mailfiles}));
+              });
+            } else {
+              fs.readdir(drivetmp + user.group, function(err,items){
+                if (!err) {
+                  if (items.length > 0) {
+                    let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
+                    let newArr = [];
+                    sortArr.forEach((item, idx)=>{
+                      monitoring.findLastBranch(item, user.group, function(found){
+                        if (found) newArr.splice(idx,0,{action:'yes',file:item});
+                        else newArr.splice(idx,0,{action:'no',file:item});
+                        if (newArr.length == sortArr.length) {
+                          let outRes = {incoming:newArr,mail:user.mailfiles};
+                          res.json(JSON.stringify(outRes));
+                        }
+                      });
+                    });
+                  } else res.json(JSON.stringify({incoming:'null',mail:user.mailfiles}));
 
-                   } else res.json(JSON.stringify({incoming:'null',mail:user.mailfiles}));
-                 });
-             }
-           }
-         });
-       } catch(err){console.log(err);}
+                } else res.json(JSON.stringify({incoming:'null',mail:user.mailfiles}));
+              });
+            }
+          }
+        });
+      } catch(err){console.log(err);}
 
 
     }
