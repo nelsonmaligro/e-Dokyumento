@@ -41,6 +41,7 @@
 </head>
 
 <body>
+
   <!-- Left Panel -->
   <aside id="left-panel" class="left-panel">
     <nav class="navbar navbar-expand-sm navbar-default">
@@ -80,7 +81,7 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="menu-icon fa fa-search"></i>Search</a>
             <ul class="sub-menu children dropdown-menu">
               <li><i class="menu-icon fa fa-search-plus"></i><a href="/searchbasic">Content</a></li>
-              <li><i class="menu-icon fa fa-puzzle-piece"></i><a href="#">Advanced</a></li>
+              <li><i class="menu-icon fa fa-puzzle-piece"></i><a href="/searchadv">Advanced</a></li>
             </ul>
           </li>
 
@@ -155,9 +156,7 @@
                         <% for (var i=0; i < docClass.length; i++){ %>
                           <option><%= docClass[i] %></option>
                           <% } %>
-
                         </select>
-
                       </div>
                       <!-- if AI completes-->
                       <div id="actTag" class="float-left" style="display: none;">

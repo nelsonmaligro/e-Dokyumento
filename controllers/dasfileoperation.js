@@ -1,6 +1,6 @@
 /*
 Controller Module for File Operation
-    - handles all file operations such as download, edit, delete, upload, open, and browsing of drive
+- handles all file operations such as download, edit, delete, upload, open, and browsing of drive
 
 @module fileOperation
 @author Nelson Maligro
@@ -85,6 +85,12 @@ module.exports = function(app, arrDB){
         deletedoc(req, res, id);
       });
     });
+    //post handle save metadata on file open
+    app.post('/savemetadata', urlencodedParser, function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        savemetadoc(req, res, id);
+      });
+    });
     //post handle edit file within client incoming view
     app.post('/editincoming', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
@@ -140,38 +146,38 @@ module.exports = function(app, arrDB){
     //process post explorer show file function
     function postExplorerShow(req, res, id){
       console.log('Show File Explorer');
-          var disDrive = '/drive/';
-          let newDrive = req.body.path;
-          if (newDrive.toUpperCase().includes('D:/DRIVE')){
-            let drivePre = newDrive.substring(0,8);
-            newDrive = newDrive.replace(drivePre,drive.substring(0,drive.length-1));
+      var disDrive = '/drive/';
+      let newDrive = req.body.path;
+      if (newDrive.toUpperCase().includes('D:/DRIVE')){
+        let drivePre = newDrive.substring(0,8);
+        newDrive = newDrive.replace(drivePre,drive.substring(0,drive.length-1));
+      }
+      var disFile = req.body.file; var disPath= newDrive;
+      dbhandle.docFind(disPath+disFile, async function (found){
+        //get document metadata
+        rout= "";ref = [];enc = []; disClas = ""; disTag = []; disComm = [];disAuthor="";disDeyt="";disSize=0;
+        if (found){
+          disComm= found.comment;disAuthor=found.author;disDeyt=found.deyt;disSize=found.size; rout= found.routeslip;ref = found.reference;enc = found.enclosure; disClas = found.category; disTag = found.projects;
+        }
+
+        //copy file to temp path for preview
+        if (fs.existsSync(disPath+disFile)){
+          if (dochandle.getExtension(disFile)!='.pdf'){
+            if (fs.existsSync(drivetmp + 'PDF-temp/'+ disFile +'.pdf')) fs.unlinkSync(drivetmp + 'PDF-temp/'+ disFile +'.pdf');
+            dochandle.convDoctoPDF(disPath+disFile, drivetmp + 'PDF-temp/'+ disFile +'.pdf', function() { //convert doc to pdf
+              let arrBr = [{tempPath: disDrive + 'PDF-temp/'+ disFile +'.pdf', disComm:disComm, disAuthor:disAuthor, disDeyt:disDeyt, disSize:disSize, realpath:disPath,disp:disFile, rout:rout, ref:ref, enc:enc, disClas:disClas, disTag:disTag}];
+              res.json(JSON.stringify(arrBr)); //return metadata
+            });
+          } else {
+            fs.copyFile(disPath+disFile, drivetmp + 'PDF-temp/'+ disFile, function(err) {
+              if (err) console.log(err);
+              let arrBr = [{tempPath: disDrive + 'PDF-temp/'+ disFile, disComm:disComm, disAuthor:disAuthor, disDeyt:disDeyt, disSize:disSize, realpath:disPath,disp:disFile, rout:rout, ref:ref, enc:enc, disClas:disClas, disTag:disTag}];
+              res.json(JSON.stringify(arrBr)); //return metadata
+            });
           }
-          var disFile = req.body.file; var disPath= newDrive;
-          dbhandle.docFind(disPath+disFile, async function (found){
-            //get document metadata
-            rout= "";ref = [];enc = []; disClas = ""; disTag = []; disComm = [];disAuthor="";disDeyt="";disSize=0;
-            if (found){
-              disComm= found.comment;disAuthor=found.author;disDeyt=found.deyt;disSize=found.size; rout= found.routeslip;ref = found.reference;enc = found.enclosure; disClas = found.category; disTag = found.projects;
-            }
+        }
 
-            //copy file to temp path for preview
-            if (fs.existsSync(disPath+disFile)){
-              if (dochandle.getExtension(disFile)!='.pdf'){
-                if (fs.existsSync(drivetmp + 'PDF-temp/'+ disFile +'.pdf')) fs.unlinkSync(drivetmp + 'PDF-temp/'+ disFile +'.pdf');
-                dochandle.convDoctoPDF(disPath+disFile, drivetmp + 'PDF-temp/'+ disFile +'.pdf', function() { //convert doc to pdf
-                  let arrBr = [{tempPath: disDrive + 'PDF-temp/'+ disFile +'.pdf', disComm:disComm, disAuthor:disAuthor, disDeyt:disDeyt, disSize:disSize, realpath:disPath,disp:disFile, rout:rout, ref:ref, enc:enc, disClas:disClas, disTag:disTag}];
-                  res.json(JSON.stringify(arrBr)); //return metadata
-                });
-              } else {
-                fs.copyFile(disPath+disFile, drivetmp + 'PDF-temp/'+ disFile, function(err) {
-                  if (err) console.log(err);
-                    let arrBr = [{tempPath: disDrive + 'PDF-temp/'+ disFile, disComm:disComm, disAuthor:disAuthor, disDeyt:disDeyt, disSize:disSize, realpath:disPath,disp:disFile, rout:rout, ref:ref, enc:enc, disClas:disClas, disTag:disTag}];
-                    res.json(JSON.stringify(arrBr)); //return metadata
-                });
-              }
-            }
-
-          });
+      });
     }
 
     //Process get Explorer Function
@@ -281,6 +287,45 @@ module.exports = function(app, arrDB){
           dbhandle.actlogsCreate(id, Date.now(), 'Delete document from the File Server', req.body.filename, req.ip);
         }
         console.log('deleting document');
+      });
+    }
+    //handle save metadata on file open
+    function savemetadoc(req,res,id){
+      dbhandle.userFind(req.body.user, function (user){
+          dbhandle.docFind(req.body.path+req.body.fileroute, function(docres){
+            var arrRef = JSON.parse(req.body.refs); newRef = [];
+            arrRef.forEach(function (ref){
+              if (ref.path.substring(ref.path.length-1)=="/") newRef.push(ref.path+ref.file);
+              else newRef.push(ref.path+'/'+ref.file);
+            });
+            var arrEnc = JSON.parse(req.body.encs); newEnc = [];
+            arrEnc.forEach(function (enc){
+              if (enc.path.substring(enc.path.length-1)=="/") newEnc.push(enc.path+enc.file);
+              else newEnc.push(enc.path+'/'+enc.file);
+            });
+            var arrComment = JSON.parse(req.body.comments); newComm = [];
+            arrComment.forEach(function (comment){
+              newComm.push({branch:comment.branch, content:comment.content});
+            });
+            //console.log( dst+req.body.newfile+'#'+req.body.class+':'+req.body.tag+':'+newRef+':'+newEnc+':'+newComm)
+            if (!docres){
+              var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
+              utilsdocms.makeDir(driveMain + 'Routing Slip/',year, month);
+              getcontent.getContent(dst + req.body.fileroute,req.body.fileroute,function (discontent){
+                //console.log(req.body.fileroute+':'+req.body.newfile);
+                if (fs.existsSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf')) fs.copyFileSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf',driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.fileroute+'.pdf');
+                var routslipTemp = driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.fileroute+'.pdf';
+                discontent = discontent.substring(0,2000);
+                dbhandle.docCreate (utilsdocms.generateID(), req.body.fileroute, dst+req.body.fileroute, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(dst + req.body.newfile).size, discontent, routslipTemp, newRef, newEnc, newComm);
+                res.json('successful');
+              });
+            } else  {
+              dbhandle.docUpdateMeta(req.body.path+req.body.fileroute, req.body.class, JSON.parse(req.body.tag), newRef, newEnc, newComm);
+              res.json('successful');
+            }
+          });
+
+        console.log('Save Metadata document on file open');
       });
     }
     //handle file download

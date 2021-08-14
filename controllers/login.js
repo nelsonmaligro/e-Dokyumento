@@ -36,7 +36,7 @@ module.exports = function(app){
     app.get('/verifydoc', function(req, res){
       return res.render('verifydoc', {layout:'empty'});
     });
-     //post incoming with params
+    //post incoming with params
     app.post('/', function(req,res, next) {
       passport.authenticate('login', {session:false}, function (err,passportuser,info){
         if (err) { console.log(err);return next(err); }
@@ -61,7 +61,7 @@ module.exports = function(app){
       })(req, res, next);
     });
 
-  //validate password through passport login
+    //validate password through passport login
     passport.use('login', new localStrategy({
       username: 'username',
       password: 'password'
@@ -69,27 +69,27 @@ module.exports = function(app){
       try {
         //Find the user associated with the email provided by the user
         userModel.findOne({ userN:username }, function(err, user){
-            if (err) { console.log(err); return done(err); }
-            if (!user) {
-              console.log('User not found');
-              return done(null, false, "wrongUser");
-            }
-            //Validate password and make sure it matches with the corresponding hash stored in the database
-            if(!user || !user.validatePassword(password)) {
-              console.log('invalid password')
-              return done(null, false, "wrongPass");
-            }
-            if (user.level.toUpperCase()=='DUTYADMIN') {
-              var disUser = {level:"DutyBranch"};
-              userModel.updateOne({userN:{'$regex':'^'+username+'$','$options':'i'}},[{$set:disUser}], function(err){
-                clearIncoming(username);
-                return done(null, user, "Valid");
-              });
-            } else {
+          if (err) { console.log(err); return done(err); }
+          if (!user) {
+            console.log('User not found');
+            return done(null, false, "wrongUser");
+          }
+          //Validate password and make sure it matches with the corresponding hash stored in the database
+          if(!user || !user.validatePassword(password)) {
+            console.log('invalid password')
+            return done(null, false, "wrongPass");
+          }
+          if (user.level.toUpperCase()=='DUTYADMIN') {
+            var disUser = {level:"DutyBranch"};
+            userModel.updateOne({userN:{'$regex':'^'+username+'$','$options':'i'}},[{$set:disUser}], function(err){
               clearIncoming(username);
               return done(null, user, "Valid");
-            }
-          });
+            });
+          } else {
+            clearIncoming(username);
+            return done(null, user, "Valid");
+          }
+        });
       } catch (error) {
         return done(error);
       }
@@ -117,42 +117,42 @@ module.exports = function(app){
                 let fTime = new Date(fs.statSync(disPath + disFile).birthtime);
                 let nrDays = (deyt - fTime) / (1000 * 3600 * 24);
                 //if (nrDays > daysexpire) {
-                  monitoring.getOriginator(disFile, function(branch){
-                    monitoring.findLastBranch(disFile, user.group, function(found){
-                      if (((found) && (branch.toString().toUpperCase()==user.group.toUpperCase())) ||  (branch.toString().toUpperCase() == 'ALL BRANCHES')) {
-                        ////if action or routed branch and routed for all branches by the admin
-                        if (nrDays > (daysexpire + 10)){
-                          dbhandle.docFind(disPath + disFile, function(disRes){
-                              if (disRes) dbhandle.docDel(disPath + disFile,()=>{});
+                monitoring.getOriginator(disFile, function(branch){
+                  monitoring.findLastBranch(disFile, user.group, function(found){
+                    if (((found) && (branch.toString().toUpperCase()==user.group.toUpperCase())) ||  (branch.toString().toUpperCase() == 'ALL BRANCHES')) {
+                      ////if action or routed branch and routed for all branches by the admin
+                      if (nrDays > (daysexpire + 10)){
+                        dbhandle.docFind(disPath + disFile, function(disRes){
+                          if (disRes) dbhandle.docDel(disPath + disFile,()=>{});
+                        });
+                        dbhandle.monitorFindFile(disFile, function(result) { //delete in monitoring
+                          if (result) {
+                            dbhandle.monitorDel(disFile, function(){});
+                            dbhandle.actlogsCreate(username, Date.now(), 'File deleted from monitoring (more than 20 days and action branch)', disFile , 'none');
+                          }
+                        });
+                        if (!fs.existsSync(drive + 'incoming/' + disFile)) {
+                          fs.copyFile(disPath + disFile, drive + 'incoming/' + disFile, (err)=>{
+                            if (!err) fs.unlink(disPath + disFile, (err)=>{if (err) console.log(err);});
                           });
-                          dbhandle.monitorFindFile(disFile, function(result) { //delete in monitoring
-                            if (result) {
-                              dbhandle.monitorDel(disFile, function(){});
-                              dbhandle.actlogsCreate(username, Date.now(), 'File deleted from monitoring (more than 20 days and action branch)', disFile , 'none');
-                            }
-                          });
-                          if (!fs.existsSync(drive + 'incoming/' + disFile)) {
-                            fs.copyFile(disPath + disFile, drive + 'incoming/' + disFile, (err)=>{
-                              if (!err) fs.unlink(disPath + disFile, (err)=>{if (err) console.log(err);});
-                            });
-                          } else fs.unlink(disPath + disFile, (err)=>{if (err) console.log(err);});
-                          dbhandle.actlogsCreate(username, Date.now(), 'File deleted and transferred to File Server - incoming (more than 20 days and for info only)', disFile , 'none');
-                        }
-                      } else if (!found)  { // if for info only
-                        if (nrDays > daysexpire){
-                          dbhandle.docFind(disPath + disFile, function(disRes){
-                              if (disRes) dbhandle.docDel(disPath + disFile,()=>{});
-                          });
-                          if (!fs.existsSync(drive + 'incoming/' + disFile)) {
-                            fs.copyFile(disPath + disFile, drive + 'incoming/' + disFile, (err)=>{
-                              if (!err) fs.unlink(disPath + disFile, (err)=>{if (err) console.log(err);});
-                            });
-                          } else fs.unlink(disPath + disFile, (err)=>{if (err) console.log(err);});
-                          dbhandle.actlogsCreate(username, Date.now(), 'File deleted and transferred to File Server - incoming (more than 10 days)', disFile , 'none');
-                        }
+                        } else fs.unlink(disPath + disFile, (err)=>{if (err) console.log(err);});
+                        dbhandle.actlogsCreate(username, Date.now(), 'File deleted and transferred to File Server - incoming (more than 20 days and for info only)', disFile , 'none');
                       }
-                    });
+                    } else if (!found)  { // if for info only
+                      if (nrDays > daysexpire){
+                        dbhandle.docFind(disPath + disFile, function(disRes){
+                          if (disRes) dbhandle.docDel(disPath + disFile,()=>{});
+                        });
+                        if (!fs.existsSync(drive + 'incoming/' + disFile)) {
+                          fs.copyFile(disPath + disFile, drive + 'incoming/' + disFile, (err)=>{
+                            if (!err) fs.unlink(disPath + disFile, (err)=>{if (err) console.log(err);});
+                          });
+                        } else fs.unlink(disPath + disFile, (err)=>{if (err) console.log(err);});
+                        dbhandle.actlogsCreate(username, Date.now(), 'File deleted and transferred to File Server - incoming (more than 10 days)', disFile , 'none');
+                      }
+                    }
                   });
+                });
                 //}
               } catch(err){}
             });
@@ -172,7 +172,7 @@ module.exports = function(app){
                   if (!fs.existsSync(drive + 'incoming/' + disFile)) {
                     fs.copyFile(inPath + disFile, drive + 'incoming/' + disFile, (err)=>{
                       if (!err){
-                          fs.unlink(inPath + disFile, (err)=>{if (err) console.log(err);});
+                        fs.unlink(inPath + disFile, (err)=>{if (err) console.log(err);});
                       }
                     });
                   } else fs.unlink(inPath + disFile, (err)=>{if (err) console.log(err);});

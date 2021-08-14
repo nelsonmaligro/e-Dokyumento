@@ -33,6 +33,18 @@ module.exports = function(app, arrDB){
     drive = setting.maindrive;
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
+    //handle post advance search
+    app.post('/searchadv', urlencodedParser, function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        postsearchadv(req, res, id);
+      });
+    });
+    //get default view for advance search
+    app.get('/searchadv', function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        getsearchadv(req, res, id);
+      });
+    });
     //get default view for content search
     app.get('/searchbasic', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
@@ -67,9 +79,9 @@ module.exports = function(app, arrDB){
           }
           if (x==1) x=2;
           items.splice(0,x);
-		  res.json(JSON.stringify(arrSearch));
+          res.json(JSON.stringify(arrSearch));
         } else res.json('Empty');
-        
+
       });
     }
     //Process post search
@@ -80,10 +92,10 @@ module.exports = function(app, arrDB){
         let arrSearch = new Array;
         dbhandle.actlogsCreate(id, Date.now(), 'Content Search', req.body.query, req.ip);
         dochandle.findDocFromDir (req.body.query, drive, disFolder, id, (docResult, bolFrst)=>{
-			let index = global.allSearches.findIndex(srcitems=>srcitems.user===id);
-            if (index!=-1) global.allSearches.splice(index,1);
-			 //console.log(global.allSearches.length);
-		   let disPromise = new Promise((resolve, reject)=>{
+          let index = global.allSearches.findIndex(srcitems=>srcitems.user===id);
+          if (index!=-1) global.allSearches.splice(index,1);
+          //console.log(global.allSearches.length);
+          let disPromise = new Promise((resolve, reject)=>{
             if (bolFrst){
               docResult.forEach((items, idx)=>{
                 let first = items.content.toUpperCase().indexOf(req.body.query.toUpperCase());let last = first;
@@ -93,14 +105,14 @@ module.exports = function(app, arrDB){
                 else last = last + 300;
                 arrSearch.push({filename:items.path+items.title, content:items.content.substring(first,last)});
               });
-			  //console.log(arrSearch); 
+              //console.log(arrSearch);
               res.json(JSON.stringify(arrSearch));
             } //else resolve(docResult);
           }).catch((err)=>{});
         });
       });
     }
-    //Process get search
+    //Process get content search
     function getsearchbasic(req, res, id){
       //refresh lists
       dbhandle.generateList(arrDB.class, function (res){ docClass = res; });
@@ -113,9 +125,38 @@ module.exports = function(app, arrDB){
             if (err) throw err;var def="empty";
             var disDrive = '/drive/';rout= "";ref = [];enc = [];
             if (sortArr.length > 0) {def=sortArr[0];}
-             res.render('searchbasic', {layout:'layout-user', realdrive:drive, level:user.level, mailfiles:user.mailfiles, docPers:groups, openpath:user.path, path:disDrive +'No Pending Files.pdf', files:sortArr, disp:"Empty File", branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag, rout:rout, ref:ref, enc:enc});
+            res.render('searchbasic', {layout:'layout-user', realdrive:drive, level:user.level, mailfiles:user.mailfiles, docPers:groups, openpath:user.path, path:disDrive +'No Pending Files.pdf', files:sortArr, disp:"Empty File", branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag, rout:rout, ref:ref, enc:enc});
           });
         });
+      });
+    }
+    //Process get advance search
+    function getsearchadv(req, res, id){
+      //refresh lists
+      dbhandle.generateList(arrDB.class, function (res){ docClass = res; });
+      dbhandle.generateList(arrDB.tag, function (res){ docTag = res; });
+      dbhandle.userFind(id, function(user){
+        dbhandle.groupFind(user.group, function (groups){
+          fs.readdir(drivetmp + user.group, function(err,items){
+            let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
+            console.log('Advance searching');
+            if (err) throw err;var def="empty";
+            var disDrive = '/drive/';rout= "";ref = [];enc = [];
+            if (sortArr.length > 0) {def=sortArr[0];}
+            res.render('searchadv', {layout:'layout-user', realdrive:drive, level:user.level, mailfiles:user.mailfiles, docPers:groups, openpath:user.path, path:disDrive +'No Pending Files.pdf', files:sortArr, disp:"Empty File", branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag, rout:rout, ref:ref, enc:enc});
+          });
+        });
+      });
+    }
+    //Process post search
+    function postsearchadv(req, res, id){
+      console.log('Post Search Advance')
+      dbhandle.userFind(id, function(user){
+        dbhandle.docFindClass(req.body.class, (result) => {
+          res.json(JSON.stringify(result));
+        })
+        dbhandle.actlogsCreate(id, Date.now(), 'Advance Search', req.body.query, req.ip);
+
       });
     }
   });

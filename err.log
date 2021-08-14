@@ -19089,3 +19089,58 @@ TypeError: Cannot read property 'toUpperCase' of undefined
     at D:\Projects\PN DocMS\controllers\dbhandle.js:228:5
     at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
     at processTicksAndRejections (internal/process/task_queues.js:75:11)
+alert is not defined
+ReferenceError: alert is not defined
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:297:11
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:541:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+makeDir is not defined
+ReferenceError: makeDir is not defined
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:313:15
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:397:15
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+makeDir is not defined
+ReferenceError: makeDir is not defined
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:313:15
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:397:15
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'class' of undefined
+TypeError: Cannot read property 'class' of undefined
+    at D:\Projects\PN DocMS\controllers\dassearch.js:156:40
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:560:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'class' of undefined
+TypeError: Cannot read property 'class' of undefined
+    at D:\Projects\PN DocMS\controllers\dassearch.js:156:40
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:560:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'class' of undefined
+TypeError: Cannot read property 'class' of undefined
+    at D:\Projects\PN DocMS\controllers\dassearch.js:156:30
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:560:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'class' of undefined
+TypeError: Cannot read property 'class' of undefined
+    at D:\Projects\PN DocMS\controllers\dassearch.js:156:40
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:560:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'class' of undefined
+TypeError: Cannot read property 'class' of undefined
+    at D:\Projects\PN DocMS\controllers\dassearch.js:156:40
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:560:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+docModel.findMany is not a function
+TypeError: docModel.findMany is not a function
+    at Object.docFindClass (D:\Projects\PN DocMS\controllers\dbhandle.js:402:12)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:155:18
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:560:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)

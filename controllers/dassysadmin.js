@@ -295,82 +295,82 @@ module.exports = function(app, arrDB){
           //Switch condition for action parameter
           switch (req.body.action){
             case 'retrainai':
-              console.log('Retrain AI for Branch and Doc classification');
-              utilsdocms.runPy('./AI/ClassBranch/docClas.py', '').then(function(dataBr){
-                console.log(dataBr.toString());
-                utilsdocms.runPy('./AI/ClassDoc/docClas.py', '').then(function(dataDoc){
-                  console.log(dataDoc.toString());
-                  res.json('successful');
-                });
+            console.log('Retrain AI for Branch and Doc classification');
+            utilsdocms.runPy('./AI/ClassBranch/docClas.py', '').then(function(dataBr){
+              console.log(dataBr.toString());
+              utilsdocms.runPy('./AI/ClassDoc/docClas.py', '').then(function(dataDoc){
+                console.log(dataDoc.toString());
+                res.json('successful');
               });
-              break;
+            });
+            break;
             case 'editdrive':
-              console.log('Update Drive Setting');
-              dbhandle.settingUpdate(req.body.maindrive,req.body.publicdrive,req.body.publicstr, ()=>{
-                res.json('successful');
-                dbhandle.actlogsCreate(id, Date.now(), 'Update Drive Setting', 'none', req.ip);
-              });
-              break;
+            console.log('Update Drive Setting');
+            dbhandle.settingUpdate(req.body.maindrive,req.body.publicdrive,req.body.publicstr, ()=>{
+              res.json('successful');
+              dbhandle.actlogsCreate(id, Date.now(), 'Update Drive Setting', 'none', req.ip);
+            });
+            break;
             case 'editAI':
-              console.log('Update AI Setting');
-              dbhandle.settingAIUpdate(req.body.ai, ()=>{
-                res.json('successful');
-                dbhandle.actlogsCreate(id, Date.now(), 'Update AI Setting', 'none', req.ip);
-              });
-              break;
-              case 'edittopmgmt':
-                console.log('Update Top Management Setting');
-                dbhandle.settingmgmtUpdate(req.body.mgmt, ()=>{
-                  res.json('successful');
-                  dbhandle.actlogsCreate(id, Date.now(), 'Update Top Management Setting', 'none', req.ip);
-                });
-              break;
-              case 'clearpdf':
-                console.log('Clear PDF Folder');
-                fs.readdir(drivetmp +'PDF-temp/', (err, files) => {
+            console.log('Update AI Setting');
+            dbhandle.settingAIUpdate(req.body.ai, ()=>{
+              res.json('successful');
+              dbhandle.actlogsCreate(id, Date.now(), 'Update AI Setting', 'none', req.ip);
+            });
+            break;
+            case 'edittopmgmt':
+            console.log('Update Top Management Setting');
+            dbhandle.settingmgmtUpdate(req.body.mgmt, ()=>{
+              res.json('successful');
+              dbhandle.actlogsCreate(id, Date.now(), 'Update Top Management Setting', 'none', req.ip);
+            });
+            break;
+            case 'clearpdf':
+            console.log('Clear PDF Folder');
+            fs.readdir(drivetmp +'PDF-temp/', (err, files) => {
+              if (err) console.log(err);
+              for (const file of files) {
+                fs.unlink(path.join(drivetmp +'PDF-temp/', file), err => {
                   if (err) console.log(err);
-                  for (const file of files) {
-                    fs.unlink(path.join(drivetmp +'PDF-temp/', file), err => {
-                      if (err) console.log(err);
-                    });
-                  }
                 });
-                res.json('successful');
-                dbhandle.actlogsCreate(id, Date.now(), 'Clear PDF Folder', 'none', req.ip);
-              break;
-              case 'addgroup':
-                console.log('Add Branch/ Group');
-                dbhandle.addListCall(arrDB.branch,req.body.group, (success)=>{
-                  if (success) {res.json('successful'); dbhandle.actlogsCreate(id, Date.now(), 'Add Branch/Group', 'none', req.ip); }
-                  else res.json('fail');
-                });
-              break;
-              case 'delgroup':
-                console.log('Delete Branch/ Group');
-                req.body.group.forEach((group, idx)=>{
-                  dbhandle.delList(arrDB.branch, group, ()=>{
-                    if (idx==req.body.group.length -1) {res.json('successful'); dbhandle.actlogsCreate(id, Date.now(), 'Delete Branch/Group', 'none', req.ip); }
-                  });
-                });
-              break;
-              case 'addclass':
-                console.log('Add Classification');
-                dbhandle.addListCall(arrDB.class,req.body.class, (success)=>{
-                  if (success) {res.json('successful');dbhandle.actlogsCreate(id, Date.now(), 'Add Correspondence', 'none', req.ip);}
-                  else res.json('fail');
-                });
-              break;
-              case 'delclass':
-                console.log('Delete Classification');
-                req.body.class.forEach((disclass, idx)=>{
-                  dbhandle.delList(arrDB.class, disclass, ()=>{
-                    if (idx==req.body.class.length -1) {res.json('successful');dbhandle.actlogsCreate(id, Date.now(), 'Delete Correspondence', 'none', req.ip);}
-                  });
-                });
-              break;
+              }
+            });
+            res.json('successful');
+            dbhandle.actlogsCreate(id, Date.now(), 'Clear PDF Folder', 'none', req.ip);
+            break;
+            case 'addgroup':
+            console.log('Add Branch/ Group');
+            dbhandle.addListCall(arrDB.branch,req.body.group, (success)=>{
+              if (success) {res.json('successful'); dbhandle.actlogsCreate(id, Date.now(), 'Add Branch/Group', 'none', req.ip); }
+              else res.json('fail');
+            });
+            break;
+            case 'delgroup':
+            console.log('Delete Branch/ Group');
+            req.body.group.forEach((group, idx)=>{
+              dbhandle.delList(arrDB.branch, group, ()=>{
+                if (idx==req.body.group.length -1) {res.json('successful'); dbhandle.actlogsCreate(id, Date.now(), 'Delete Branch/Group', 'none', req.ip); }
+              });
+            });
+            break;
+            case 'addclass':
+            console.log('Add Classification');
+            dbhandle.addListCall(arrDB.class,req.body.class, (success)=>{
+              if (success) {res.json('successful');dbhandle.actlogsCreate(id, Date.now(), 'Add Correspondence', 'none', req.ip);}
+              else res.json('fail');
+            });
+            break;
+            case 'delclass':
+            console.log('Delete Classification');
+            req.body.class.forEach((disclass, idx)=>{
+              dbhandle.delList(arrDB.class, disclass, ()=>{
+                if (idx==req.body.class.length -1) {res.json('successful');dbhandle.actlogsCreate(id, Date.now(), 'Delete Correspondence', 'none', req.ip);}
+              });
+            });
+            break;
             default:
-              res.json('fail');
-              break;
+            res.json('fail');
+            break;
           }
         } else res.json('fail');
       });

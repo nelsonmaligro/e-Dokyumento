@@ -1,6 +1,0 @@
-::1 - - [01/Aug/2021:07:32:10 +0000] "POST /sendincoming HTTP/1.1" 200 358 "https://localhost/dashlogs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36"
-::1 - - [01/Aug/2021:07:32:10 +0000] "POST /sendincoming HTTP/1.1" 200 358 "https://localhost/chartmonitornolayout" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36"
-::1 - - [01/Aug/2021:07:32:28 +0000] "POST /sendincoming HTTP/1.1" 200 358 "https://localhost/dashlogs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36"
-::1 - - [01/Aug/2021:07:32:28 +0000] "POST /sendincoming HTTP/1.1" 200 358 "https://localhost/chartmonitornolayout" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36"
-::1 - - [01/Aug/2021:07:32:49 +0000] "POST /sendincoming HTTP/1.1" 200 358 "https://localhost/dashlogs" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36"
-::1 - - [01/Aug/2021:07:32:49 +0000] "POST /sendincoming HTTP/1.1" 200 358 "https://localhost/chartmonitornolayout" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.107 Safari/537.36"

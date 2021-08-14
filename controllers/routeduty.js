@@ -1,6 +1,6 @@
 /*
 Helper Modules for Routing Documents
-    - Provides routing utility function for the main app
+- Provides routing utility function for the main app
 
 @module docRouting
 @author Nelson Maligro
@@ -70,8 +70,8 @@ dbhandle.settingDis((setting)=>{
             if (nothere) {newComm.push({branch:comment.branch, content:comment.content});}
           });
 
-            if (!disRes) dbhandle.docCreate (generateID(), req.body.fileroute, dst+req.body.fileroute, res.category, res.author, res.projects, res.deyt, res.size, res.content, routslipTemp, res.reference, res.enclosure, newComm);
-            else dbhandle.docUpdateNoRefEncIncoming(dst + req.body.fileroute, routslipTemp, newComm);
+          if (!disRes) dbhandle.docCreate (generateID(), req.body.fileroute, dst+req.body.fileroute, res.category, res.author, res.projects, res.deyt, res.size, res.content, routslipTemp, res.reference, res.enclosure, newComm);
+          else dbhandle.docUpdateNoRefEncIncoming(dst + req.body.fileroute, routslipTemp, newComm);
         });
       }
     });
@@ -90,8 +90,8 @@ dbhandle.settingDis((setting)=>{
           newComm.push({branch:comment.branch, content:comment.content});
         });
         dbhandle.docFind(dst + req.body.fileroute, function(disRes){
-            if ((disRes) && (res.id!=disRes.id)) {dbhandle.docDel(dst + req.body.fileroute,()=>{dbhandle.docUpdateNoRefEnc(res.id, dst + req.body.fileroute, routslipTemp, newComm);});}
-            else dbhandle.docUpdateNoRefEnc(res.id, dst + req.body.fileroute, routslipTemp, newComm);
+          if ((disRes) && (res.id!=disRes.id)) {dbhandle.docDel(dst + req.body.fileroute,()=>{dbhandle.docUpdateNoRefEnc(res.id, dst + req.body.fileroute, routslipTemp, newComm);});}
+          else dbhandle.docUpdateNoRefEnc(res.id, dst + req.body.fileroute, routslipTemp, newComm);
         });
       }
     });
@@ -110,9 +110,9 @@ dbhandle.settingDis((setting)=>{
           newComm.push({branch:comment.branch, content:comment.content});
         });
         dbhandle.docFind(dst, function(disRes){
-            if ((disRes) && (res.id!=disRes.id)) {dbhandle.docDel(dst,()=>{dbhandle.docUpdateNoRefEnc(res.id, dst, routslipTemp, newComm);});}
-            else dbhandle.docUpdateNoRefEnc(res.id, dst, routslipTemp, newComm);
-          });
+          if ((disRes) && (res.id!=disRes.id)) {dbhandle.docDel(dst,()=>{dbhandle.docUpdateNoRefEnc(res.id, dst, routslipTemp, newComm);});}
+          else dbhandle.docUpdateNoRefEnc(res.id, dst, routslipTemp, newComm);
+        });
       }
     });
   }
@@ -133,8 +133,8 @@ dbhandle.settingDis((setting)=>{
         });
         dbhandle.docFind(drivetmp+"/" + req.body.fileroute, function(res){
           dbhandle.docFind(dst, function(disRes){
-              if ((disRes) && (res.id!=disRes.id)) {dbhandle.docDel(dst,()=>{dbhandle.docUpdateNoRefEnc(res.id, dst, res.routeslip, res.comment);});}
-              else {if (res) dbhandle.docUpdateNoRefEnc(res.id, dst, res.routeslip, res.comment);}
+            if ((disRes) && (res.id!=disRes.id)) {dbhandle.docDel(dst,()=>{dbhandle.docUpdateNoRefEnc(res.id, dst, res.routeslip, res.comment);});}
+            else {if (res) dbhandle.docUpdateNoRefEnc(res.id, dst, res.routeslip, res.comment);}
           });
         });
       });
@@ -174,47 +174,47 @@ dbhandle.settingDis((setting)=>{
   //routing no changes to reference and enclosure
   exports.routNoRefEncIncoming = function (req, res, src, branches){
     var newsrc =src + req.body.fileroute;
-     //route to specific branches
+    //route to specific branches
     req.body.branch.forEach (function(branch){
-        var dst = drivePublic + branch +"/";
-        if (branch.toUpperCase()!='ALL BRANCHES')  {
+      var dst = drivePublic + branch +"/";
+      if (branch.toUpperCase()!='ALL BRANCHES')  {
+        if (!fs.existsSync(drivePublic + branch)) fs.mkdirSync(drivePublic + branch);
+        if ((dst + req.body.fileroute).toUpperCase() != newsrc.toUpperCase()) {
+          fs.copyFile(newsrc, dst+req.body.fileroute, function(err) {
+            console.log("Successfully copied to " + branch);
+
+            //updateDBdoc(dst, req.body.fileroute, req);//update database
+          });
+        }
+        updateDBdocNoRefEncIncoming(src, dst, req);//Update document database
+      };
+    });
+    //if all branches
+    if (req.body.branch.toString().toUpperCase().includes('ALL BRANCHES')){
+      branches.forEach (function (branch){
+        if (!req.body.branch.includes(branch) && (branch.toUpperCase()!="EXO") && (branch.toUpperCase()!="DN6") && (branch.toUpperCase()!="N6") && (branch.toUpperCase()!="ASST.G.M.") && (branch.toUpperCase()!="G.M.") && (branch.toUpperCase()!="SECRETARY-RECEIVING")) {
+          var dst = drivePublic + branch +"/";
           if (!fs.existsSync(drivePublic + branch)) fs.mkdirSync(drivePublic + branch);
           if ((dst + req.body.fileroute).toUpperCase() != newsrc.toUpperCase()) {
             fs.copyFile(newsrc, dst+req.body.fileroute, function(err) {
               console.log("Successfully copied to " + branch);
-
               //updateDBdoc(dst, req.body.fileroute, req);//update database
             });
           }
           updateDBdocNoRefEncIncoming(src, dst, req);//Update document database
         };
       });
-      //if all branches
-      if (req.body.branch.toString().toUpperCase().includes('ALL BRANCHES')){
-        branches.forEach (function (branch){
-          if (!req.body.branch.includes(branch) && (branch.toUpperCase()!="EXO") && (branch.toUpperCase()!="DN6") && (branch.toUpperCase()!="N6") && (branch.toUpperCase()!="ASST.G.M.") && (branch.toUpperCase()!="G.M.") && (branch.toUpperCase()!="SECRETARY-RECEIVING")) {
-            var dst = drivePublic + branch +"/";
-            if (!fs.existsSync(drivePublic + branch)) fs.mkdirSync(drivePublic + branch);
-            if ((dst + req.body.fileroute).toUpperCase() != newsrc.toUpperCase()) {
-              fs.copyFile(newsrc, dst+req.body.fileroute, function(err) {
-                console.log("Successfully copied to " + branch);
-                //updateDBdoc(dst, req.body.fileroute, req);//update database
-              });
-            }
-            updateDBdocNoRefEncIncoming(src, dst, req);//Update document database
-          };
-        });
-      };
-      //remove from temp after copy to incoming
-      if (!req.body.branch.toString().toUpperCase().includes('ALL BRANCHES')) {
-        //dbhandle.docDel(newsrc,()=>{});
-        fs.unlink(newsrc, async function(err) {
-          await res.json('successful');
-          setTimeout(()=>{
-            dbhandle.docDel(newsrc,()=>{});
-          },5000);
-        });
-      } else res.json('successful');
+    };
+    //remove from temp after copy to incoming
+    if (!req.body.branch.toString().toUpperCase().includes('ALL BRANCHES')) {
+      //dbhandle.docDel(newsrc,()=>{});
+      fs.unlink(newsrc, async function(err) {
+        await res.json('successful');
+        setTimeout(()=>{
+          dbhandle.docDel(newsrc,()=>{});
+        },5000);
+      });
+    } else res.json('successful');
 
   };
   exports.routeThis = function routeThis(req, res, drivetmp, drive, incoming, branches, usrLvl, usrGrp, callback){
@@ -224,12 +224,12 @@ dbhandle.settingDis((setting)=>{
     //Auto rename filesS
     new Promise((resolve, reject)=>{
       if ((req.body.path + req.body.fileroute) != (req.body.path + req.body.newfile))
-        {
-          fs.rename(oldsrc, newsrc, function(err) {
-            if (!err) {console.log('Rename complete!'); resolve();}
-            else {res.json('fail'); callback(false); reject();}
-          });
-        } else resolve();
+      {
+        fs.rename(oldsrc, newsrc, function(err) {
+          if (!err) {console.log('Rename complete!'); resolve();}
+          else {res.json('fail'); callback(false); reject();}
+        });
+      } else resolve();
     }).then(()=>{
       if (req.body.save=='openroute') updateDBdoc(req.body.path, req.body.fileroute, req);//Update document database
       //copy to incoming
@@ -297,17 +297,17 @@ dbhandle.settingDis((setting)=>{
     //Auto rename files
     new Promise((resolve,reject)=>{
       if ((req.body.path + req.body.fileroute) != (req.body.path + req.body.newfile))
-        {
-          fs.rename(oldsrc, newsrc, function(err) {
-            if (!err) {
-              updateDBdoc(drivetmp+"/", req.body.newfile, req);//update database
-              console.log('Rename complete!'); resolve();
-            } else reject();
-          });
-        } else {
-          updateDBdoc(drivetmp+"/", req.body.newfile, req);//update database
-          resolve();
-        }
+      {
+        fs.rename(oldsrc, newsrc, function(err) {
+          if (!err) {
+            updateDBdoc(drivetmp+"/", req.body.newfile, req);//update database
+            console.log('Rename complete!'); resolve();
+          } else reject();
+        });
+      } else {
+        updateDBdoc(drivetmp+"/", req.body.newfile, req);//update database
+        resolve();
+      }
     }).then(()=>{
       if (!fs.existsSync(drive + req.body.class)) fs.mkdirSync(drive + req.body.class);
       var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
@@ -344,12 +344,12 @@ dbhandle.settingDis((setting)=>{
     //Auto rename files
     new Promise((resolve, reject)=>{
       if ((req.body.path + req.body.fileroute) != (req.body.path + req.body.newfile))
-        {
-          fs.rename(oldsrc, newsrc, function(err) {
-            if (!err) {console.log('Rename complete!'); resolve();}
-            else { res.json('fail'); callback(false); reject();}
-          });
-        } else resolve();
+      {
+        fs.rename(oldsrc, newsrc, function(err) {
+          if (!err) {console.log('Rename complete!'); resolve();}
+          else { res.json('fail'); callback(false); reject();}
+        });
+      } else resolve();
     }).then(()=>{
       updateDBdoc(req.body.path,  req.body.fileroute, req);//Update document database
       //copy to Classification folders

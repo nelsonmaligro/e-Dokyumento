@@ -1,26 +1,26 @@
 //For Pie chart
 //pie chart
-  function returnConfigPie(arrBgCol, arrCount, arrBranch) {
-      var configPie = {
-      type: 'pie',
-      data: {
-          datasets: [ {
-              data: arrCount,
-              backgroundColor: arrBgCol
-              //hoverBackgroundColor: arrBgHov
-                          } ],
-          labels: arrBranch
-      },
-      options: {
-          responsive: true,
-          legend: {
-            display: true,
-            position: 'left',
-            labels:{
-              fontSize:8
-            }
+function returnConfigPie(arrBgCol, arrCount, arrBranch) {
+  var configPie = {
+    type: 'pie',
+    data: {
+      datasets: [ {
+        data: arrCount,
+        backgroundColor: arrBgCol
+        //hoverBackgroundColor: arrBgHov
+      } ],
+      labels: arrBranch
+    },
+    options: {
+      responsive: true,
+      legend: {
+        display: true,
+        position: 'left',
+        labels:{
+          fontSize:8
         }
       }
+    }
   };
   return configPie;
 }
@@ -57,7 +57,7 @@ function returnConfig(datasets) {
     options: {
       legend:{
         labels: {
-            fontSize:8
+          fontSize:8
         }
       },
       scales: {
@@ -68,22 +68,22 @@ function returnConfig(datasets) {
         } ]
       },
       pan: {
-            enabled: true,
-            mode: "x",
-            speed: 10,
-            threshold: 10
-            },
+        enabled: true,
+        mode: "x",
+        speed: 10,
+        threshold: 10
+      },
       zoom: {
-            enabled: true,
-            drag: false,
-            mode: "x",
-            speed: 0.1,
-   // sensitivity: 0.1,
-            limits: {
-                max: 10,
-                min: 0.5
-              }
-          }
+        enabled: true,
+        drag: false,
+        mode: "x",
+        speed: 0.1,
+        // sensitivity: 0.1,
+        limits: {
+          max: 10,
+          min: 0.5
+        }
+      }
     }
   };
   return config;
@@ -108,12 +108,12 @@ function updateCanvas(data, arrBranch){
     disColor = randomColor(arrRGB.red, arrRGB.green, arrRGB.blue, .5);
     disBorder = randomColor(arrRGB.red, arrRGB.green, arrRGB.blue, 1);
     let setting = {
-        label: branch,
-        data: arrNum,
-        borderColor: disBorder,
-        borderWidth: "0",
-        backgroundColor: disColor
-      };
+      label: branch,
+      data: arrNum,
+      borderColor: disBorder,
+      borderWidth: "0",
+      backgroundColor: disColor
+    };
     arrColor.push(disColor);
     arrChart.push(setting);
   });
@@ -148,7 +148,7 @@ $(document).ready(function() {
   var values = new Array;
   var arrBranch = new Array;
   sleep(2000).then(()=>{
-     values = $.map(options ,function(option) {
+    values = $.map(options ,function(option) {
       return option.value;
     });
   }).then(()=>{
