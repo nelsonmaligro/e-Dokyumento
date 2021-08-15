@@ -100,6 +100,8 @@ var tempmonitorModel = new mongoose.model('tempmonitorAccs',tempmonitorSchema);
 var settingModel = new mongoose.model('settings',settingSchema);
 var commologsModel = new mongoose.model('commologs',commologsSchema);
 var activitylogsModel = new mongoose.model('activitylogs',activitylogsSchema);
+//for adding documents
+//var docDB = new mongoose.model('pnDocs');
 
 //var branchModel = new mongoose.model('branch',new Schema({name: String}));
 //var classModel = new mongoose.model('class',new Schema({name: String}));
@@ -241,6 +243,7 @@ exports.monitorFindTitle = function monitorFindTitle(title, callback){
 //find monitoring by filename
 exports.monitorFindFile = function monitorFindFile(title, callback){
   //find file
+  title = title.replace(/\(/g,'\\(');title = title.replace(/\)/g,'\\)');
   monitorModel.findOne({filename:{'$regex':'^'+title+'$','$options':'i'}}, function (err, res){
 
     //console.log(res);
@@ -258,6 +261,7 @@ exports.monitorFindBranch = function monitorFindBranch(title, callback){
 //Remove documents in monitoring
 exports.monitorDel = function monitorDel(filename, callback){
   //find file
+  filename = filename.replace(/\(/g,'\\(');filename = filename.replace(/\)/g,'\\)');
   monitorModel.deleteMany({filename:{'$regex':'^'+filename+'$','$options':'i'}},function (err){
 
     console.log('Deleted successfully!');
@@ -304,6 +308,7 @@ exports.monitorEdit = function monitorEdit(Title, Filename, Deyt, Branch, Filepa
       branch: Branch,
     }],
   };
+  Filename = Filename.replace(/\(/g,'\\(');Filename = Filename.replace(/\)/g,'\\)');
   monitorModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
     console.log('Updated successfully!');
   });
@@ -314,6 +319,7 @@ exports.monitorUpdateTitle = function (Title, Filename){
   var disDoc = {
     title: Title,
   };
+  Filename = Filename.replace(/\(/g,'\\(');Filename = Filename.replace(/\)/g,'\\)');
   monitorModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
 
     console.log('Updated successfully!');
@@ -325,6 +331,7 @@ exports.monitorUpdateFilename = function (Filename, newFile){
   var disDoc = {
     filename: newFile,
   };
+  Filename = Filename.replace(/\(/g,'\\(');Filename = Filename.replace(/\)/g,'\\)');
   monitorModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
 
     console.log('Updated successfully!');
@@ -338,6 +345,7 @@ exports.monitorUpdateFile = function (oldFile, newFile, Route, Filepath, callbac
     filepath: Filepath,
     route: Route,
   };
+  oldFile = oldFile.replace(/\(/g,'\\(');oldFile = oldFile.replace(/\)/g,'\\)');
   monitorModel.updateOne({filename:{'$regex':'^'+oldFile+'$','$options':'i'}},[{$set:disDoc}], function(err){
 
     console.log('Updated successfully!');
@@ -352,6 +360,7 @@ exports.monitorAddRoute = function monitorAddRoute(Title, Filename, Route, Filep
     filepath: Filepath,
     route: Route,
   };
+  Filename = Filename.replace(/\(/g,'\\(');Filename = Filename.replace(/\)/g,'\\)');
   monitorModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
 
     console.log('Updated successfully!');
@@ -360,6 +369,7 @@ exports.monitorAddRoute = function monitorAddRoute(Title, Filename, Route, Filep
 //find monitoring by filename
 exports.tempmonitorFindFile = function (title, callback){
   //find file
+  title = title.replace(/\(/g,'\\(');title = title.replace(/\)/g,'\\)');
   tempmonitorModel.findOne({filename:{'$regex':'^'+title+'$','$options':'i'}}, function (err, res){
 
     //console.log(res);
@@ -369,6 +379,7 @@ exports.tempmonitorFindFile = function (title, callback){
 //Remove documents in monitoring
 exports.tempmonitorDel = function (filename, callback){
   //find file
+  filename = filename.replace(/\(/g,'\\(');filename = filename.replace(/\)/g,'\\)');
   tempmonitorModel.deleteMany({filename:{'$regex':'^'+filename+'$','$options':'i'}},function (err){
 
     console.log('Deleted successfully!');
@@ -393,13 +404,27 @@ exports.tempmonitorCreate = function (Title, Filename, Route, Filepath){
 
 //find document through filename
 exports.docFind = function docFind(filename, callback){
+  filename = filename.replace(/\(/g,'\\(');filename = filename.replace(/\)/g,'\\)');
   docModel.findOne({filename:{'$regex':'^'+filename+'$','$options':'i'}}, function (err, res){
     if (!err) callback(res);
+    else console.log(err);
   });
 };
 //find document through classification
 exports.docFindClass = function docFindClass(categ, callback){
   docModel.find({category:{'$regex':'^'+categ+'$','$options':'i'}}, {title:1, filename:1}, function (err, res){
+    if (!err) callback(res);
+  });
+};
+//find document through Tags
+exports.docFindTag = function docFindTag(categ, callback){
+  docModel.find({projects:{'$regex':'^'+categ+'$','$options':'i'}}, {title:1, filename:1}, function (err, res){
+    if (!err) callback(res);
+  });
+};
+//find document through Tags
+exports.docFindAuthor = function docFindAuthor(categ, callback){
+  docModel.find({author:{'$regex':'^'+categ+'$','$options':'i'}}, {title:1, filename:1}, function (err, res){
     if (!err) callback(res);
   });
 };
@@ -411,6 +436,7 @@ exports.docFindbyId = function (Id, callback){
 };
 //get all files in a Directory
 exports.getFilesbyDir = function (folder, callback){
+  folder = folder.replace(/\(/g,'\\(');folder = folder.replace(/\)/g,'\\)');
   docModel.find({filename:{'$regex':'.*^'+folder+'.*$','$options':'i'}}, function (err, res){
     if (!err) {
       let newRes = [];
@@ -442,7 +468,6 @@ exports.docCreate = function docCreate(Id, Title, Filename, Category, Author, Pr
     comment: Comment
   });
   newDoc.save(function(err){
-
     console.log('Added successfully!')
   });
 };
@@ -452,6 +477,7 @@ exports.docUpdateId = function (Id, Filename){
   var disDoc = {
     id:Id
   };
+  Filename = Filename.replace(/\(/g,'\\(');Filename = Filename.replace(/\)/g,'\\)');
   docModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
     console.log('Updated Id successfully!');
   });
@@ -475,6 +501,7 @@ exports.docUpdateNoRefEncIncoming = function docUpdateNoRefEnc(Filename, Rout, C
     routeslip: Rout,
     comment:Comment
   };
+  Filename = Filename.replace(/\(/g,'\\(');Filename = Filename.replace(/\)/g,'\\)');
   docModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
     console.log('Updated Comment successfully!');
   });
@@ -485,6 +512,7 @@ exports.docUpdateEncOnly = function (Filename, Encl){
   var disDoc = {
     enclosure: Encl
   };
+  Filename = Filename.replace(/\(/g,'\\(');Filename = Filename.replace(/\)/g,'\\)');
   docModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
     console.log('Updated successfully!');
   });
@@ -536,6 +564,7 @@ exports.docUpdateMeta = function docEdit(Filename, Category, Projects, Ref, Encl
     enclosure: Encl,
     comment:Comment
   };
+  Filename = Filename.replace(/\(/g,'\\(');Filename = Filename.replace(/\)/g,'\\)');
   docModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
     console.log('Metadata Updated successfully!');
   });
@@ -543,6 +572,7 @@ exports.docUpdateMeta = function docEdit(Filename, Category, Projects, Ref, Encl
 //Remove documents
 exports.docDel = function docDel(filename, callback){
   //find file
+  filename = filename.replace(/\(/g,'\\(');filename = filename.replace(/\)/g,'\\)');
   docModel.deleteMany({filename:{'$regex':'^'+filename+'$','$options':'i'}},function (err){
     if (!err) {
       console.log('Deleted successfully!');

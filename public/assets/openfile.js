@@ -126,10 +126,10 @@ function handleOpenFile(data){
       $('#refTrue').val('true');
       var names = ref.split('/');
       path = ref.substring(0,ref.length-(names[names.length-1]).length-1);path2 = ref.substring(0,ref.length-(names[names.length-1]).length);
-      classPath=path.replace(/\//g,"---");classPath=classPath.replace(/:/g,'x--');classPath=classPath.replace(/ /g,"___");classPath=classPath.replace(/\./g,"z--");
+      classPath=path.replace(/\//g,"---");classPath=classPath.replace(/\(/g,'u--');classPath=classPath.replace(/\)/g,'v--');classPath=classPath.replace(/:/g,'x--');classPath=classPath.replace(/ /g,"___");classPath=classPath.replace(/\./g,"z--");
 
         file = names[names.length-1];
-        disFile = file.replace(/ /g,"___");disFile = disFile.replace(/\./,'---');
+        disFile = file.replace(/ /g,"___");disFile = disFile.replace(/\(/g,'u--');disFile = disFile.replace(/\)/g,'v--');disFile = disFile.replace(/\./g,'---');
         showFile(disFile, classPath, "refenc");
         arrRef.push({file:file,path:path2});
       });
@@ -140,9 +140,9 @@ function handleOpenFile(data){
         $('#refTrue').val('false');
         var names = enc.split('/');
         path = enc.substring(0,enc.length-(names[names.length-1]).length-1);path2 = enc.substring(0,enc.length-(names[names.length-1]).length);
-        classPath=path.replace(/\//g,"---");classPath=classPath.replace(/:/g,'x--');classPath=classPath.replace(/ /g,"___");classPath=classPath.replace(/\./g,"z--");
+        classPath=path.replace(/\//g,"---");classPath=classPath.replace(/\(/g,'u--');classPath=classPath.replace(/\)/g,'v--');classPath=classPath.replace(/:/g,'x--');classPath=classPath.replace(/ /g,"___");classPath=classPath.replace(/\./g,"z--");
           file = names[names.length-1];
-          disFile = file.replace(/ /g,"___");disFile = disFile.replace(/\./,'---');
+          disFile = file.replace(/ /g,"___");disFile = disFile.replace(/\(/g,'u--');disFile = disFile.replace(/\)/g,'v--');disFile = disFile.replace(/\./g,'---');
           showFile(disFile, classPath, "refenc");
           arrEnc.push({file:file,path:path2});
         });

@@ -20,6 +20,7 @@ module.exports = function(app, arrDB){
   const utilsdocms = require('./utilsdocms');
   const dateformat = require('dateformat');
   var multer = require('multer');
+  const getcontent = require('./getcontent');
 
   //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
@@ -307,16 +308,16 @@ module.exports = function(app, arrDB){
             arrComment.forEach(function (comment){
               newComm.push({branch:comment.branch, content:comment.content});
             });
-            //console.log( dst+req.body.newfile+'#'+req.body.class+':'+req.body.tag+':'+newRef+':'+newEnc+':'+newComm)
+            //check if document no record from DB
             if (!docres){
               var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
-              utilsdocms.makeDir(driveMain + 'Routing Slip/',year, month);
-              getcontent.getContent(dst + req.body.fileroute,req.body.fileroute,function (discontent){
+              utilsdocms.makeDir(drive + 'Routing Slip/',year, month);
+              getcontent.getContent(req.body.path + req.body.fileroute,req.body.fileroute,function (discontent){
                 //console.log(req.body.fileroute+':'+req.body.newfile);
-                if (fs.existsSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf')) fs.copyFileSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf',driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.fileroute+'.pdf');
-                var routslipTemp = driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.fileroute+'.pdf';
+                if (fs.existsSync(drivetmp + 'PDF-temp/route-'+ req.body.fileroute +'.pdf')) fs.copyFileSync(drivetmp + 'PDF-temp/route-'+ req.body.fileroute +'.pdf',drive+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.fileroute+'.pdf');
+                var routslipTemp = drive+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.fileroute+'.pdf';
                 discontent = discontent.substring(0,2000);
-                dbhandle.docCreate (utilsdocms.generateID(), req.body.fileroute, dst+req.body.fileroute, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(dst + req.body.newfile).size, discontent, routslipTemp, newRef, newEnc, newComm);
+                dbhandle.docCreate (utilsdocms.generateID(), req.body.fileroute, req.body.path+req.body.fileroute, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(req.body.path + req.body.fileroute).size, discontent, routslipTemp, newRef, newEnc, newComm);
                 res.json('successful');
               });
             } else  {

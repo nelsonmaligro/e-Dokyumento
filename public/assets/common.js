@@ -217,7 +217,7 @@ function checkFiles() {
         arrMails.forEach(function(file) {
           let fileArr = file.split('/');
           let filename = fileArr[fileArr.length - 1].substring(0, 20);
-          file = file.replace(/ /g, "___");
+          file = file.replace(/ /g, "___");file = file.replace(/\(/g, 'u--');file = file.replace(/\)/g, 'v--');
           file = file.replace(/\./g, '---');
           $('#addMailHere').append("<li><button type='button' onclick=delNotiFile('" + file + "') class='btn btn-danger btn-sm fa fa-times' href='#'></button><button button type='button' class='btn btn-link btn-sm' onclick=openDisFile('" + file + "') href='#'>" + filename + "</button></li>");
         });
@@ -241,6 +241,7 @@ function loadRefEnc() {
     $('#divRef').empty();
     arrRef.forEach(function(ref) {
       var newRef = ref.file.replace(/ /g, "___");
+      newRef = newRef.replace(/\(/g, 'u--');newRef = newRef.replace(/\)/g, 'v--');
       newRef = newRef.replace(/\./g, '---');
       disDir = ref.path.replace(/:/g, 'x--');
       disDir = disDir.replace(/\./g, 'z--');
@@ -254,6 +255,7 @@ function loadRefEnc() {
     $('#divEnc').empty();
     arrEnc.forEach(function(enc) {
       var newEnc = enc.file.replace(/ /g, "___");
+      newEnc = newEnc.replace(/\(/g, 'u--');newEnc = newEnc.replace(/\)/g, 'v--');
       newEnc = newEnc.replace(/\./g, '---');
       disDir = enc.path.replace(/:/g, 'x--');
       disDir = disDir.replace(/\./g, 'z--');
@@ -343,8 +345,7 @@ function closWindow() {
 }
 //handle open file on mail Notification
 function openDisFile(filepath) {
-  filepath = filepath.replace(/___/g, " ");
-  filepath = filepath.replace(/---/g, '.');
+  filepath = filepath.replace(/___/g, " ");filepath = filepath.replace(/u--/g, '(');filepath = filepath.replace(/v--/g, ')');filepath = filepath.replace(/---/g, '.');
   setCookie('mailnoti', 'true');
   arrStr = filepath.split('/');
   mailfile = arrStr[arrStr.length - 1];
@@ -356,8 +357,7 @@ function openDisFile(filepath) {
 
 function delNotiFile(filepath) {
   this.event.stopPropagation();
-  filepath = filepath.replace(/___/g, " ");
-  filepath = filepath.replace(/---/g, '.');
+  filepath = filepath.replace(/___/g, " ");filepath = filepath.replace(/u--/g, '(');filepath = filepath.replace(/v--/g, ')');filepath = filepath.replace(/---/g, '.');
   var user = getCookie('me');
   var todo = {
     path: filepath,

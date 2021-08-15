@@ -7,7 +7,7 @@ _CANVAS = document.querySelector('#pdfPage');
 //Function for deleting files from References and enclosures
 async function delEncRef(paramDiv,file, paramCookie){
   $('#'+paramDiv+'-'+file+'').remove();
-  newEnc = file.replace(/___/g," ");newEnc = newEnc.replace(/---/g,'.');
+  newEnc = file.replace(/___/g," ");newEnc = newEnc.replace(/u--/g,'(');newEnc = newEnc.replace(/v--/g,')');newEnc = newEnc.replace(/---/g,'.');
   var arrEnc = []; var disEnc = JSON.parse(getCookie(paramCookie));
   if (disEnc.length > 0) arrEnc = disEnc;
   var obj = arrEnc.find(({file})=> file === newEnc);
@@ -20,8 +20,8 @@ function dispAttach(disDir, disFile){
   selChose();
   if (disDir!='Page'){
     togglePanelHide(true);$('#overlay').show()//display spinner
-    disDir=disDir.replace(/x--/g,':');disDir=disDir.replace(/z--/g,'.');disDir=disDir.replace(/---/g,"/");disDir=disDir.replace(/___/g," ");
-    newFile = disFile.replace(/___/g," ");newFile = newFile.replace(/---/g,'.');setCookie('origEncFile',newFile,1);
+    disDir=disDir.replace(/x--/g,':');disDir=disDir.replace(/u--/g,'(');disDir=disDir.replace(/v--/g,')');disDir=disDir.replace(/z--/g,'.');disDir=disDir.replace(/---/g,"/");disDir=disDir.replace(/___/g," ");
+    newFile = disFile.replace(/___/g," ");newFile = newFile.replace(/u--/g,'(');newFile = newFile.replace(/v--/g,')');newFile = newFile.replace(/---/g,'.');setCookie('origEncFile',newFile,1);
     setCookie('realpath',disDir + '/',1);
     var todo = {path:disDir + '/',file:newFile};
     $.ajax({
@@ -74,9 +74,9 @@ function dispAttach(disDir, disFile){
 }
 //Function for adding files from modal to Reference and Enclosure
 function showFile(disFile, disDir, flag){
-  newFile = disFile.replace(/___/g," ");newFile = newFile.replace(/---/g,'.');
+  newFile = disFile.replace(/___/g," ");newFile = newFile.replace(/u--/g,'(');newFile = newFile.replace(/v--/g,')');newFile = newFile.replace(/---/g,'.');
   var olddisDir = disDir;
-  disDir=disDir.replace(/x--/g,':');disDir=disDir.replace(/z--/g,'.');disDir=disDir.replace(/---/g,"/");disDir=disDir.replace(/___/g," ");
+  disDir=disDir.replace(/x--/g,':');disDir=disDir.replace(/u--/g,'(');disDir=disDir.replace(/v--/g,')');disDir=disDir.replace(/z--/g,'.');disDir=disDir.replace(/---/g,"/");disDir=disDir.replace(/___/g," ");
   if (flag=='refenc'){//if click on reference and enclosuse
     if (!newFile.includes('~')) {
       if ($('#refTrue').val()==='true'){
@@ -134,7 +134,7 @@ function showFile(disFile, disDir, flag){
 //expand directory
 function showDir(path,flag){
   //classPath=path.replace(/:/g,'x-');classPath=classPath.replace(/\//g,"---");classPath=classPath.replace(/ /g,"___")
-  classPath = path.replace(/___/g," ");classPath = classPath.replace(/x--/g,":");classPath=classPath.replace(/z--/g,".");classPath = classPath.replace(/---/g,"/");
+  classPath = path.replace(/___/g," ");classPath = classPath.replace(/u--/g,"(");classPath = classPath.replace(/v--/g,")");classPath = classPath.replace(/x--/g,":");classPath=classPath.replace(/z--/g,".");classPath = classPath.replace(/---/g,"/");
   classPath=classPath+"/";
   var todo = {path:classPath};
   $.ajax({
@@ -149,12 +149,12 @@ function showDir(path,flag){
       $('#'+path+'').empty();
       for (var i=0; i < dirs.length; i++)
       {
-        classDirs = dirs[i].replace(/ /g,"___");classDirs=classDirs.replace(/\./g,"z--");
+        classDirs = dirs[i].replace(/ /g,"___");classDirs=classDirs.replace(/\(/g,"u--");classDirs=classDirs.replace(/\)/g,"v--");classDirs=classDirs.replace(/\./g,"z--");
         $('#'+path+'').append("<li><a onclick=showDir('"+path+"---"+classDirs+"','"+flag+"')  href='#'>" + dirs[i] +"</a><ul><div id='"+path+"---"+classDirs+"'></div></ul></li>");
       }
       for (var i=0; i < files.length; i++)
       {
-        disFile = files[i].replace(/ /g,"___");disFile = disFile.replace(/\./g,'---');
+        disFile = files[i].replace(/ /g,"___");disFile = disFile.replace(/\(/g,'u--');disFile = disFile.replace(/\)/g,'v--');disFile = disFile.replace(/\./g,'---');
         $('#'+path+'').append("<li><a onclick=showFile('"+disFile+"','"+path+"','"+flag+"')  href='#'>" + files[i] +"</a></li>");
       }
       $(".file-tree").filetree();
@@ -191,15 +191,15 @@ function modalDisplay(flag, path){
       var dirs = arrObj['dirs'];
       var files = arrObj['files'];
       $('.driveList').empty();
-      classPath=path.replace(/\//g,"---");classPath=classPath.replace(/:/g,'x--');classPath=classPath.replace(/ /g,"___");classPath=classPath.replace(/\./g,"z--");
+      classPath=path.replace(/\//g,"---");classPath=classPath.replace(/\(/g,'u--');classPath=classPath.replace(/\)/g,'v--');classPath=classPath.replace(/:/g,'x--');classPath=classPath.replace(/ /g,"___");classPath=classPath.replace(/\./g,"z--");
         for (var i=0; i < dirs.length; i++)
         {
-          classDirs = dirs[i].replace(/ /g,"___");classDirs=classDirs.replace(/\./g,"z--");
+          classDirs = dirs[i].replace(/ /g,"___");classDirs=classDirs.replace(/\(/g,"u--");classDirs=classDirs.replace(/\)/g,"v--");classDirs=classDirs.replace(/\./g,"z--");
           $('.driveList').append("<li><a onclick=showDir('"+classPath+"---"+classDirs+"','"+flag+"')  href='#'>" + dirs[i] +"</a><ul><div  id='"+classPath+"---"+classDirs+"'></div></ul></li>");
         }
         for (var i=0; i < files.length; i++)
         {
-          disFile = files[i].replace(/ /g,"___");disFile = disFile.replace(/\./g,'---');
+          disFile = files[i].replace(/ /g,"___");disFile = disFile.replace(/\(/g,'u--');disFile = disFile.replace(/\)/g,'v--');disFile = disFile.replace(/\./g,'---');
           $('.driveList').append("<li><a onclick=showFile('"+disFile+"','"+classPath+"','"+flag+"')  href='#'>" + files[i] +"</a></li>");
         }
         $(".file-tree").filetree();

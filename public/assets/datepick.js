@@ -13,17 +13,21 @@
            'This Month': [moment().startOf('month'), moment().endOf('month')],
            'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
         },
-        autoUpdateInput: false,
+        autoUpdateInput: true,
         locale: {
           cancelLabel: 'Clear'
         },
+    }).on('change', function() { //handle event on search by date modified
+      selectSearch = 'datepick'; //variable from searchadv.js
+      emptyAllbox('datepick'); //function from searchadv.js
     });
-
+    $('#datepick').val('');
     //handle apply  button clicked
     $('input[name="datepick"]').on('apply.daterangepicker', function(ev, picker) {
          $('#datepick').val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+         $('#datepick').change();
      });
-   //handle cancel button clicked
+   //handle cancel button clic$(this).change();ked
      $('input[name="datepick"]').on('cancel.daterangepicker', function(ev, picker) {
          $('#datepick').val('');
      });
