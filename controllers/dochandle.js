@@ -15,6 +15,7 @@ var fs = require('fs');
 var path = require('path');
 const toPdf = require("office-to-pdf");
 const utilsdocms = require('./utilsdocms');
+var dateformat = require('dateformat');
 
 
 //convert office document to PDF
@@ -279,7 +280,49 @@ function waitforme(ms) {
     setTimeout(resolve, ms);
   });
 }
-//recursively search through directories
+//recursively search filename through specified directory
+exports.findFilenameFromDir = function(query, dir, flag, grtr, callback) {
+  var arrRes = [];
+  let idxDType = ['.idxD'];
+  let idxIType = ['.idxI'];
+  //function to search recursively
+  function walkDirFile(currentPath, callbox) {
+    currentPath = currentPath.replace(/\\/g, '/');
+    let files = fs.readdirSync(currentPath);
+    for (let i in files) {
+      let curFile = currentPath + files[i];
+      if ((fs.statSync(curFile).isFile()) && (idxIType.indexOf(path.extname(curFile)) != 0)) {
+        switch (flag){
+          case 'filename': if (files[i].toLowerCase().includes(query.toLowerCase())) arrRes.push({title:files[i],filename:curFile}); break;
+          case 'size':
+            if (grtr) {if (fs.statSync(curFile).size  >= (parseFloat(query) * 1000000)) arrRes.push({title:files[i],filename:curFile});}
+            else {if (fs.statSync(curFile).size  <= (parseFloat(query) * 1000000)) arrRes.push({title:files[i],filename:curFile});}
+            break;
+          case 'datepick':
+            let curFileDate = dateformat(new Date(fs.statSync(curFile).mtime),'mm/dd/yyyy');
+            //let curFileDate = new Date(dt.getMonth()+'/'+dt.getDate()+'/'+dt.getFullYear());
+            let queryDate =  dateformat(new Date(query),'mm/dd/yyyy'); let grtrDate =  dateformat(new Date(grtr),'mm/dd/yyyy');
+            if ((curFileDate >= queryDate) && (curFileDate <= grtrDate)) {
+              arrRes.push({title:files[i],filename:curFile});
+            }
+            break;
+
+        }
+
+      } else if (fs.statSync(curFile).isDirectory()) {
+        if ((files[i].toUpperCase() != 'TEXTML') && (files[i].toUpperCase() != 'ROUTING SLIP') && (files[i].toUpperCase() != 'RECOVERHERE') && (files[i].toUpperCase() != 'RECYCLE BIN')) {
+          walkDirFile(curFile + '/', (searchRes) => {});
+        }
+      }
+    }
+    callbox(arrRes);
+  }
+  //Start Run the filename searching
+  walkDirFile(dir, (searchRes) => {
+     callback(searchRes);
+  });
+}
+//recursively search through directories the content of a file
 exports.findDocFromDir = function(query, dir, folder, id, callback) {
   collIndex = [];
   let searchResult = new Array;

@@ -19144,3 +19144,247 @@ TypeError: docModel.findMany is not a function
     at D:\Projects\PN DocMS\controllers\dbhandle.js:560:7
     at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
     at processTicksAndRejections (internal/process/task_queues.js:75:11)
+dbhadle is not defined
+ReferenceError: dbhadle is not defined
+    at D:\Projects\PN DocMS\controllers\dassearch.js:163:11
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:560:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+dbhadle is not defined
+ReferenceError: dbhadle is not defined
+    at D:\Projects\PN DocMS\controllers\dassearch.js:163:11
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:560:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+dbhadle is not defined
+ReferenceError: dbhadle is not defined
+    at D:\Projects\PN DocMS\controllers\dassearch.js:164:13
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:560:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+ENOTDIR: not a directory, scandir 'D:/drive/drive.idxD/'
+Error: ENOTDIR: not a directory, scandir 'D:/drive/drive.idxD/'
+    at Object.readdirSync (fs.js:1021:3)
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:288:20)
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:292:9)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:296:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:178:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+ENOTDIR: not a directory, scandir 'D:/drive/drive.idxD/'
+Error: ENOTDIR: not a directory, scandir 'D:/drive/drive.idxD/'
+    at Object.readdirSync (fs.js:1021:3)
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:289:20)
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:293:9)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:297:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:178:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+ENOTDIR: not a directory, scandir 'D:/drive/drive.idxD/'
+Error: ENOTDIR: not a directory, scandir 'D:/drive/drive.idxD/'
+    at Object.readdirSync (fs.js:1021:3)
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:288:20)
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:293:9)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:297:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:178:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+idxIType is not defined
+ReferenceError: idxIType is not defined
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:291:47)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:299:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:178:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+ENOTDIR: not a directory, scandir 'D:/drive/drive.idxD/'
+Error: ENOTDIR: not a directory, scandir 'D:/drive/drive.idxD/'
+    at Object.readdirSync (fs.js:1021:3)
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:290:20)
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:297:7)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:301:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:178:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+callboy is not a function
+TypeError: callboy is not a function
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:302:5)
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:298:11)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:305:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:178:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+callbox is not a function
+TypeError: callbox is not a function
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:302:5)
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:298:11)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:305:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:178:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+query.parseInt is not a function
+TypeError: query.parseInt is not a function
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:297:31)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:313:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:184:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot access 'grtr' before initialization
+ReferenceError: Cannot access 'grtr' before initialization
+    at D:\Projects\PN DocMS\controllers\dassearch.js:189:83
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Date.getMonth is not a function
+TypeError: Date.getMonth is not a function
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:302:36)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:320:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:189:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+dt.getMonth is not a function
+TypeError: dt.getMonth is not a function
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:302:34)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:320:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:189:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Date.parse is not a constructor
+TypeError: Date.parse is not a constructor
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:301:22)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:320:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:189:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+dt.getMonth is not a function
+TypeError: dt.getMonth is not a function
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:302:28)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:321:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:189:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Date.getMonth is not a constructor
+TypeError: Date.getMonth is not a constructor
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:302:25)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:321:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:189:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+missing ) after argument list
+D:\Projects\PN DocMS\controllers\dochandle.js:303
+            if (files[i]=='test.txt') console.log((Date.parse(curFileDate), Date.parse(query))
+                                                                                             ^
+
+SyntaxError: missing ) after argument list
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasmonitor.js:18:21)
+    at D:\Projects\PN DocMS\index.js:59:7
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:735:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+missing ) after argument list
+D:\Projects\PN DocMS\controllers\dochandle.js:303
+            if (files[i]=='test.txt') console.log((Date.parse(curFileDate), Date.parse(query));
+                                                                                             ^
+
+SyntaxError: missing ) after argument list
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasmonitor.js:18:21)
+    at D:\Projects\PN DocMS\index.js:59:7
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:735:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+(intermediate value).format is not a function
+TypeError: (intermediate value).format is not a function
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:301:59)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:321:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:189:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+dt.format is not a function
+TypeError: dt.format is not a function
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:302:21)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:322:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:189:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+dateformat is not defined
+ReferenceError: dateformat is not defined
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:302:22)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:322:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:189:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+dt.getMonth is not a function
+TypeError: dt.getMonth is not a function
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:303:43)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:322:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:189:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+dt is not a constructor
+TypeError: dt is not a constructor
+    at walkDirFile (D:\Projects\PN DocMS\controllers\dochandle.js:304:31)
+    at Object.exports.findFilenameFromDir (D:\Projects\PN DocMS\controllers\dochandle.js:323:3)
+    at D:\Projects\PN DocMS\controllers\dassearch.js:189:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:572:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+driveMain is not defined
+ReferenceError: driveMain is not defined
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:313:34
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:397:15
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+getcontent is not defined
+ReferenceError: getcontent is not defined
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:314:15
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:397:15
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+dst is not defined
+ReferenceError: dst is not defined
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:315:37
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:397:15
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+docRes is not defined
+ReferenceError: docRes is not defined
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:325:27
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:397:15
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+filename.replaceAll is not a function
+TypeError: filename.replaceAll is not a function
+    at Object.docFind (D:\Projects\PN DocMS\controllers\dbhandle.js:398:23)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:436:20
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)

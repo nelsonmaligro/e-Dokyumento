@@ -2,9 +2,9 @@
 //function show file explorer on clicked
 function showFiles(disFile, disDir){
   $('#overlay').show();
-  newFile = disFile.replace(/___/g," ");newFile = newFile.replace(/---/g,'.');
+  newFile = disFile.replace(/___/g," ");newFile = newFile.replace(/u--/g,'(');newFile = newFile.replace(/v--/g,')');newFile = newFile.replace(/---/g,'.');
   var olddisDir = disDir;
-  disDir=disDir.replace(/x--/g,':');disDir=disDir.replace(/z--/g,'.');disDir=disDir.replace(/---/g,"/");disDir=disDir.replace(/___/g," ");
+  disDir=disDir.replace(/x--/g,':');disDir=disDir.replace(/u--/g,'(');disDir=disDir.replace(/v--/g,')');disDir=disDir.replace(/z--/g,'.');disDir=disDir.replace(/---/g,"/");disDir=disDir.replace(/___/g," ");
   if (disDir.substring(disDir.length - 1) != "/") disDir = disDir + '/';
   var todo = {path:disDir,file:newFile};
   setCookie('realpath',disDir,1);setCookie('fileAI',newFile,1);
@@ -71,7 +71,7 @@ function showFiles(disFile, disDir){
 
 //function to expand directory
 function showDirs(path){
-  classPath = path.replace(/___/g," ");classPath = classPath.replace(/x--/g,":");classPath=classPath.replace(/z--/g,".");classPath = classPath.replace(/---/g,"/");
+  classPath = path.replace(/___/g," ");classPath = classPath.replace(/u--/g,"(");classPath = classPath.replace(/v--/g,")");classPath = classPath.replace(/x--/g,":");classPath=classPath.replace(/z--/g,".");classPath = classPath.replace(/---/g,"/");
   if (classPath.substring(classPath.length - 1) != "/") classPath = classPath + "/";
   var todo = {path:classPath};
   $.ajax({
@@ -87,14 +87,14 @@ function showDirs(path){
         $('#'+path+'').empty();
         for (var i=0; i < dirs.length; i++)
         {
-          classDirs = dirs[i].replace(/ /g,"___");classDirs=classDirs.replace(/\./g,"z--");
+          classDirs = dirs[i].replace(/ /g,"___");classDirs=classDirs.replace(/\(/g,"u--");classDirs=classDirs.replace(/\)/g,"v--");classDirs=classDirs.replace(/\./g,"z--");
           $('#'+path+'').append("<li><a onclick=showDirs('"+path+"---"+classDirs+"')  href='#'>" + dirs[i] +"</a><ul><div id='"+path+"---"+classDirs+"'></div></ul></li>");
         }
       } catch {}
       $('#disFileTree').empty();
       for (var i=0; i < files.length; i++)
       {
-        disFile = files[i].replace(/ /g,"___");disFile = disFile.replace(/\./g,'---');
+        disFile = files[i].replace(/ /g,"___");disFile = disFile.replace(/\(/g,'u--');disFile = disFile.replace(/\)/g,'v--');disFile = disFile.replace(/\./g,'---');
         let iconFile = outIconFile(disFile.substring(disFile.length-4));
         let colorFile = outColorFile(disFile.substring(disFile.length-4));
         $('#disFileTree').append("<div class='col-12'><a style='color:black;' class='btn-link' onclick=showFiles('"+disFile+"','"+path+"')  href='#'><i style='"+colorFile+"' class='"+iconFile+"'></i>&nbsp;&nbsp;" + files[i] +"</a></div>");
@@ -147,15 +147,15 @@ function loadFolders(path){
       $('#disFolderTree').empty();
       $('#disFileTree').empty();
       $('#disFolderTree').append("\ ");
-      classPath=path.replace(/\//g,"---");classPath=classPath.replace(/:/g,'x--');classPath=classPath.replace(/ /g,"___");classPath=classPath.replace(/\./g,"z--");
+      classPath=path.replace(/\//g,"---");classPath=classPath.replace(/\(/g,'u--');classPath=classPath.replace(/\)/g,'v--');classPath=classPath.replace(/:/g,'x--');classPath=classPath.replace(/ /g,"___");classPath=classPath.replace(/\./g,"z--");
         for (var i=0; i < dirs.length; i++)
         {
-          classDirs = dirs[i].replace(/ /g,"___");classDirs=classDirs.replace(/\./g,"z--");
+          classDirs = dirs[i].replace(/ /g,"___");classDirs=classDirs.replace(/\(/g,"u--");classDirs=classDirs.replace(/\)/g,"v--");classDirs=classDirs.replace(/\./g,"z--");
           $('#disFolderTree').append("<li><a onclick=showDirs('"+classPath+"---"+classDirs+"')  href='#'>" + dirs[i] +"</a><ul><div  id='"+classPath+"---"+classDirs+"'></div></ul></li>");
         }
         for (var i=0; i < files.length; i++)
         {
-          disFile = files[i].replace(/ /g,"___");disFile = disFile.replace(/\./g,'---');
+          disFile = files[i].replace(/ /g,"___");disFile = disFile.replace(/\(/g,'u--');disFile = disFile.replace(/\)/g,'v--');disFile = disFile.replace(/\./g,'---');
           let iconFile = outIconFile(disFile.substring(disFile.length-4));
           let colorFile = outColorFile(disFile.substring(disFile.length-4));
           $('#disFileTree').append("<div class='col-12'><a style='color:black;' class='btn-link' onclick=showFiles('"+disFile+"','"+classPath+"')  href='#'><i style='"+colorFile+"' class='"+iconFile+"'></i>&nbsp;&nbsp;" + files[i] +"</a></div>");

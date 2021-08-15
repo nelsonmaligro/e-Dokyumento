@@ -33,7 +33,7 @@ function dispSearch(arrResult){
   $('#tableSearch').empty();
   arrResult.forEach((item)=>{
     if (item.filename!='X'){
-      let disFile = item.filename.replace(/ /g,"___");disFile = disFile.replace(/\./,'---');
+      let disFile = item.filename.replace(/ /g,"___");disFile = disFile.replace(/\(/g,'u--');disFile = disFile.replace(/\)/g,'v--');disFile = disFile.replace(/\./g,'---');
       $('#tableSearch').append("<tr ><table><tr><td><button type='button' class='btn btn-link' onclick=openDisFile('"+disFile+"')><i class='fa fa-link'></i>&nbsp;"+ item.filename+"</button></td></tr><tr><td>"+item.content+"</td></tr></table></tr>");
       $('#tableSearch').append("<tr height='10px'></tr>");
     }

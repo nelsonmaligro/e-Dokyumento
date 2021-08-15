@@ -39,6 +39,12 @@ module.exports = function(app, arrDB){
         postsearchadv(req, res, id);
       });
     });
+    //handle post advance search show file
+    app.post('/searchshow', urlencodedParser, function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        postsearchshow(req, res, id);
+      });
+    });
     //get default view for advance search
     app.get('/searchadv', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
@@ -152,10 +158,68 @@ module.exports = function(app, arrDB){
     function postsearchadv(req, res, id){
       console.log('Post Search Advance')
       dbhandle.userFind(id, function(user){
-        dbhandle.docFindClass(req.body.class, (result) => {
-          res.json(JSON.stringify(result));
-        })
+        switch(req.body.select) {
+          case 'class':
+            dbhandle.docFindClass(req.body.class, (result) => {
+              res.json(JSON.stringify(result));
+            });
+            break;
+          case 'tag':
+            dbhandle.docFindTag(req.body.class, (result) => {
+              res.json(JSON.stringify(result));
+            });
+            break;
+          case 'author':
+            dbhandle.docFindAuthor(req.body.class, (result) => {
+              res.json(JSON.stringify(result));
+            });
+            break;
+          case 'filename':
+            dochandle.findFilenameFromDir(req.body.class, drive, req.body.select, true, (result) => {
+              res.json(JSON.stringify(result));
+            });
+            break;
+          case 'size':
+            let grtr = true; if (req.body.grtr == '<') grtr = false; //determine greater than sign
+            dochandle.findFilenameFromDir(req.body.class, drive, req.body.select, grtr, (result) => {
+              res.json(JSON.stringify(result));
+            });
+          break;
+          case 'datepick':
+            dochandle.findFilenameFromDir(req.body.class, drive, req.body.select, req.body.grtr, (result) => {
+              res.json(JSON.stringify(result));
+            });
+          break;
+          }
         dbhandle.actlogsCreate(id, Date.now(), 'Advance Search', req.body.query, req.ip);
+      });
+    }
+    //process post explorer show file function
+    function postsearchshow(req, res, id){
+      console.log('Show File Advance Search');
+      var disDrive = '/drive/';
+      let newDrive = req.body.path;
+      //if (newDrive.toUpperCase().includes('D:/DRIVE')){
+      //  let drivePre = newDrive.substring(0,8);
+      //  newDrive = newDrive.replace(drivePre,drive.substring(0,drive.length-1));
+      //}
+      var disFile = req.body.file; var disPath= newDrive;
+      dbhandle.docFind(disPath, async function (found){
+        //copy file to temp path for preview
+        if (fs.existsSync(disPath)){
+          if (dochandle.getExtension(disFile)!='.pdf'){
+            if (fs.existsSync(drivetmp + 'PDF-temp/'+ disFile +'.pdf')) fs.unlinkSync(drivetmp + 'PDF-temp/'+ disFile +'.pdf');
+            dochandle.convDoctoPDF(disPath, drivetmp + 'PDF-temp/'+ disFile +'.pdf', function() { //convert doc to pdf
+              let arrBr = [{tempPath: disDrive + 'PDF-temp/'+ disFile +'.pdf'}];
+              res.json(JSON.stringify(arrBr)); //return metadata
+            });
+          } else {
+            fs.copyFile(disPath, drivetmp + 'PDF-temp/'+ disFile, function(err) {
+              let arrBr = [{tempPath: disDrive + 'PDF-temp/'+ disFile}];
+              res.json(JSON.stringify(arrBr)); //return metadata
+            });
+          }
+        }
 
       });
     }

@@ -149,11 +149,11 @@ $(document).ready(function(){
                 $('#disPath').val('/drive/PDF-temp/'+data);
                 PDFObject.embed('/drive/PDF-temp/'+data, "#pdf_view",{page:parseInt($('#selPageDraw').val(),10)-1});
                 revFile = getCookie('origEncFile');
-                revFile = revFile.replace(/ /g,"___");revFile = revFile.replace(/\./g,'---');
+                revFile = revFile.replace(/ /g,"___");revFile = revFile.replace(/\(/g,'u--');revFile = revFile.replace(/\)/g,'v--');revFile = revFile.replace(/\./g,'---');
                 delEncRef('enc',revFile,'arrEnc');
                 updRefEncCookie('arrEnc', data, realpath);
-                newdata = data.replace(/ /g,"___");newdata = newdata.replace(/\./g,'---');
-                newpath = realpath.replace(/ /g,"___");newpath=newpath.replace(/\./g,"z--");
+                newdata = data.replace(/ /g,"___");newdata = newdata.replace(/\(/g,'u--');newdata = newdata.replace(/\)/g,'v--');newdata = newdata.replace(/\./g,'---');
+                newpath = realpath.replace(/ /g,"___");newpath=newpath.replace(/\(/g,"u--");newpath=newpath.replace(/\)/g,"v--");newpath=newpath.replace(/\./g,"z--");
                 $('#divEnc').append("<div id='enc-"+newdata+"'>&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' onclick=delEncRef('enc','"+newdata+"','arrEnc') class='btn btn-danger btn-sm fa fa-times'></button><button type='button' class='btn btn-link btn-sm' onclick=dispAttach('"+newpath+"','"+newdata+"')>"+data+"</button></div>");
                 $('#disAnnotate2').hide();drawclick = false;
                 $('#disContent').show();$('#disFrame').hide();
