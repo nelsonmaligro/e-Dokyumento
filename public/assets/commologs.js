@@ -1,5 +1,5 @@
 //For Pie chart
-//pie chart
+//initial config for pie chart
 function returnConfigPie(arrBgCol, arrCount, arrBranch) {
   var configPie = {
     type: 'pie',
@@ -26,7 +26,7 @@ function returnConfigPie(arrBgCol, arrCount, arrBranch) {
 }
 
 
-//For Bar Chart
+//generate random colors
 function randomColorFactor() {
   return Math.round(Math.random() * 255);
 }
@@ -46,7 +46,7 @@ function randomColor(red, green, blue, opacity) {
     ")"
   );
 }
-//    ctx.height = 200;
+//initial configuration for bar chart
 function returnConfig(datasets) {
   var config = {
     type: 'bar',
@@ -93,17 +93,17 @@ function returnConfig(datasets) {
 function updateCanvas(data, arrBranch){
   //Update Bar Chart first
   let arrData = data.commologs;
-  //alert(JSON.stringify(data.commologs));
   let arrChart = new Array;
   let arrMonth = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   let arrColor = new Array;
-  //["N6A","N6B","N6C","N6D","N6E","N6F"];
+  //iterate through branches
   arrBranch.forEach(function (branch){
     arrNum = [];
-    arrMonth.forEach(function (month){
+    arrMonth.forEach(function (month){ //get number of routed documents per month
       let result = arrData.find(item=>(item.month==month) && (item.branch==branch));
       arrNum.push(result.count);
     });
+    //assign color for the branch
     let arrRGB = randomRGB();
     disColor = randomColor(arrRGB.red, arrRGB.green, arrRGB.blue, .5);
     disBorder = randomColor(arrRGB.red, arrRGB.green, arrRGB.blue, 1);
@@ -114,45 +114,47 @@ function updateCanvas(data, arrBranch){
       borderWidth: "0",
       backgroundColor: disColor
     };
-    arrColor.push(disColor);
-    arrChart.push(setting);
+    arrColor.push(disColor); //this is to remember the color previously assigned to the branch
+    arrChart.push(setting); //store the branch, month and colors into the array
   });
-
+  //load array into the bar chart
   let ctx = document.getElementById( "barChart" );
   let myChart = new Chart( ctx, returnConfig(arrChart) );
 
   //Update pie chart
   let arrDataPie = data.current;
   let arrCount = new Array;
-
+  //iterate through the branches and store count into the pie for the branch
   arrBranch.forEach((branch)=>{
     arrDataPie.forEach((item)=>{
       if (item.branch.toUpperCase()==branch.toUpperCase()) arrCount.push(item.count);
     });
   });
 
-
+  //load array into the pie chart
   let ctxPie = document.getElementById( "pieChart" );
   let myChartPie = new Chart( ctxPie, returnConfigPie(arrColor, arrCount, arrBranch));
 
 }
-
+//Load when html renders
 $(document).ready(function() {
   //Remove clutters
   togglePanelHide(true);
   $('#formroute').hide();
   $('#overlay').hide()//display spinner
   let except =['All Branches', 'EXO', 'DN6', 'N6','G.M.','ASST.G.M.','SECRETARY-RECEIVING'];
-  //var arrBranch = new Array();
+
   var options = $('#tempSelBr option');
   var values = new Array;
   var arrBranch = new Array;
+  //put delay for initial loading of the canvas... then update the canvas with the correct values
   sleep(2000).then(()=>{
     values = $.map(options ,function(option) {
       return option.value;
     });
   }).then(()=>{
-    arrBranch = values.filter((item)=>{return !except.includes(item);});
+    //request server for the document routing logs
+    arrBranch = values.filter((item)=>{return !except.includes(item);}); //get all branches except listed above
     $.ajax({
       type: 'POST',
       url: '/dashlogs',
@@ -160,7 +162,7 @@ $(document).ready(function() {
         let arrData = JSON.parse(data);
         var disYear = new Date().getFullYear();
         $('#titleBar').html("Total Documents Routed (CY " +disYear.toString()+")");
-        updateCanvas(arrData, arrBranch);
+        updateCanvas(arrData, arrBranch); //update the canvas using the identified branches
       }
     });
   });

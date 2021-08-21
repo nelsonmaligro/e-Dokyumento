@@ -1,8 +1,9 @@
-//populate the page selector and updaet the iframe for document signing
+//populate the page selector and update the iframe for document signing
 var drawclick = false; var mainfiledis = true; var togglepage = false;
+//function to load the file for annotation
 function updateSelectPageAnno(){
   //populate select page
-  loadPDF($('#disPath').val()).then(function(res){
+  loadPDF($('#disPath').val()).then(function(res){ //upon loading of the file the dropdown box for pages are updated
     $('#selPageDraw').empty();
     for (var i=1; i<=res; i++){
       $('#selPageDraw').append("<option value='"+i.toString()+"'>"+i.toString()+"</option>");
@@ -32,11 +33,11 @@ $(document).ready(function(){
   var disID = getCookie('me');setCookie('newpathdraw',$('#disPath').val(), 1);
   updateSelectPageAnno();
 
-  //handle click on line annotate
+  //function for annotation when any of line, text, and erase is clicked
   function invokeAnnotate(){
-    if (!drawclick) {
-      if (togglepage) {
-        loadPDF(getCookie('newpathdraw')).then(function(res){
+    if (!drawclick) { //if not previously clicked for annotation
+      if (togglepage) { //if toggled for main file or the attachment to be annotated...true for attachment..refer to common.js
+        loadPDF(getCookie('newpathdraw')).then(function(res){ //update the page numbers upon loading of the file attachment
           $('#selPageDraw').empty();
           for (var i=1; i<=res; i++){ $('#selPageDraw').append("<option value='"+i.toString()+"'>"+i.toString()+"</option>");}
           $("#selPageDraw").chosen({width: "60px"}); $('#selPageDraw').trigger("chosen:updated");
@@ -53,7 +54,7 @@ $(document).ready(function(){
             $('#disContent').hide();$('#disFrame').show();
           }
         });
-      } else {
+      } else { // if page is toggled for the main file
         document.getElementById('canvasPDF').src = "/assets/drawcanvas.html";
         $('#disAnnotate2').show();drawclick = true;
         $('#disContent').hide();$('#disFrame').show();
@@ -85,12 +86,13 @@ $(document).ready(function(){
       type: 'POST',
       url: '/cancelsign',
       success: function(data) {
+        //for mobile phone user to return to the mobile content
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
           $('#disContentMobile').show();$('#disContent').hide();
         } else {
           $('#disContentMobile').hide();$('#disContent').show();
-
         }
+        //return all buttons to normal
         $('#disAnnotate2').hide();drawclick = false;$('#disFrame').hide();
         if (mainfiledis) {
           $('#butReturn').show();$('#butRelease2').show();$('#divToggleSign').show();$('#butApprove').show();
@@ -99,13 +101,13 @@ $(document).ready(function(){
       }
     });
   });
-  //Send drawing to server
+  //Send annotated page to the server in order to merge on the original file
   $('#butDrawSave').on('click', function(event) {
     $('#overlay').show();
     let dataImage = window.localStorage.getItem("drawimage");
     //let b64image = "data:image/png;base64," + dataImage;
     var formData = new FormData();
-    formData.append("image", new Blob([ dataImage ], {type: "image/png"}),getCookie('me')+'.drw.png');
+    formData.append("image", new Blob([ dataImage ], {type: "image/png"}),getCookie('me')+'.drw.png'); //upload annotated image
     $.ajax({
       type: 'POST',
       url: '/drawpdf',
@@ -148,6 +150,7 @@ $(document).ready(function(){
               else {
                 $('#disPath').val('/drive/PDF-temp/'+data);
                 PDFObject.embed('/drive/PDF-temp/'+data, "#pdf_view",{page:parseInt($('#selPageDraw').val(),10)-1});
+                //update the  enclosure path and the cookie
                 revFile = getCookie('origEncFile');
                 revFile = revFile.replace(/ /g,"___");revFile = revFile.replace(/\(/g,'u--');revFile = revFile.replace(/\)/g,'v--');revFile = revFile.replace(/\./g,'---');
                 delEncRef('enc',revFile,'arrEnc');

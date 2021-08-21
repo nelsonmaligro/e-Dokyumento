@@ -2,12 +2,19 @@
 //function show file explorer on clicked
 function showFiles(disFile, disDir){
   $('#overlay').show();
+  //replace special characters to prevent error in the html embedding
   newFile = disFile.replace(/___/g," ");newFile = newFile.replace(/u--/g,'(');newFile = newFile.replace(/v--/g,')');newFile = newFile.replace(/---/g,'.');
   var olddisDir = disDir;
+  //replace special characters to prevent error in the html embedding
   disDir=disDir.replace(/x--/g,':');disDir=disDir.replace(/u--/g,'(');disDir=disDir.replace(/v--/g,')');disDir=disDir.replace(/z--/g,'.');disDir=disDir.replace(/---/g,"/");disDir=disDir.replace(/___/g," ");
-  if (disDir.substring(disDir.length - 1) != "/") disDir = disDir + '/';
+  if (disDir.substring(disDir.length - 1) != "/") disDir = disDir + '/'; //ensure it ends with slash
   var todo = {path:disDir,file:newFile};
-  setCookie('realpath',disDir,1);setCookie('fileAI',newFile,1);
+  setCookie('realpath',disDir,1);
+  setCookie('fileAI',newFile,1);
+  $('#fileroute').val(newFile);
+  $('#newfile').val(newFile);$("#selClas").val(getCookie('clasAI'));
+  $('#selTag').val(JSON.parse(getCookie('tagAI')));
+  //query the server to display the file and store metadata
   $.ajax({
     type: 'POST',
     url: '/explorershow',
@@ -69,11 +76,13 @@ function showFiles(disFile, disDir){
   });
 }
 
-//function to expand directory
+//function to expand the directory
 function showDirs(path){
+  //replace special characters to prevent error in the html embedding
   classPath = path.replace(/___/g," ");classPath = classPath.replace(/u--/g,"(");classPath = classPath.replace(/v--/g,")");classPath = classPath.replace(/x--/g,":");classPath=classPath.replace(/z--/g,".");classPath = classPath.replace(/---/g,"/");
   if (classPath.substring(classPath.length - 1) != "/") classPath = classPath + "/";
   var todo = {path:classPath};
+  //query the server to show sub directories and files contained
   $.ajax({
     type: 'POST',
     url: '/browsedrive',
@@ -82,7 +91,7 @@ function showDirs(path){
       var arrObj = JSON.parse(data);
       var dirs = arrObj['dirs'];
       var files = arrObj['files'];
-      //update Modal
+      //update directory container/grid
       try{
         $('#'+path+'').empty();
         for (var i=0; i < dirs.length; i++)
@@ -91,6 +100,7 @@ function showDirs(path){
           $('#'+path+'').append("<li><a onclick=showDirs('"+path+"---"+classDirs+"')  href='#'>" + dirs[i] +"</a><ul><div id='"+path+"---"+classDirs+"'></div></ul></li>");
         }
       } catch {}
+      //update file container/grid
       $('#disFileTree').empty();
       for (var i=0; i < files.length; i++)
       {
@@ -99,7 +109,7 @@ function showDirs(path){
         let colorFile = outColorFile(disFile.substring(disFile.length-4));
         $('#disFileTree').append("<div class='col-12'><a style='color:black;' class='btn-link' onclick=showFiles('"+disFile+"','"+path+"')  href='#'><i style='"+colorFile+"' class='"+iconFile+"'></i>&nbsp;&nbsp;" + files[i] +"</a></div>");
       }
-      $('#disFolderTree').filetree();
+      $('#disFolderTree').filetree(); //effect into the directory
       setCookie('fileAI','',1);
       setCookie('realpath',classPath,1);
     }
@@ -119,7 +129,7 @@ function outIconFile(ext){
     return 'fa fa-file-o';
   }
 }
-//function select filetype and output icon fonts
+//function select filetype and output icon color
 function outColorFile(ext){
   if (ext.toLowerCase().includes('pdf')) {
     return 'color:red;';
@@ -136,6 +146,7 @@ function outColorFile(ext){
 //function to load default folders
 function loadFolders(path){
   var todo = {path:path + '/'};
+  //query server to load all main directories and files
   $.ajax({
     type: 'POST',
     url: '/browsedrive',
@@ -147,20 +158,23 @@ function loadFolders(path){
       $('#disFolderTree').empty();
       $('#disFileTree').empty();
       $('#disFolderTree').append("\ ");
+      //replace special characters to prevent error in the html embedding
       classPath=path.replace(/\//g,"---");classPath=classPath.replace(/\(/g,'u--');classPath=classPath.replace(/\)/g,'v--');classPath=classPath.replace(/:/g,'x--');classPath=classPath.replace(/ /g,"___");classPath=classPath.replace(/\./g,"z--");
-        for (var i=0; i < dirs.length; i++)
+        for (var i=0; i < dirs.length; i++) //load into the directory container
         {
+          //replace special characters to prevent error in the html embedding
           classDirs = dirs[i].replace(/ /g,"___");classDirs=classDirs.replace(/\(/g,"u--");classDirs=classDirs.replace(/\)/g,"v--");classDirs=classDirs.replace(/\./g,"z--");
           $('#disFolderTree').append("<li><a onclick=showDirs('"+classPath+"---"+classDirs+"')  href='#'>" + dirs[i] +"</a><ul><div  id='"+classPath+"---"+classDirs+"'></div></ul></li>");
         }
-        for (var i=0; i < files.length; i++)
+        for (var i=0; i < files.length; i++) //load into the files container
         {
+          //replace special characters to prevent error in the html embedding
           disFile = files[i].replace(/ /g,"___");disFile = disFile.replace(/\(/g,'u--');disFile = disFile.replace(/\)/g,'v--');disFile = disFile.replace(/\./g,'---');
-          let iconFile = outIconFile(disFile.substring(disFile.length-4));
-          let colorFile = outColorFile(disFile.substring(disFile.length-4));
+          let iconFile = outIconFile(disFile.substring(disFile.length-4)); //assign icon
+          let colorFile = outColorFile(disFile.substring(disFile.length-4)); //assign color
           $('#disFileTree').append("<div class='col-12'><a style='color:black;' class='btn-link' onclick=showFiles('"+disFile+"','"+classPath+"')  href='#'><i style='"+colorFile+"' class='"+iconFile+"'></i>&nbsp;&nbsp;" + files[i] +"</a></div>");
         }
-        $('#disFolderTree').filetree();
+        $('#disFolderTree').filetree(); //effect into the directory
       }
     });
 
@@ -196,9 +210,9 @@ function loadFolders(path){
   function routetoBranchExplore(e, branch){
     let fileclick = getCookie('fileAI');
     if ((fileclick!='Empty File') && (fileclick!='')){
-      brscanner.stop();scanner.stop();$('#app').hide();togglecam=false;brtogglecam=false;
-      qrClick = false;
-      //initialize objects to hide and show
+      brscanner.stop();scanner.stop();$('#app').hide();togglecam=false;brtogglecam=false; qrClick = false;//clear all variables for validation
+
+      //show routing slip dialog box
       $('#routeBody').show();$('#routeattachPage').show();$('#disrouteTitle').hide();
       $('#divroyalCam').hide();$('#royalbutConfirm').hide();$('#routebutConfirm').show();
       setCookie('tempPass','',1);
@@ -209,29 +223,25 @@ function loadFolders(path){
       document.getElementById('divCamPass').style.top="-5px";
       document.getElementById('routeBody').style="margin-top:-20px;";
       $('#routeSubject').val(getCookie('fileAI').split('.')[0]);
-      var options = {
-        height: "400px",
-      };
+      //display routing slip
+      var options = {height: "400px"};
       PDFObject.embed('/drive/PDF-temp/route-'+getCookie('fileAI')+'.pdf', "#routeattachPage",options);
       $('#routeselBr').trigger("chosen:updated");
     } else {
       e.stopPropagation();
-      //$('#routeButCanc').click();
-      //closeDialog();
-
     }
   }
 
   //Page Loaded
   $(document).ready(function(e){
 
-    loadFolders('D:/drive');
+    loadFolders('D:/drive'); //load all main folders at the start
     setCookie('fileAI','Empty File',1);
     //handle click view button
     $('#butExploreView').on('click', function(event) {
       if ((getCookie('fileAI')!='Empty File') && (getCookie('fileAI')!='')) {
-        setCookie('showExploreFile','true',1);
-        location.replace('/fileopen');
+        setCookie('showExploreFile','true',1); //set cookie for file opening
+        location.replace('/fileopen'); //go to file opening....the cookies for filename to be openned was set upon clicking of the file
       } else alert ('Please Select a File!');
 
     });
@@ -241,16 +251,18 @@ function loadFolders(path){
       if ((newfile!='Empty File') && (newfile!='')){
         if (!newfile.includes('.')) {alert ('File extension not recognized!'); return false;}
         event.preventDefault(); // Recommended to stop the link from doing anything else
+        //get the absolute path of the file
         var newPath = getCookie('realpath');
         var splitChar = [];
         if (newPath.includes('/')) splitChar = newPath.split('/');
         else if (newPath.includes('\\')) splitChar = newPath.split('\\');
+        //replace the drive from the absolute path with the mapped drive
         var allPath = 'Z:/';
         if (splitChar[0].includes(':')) { for (x=2;x < splitChar.length-1; x++) {allPath = allPath + splitChar[x] + '/';}}
         else { for (x=1;x < splitChar.length-1; x++) {allPath = allPath + splitChar[x] + '/';}}
+        //opens the mapped drive.....run the registry file to enable the ie option
         disWindow = window.open("ie:"+allPath+newfile+"","disWindow","width=5px,heigh=5px");
-        //start auto refresh Notification
-        disClock = setInterval('closWindow()',20000);
+        disClock = setInterval('closWindow()',20000); //close the dialog box after 20 seconds
       }
     });
     //handle click delete buttons
@@ -282,18 +294,18 @@ function loadFolders(path){
 
     });
 
-    //stop close on selecting others
+    //stop closing of dropdox box when "other users" is selected
     $("#selExploreOthers").on('click', function (event){
       event.stopPropagation();
       //event.preventDefault();
     });
-    //handle send Explorer file to other
+    //send file to other users
     $("#othExploreSend").on('click', function(e){
       $('.dropdown-submenu .show').removeClass("show");
       sendExploreUser($('#selExploreOthers').val());
     });
 
-    //handle click on confirm explorer routing button
+    //handle routing of document to other branches upon clicking confirm button
     $('#routeExplorebutConfirm').on('click', function(event){
       if ($('#routeselBr').val()==null) {
         alert('Input Branch to Route!'); return;

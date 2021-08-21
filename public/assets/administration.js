@@ -3,12 +3,12 @@
 $(document).ready(function(){
   //initialize
   togglePanelHide(true);$('#butScan').hide();
-  $("#selBranch").chosen({
+  $("#selBranch").chosen({ //enable fancy selectbox for branch
     //disable_search_threshold: 10,
     no_results_text: "Oops, nothing found!",
     width: "100%"
   });
-  $("#selAccess").chosen({
+  $("#selAccess").chosen({ //enable fancy selectbox for branch
     //disable_search_threshold: 10,
     no_results_text: "Oops, nothing found!",
     width: "100%"
@@ -43,7 +43,7 @@ $(document).ready(function(){
     if ($('#selBranch').val()==null) {alert ('Branch/Group is empty!'); return;}
     if ($('#selAccess').val()==null) {alert ('Access Level is empty!'); return;}
     let drivePath = 'Z:/';
-    if ($('#drivePath').val().trim()!="") {
+    if ($('#drivePath').val().trim()!="") { //get proper format for drivepath
       if (($('#drivePath').val().trim().includes(':')) && ($('#drivePath').val().trim().includes('/'))) drivePath = $('#drivePath').val();
       else {alert('Invalid Path!'); return;}
     }
@@ -82,7 +82,7 @@ $(document).ready(function(){
       }
     });
   });
-  //handle save AI setting
+  //handle setting for top management - this is to identify the group/branch with option to approve and release documents
   $('#butSaveMgmt').on('click', function(event){
     var todo = {action:'edittopmgmt', mgmt:$('#topMgmt').val().trim()};
     $.ajax({
@@ -219,7 +219,7 @@ $('#butDelGroup').on('click', function(event){
     }
   });
 });
-//handle button Certificate upload clicked
+//handle button Certificate upload clicked - this is to upload the CA Certificate for signature validation
 $('#butUploadCACert').on('click', function(e){
   let files = $('#cacertinput').val().split('\\'); let filename = files[files.length-1];
   $('#overlay').show();

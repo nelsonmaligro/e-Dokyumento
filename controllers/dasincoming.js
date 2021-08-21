@@ -251,6 +251,7 @@ module.exports = function(app, arrDB) {
             dbhandle.actlogsCreate(id, Date.now(), 'Save Document to Branch Folders', req.body.fileroute, req.ip);
             if (fs.existsSync(path.resolve(drivetmp+user.group + "/" + req.body.fileroute))) {
               console.log('post incoming save branch');
+              if (!fs.existsSync(drive + user.group)) fs.mkdirSync(drive + user.group);
               routeduty.saveThis(req,res, drivetmp + user.group, drive + user.group + "/");
               monitoring.updateMonitor(req, res);
               utilsdocms.addTag(arrDB.tag, req.body.tag); //add additional hash tags for the documents
@@ -259,7 +260,8 @@ module.exports = function(app, arrDB) {
                 if (result) {
                   dbhandle.tempmonitorFindFile(req.body.fileroute, function(tempresult){
                     if (tempresult) {
-                      dbhandle.tempmonitorDel(req.body.filename, function() {dbhandle.tempmonitorCreate(result.title,result.filename, result.route, result.filepath);});
+                      disFile = req.body.fileroute; if (req.body.filename!=null) disFile = req.body.filename
+                      dbhandle.tempmonitorDel(disFile, function() {dbhandle.tempmonitorCreate(result.title,result.filename, result.route, result.filepath);});
                     } else dbhandle.tempmonitorCreate(result.title,result.filename, result.route, result.filepath);
                   });
                 }
