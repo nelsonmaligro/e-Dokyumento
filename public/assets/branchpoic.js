@@ -16,6 +16,7 @@ $(document).ready(function(){
         success: function(data){
           if (data != 'notowner'){
             let newPath = data;
+            //open file using ie option....must run the registry file first to enable ie option on the browser
             disWindow = window.open("ie:"+newPath+"","disWindow","width=5px,heigh=5px");
             //start auto refresh Notification
             disClock = setInterval('closWindow()',20000);
@@ -29,11 +30,11 @@ $(document).ready(function(){
   //handle document save in branch incoming
   $('#docSave').on('click', function(){
     if (!$('#newfile').val().includes('.')) {alert ('File extension not recognized!'); return false;}
-    var branch = $('#selClas'); if (branch.val()==null) {alert ('Correspondence Empty!'); return false;}
-    togglePanelProc(true);
+    var branch = $('#selClas'); if (branch.val()==null) {alert ('Correspondence Empty!'); return false;} //must supply doc classification
+    togglePanelProc(true); //hide some buttons
     var fileroute = $('#fileroute');
     var newfile = $('#newfile');
-
+    //get metadata
     var tag = $('#selTag').val(); if (tag===null) tag = [];
     var arrRef = getCookie('arrRef');
     var arrEnc = getCookie('arrEnc');
@@ -41,6 +42,7 @@ $(document).ready(function(){
 
     var user = disID;
     var todo = {save:'save', fileroute: fileroute.val(), newfile:newfile.val(), class:branch.val(), tag:JSON.stringify(tag), user:user, refs:arrRef, encs:arrEnc, comments:arrComm};
+    //save a copy of the routed document into the drive
     if (fileroute.val()!='empty'){
       $.ajax({
         type: 'POST',
@@ -48,7 +50,7 @@ $(document).ready(function(){
         data: todo,
         success: function(data){
           togglePanelProc(true);
-          location.replace('/incoming/'+newfile.val());
+          location.replace('/incoming/'+newfile.val()); //reload the page
         }
       });
     }

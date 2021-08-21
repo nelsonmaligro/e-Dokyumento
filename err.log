@@ -19388,3 +19388,44 @@ TypeError: filename.replaceAll is not a function
     at D:\Projects\PN DocMS\controllers\dasfileoperation.js:436:20
     at FSReqCallback.oncomplete (fs.js:171:23)
     at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+ENOENT: no such file or directory, copyfile 'public/drive/PDF-temp/route-Empty File.pdf' -> 'D:/drive/Routing Slip/2021/AUG/route-Empty File.pdf'
+Error: ENOENT: no such file or directory, copyfile 'public/drive/PDF-temp/route-Empty File.pdf' -> 'D:/drive/Routing Slip/2021/AUG/route-Empty File.pdf'
+    at Object.copyFileSync (fs.js:1991:3)
+    at D:\Projects\PN DocMS\controllers\dastransact.js:406:18
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:124:9
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:709:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+ENOENT: no such file or directory, copyfile 'public/drive/PDF-temp/route-Empty File.pdf' -> 'D:/drive/Routing Slip/2021/AUG/route-Empty File.pdf'
+Error: ENOENT: no such file or directory, copyfile 'public/drive/PDF-temp/route-Empty File.pdf' -> 'D:/drive/Routing Slip/2021/AUG/route-Empty File.pdf'
+    at Object.copyFileSync (fs.js:1991:3)
+    at D:\Projects\PN DocMS\controllers\dastransact.js:406:18
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:124:9
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:709:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+The "dest" argument must be of type string or an instance of Buffer or URL. Received undefined
+TypeError [ERR_INVALID_ARG_TYPE]: The "dest" argument must be of type string or an instance of Buffer or URL. Received undefined
+    at Object.copyFileSync (fs.js:1983:10)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:254:23
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:590:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'replace' of undefined
+TypeError: Cannot read property 'replace' of undefined
+    at Object.exports.tempmonitorDel (D:\Projects\PN DocMS\controllers\dbhandle.js:382:23)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:263:32
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:376:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'replace' of undefined
+TypeError: Cannot read property 'replace' of undefined
+    at Object.exports.tempmonitorDel (D:\Projects\PN DocMS\controllers\dbhandle.js:382:23)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:263:32
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:376:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+    at runNextTicks (internal/process/task_queues.js:62:3)
+    at processImmediate (internal/timers.js:434:9)
+    at process.topLevelDomainCallback (domain.js:144:15)
+    at process.callbackTrampoline (internal/async_hooks.js:129:14)

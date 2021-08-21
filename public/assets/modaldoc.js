@@ -6,10 +6,12 @@ _CANVAS = document.querySelector('#pdfPage');
 
 //Function for deleting files from References and enclosures
 async function delEncRef(paramDiv,file, paramCookie){
-  $('#'+paramDiv+'-'+file+'').remove();
+  $('#'+paramDiv+'-'+file+'').remove(); //delete the file from the html sidebar (references and enclosure)
+  //return pre-formatted characters to its original characters
   newEnc = file.replace(/___/g," ");newEnc = newEnc.replace(/u--/g,'(');newEnc = newEnc.replace(/v--/g,')');newEnc = newEnc.replace(/---/g,'.');
   var arrEnc = []; var disEnc = JSON.parse(getCookie(paramCookie));
   if (disEnc.length > 0) arrEnc = disEnc;
+  //remove from the array and update enclosure cookie
   var obj = arrEnc.find(({file})=> file === newEnc);
   var resArr = arrEnc.filter(function(res) {return res!=obj; });
   await setCookie(paramCookie,JSON.stringify(resArr),1);
@@ -18,21 +20,25 @@ async function delEncRef(paramDiv,file, paramCookie){
 //function to display attachments into the pdf viewer
 function dispAttach(disDir, disFile){
   selChose();
+  //if Directory selected is not any of the page numbers in the main page....the path of the attachment (ref and enc) is selected
   if (disDir!='Page'){
     togglePanelHide(true);$('#overlay').show()//display spinner
+    //return pre-formatted characters to its original characters
     disDir=disDir.replace(/x--/g,':');disDir=disDir.replace(/u--/g,'(');disDir=disDir.replace(/v--/g,')');disDir=disDir.replace(/z--/g,'.');disDir=disDir.replace(/---/g,"/");disDir=disDir.replace(/___/g," ");
     newFile = disFile.replace(/___/g," ");newFile = newFile.replace(/u--/g,'(');newFile = newFile.replace(/v--/g,')');newFile = newFile.replace(/---/g,'.');setCookie('origEncFile',newFile,1);
     setCookie('realpath',disDir + '/',1);
     var todo = {path:disDir + '/',file:newFile};
+    //query server to display the selected attachment file
     $.ajax({
       type: 'POST',
       url: '/showfile',
       data: todo,
       success: function(data){
         let newData = JSON.parse(data);
-        PDFObject.embed(newData.filepath, "#pdf_view"); //display attach file to PDF
+        PDFObject.embed(newData.filepath, "#pdf_view"); //display attachment file to PDF
         setCookie('newpathdraw',newData.filepath, 1);
         togglePanelHide(false);$('#overlay').hide()//display spinner
+        //if AGM ang GM (executive branches) reload the main page for signing and approval
         if ((newData.level.toUpperCase()=='CO') || (newData.level.toUpperCase()=='DEP') || (newData.level.toUpperCase()=='GM') || (newData.level.toUpperCase()=='EAGM')) {
           $('#divToggleSign').hide();
           $('#butApprove').show();$('#butRelease2').hide();$('#butReturn').hide();
@@ -44,6 +50,7 @@ function dispAttach(disDir, disFile){
           });
           $('#disPath').val(newData.filepath);
           var todo = {num:0,filepath: newData.filepath,user:getCookie('me')};
+          //query the server to update the signing canvas page
           $.ajax({
             type: 'GET',
             url: '/signpdf',
@@ -62,11 +69,12 @@ function dispAttach(disDir, disFile){
       }
     });
     //determine of page is toggled for main or attachment. This is for the annotation
-    if (mainfiledis) togglepage = true;
+    if (mainfiledis) togglepage = true; //variable is in annotate draw js
     else togglepage = false;
     mainfiledis = false;
+    //hide annotation option if not executive branch...only the executive branch can annotate attachment files
     if (($('#disLevel').val().toUpperCase()!="DEP") && ($('#disLevel').val().toUpperCase()!="CO") && ($('#disLevel').val().toUpperCase()!="EAGM") && ($('#disLevel').val().toUpperCase()!="GM")) $('#disAnnotate').hide();
-  } else {
+  } else { //else if the page number is selected then display the specific page
     var num = disFile.replace('Page_','');
     PDFObject.embed(getCookie('fileOpn'), "#pdf_view",{page:num});
   }
@@ -74,27 +82,28 @@ function dispAttach(disDir, disFile){
 }
 //Function for adding files from modal to Reference and Enclosure
 function showFile(disFile, disDir, flag){
+  //return pre-formatted characters to its original characters
   newFile = disFile.replace(/___/g," ");newFile = newFile.replace(/u--/g,'(');newFile = newFile.replace(/v--/g,')');newFile = newFile.replace(/---/g,'.');
   var olddisDir = disDir;
   disDir=disDir.replace(/x--/g,':');disDir=disDir.replace(/u--/g,'(');disDir=disDir.replace(/v--/g,')');disDir=disDir.replace(/z--/g,'.');disDir=disDir.replace(/---/g,"/");disDir=disDir.replace(/___/g," ");
-  if (flag=='refenc'){//if click on reference and enclosuse
+  if (flag=='refenc'){//if adding of file is clicked from the attachment (reference and enclosuse) add button
     if (!newFile.includes('~')) {
       if ($('#refTrue').val()==='true'){
-        updRefEncCookie('arrRef', newFile, disDir);
+        updRefEncCookie('arrRef', newFile, disDir); //update reference cookie
         $('#divRef').append("<div id='ref-"+disFile+"'>&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' onclick=delEncRef('ref','"+disFile+"','arrRef') class='btn btn-danger btn-sm fa fa-times'></button><button type='button' class='btn btn-link btn-sm' onclick=dispAttach('"+olddisDir+"','"+disFile+"')>"+newFile+"</button></div>");
       } else {
-        updRefEncCookie('arrEnc', newFile, disDir);
+        updRefEncCookie('arrEnc', newFile, disDir); //update enclosurer cookie
         $('#divEnc').append("<div id='enc-"+disFile+"'>&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' onclick=delEncRef('enc','"+disFile+"','arrEnc') class='btn btn-danger btn-sm fa fa-times'></button><button type='button' class='btn btn-link btn-sm' onclick=dispAttach('"+olddisDir+"','"+disFile+"')>"+newFile+"</button></div>");
       }
     } else {
       alert('Invalid File');
     }
 
-  }else {//if click on File Open
-    //setCookie('realPath',disDir + '/');
+  }else {//if opening of file is clicked from "File Open" command
     togglePanelHide(true);$('#overlay').show()//display spinner
     if (disDir.substring(disDir.length - 1) != "/") disDir = disDir + '/';
     var todo = {path:disDir,file:newFile};
+    //query server to open the file and store metadata
     $.ajax({
       type: 'POST',
       url: '/fileopen',
@@ -110,6 +119,7 @@ function showFile(disFile, disDir, flag){
             if (signature.message!='signed'){
               $('#disDigCert').hide();
             } else {
+              //display certificate information
               $('#disDigCert').show();
               setCookie('digitalcert', JSON.stringify(signature),1);
               if (signature.verified) {
@@ -133,7 +143,7 @@ function showFile(disFile, disDir, flag){
 }
 //expand directory
 function showDir(path,flag){
-  //classPath=path.replace(/:/g,'x-');classPath=classPath.replace(/\//g,"---");classPath=classPath.replace(/ /g,"___")
+  //return pre-formatted characters to its original characters
   classPath = path.replace(/___/g," ");classPath = classPath.replace(/u--/g,"(");classPath = classPath.replace(/v--/g,")");classPath = classPath.replace(/x--/g,":");classPath=classPath.replace(/z--/g,".");classPath = classPath.replace(/---/g,"/");
   classPath=classPath+"/";
   var todo = {path:classPath};
@@ -147,17 +157,19 @@ function showDir(path,flag){
       var files = arrObj['files'];
       //update Modal
       $('#'+path+'').empty();
-      for (var i=0; i < dirs.length; i++)
+      for (var i=0; i < dirs.length; i++) //update directory container
       {
+        //replace special characters to prevent error in the html embedding
         classDirs = dirs[i].replace(/ /g,"___");classDirs=classDirs.replace(/\(/g,"u--");classDirs=classDirs.replace(/\)/g,"v--");classDirs=classDirs.replace(/\./g,"z--");
         $('#'+path+'').append("<li><a onclick=showDir('"+path+"---"+classDirs+"','"+flag+"')  href='#'>" + dirs[i] +"</a><ul><div id='"+path+"---"+classDirs+"'></div></ul></li>");
       }
-      for (var i=0; i < files.length; i++)
+      for (var i=0; i < files.length; i++) //update file container
       {
+        //replace special characters to prevent error in the html embedding
         disFile = files[i].replace(/ /g,"___");disFile = disFile.replace(/\(/g,'u--');disFile = disFile.replace(/\)/g,'v--');disFile = disFile.replace(/\./g,'---');
         $('#'+path+'').append("<li><a onclick=showFile('"+disFile+"','"+path+"','"+flag+"')  href='#'>" + files[i] +"</a></li>");
       }
-      $(".file-tree").filetree();
+      $(".file-tree").filetree(); //effect on the directory
     }
   });
 }
@@ -166,9 +178,10 @@ function updateModalTabPage(){
     height: "400px",
     page:1
   };
+  //load the main document into the modal page.....if adding attachment (ref and enc) is selected
   loadPDF($('#disPath').val()).then(function(res){
     $('#selPage').empty();
-    for (var i=1; i<=res; i++){
+    for (var i=1; i<=res; i++){ //update page numbers
       $('#selPage').append("<option value='"+i.toString()+"'>"+i.toString()+"</option>");
     }
     PDFObject.embed($('#disPath').val(), "#attachPage", options);
@@ -176,7 +189,7 @@ function updateModalTabPage(){
 }
 //function initialize modal dialog
 function modalDisplay(flag, path){
-  //Update Page
+  //Update Page if attachment adding (ref and enc) is selected
   if (flag=="refenc"){
     updateModalTabPage();
   }
@@ -191,18 +204,19 @@ function modalDisplay(flag, path){
       var dirs = arrObj['dirs'];
       var files = arrObj['files'];
       $('.driveList').empty();
+      //replace special characters to prevent error in the html embedding
       classPath=path.replace(/\//g,"---");classPath=classPath.replace(/\(/g,'u--');classPath=classPath.replace(/\)/g,'v--');classPath=classPath.replace(/:/g,'x--');classPath=classPath.replace(/ /g,"___");classPath=classPath.replace(/\./g,"z--");
-        for (var i=0; i < dirs.length; i++)
+        for (var i=0; i < dirs.length; i++) //update directory container
         {
           classDirs = dirs[i].replace(/ /g,"___");classDirs=classDirs.replace(/\(/g,"u--");classDirs=classDirs.replace(/\)/g,"v--");classDirs=classDirs.replace(/\./g,"z--");
           $('.driveList').append("<li><a onclick=showDir('"+classPath+"---"+classDirs+"','"+flag+"')  href='#'>" + dirs[i] +"</a><ul><div  id='"+classPath+"---"+classDirs+"'></div></ul></li>");
         }
-        for (var i=0; i < files.length; i++)
+        for (var i=0; i < files.length; i++) //update file container
         {
           disFile = files[i].replace(/ /g,"___");disFile = disFile.replace(/\(/g,'u--');disFile = disFile.replace(/\)/g,'v--');disFile = disFile.replace(/\./g,'---');
           $('.driveList').append("<li><a onclick=showFile('"+disFile+"','"+classPath+"','"+flag+"')  href='#'>" + files[i] +"</a></li>");
         }
-        $(".file-tree").filetree();
+        $(".file-tree").filetree(); //effect on directory tree
       }
     });
   };
@@ -222,14 +236,12 @@ function modalDisplay(flag, path){
     try {
       _PDF_DOC = await pdfjsLib.getDocument({ url: pdf_url });
     }
-    catch(error) {
-      //alert(error.message);
-    }
+    catch(error) {}
     // total pages in pdf
     _TOTAL_PAGES = _PDF_DOC.numPages;
     return _TOTAL_PAGES;
   }
-  //Point to PDF Page
+  //Point to the selected Page of the attachment
   function pointPage(){
     var num = document.getElementById("selPage").selectedIndex;
     var options = {
@@ -238,6 +250,7 @@ function modalDisplay(flag, path){
     };
     PDFObject.embed($('#disPath').val(), "#attachPage",options);
   };
+  //Point to the specific page number on the main document
   function pointMainPDF(num){
     var options = {
       page:num
@@ -269,23 +282,23 @@ function modalDisplay(flag, path){
 
       modalDisplay('refenc',origpath);
     });
-    //cancel clicked
+    //cancel button clicked
     $('#modButCanc').on('click', function(){
       if (document.getElementById('newfile').style.display=='none') togglePanelHide(true);
       selChose();$('#overlay').hide()//display spinner
 
     });
-    //cancel clicked
+    // X button clicked
     $('#topClose').on('click', function(){
       if (document.getElementById('newfile').style.display=='none') togglePanelHide(true);
       selChose();$('#overlay').hide()//display spinner
 
     });
-    //handle confirm button from pdf pages
+    //handle confirm when selecting specific page number for the attachment
     $('#butConfirm').on('click', function(event){
       event.preventDefault();
       var disFile = document.getElementById("selPage").selectedIndex + 1;
-
+      //update reference or enclosure
       if ($('#refTrue').val()=='true'){
         updRefEncCookie('arrRef', 'Page_'+disFile, 'Page');
         $('#divRef').append("<div id='ref-Page_"+disFile+"'>&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' onclick=delEncRef('ref','Page_"+disFile+"','arrRef') class='btn btn-danger btn-sm fa fa-times'></button><button type='button' class='btn btn-link btn-sm' onclick=pointMainPDF('"+disFile+"')>Page_"+disFile+"</button></div>");
@@ -293,6 +306,6 @@ function modalDisplay(flag, path){
         updRefEncCookie('arrEnc', 'Page_'+disFile, 'Page');
         $('#divEnc').append("<div id='enc-Page_"+disFile+"'>&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' onclick=delEncRef('enc','Page_"+disFile+"','arrEnc') class='btn btn-danger btn-sm fa fa-times'></button><button type='button' class='btn btn-link btn-sm' onclick=pointMainPDF('"+disFile+"')>Page_"+disFile+"</button></div>");
       }
-      $("#butmodClose").click();
+      $("#butmodClose").click(); //invoke to close the modal dialog
     });
   });

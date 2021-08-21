@@ -1,8 +1,10 @@
+//For printed document signature verification
+//initialize camera scanner for QR Code
 var scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
 scanner.addListener('scan', function (content, image) {
   submitQRPass(content);
 });
-
+//function for enabling web cam for scanning the printed document
 function openCam(){
   Instascan.Camera.getCameras().then(function (cameras) {
     if (cameras.length > 0) {
@@ -10,7 +12,7 @@ function openCam(){
     }
   });
 }
-
+//function for submitting QR code containg information about the printed document
 function submitQRPass(content){
   var todo = {content:content};
   $.ajax({
@@ -31,6 +33,7 @@ function submitQRPass(content){
     }
   });
 }
+//closing the Scanner Dialog
 function closeDialog(){
   scanner.stop();
 }

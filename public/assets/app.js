@@ -1,12 +1,14 @@
 ///For Branch Signing Documnent
-var brscanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-brscanner.addListener('scan', function (content, image) {
+//initialize camera scanner for QR Code
+var brscanner = new Instascan.Scanner({ video: document.getElementById('preview') });//initialize web cam scanner to validate signature when file opened
+brscanner.addListener('scan', function (content, image) { //capture QR code to validate signature when file opened
   brsubmitQRPass(content);
 });
 var brtogglecam = false; var brvalPass = false;
+//function for enabling web cam for scanning or display password box as alternative during file open
 function openCamBranch(){
-  if ($('#toggleButCamRoyal').prop('checked')){
-    if (!brtogglecam){
+  if ($('#toggleButCamRoyal').prop('checked')){ //if qr scanning is selected then fire up the Cam for QR validation
+    if (!brtogglecam){ // if cam is not currently open
       Instascan.Camera.getCameras().then(function (cameras) {
         if (cameras.length > 0) {
           brscanner.start(cameras[0]);$('#passapproyal').hide();
@@ -14,12 +16,13 @@ function openCamBranch(){
         }
       });
     }
-  }else {
+  }else { // if not then open the password box for validation
     if (!brvalPass){
       $('#passapproyal').show(); $('#verPassroyal').focus(); brvalPass = true;$('#app').hide();brscanner.stop();brtogglecam = false;
     }
   }
 }
+//function for submitting password or QR validation in order to merge the signature into the original file
 function brsubmitQRPass(content){
   $('#overlay').show();
   var hash = new Hashes.SHA512().b64(content);
@@ -35,11 +38,13 @@ function brsubmitQRPass(content){
       data: todo,
       success: function(data){
         if (data!='fail'){
+          //return to original page with merged sign image
           closeDialog();$('#routemodClose').click();
           setCookie('fileOpn','/drive/PDF-temp/'+data,1);
           setCookie('fileAI',data,1); $('#passapproyal').hide();
           $('#app').hide();sleep(10000);
-          triggerButFile();$('#butCancelSign').click();
+          triggerButFile(); //re-display the file and update cookies... refer to openfile.js
+          $('#butCancelSign').click();
         } else {alert('QR Code or Password Invalid!'); $('#verPassroyal').val('');}
         $('#overlay').hide();
       }
@@ -48,16 +53,17 @@ function brsubmitQRPass(content){
 }
 
 //For routing slip
+//initialize camera scanner for QR Code
 var togglecam = false; var qrClick = false;var valPass = false;
-var scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
-scanner.addListener('scan', function (content, image) {
+var scanner = new Instascan.Scanner({ video: document.getElementById('preview') }); //initialize web cam scanner to validate routing slip
+scanner.addListener('scan', function (content, image) { //capture QR code to validate routing slip signature
   submitQRPass(content);
   scanner.stop();$('#app').hide();togglecam=false;
 });
-
+//function for enabling web cam for scanning or display password box as alternative during slip routing
 function openCam(){
-  if ($('#toggleButCam').prop('checked')){
-    if (!togglecam){
+  if ($('#toggleButCam').prop('checked')){ //if qr scanning is selected then fire up the Cam for QR validation
+    if (!togglecam){ // if cam is not currently open
       Instascan.Camera.getCameras().then(function (cameras) {
         if (cameras.length > 0) {
           scanner.start(cameras[0]);$('#app').show();togglecam=true;
@@ -66,7 +72,7 @@ function openCam(){
     }else {
       scanner.stop();$('#app').hide();togglecam=false;
     }
-  }else {
+  }else { // if not then open the password box for validation
     if (!valPass){
       $('#passapp').show(); valPass = true; $('#verPass').focus();
     } else {
@@ -74,7 +80,7 @@ function openCam(){
     }
   }
 }
-
+//function for submitting password or QR validation in order to merge the signature into the routing slip
 function submitQRPass(content){
   let viewBr = 'incoming';
   if (window.location.toString().includes("/fileopen")) viewBr = 'openroute';
@@ -86,20 +92,23 @@ function submitQRPass(content){
     data: todo,
     success: function(data){
       if (data=='successful') {
+        //store temporary hashed pass to prevent repeating the validation process
         setCookie('tempPass',hash,1);
         var options = {
           height: "400px",
         };
+        //re-display the routing slip
         PDFObject.embed('/drive/PDF-temp/route-'+$('#fileroute').val()+'.pdf', "#routeattachPage",options);
         qrClick = true; //set signed routing slip to true
       } else alert('QR Code or Password Fail!');
     }
   });
 }
+//function for closing the routing dialog box
 function closeDialog(){
   brscanner.stop();scanner.stop();$('#app').hide();togglecam=false;brtogglecam=false;
 }
-//handle function for routing to branch
+//handle function when route-to-branch is clicked or routing feature is invoked
 function routetoBranchApp(branch){
   brscanner.stop();scanner.stop();$('#app').hide();togglecam=false;brtogglecam=false;
   //check for file extension
@@ -107,47 +116,41 @@ function routetoBranchApp(branch){
   //initialize objects to hide and show
   $('#routeBody').show();$('#routeattachPage').show();$('#disrouteTitle').hide();
   $('#divroyalCam').hide();$('#royalbutConfirm').hide();$('#routebutConfirm').show();
-  //alert(getCookie('viewBr'));
-  if (window.location.toString().includes("/incoming")) {
+  //this is to establish exclusivity of the session and prevent inconsistent metadata to be sent
+  if (window.location.toString().includes("/incoming")) { //when routing documents
     if (getCookie('viewBr') != "incomingroute") {
       alert('Multiple session opened! Repeat changes on metadata upon reloading...'); window.location.reload(); return;
     }
-  } else if (window.location.toString().includes("/fileopen")) {
+  } else if (window.location.toString().includes("/fileopen")) { //when opening files
     if (getCookie('viewBr') != "openroute") {
       alert('Multiple session opened! Repeat changes on metadata upon reloading...'); window.location.reload(); return;
     }
   }
-  setCookie('tempPass','',1);
-  //alert(branch);
-  $('#routeselBr').val(branch);
-  //  $('#routeselBr').prop('value')==branch;
-
+  setCookie('tempPass','',1); //clear password cache
+  $('#routeselBr').val(branch); //assign branch
   var arrRef = getCookie('arrRef');
   var arrEnc = getCookie('arrEnc');
   var todo = {filename:$('#fileroute').val(), refs:arrRef,encs:arrEnc};
   $('#disContRout').hide();
-
-
+  //determine if the the routed document was previously routed (documents may be saved into the drive for staff action and later re-routed)
   $.ajax({
     type: 'POST',
     url: '/searchrefmonitor',
     data: todo,
     success: function(data){
-
       resData = JSON.parse(data);
-      //alert(resData.result);
-      if (resData.result=='found') {
+      if (resData.result=='found') { //if previously routed but was saved into the drive and removed in the workflow
         $('#disContRout').show();$('#lbltmp').val(resData.file);setCookie('tmpRoutFile',resData.file,1);
         document.getElementById('chkboxRout').checked= true; $('#divSubject').hide();
-        $('#lblContRout').html('Continue Previous Routing ? [Yes]');
+        $('#lblContRout').html('Continue Previous Routing ? [Yes]'); //continue the previous routing slip or create a new routing slip
         document.getElementById('divCamPass').style.top="-20px";
         document.getElementById('routeBody').style="margin-top:-10px;";
-      } else if (resData.result == 'routed') {
+      } else if (resData.result == 'routed') { //if currently within the routing workflow but not the originator of the document
         $('#disContRout').hide();$('#lbltmp').val($('#fileroute').val());
         document.getElementById('chkboxRout').checked= true; $('#divSubject').hide();
         document.getElementById('divCamPass').style.top="-20px";
         document.getElementById('routeBody').style="margin-top:-10px;";
-      } else {
+      } else { //if currently within the routing workflow and the originator of the document
         $('#disContRout').hide();$('#lbltmp').val($('#fileroute').val());
         $('#divSubject').show();
         document.getElementById('divCamPass').style.top="-5px";
@@ -156,18 +159,15 @@ function routetoBranchApp(branch){
       //alert(data);
       if (!$('#newfile').val().includes('.')) {alert ('File extension not recognized!'); return false;}
       $('#routeSubject').val($('#newfile').val().split('.')[0]);
-
-      var options = {
-        height: "400px",
-      };
-
+      //display new or existing routing slip
+      var options = { height: "400px" };
       PDFObject.embed('/drive/PDF-temp/route-'+$('#fileroute').val()+'.pdf', "#routeattachPage",options);
       $('#routeselBr').trigger("chosen:updated");
     }
   });
 }
 
-
+//Load when html renders
 $(document).ready(function(){
   var disID = getCookie('me');
   //initialize qr scan and password buttons
@@ -204,9 +204,8 @@ $(document).ready(function(){
           $('#lbltmp').val($('#fileroute').val());
           $('#divSubject').show();$('#lblContRout').html('Continue Previous Routing ? [No]');
         }
-        var options = {
-          height: "400px",
-        };
+        //re-display new or existing routing slip when toggled
+        var options = {height: "400px"};
         PDFObject.embed('/drive/PDF-temp/route-'+$('#fileroute').val()+'.pdf', "#routeattachPage",options);
       }
     });
@@ -227,23 +226,25 @@ $(document).ready(function(){
       brscanner.stop();scanner.stop();$('#app').hide();togglecam=false;brtogglecam=false;
     }
   });
-  //handle validate password click for routing slip
+  //When password box keypress hits enter
   $('#verPass').keypress(function(e){
     if (e.which==13) {
       $('#passapp').hide(); valPass = false;
       submitQRPass($('#verPass').val()); $('#verPass').val('');
     }
   })
+  //handle validate password click for routing slip
   $('#validatePass').on('click', function (event){
     $('#passapp').hide(); valPass = false;
     submitQRPass($('#verPass').val()); $('#verPass').val('');
   });
-  //handle validate password click for OIC signature
+  //When password box keypress hits enter
   $('#verPassroyal').keypress(function(e){
     if (e.which==13) {
       brvalPass = false;brsubmitQRPass($('#verPassroyal').val()); $('#verPassroyal').val('');
     }
   })
+  //handle validate password click for Manager's signature
   $('#validatePassroyal').on('click', function (event){
     brvalPass = false;brsubmitQRPass($('#verPassroyal').val()); $('#verPassroyal').val('');
   });
@@ -254,6 +255,4 @@ $(document).ready(function(){
   $('#routingTopClose').on('click', function(event){
     closeDialog();
   });
-
-  //$('#routeselAct').trigger("chosen:updated");
 });

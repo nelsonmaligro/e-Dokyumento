@@ -1,6 +1,6 @@
 var disWindow = null;
 var disClock = null;
-
+//function to display certificate information in an alert box
 function displaycertinfo() {
   let digicert = JSON.parse(getCookie('digitalcert'));
   alert("Digital Signature Status: " + digicert.message + "\n" +
@@ -10,7 +10,7 @@ function displaycertinfo() {
     "Issued By: " + digicert.meta.certs[0].issuedTo.commonName + ',' + digicert.meta.certs[0].issuedTo.organizationName + '\n' +
     "Validity Period: " + digicert.meta.certs[0].validityPeriod.notAfter);
 }
-
+//function to display certification information in a modal dialog box
 function displaycertinfoparam(data) {
   let digicert = JSON.parse(data);
   //[signres.authenticity,signres.integrity,signres.expired,signres.meta.certs[0].issuedBy,signres.meta.certs[0].issuedTo, signres.meta.certs[0].validityPeriod]
@@ -108,7 +108,7 @@ function returnDocQuery(data) {
     });
     if (arrComm.length > 0) setCookie('arrComm', JSON.stringify(arrComm), 1);
 
-    loadRefEnc(); //go to common.js
+    loadRefEnc(); //load reference and enclosure into the html modal box
   });
 }
 
@@ -130,9 +130,7 @@ function togglePanelHide(disBool) {
     $('#butScan').hide();
     $('#commentToggle').show();
     $('#sideToggle').show();
-    //$('#disAnnotate').show();
-    //$('#overlay').hide()//display spinner
-  } else {
+  } else { //hide elements
     $('#newfile').hide();
     $('#actBr').hide();
     $('#selDiv').hide();
@@ -141,8 +139,6 @@ function togglePanelHide(disBool) {
     $('#divTag').hide();
     $('#commentToggle').hide();
     $('#sideToggle').hide();
-    //$('#disAnnotate').hide();
-    //$('#overlay').show()//display spinner
   }
 }
 //function toggle processing Panel
@@ -162,7 +158,7 @@ function togglePanelProc(disBool) {
     $('#commentToggle').show();
     $('#sideToggle').show();
     //$('#disAnnotate').show();
-  } else {
+  } else { //hide elements
     $('#newfile').show();
     $('#actBr').hide();
     $('#selDiv').hide();
@@ -178,7 +174,7 @@ function togglePanelProc(disBool) {
 }
 //Auto refresh Notification
 function checkFiles() {
-
+  //send request for incoming and pending files
   $.ajax({
     type: 'post',
     url: '/sendincoming',
@@ -224,7 +220,7 @@ function checkFiles() {
       }
     }
   });
-  //$("#notifyme").load(location.href+" #notifyme");
+  //reload page if the file in the incoming is removed
   if (($('#fileroute').val() == 'empty') && (document.getElementById("notiNr").innerHTML != '0')) {
     location.replace('/incoming');
   }
@@ -236,7 +232,8 @@ function loadRefEnc() {
     var arrRef = [];
     var arrEnc = [];
     arrComm = [];
-    var disRef = JSON.parse(getCookie('arrRef')); //Update reference sidebar
+    //Update reference sidebar
+    var disRef = JSON.parse(getCookie('arrRef'));
     if (disRef.length > 0) arrRef = disRef;
     $('#divRef').empty();
     arrRef.forEach(function(ref) {
@@ -249,8 +246,8 @@ function loadRefEnc() {
       disDir = disDir.replace(/ /g, "___");
       $('#divRef').append("<div id='ref-" + newRef + "'>&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' onclick=delEncRef('ref','" + newRef + "','arrRef') class='btn btn-danger btn-sm fa fa-times'></button><button type='button' class='btn btn-link btn-sm' onclick=dispAttach('" + disDir + "','" + newRef + "')>" + ref.file + "</button></div>");
     });
-    //setCookie('arrRef',JSON.stringify(arrRef),1);
-    var disEnc = JSON.parse(getCookie('arrEnc')); //Update enclosure sidebar
+    //Update enclosure sidebar
+    var disEnc = JSON.parse(getCookie('arrEnc'));
     if (disEnc.length > 0) arrEnc = disEnc;
     $('#divEnc').empty();
     arrEnc.forEach(function(enc) {
@@ -263,9 +260,8 @@ function loadRefEnc() {
       disDir = disDir.replace(/ /g, "___");
       $('#divEnc').append("<div id='enc-" + newEnc + "'>&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' onclick=delEncRef('enc','" + newEnc + "','arrEnc') class='btn btn-danger btn-sm fa fa-times'></button><button type='button' class='btn btn-link btn-sm' onclick=dispAttach('" + disDir + "','" + newEnc + "')>" + enc.file + "</button></div>");
     });
-    //setCookie('arrEnc',JSON.stringify(arrEnc),1);
-    //setCookie('arrRef',JSON.stringify(arrRef),1);
-    var disComm = JSON.parse(getCookie('arrComm')); //Update enclosure sidebar
+    //Update comment sidebar
+    var disComm = JSON.parse(getCookie('arrComm'));
     if (disComm.length > 0) arrComm = disComm;
     $('#allComments').empty();
     arrComm.reverse().forEach(function(comm) {
@@ -302,13 +298,14 @@ function selChose() {
 //handle main file onclick
 function gotoMain() {
   $('#disPath').val(getCookie('fileOpn'));
-  PDFObject.embed(getCookie('fileOpn'), "#pdf_view");
+  PDFObject.embed(getCookie('fileOpn'), "#pdf_view"); //reload the main page
   setCookie('newpathdraw', getCookie('fileOpn'), 1);
   $('#divToggleSign').show();
   $('#butReturn').show();
+  //if AGM ang GM (executive branches) reload the main page for signing and approval
   if (($('#disLevel').val().toUpperCase() == "DEP") || ($('#disLevel').val().toUpperCase() == "CO") || ($('#disLevel').val().toUpperCase() == "AGM") || ($('#disLevel').val().toUpperCase() == "GM")) {
     $('#selPage').empty();
-    loadPDF(getCookie('fileOpn')).then(function(res) {
+    loadPDF(getCookie('fileOpn')).then(function(res) { //load the main page for signing
       $('#selPage').empty();
       for (var i = 1; i <= res; i++) {
         $('#selPage').append("<option value='" + i.toString() + "'>" + i.toString() + "</option>");
@@ -318,6 +315,7 @@ function gotoMain() {
     $('#disContent').show();
     $('#disFrame').hide();
     $('#divSign').hide();
+    //return release and approve button for the AGM and GM respectively
     if (($('#disLevel').val().toUpperCase() == "DEP") || ($('#disLevel').val().toUpperCase() == "AGM")) {
       $('#butApprove').hide();
       $('#butRelease2').show();
@@ -354,7 +352,7 @@ function openDisFile(filepath) {
   setCookie('mailfile', mailfile, 1);
   location.replace('/fileopen');
 }
-
+//function forr deleting mail notification file
 function delNotiFile(filepath) {
   this.event.stopPropagation();
   filepath = filepath.replace(/___/g, " ");filepath = filepath.replace(/u--/g, '(');filepath = filepath.replace(/v--/g, ')');filepath = filepath.replace(/---/g, '.');
@@ -396,7 +394,7 @@ function addComment() {
       content: $('#commentinput').val()
     });
     setCookie('arrComm', JSON.stringify(arrComment), 1);
-    sleep(3000).then(() => {
+    sleep(3000).then(() => { //delay for 3 seconds then prepend (apppend at the beggining) to comment side bar
       $('#allComments').prepend(" " +
         "<div id='" + disBranch + "' class='box'> " +
         "<a style='color:black;font-family:arial;'><i class='fa fa-tag'></i>&nbsp;" + disID +
@@ -418,11 +416,11 @@ async function removeComment(disBranch) {
   var found = arrComment.find(({
     branch
   }) => branch === disBranch);
-  var resArr = arrComment.filter(function(res) {
+  var resArr = arrComment.filter(function(res) { //remove  item from the array of comments
     return res != found;
   });
   await setCookie('arrComm', JSON.stringify(resArr), 1);
-  sleep(2000).then(() => {
+  sleep(2000).then(() => { //wait 2 seconds and remove from the comment sidebar
     $('#' + disBranch).remove();
     $('#br-' + disBranch).remove();
   });
@@ -438,12 +436,8 @@ function deleteDocu() {
     filepath = $('#fileroute').val();
     brcode = $('#disBranch').val();
   }
-  todo = {
-    filepath: filepath,
-    branch: brcode,
-    user: getCookie('me'),
-    filename: $('#fileroute').val()
-  };
+  todo = {filepath: filepath, branch: brcode, user: getCookie('me'), filename: $('#fileroute').val()};
+  //send to server the filename to be deleted
   $.ajax({
     type: 'POST',
     data: todo,
@@ -458,7 +452,7 @@ function deleteDocu() {
     }
   });
 }
-//delay
+//delay function
 function sleep(ms) {
   return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -476,20 +470,20 @@ $(document).ready(function() {
   $('#menuIncoming').on('click', function() {
     setCookie('fileAI', "Empty", 1);
   });
-  //handle button butAction
+  //show dropdown when user profile icon is clicked
   $('#userProf').on('click', function() {
     $('.dropdown-submenu .show').removeClass("show");
   });
   //handle load user drive
-
   $('#disCheckDrive').on('click', function() {
+    //get the mapped drive
     let newPath = 'Z:/';
     newPath = getCookie('newPath');
     newPath = newPath.substring(0, 3);
-    //alert(getCookie('newPath'));
     if ((newPath.substring(0, 1).toUpperCase() == 'D') || (newPath.substring(0, 1).toUpperCase() == '/')) newPath = 'Z:/';
+    //opens the mapped drive.....run the registry file to enable the ie option
     disWindow = window.open("ie:" + newPath + "", "disWindow", "width=5px,heigh=5px");
-    disClock = setInterval('closWindow()', 10000);
+    disClock = setInterval('closWindow()', 10000); //close the dialog box after 10 seconds
   });
   //Logout click
   $('#disLogout').on('click', function() {
@@ -497,17 +491,14 @@ $(document).ready(function() {
       type: 'get',
       url: '/logout',
       success: function(data) {
-        //do something with the data via front-end framework
-        location.replace('/');
+        location.replace('/'); //return to login page
       }
     });
     return false;
   });
-  //handle toggle DUTYADMIN
+  //handle toggle switching position or duty from regular staff to secretary (secretary allows receiving of all external documents)
   $('#switchDuty').on('click', function(e) {
-    todo = {
-      user: getCookie('me')
-    };
+    todo = {user: getCookie('me')};
     $.ajax({
       type: 'POST',
       data: todo,
@@ -520,7 +511,7 @@ $(document).ready(function() {
     });
   });
 
-  //handle download
+  //handle download of document
   $('#docDownload').on('click', function(event) {
     //event.preventDefault();
     if (window.location.toString().includes("/fileopen")) {
@@ -534,10 +525,11 @@ $(document).ready(function() {
       window.location.href = "/downloadfile/" + encode + "/" + brCode;
     }
   });
-  //handle delete file
+  //execute delete function when keypressed is entered
   $('#passwmodPass').keypress(function(e) {
     if (e.which == 13) deleteDocu();
   });
+  //handles delete document when button clicked
   $('#docDelete').on('click', function(event) {
     //event.preventDefault();
     deleteDocu();
@@ -546,7 +538,7 @@ $(document).ready(function() {
 
   //start auto refresh Notification
   checkFiles();
-  setInterval('checkFiles();', 20000);
+  setInterval('checkFiles();', 20000); //continuesly check for incoming files every 20 seconds
   //For mobile browser Load the PDF to Convas
   loadPDFtoCanvas($('#disPath').val());
 
@@ -554,7 +546,7 @@ $(document).ready(function() {
 
 
 
-//Load the PDF
+//function to Load the PDF to the canvas
 function loadPDFtoCanvas(url) {
   //populate page numbers SelectionBox
   if (url != undefined) {
@@ -567,6 +559,7 @@ function loadPDFtoCanvas(url) {
       //$('#selPage').trigger("chosen:updated
       $('#overlay').hide() //display spinner
     });
+    //render the document to the page
     pdfjsLib.getDocument(url)
       .then(function(pdf) {
         return pdf.getPage(1);

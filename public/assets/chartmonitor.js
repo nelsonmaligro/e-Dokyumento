@@ -1,5 +1,7 @@
+//initialize values for the chart
 window.myLine = null;  var tableCanvas = []; var loadInterval = null;
 var myTable = $('#bootstrap-data-table-export').DataTable({lengthMenu: [[1], [1]],});
+//generate random color for the lines
 function randomColorFactor() {
   return Math.round(Math.random() * 255);
 }
@@ -16,8 +18,8 @@ function randomColor(opacity) {
     ")"
   );
 }
-
 var disYear = new Date().getFullYear();
+//initial configuration for the chart
 function returnConfig(disDatasets, files) {
   var config = {
     type: 'line',
@@ -145,22 +147,26 @@ Chart.plugins.register({
     });
   }
 });
-
+//function for updating the canvas
 function updateCanvas(data){
   myTable.clear();disFiles = []; newDatasets = [];
   var arrData = JSON.parse(data);
   var count = 0; bodyCount = 0;
+  //iterate through files
   arrData.forEach(function (items, index){
-    disFiles.push(items.title.substring(0,15));
+    disFiles.push(items.title.substring(0,15)); //get the title of the file (15 characters only)
     var disSets = [];
+    //iterate all branches routed in the file
     items.route.reverse().forEach(function (route){
       var branch = ""; var comma = "";
       route.branch.forEach(function (disBr){
         branch = branch + comma + disBr;
         comma = ",";
       });
+      //create points for the branch on the canvas
       disSets.push({x:route.deyt, y:items.title.substring(0,15), label:branch, filename:items.filename, path:items.filepath});
     });
+    //assign color for the point
     disColor = randomColor(1);
     var sets = {
       label: items.title,
@@ -170,67 +176,55 @@ function updateCanvas(data){
       pointRadius:4,
       pointBackgroundColor:disColor,
     }
-    newDatasets.push(sets);
-
+    newDatasets.push(sets); //store sets of points in the array
+    //place 5 sets (documents and points) in the canvas
     if ((count == 5) || (index == arrData.length - 1)) {
-      //alert(JSON.stringify(sets));
-      //$('#tableCanvas').append("<tr><td><div style='width:99%;'><canvas id='canvas-"+bodyCount.toString()+"' height=300px ></canvas></div></td></tr>");
-      //tableBody.push("<div style='width:99%;'><canvas id='canvas-"+bodyCount.toString()+"' height=300px ></canvas></div>");
+      // add to table canvas...distinguish the mobile phone users and PC users
       if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) myTable.row.add([" <div  style='width:98%;'><canvas ondblclick='openChartFile(event)' id='canvas-"+bodyCount.toString()+"' height=250px ></canvas></div>"]).draw();
       else myTable.row.add([" <div  style='width:98%;'><canvas ondblclick='openChartFile(event)' id='canvas-"+bodyCount.toString()+"' height=137px ></canvas></div>"]).draw();
-
       tableCanvas.push({x:newDatasets,y:disFiles});
       bodyCount= bodyCount + 1; count = 0; newDatasets=[]; disFiles=[];
-      //alert('test');
     } else {
       count= count + 1 ;
     }
   });
-
-  //var ctx = document.getElementById('canvas-0').getContext('2d');
-  //window.myLine = new Chart(ctx, returnConfig(tableCanvas[0].x, tableCanvas[0].y));
 }
+//handle when page of the table canvas is changed upon clicking next button
 $('#bootstrap-data-table-export').on('page.dt', function(){
   var num = myTable.page.info().page;
   loadInterval = setInterval("loadCanvas("+num+")",1000);
 });
-
+//function to load the table canvas
 function loadCanvas(number){
   var ctx = $('#canvas-'+number.toString()).get(0).getContext('2d');
   window.myLine = new Chart(ctx, returnConfig(tableCanvas[number].x, tableCanvas[number].y));
-
   clearInterval(loadInterval);
 }
 
-
+//function to handle the opening of file when clicking the point in the canvas
 function openChartFile(event)
 {
   var activePoints = window.myLine.getElementsAtEvent(event);
   var activeDataSet =  window.myLine.getDatasetAtEvent(event);
-
   if (activePoints.length > 0)
   {
     var clickedDatasetIndex = activeDataSet[0]._datasetIndex;
     var clickedElementIndex = activePoints[0]._index;
-    //data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].filename;
     var value = window.myLine.data.datasets[clickedDatasetIndex].data[clickedElementIndex];
     arrLabel = value.label.split(',');arrLabel = arrLabel.filter(function(res) {return res!='All Branches'; });
     let idx = 0;
     if (arrLabel.length>1) idx = 1;
     chartWindow = window.open("/commofile/"+value.filename+"/"+arrLabel[idx]+"","chartWindow",top=0,width=500,heigh=500);
-    //start auto refresh Notification
-
-
   }
 }
-
+//Load when html renders
 $(document).ready(function() {
   //Remove clutters
   togglePanelHide(true);
   selChose();
   $('#formroute').hide();
   $('#overlay').hide()//display spinner
-
+  //begin with updating the canvas
   $.ajax({
     type: 'POST',
     url: '/chartmonitor',
@@ -238,14 +232,6 @@ $(document).ready(function() {
       updateCanvas(data);
       //load chart JS on canvas
       loadInterval = setInterval("loadCanvas(0)",1000);
-
-
     }
   });
-
-
-  // chart_name is whatever your chart object is named. here I am using a
-  // jquery selector to attach the click event.
-
-
 });
