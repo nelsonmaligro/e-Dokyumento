@@ -175,10 +175,11 @@ $(document).ready(function(){
   });
   //Start scanning document
   scanDoc();
+  $('#signDocBut').show(); //enable sign option
   //handle click on confirm routing button
   $('#routebutConfirm').on('click', function(event){
     if (!$('#newfile').val().includes('.')) {alert ('File extension not recognized!'); return false;}
-    
+
     if ($('#routeselBr').val()==null) {
       alert('Input Branch to Route!'); return;
     }

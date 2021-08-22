@@ -48,6 +48,33 @@ dbhandle.settingDis((setting)=>{
       });
     });
   }
+  //handle updating document database with no content
+  function updateDBdocNoContent(dst, file, req){
+    dbhandle.docFind(dst + file, function(res){
+      var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
+      makeDir(driveMain + 'Routing Slip/',year, month);
+
+        if (fs.existsSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf')) fs.copyFileSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf',driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.newfile+'.pdf');
+        var routslipTemp = driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.newfile+'.pdf';
+        var arrRef = JSON.parse(req.body.refs); newRef = [];
+        arrRef.forEach(function (ref){
+          if (ref.path.substring(ref.path.length-1)=="/") newRef.push(ref.path+ref.file);
+          else newRef.push(ref.path+'/'+ref.file);
+        });
+        var arrEnc = JSON.parse(req.body.encs); newEnc = [];
+        arrEnc.forEach(function (enc){
+          if (enc.path.substring(enc.path.length-1)=="/") newEnc.push(enc.path+enc.file);
+          else newEnc.push(enc.path+'/'+enc.file);
+        });
+        var arrComment = JSON.parse(req.body.comments); newComm = [];
+        arrComment.forEach(function (comment){
+          newComm.push({branch:comment.branch, content:comment.content});
+        });
+        //console.log( dst+req.body.newfile+'#'+req.body.class+':'+req.body.tag+':'+newRef+':'+newEnc+':'+newComm)
+        if (!res) dbhandle.docCreate (generateID(), req.body.newfile, dst+req.body.newfile, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(dst + req.body.newfile).size, '', routslipTemp, newRef, newEnc, newComm);
+        else  dbhandle.docEdit (res.id,req.body.newfile, dst+req.body.newfile, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(dst + req.body.newfile).size, '', routslipTemp, newRef, newEnc, newComm);
+    });
+  }
   //handle updating document database no refence and enclosure
   function updateDBdocNoRefEncIncoming(src, dst, req){
     dbhandle.docFind(src + req.body.fileroute, function(res){
@@ -144,7 +171,7 @@ dbhandle.settingDis((setting)=>{
   exports.routRoyal = function (req, res, src, dst, file, origsrc){
     fs.copyFile(src, dst, function(err) {
       //if (err) console.log(err);
-      console.log("Successfully copied to Royalty branch for release!");
+      console.log("Successfully copied to Executive branch for release!");
       updateDBdocRoyal(origsrc, dst, req);//Update document database
       //remove from temp after copy to incoming
       fs.unlink(origsrc, async function(err) {
@@ -179,29 +206,23 @@ dbhandle.settingDis((setting)=>{
       var dst = drivePublic + branch +"/";
       if (branch.toUpperCase()!='ALL BRANCHES')  {
         if (!fs.existsSync(drivePublic + branch)) fs.mkdirSync(drivePublic + branch);
-        if ((dst + req.body.fileroute).toUpperCase() != newsrc.toUpperCase()) {
-          fs.copyFile(newsrc, dst+req.body.fileroute, function(err) {
-            console.log("Successfully copied to " + branch);
-
-            //updateDBdoc(dst, req.body.fileroute, req);//update database
-          });
+        if ((dst + req.body.fileroute).toUpperCase() != newsrc.toUpperCase()) { //not the originator
+          if (!fs.existsSync(dst + req.body.fileroute)) fs.copyFileSync(newsrc, dst+req.body.fileroute); //prevent overwrite
+          updateDBdocNoRefEncIncoming(src, dst, req);//Update document database
         }
-        updateDBdocNoRefEncIncoming(src, dst, req);//Update document database
       };
     });
     //if all branches
     if (req.body.branch.toString().toUpperCase().includes('ALL BRANCHES')){
       branches.forEach (function (branch){
+        //check if not executive branches
         if (!req.body.branch.includes(branch) && (branch.toUpperCase()!="EXO") && (branch.toUpperCase()!="DN6") && (branch.toUpperCase()!="N6") && (branch.toUpperCase()!="ASST.G.M.") && (branch.toUpperCase()!="G.M.") && (branch.toUpperCase()!="SECRETARY-RECEIVING")) {
           var dst = drivePublic + branch +"/";
           if (!fs.existsSync(drivePublic + branch)) fs.mkdirSync(drivePublic + branch);
-          if ((dst + req.body.fileroute).toUpperCase() != newsrc.toUpperCase()) {
-            fs.copyFile(newsrc, dst+req.body.fileroute, function(err) {
-              console.log("Successfully copied to " + branch);
-              //updateDBdoc(dst, req.body.fileroute, req);//update database
-            });
+          if ((dst + req.body.fileroute).toUpperCase() != newsrc.toUpperCase())  {//not the originator
+            if (!fs.existsSync(dst + req.body.fileroute)) fs.copyFileSync(newsrc, dst+req.body.fileroute); //prevent overwrite
+            updateDBdocNoRefEncIncoming(src, dst, req);//Update document database
           }
-          updateDBdocNoRefEncIncoming(src, dst, req);//Update document database
         };
       });
     };
@@ -232,22 +253,19 @@ dbhandle.settingDis((setting)=>{
       } else resolve();
     }).then(()=>{
       if (req.body.save=='openroute') updateDBdoc(req.body.path, req.body.fileroute, req);//Update document database
-      //copy to incoming
+      //copy to file server drive/incoming
       fs.copyFile(newsrc, dstincoming, function(err) {
         //if (err) console.log(err);
-        console.log("Successfully copied to incoming!");
+        console.log("Successfully copied to drive/incoming folder!");
         if ((usrLvl.toUpperCase()==='DUTYADMIN') || (usrLvl.toUpperCase()==='SECRETARY')) updateDBdoc(incoming, req.body.newfile, req);//update database
         var dst =  "";
         req.body.branch.forEach (function(branch){
           if (branch.toUpperCase()!='ALL BRANCHES')  {
             dst = drive + branch +"/"+ req.body.newfile;
             if (!fs.existsSync(drive + branch)) fs.mkdirSync(drive + branch);
-            if (path.resolve(dst).toUpperCase() != path.resolve(newsrc).toUpperCase()){
-              fs.copyFile(dstincoming, dst, function(err) {
-                //if (err) console.log(err);
-                console.log("Successfully copied to " + branch);
-                updateDBdoc(drive + branch +"/", req.body.newfile, req);//update database
-              });
+            if (path.resolve(dst).toUpperCase() != path.resolve(newsrc).toUpperCase()) { //not the originator
+              if (!fs.existsSync(dst)) fs.copyFileSync(dstincoming, dst); //prevent overwrite
+              updateDBdocNoContent(drive + branch +"/", req.body.newfile, req);//update database
             }
             //add to AI/ ML trainining datasets
             if ((usrLvl.toUpperCase()=='DUTYADMIN') || (usrLvl.toUpperCase()=='SECRETARY')) aiTrain(driveMain + 'textML/'+req.body.fileroute+'.txt',driveMain + 'textML/'+branch,req.body.fileroute);
@@ -259,12 +277,9 @@ dbhandle.settingDis((setting)=>{
             if (!req.body.branch.includes(branch) && (branch.toUpperCase()!="EXO") && (branch.toUpperCase()!="DN6") && (branch.toUpperCase()!="N6")  && (branch.toUpperCase()!="ASST.G.M.") && (branch.toUpperCase()!="G.M.") && (branch.toUpperCase()!="SECRETARY-RECEIVING")) {
               dst = drive + branch +"/"+ req.body.newfile;
               if (!fs.existsSync(drive + branch)) fs.mkdirSync(drive + branch);
-              if (path.resolve(dst).toUpperCase() != path.resolve(newsrc).toUpperCase()){
-                fs.copyFile(dstincoming, dst, function(err) {
-                  //if (err) console.log(err);
-                  console.log("Successfully copied to " + branch);
-                  updateDBdoc(drive + branch +"/", req.body.newfile, req);//update database
-                });
+              if (path.resolve(dst).toUpperCase() != path.resolve(newsrc).toUpperCase()) { //not the Originator
+                if (!fs.existsSync(dst)) fs.copyFileSync(dstincoming, dst);
+                updateDBdocNoContent(drive + branch +"/", req.body.newfile, req);//update database
               }
             };
           });

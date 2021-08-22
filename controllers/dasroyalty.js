@@ -28,9 +28,11 @@ module.exports = function(app, arrDB){
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
   var drivetmp = "public/drive/", drive = "D:/Drive/", publicstr = 'public';
+  //list all branches
+  var docBr = [];
+  dbhandle.generateList(arrDB.branch, function (res){ docBr = res; });
   dbhandle.settingDis((setting)=>{drivetmp = setting.publicdrive;});
   dbhandle.settingDis((setting)=>{publicstr = setting.publicstr;});
-
   dbhandle.settingDis((setting)=>{
     drive = setting.maindrive;
     //initialize file upload storage
@@ -156,7 +158,7 @@ module.exports = function(app, arrDB){
     function postsignpdf(req, res, id){
       dbhandle.userFind(id, function(user){
         console.log('Sign Document');
-        pdflib.addSignMainDoc(user.group, id, publicstr+req.body.filepath, drivetmp+'PDF-temp/'+req.body.user+'.res.pdf', req.body.disX, req.body.disY, req.body.nodate, req.body.width, req.body.height, () =>{
+          pdflib.addSignMainDoc(user.group, id, publicstr+req.body.filepath, drivetmp+'PDF-temp/'+req.body.user+'.res.pdf', req.body.disX, req.body.disY, req.body.nodate, req.body.width, req.body.height, () =>{
           res.json('successful');
         });
       });

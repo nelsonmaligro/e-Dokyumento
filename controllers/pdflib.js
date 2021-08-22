@@ -96,15 +96,15 @@ dbhandle.settingDis((setting)=>{
           color: rgb(0, 0.53, 0.71),
         });
         firstPage.drawImage(pngImgQR, {//draw QR into page
-          x: (parseInt(disX, 10) * varX) - 52, //- pngDims.width / 2 + 75,
-          y: ((height - (parseInt(disY, 10)  * varY)) - (90 * varY)) + 20, //- pngDims.height,
+          x: (parseInt(disX, 10) * varX) - 52, //x: 5,
+          y: ((height - (parseInt(disY, 10)  * varY)) - (90 * varY)) + 20, //y: varY,
           width: 50,
           height: 50,
         });
         if (nodate!='true'){
           firstPage.drawText(dateformat(Date.now(),"dd mmm yyyy"), { //date signee
-            x: (parseInt(disX, 10) * varX) + 90, //- pngDims.width / 2 + 75,
-            y: ((height - (parseInt(disY, 10) * varY)) - (90 * varY)) + 35, //- pngDims.height,
+            x: (parseInt(disX, 10) * varX) + 90,
+            y: ((height - (parseInt(disY, 10) * varY)) - (90 * varY)) + 35,
             size: 11,
             font: helveticaFont,
             color: rgb(0, 0.10, 0.50),
@@ -216,6 +216,7 @@ dbhandle.settingDis((setting)=>{
           font: helveticaFont,
           color: rgb(0, 0.53, 0.71),
         }); let newTo = req.body.branch.toString().toUpperCase().replace('ALL BRANCHES','');
+        newTo = newTo.substring(0,10);
         firstPage.drawText(newTo, { //to
           x: disX - 50,
           y: disY,
@@ -224,7 +225,7 @@ dbhandle.settingDis((setting)=>{
           color: rgb(0, 0.53, 0.71),
         });
       } else {
-        firstPage.drawText(req.body.branch.toString(), { //to
+        firstPage.drawText(req.body.branch.toString().substring(0,10), { //to
           x: disX - 50,
           y: disY,
           size: textSize -3,

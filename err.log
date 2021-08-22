@@ -19429,3 +19429,37 @@ TypeError: Cannot read property 'replace' of undefined
     at processImmediate (internal/timers.js:434:9)
     at process.topLevelDomainCallback (domain.js:144:15)
     at process.callbackTrampoline (internal/async_hooks.js:129:14)
+discontent is not defined
+ReferenceError: discontent is not defined
+    at D:\Projects\PN DocMS\controllers\dastransact.js:127:189
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:409:15
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot set headers after they are sent to the client
+Error [ERR_HTTP_HEADERS_SENT]: Cannot set headers after they are sent to the client
+    at ServerResponse.setHeader (_http_outgoing.js:558:11)
+    at ServerResponse.header (D:\Projects\PN DocMS\node_modules\express\lib\response.js:771:10)
+    at ServerResponse.send (D:\Projects\PN DocMS\node_modules\express\lib\response.js:170:12)
+    at ServerResponse.json (D:\Projects\PN DocMS\node_modules\express\lib\response.js:267:15)
+    at D:\Projects\PN DocMS\controllers\dastransact.js:132:19
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:409:15
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+group is not defined
+ReferenceError: group is not defined
+    at D:\Projects\PN DocMS\controllers\monitoring.js:51:108
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:250:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+newpath is not defined
+ReferenceError: newpath is not defined
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:160:64
+    at Array.filter (<anonymous>)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:160:29
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+file is not defined
+ReferenceError: file is not defined
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:160:48
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)

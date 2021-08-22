@@ -487,8 +487,8 @@ exports.docUpdateNoRefEnc = function docUpdateNoRefEnc(Id, Filename, Rout, Comme
   //Create records
   var disDoc = {
     filename:Filename,
-    routeslip: Rout,
-    comment:Comment
+    //comment:Comment,
+    routeslip: Rout
   };
   docModel.updateOne({id:Id},[{$set:disDoc}], function(err){
     console.log('Updated Comment successfully!');
@@ -498,8 +498,8 @@ exports.docUpdateNoRefEnc = function docUpdateNoRefEnc(Id, Filename, Rout, Comme
 exports.docUpdateNoRefEncIncoming = function docUpdateNoRefEnc(Filename, Rout, Comment){
   //Create records
   var disDoc = {
-    routeslip: Rout,
-    comment:Comment
+    //comment:Comment,
+    routeslip: Rout
   };
   Filename = Filename.replace(/\(/g,'\\(');Filename = Filename.replace(/\)/g,'\\)');
   docModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
@@ -546,8 +546,8 @@ exports.docEdit = function docEdit(Id, Title, Filename, Category, Author, Projec
     content:Content,
     routeslip: Rout,
     reference: Ref,
-    enclosure: Encl,
-    comment:Comment
+    //comment:Comment,
+    enclosure: Encl
   };
   docModel.updateOne({id:Id},[{$set:disDoc}], function(err){
 
@@ -555,18 +555,30 @@ exports.docEdit = function docEdit(Id, Title, Filename, Category, Author, Projec
   });
 };
 //Update Document metadata, reference, and enclosure
-exports.docUpdateMeta = function docEdit(Filename, Category, Projects, Ref, Encl, Comment){
+exports.docUpdateMeta = function docUpdateMeta(Filename, Category, Projects, Ref, Encl, Comment){
   //Create records
   var disDoc = {
     category:Category,
     projects:Projects,
+    //comment:Comment,
     reference: Ref,
-    enclosure: Encl,
-    comment:Comment
+    enclosure: Encl
+
   };
   Filename = Filename.replace(/\(/g,'\\(');Filename = Filename.replace(/\)/g,'\\)');
   docModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
     console.log('Metadata Updated successfully!');
+  });
+};
+//Update Document comment
+exports.docUpdateComment = function docUpdateComment(Filename,  Comment){
+  //Create records
+  var disDoc = {
+    comment:Comment
+  };
+  Filename = Filename.replace(/\(/g,'\\(');Filename = Filename.replace(/\)/g,'\\)');
+  docModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
+    console.log('Comment Updated successfully!');
   });
 };
 //Remove documents

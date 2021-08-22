@@ -46,6 +46,12 @@ module.exports = function(app, arrDB){
     const {pdfkitAddPlaceholder, extractSignature, plainAddPlaceholder} = require ('./dist/helpers');
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
+    //post handle update comment
+    app.post('/updatecomment', urlencodedParser, function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        updatecomment(req, res, id);
+      });
+    });
     //post handle search monitoring for reference and enclosure prior routing
     app.post('/searchrefmonitor', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
@@ -109,7 +115,35 @@ module.exports = function(app, arrDB){
     //------------------------------------------FUNCTIONS START HERE----------------------------------------------------
     //declare bootstap static folder here to redirect access to public drive folder when token not validated
     app.use(express.static('./public'));
-
+    //handle updating comment
+    function updatecomment(req,res,id){
+      dbhandle.userFind(req.body.user, function (user){
+        var arrComment = JSON.parse(req.body.comments); newComm = [];
+        arrComment.forEach(function (comment){
+          newComm.push({branch:comment.branch, content:comment.content});
+        });
+        //update comments with same filename on all branches
+        if (req.body.page=='incoming'){ //if file is in the incoming folder
+          docBr.forEach((item, i) => {
+            if (fs.existsSync(drivetmp+item+'/'+req.body.fileroute)){
+              dbhandle.docFind(drivetmp+item+'/'+req.body.fileroute, function(docres){
+                //check if document no record from DB
+                if (!docres) dbhandle.docCreate (utilsdocms.generateID(), req.body.fileroute, drivetmp + item+'/' +req.body.fileroute, '', req.body.user, [], Date.now().toString(), 0, '', '', [], [], newComm);
+                else dbhandle.docUpdateComment(drivetmp + item + '/' +req.body.fileroute, newComm);
+              });
+            }
+          });
+        } else { //if file is opened in the drive (file server)
+          dbhandle.docFind(req.body.realpath+req.body.fileroute, function(docres){
+            //check if document no record from DB
+            if (!docres) dbhandle.docCreate (utilsdocms.generateID(), req.body.fileroute, req.body.realpath +req.body.fileroute, '', req.body.user, [], Date.now().toString(), 0, '', '', [], [], newComm);
+            else dbhandle.docUpdateComment(req.body.realpath +req.body.fileroute, newComm);
+          });
+        }
+    });
+    res.json('successful');
+    console.log('Save Comment Incoming');
+  }
     //process document scan and verify QR COde
     function scanqrdoc(req, res){
       console.log('Scan Document QR Code');
@@ -139,35 +173,11 @@ module.exports = function(app, arrDB){
         let splitFile = req.cookies.fileOpn.split('/');
         let newfileOpn = req.cookies.fileOpn.replace(splitFile[splitFile.length-1],disNewFile);
         pdflib.mergePDF(publicstr+req.cookies.fileOpn, drivetmp+'PDF-temp/'+disNewFile, drivetmp+'PDF-temp/'+req.body.user+'.res.pdf', parseInt(req.body.num,10), () =>{
-          //copy signed PDF from temp to next branch
-          fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, drivetmp+user.group+'/'+disNewFile); //make a copy to drive folder
-          //if (fs.existsSync(drive + 'Routing Slip/'+year+'/'+month+'/route-'+req.body.fileroute+'.pdf'))
-          dbhandle.docFind(drivetmp+user.group+'/'+req.body.fileroute, function (found) {
-            let newID = utilsdocms.generateID();
-            dbhandle.docFind(drivetmp+user.group+'/'+disNewFile, function (disfound) {
-              if (!disfound) {
-                utilsdocms.makeDir(drive + 'Routing Slip/', year, month);
-                let dstRoutSlip = drive + 'Routing Slip/'+year+'/'+month+'/route-'+disNewFile+'.pdf';
-                let webdstRoutSlip = drivetmp + 'PDF-temp/route-'+disNewFile+'.pdf';
-                if (found){
-                  if (fs.existsSync(found.routeslip)) {
-                    fs.copyFileSync(found.routeslip, dstRoutSlip);fs.copyFileSync(found.routeslip, webdstRoutSlip);
-                  } else {fs.copyFileSync(drivetmp+'routeblank.pdf', webdstRoutSlip);fs.copyFileSync(drivetmp+'routeblank.pdf', dstRoutSlip); }
-                  dbhandle.docCreate(newID, disNewFile, drivetmp+user.group+'/'+disNewFile, found.category, found.author, found.projects, found.deyt, found.size, found.content, dstRoutSlip, found.reference, found.enclosure, found.comment);
-                } else {
-                  fs.copyFileSync(drivetmp+'routeblank.pdf', webdstRoutSlip); fs.copyFileSync(drivetmp+'routeblank.pdf', dstRoutSlip);
-                  dbhandle.docCreate(newID, disNewFile, drivetmp+user.group+'/'+disNewFile, "", "", [], Date.now(), 0, "", dstRoutSlip, [], [], []);
-                }
-              }
-              dbhandle.monitorFindFile(req.body.fileroute, function(result){ //delete in monitoring
-                if (result) {
-                  dbhandle.monitorUpdateFilename(req.body.fileroute, disNewFile);
-                }
-              });
-              res.json(disNewFile);
-              fs.unlinkSync(drivetmp+user.group+'/'+req.body.fileroute);
-            });
+          //copy signed PDF from temp to all branches with same filename
+          docBr.forEach((item, i) => {
+            if (fs.existsSync(drivetmp+item+'/'+req.body.fileroute)) fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, drivetmp+item+'/'+req.body.fileroute);
           });
+          res.json(req.body.fileroute);
         });
       });
     }
@@ -191,7 +201,6 @@ module.exports = function(app, arrDB){
                     //let buf64 = Buffer.from(req.body.crtx, 'base64')
                     let buf64 = fs.readFileSync(drive+user.group+'/Signature/' + id +'.cert.psk',"utf8");
                     buf64 = Buffer.from(buf64, 'base64');
-                    console.log(buf64.toString("utf8"));
                     try {
                       pdfBuffer = signer.sign(pdfBuffer, p12Buffer, {passphrase:buf64.toString("utf8")},);
                       fs.writeFileSync(drivetmp+'PDF-temp/' + disNewFile + '.new.sign.pdf',pdfBuffer);
@@ -277,14 +286,21 @@ module.exports = function(app, arrDB){
                     } catch {resolve();}
                   });
                 } else {
-                  fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, req.body.realpath + disNewFile); //make a copy to drive folder
+                  if (req.body.page == 'open') { //if file is opened
+                    fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, req.body.realpath + disNewFile); //make a copy to drive folder
+                  }
+                  else { //if file is incoming then make update same filename to all branches
+                    docBr.forEach((item, i) => {
+                      if (fs.existsSync(drivetmp+item+'/'+req.body.fileroute)) fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, drivetmp+item+'/'+req.body.fileroute);
+                    });
+                  }
                   resolve();
                 }
               }).then(()=>{
                 dbhandle.docFind(req.body.realpath+req.body.fileroute, function (found) {
                   let newID = utilsdocms.generateID();
                   dbhandle.docFind(req.body.realpath + disNewFile, function (disfound) {
-                    if (!disfound) {
+                    if ((!disfound) && (req.body.page=='open')) {
                       utilsdocms.makeDir(drive + 'Routing Slip/', year, month);
                       let dstRoutSlip = drive + 'Routing Slip/'+year+'/'+month+'/route-'+disNewFile+'.pdf';
                       let webdstRoutSlip = drivetmp + 'PDF-temp/route-'+disNewFile+'.pdf';
@@ -301,7 +317,7 @@ module.exports = function(app, arrDB){
                     res.json(disNewFile);
                   });
                 });
-              }).catch((err)=>{console.log(err);});
+              }).catch((err)=>{res.json(disNewFile);});
             });
           } else res.json('fail');
         });
@@ -403,6 +419,7 @@ module.exports = function(app, arrDB){
             var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
             var filesrch = req.body.filename;
             if (req.body.filename != req.body.monitfile) {
+              if (!fs.existsSync(drivetmp+'PDF-temp/route-'+req.body.filename+".pdf")) fs.copyFileSync()
               fs.copyFileSync(drivetmp+'PDF-temp/route-'+req.body.filename+".pdf", drive+"Routing Slip/"+year+"/"+month+"/"+"route-"+req.body.filename+".pdf");
               filesrch = req.body.monitfile;
             }

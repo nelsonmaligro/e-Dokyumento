@@ -164,33 +164,7 @@ function handleOpenFile(data){
       });
     }
 
-    //populate the page selector and updaet the iframe for document signing
-    function updateSelectPage(){
-      //populate select page
-      loadPDF($('#disPath').val()).then(function(res){
-        $('#selPageSign').empty();
-        for (var i=1; i<=res; i++){
-          $('#selPageSign').append("<option value='"+i.toString()+"'>"+i.toString()+"</option>");
-        }
-        $("#selPageSign").chosen({
-          no_results_text: "Oops, nothing found!",
-          width: "60px"
-        });
-        $('#selPageSign').trigger("chosen:updated");
-      });
-      //get first page and load to Canvas PDF
-      var todo = {num:0,filepath: $('#disPath').val(),user:getCookie('me')};
-      if ($('#fileroute').val()!='empty'){
-        $.ajax({
-          type: 'GET',
-          url: '/signpdf',
-          data: todo,
-          success: function(data){
-            document.getElementById('canvasPDF').src = "/assets/signcanvas.html";
-          }
-        });
-      }
-    }
+
     //Load when html renders
     $(document).ready(function(){
       //initialize....check if file already selected from explorer page
@@ -213,35 +187,6 @@ function handleOpenFile(data){
       //document.getElementById('signDocBut').style.display = "block";
       setCookie('noDate','true',1);
 
-
-      //handle click on signing
-      $('#signDocBut').on('click',function(event){
-        document.getElementById('canvasPDF').src = "/assets/signcanvas.html";
-        $('#divSign').show(); $('#origButtons').hide();
-        $('#disContent').hide();$('#disFrame').show();
-        document.getElementById('disContentMobile').style.display="none";
-        updateSelectPage();
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
-          if (window.matchMedia("(orientation: portrait)").matches) document.getElementById('avatarHere').style.top="-70px";
-        }
-      });
-      //handle clicking cancel button during signing
-      $('#butCancelSign').on('click', function(event){
-        $.ajax({
-          type: 'POST',
-          url: '/cancelsign',
-          success: function(data) { //return to normal page
-            $('#divSign').hide(); $('#origButtons').show();
-            $('#disContent').show();$('#disFrame').hide();
-            //check if mobile browser
-            if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
-              document.getElementById('disContent').style.display="none";
-              document.getElementById('disContentMobile').style.display="";
-            }
-            location.reload();
-          }
-        });
-      });
       //handle doocument edit in file Server
       $('#docEdit').on('click', function(event){
         if (window.location.toString().includes("/fileopen")) {
@@ -304,39 +249,5 @@ function handleOpenFile(data){
       });
       updateSelectPage();
 
-      //handle save button during signing
-      $('#butRelease1').on('click', function(event){
-        $('#routeBody').hide();$('#routeattachPage').hide();$('#disrouteTitle').show();
-        $('#divroyalCam').show();$('#routebutConfirm').hide();$('#disContRout').hide();$('#passapp').hide();
-        openCamBranch(); //validation using QR code or password
-      });
-      //hnadle switch for sign and Release
-      $('#toggledate').change(function(event){
-        if ($('#toggledate').prop('checked')){
-          setCookie('noDate','true',1);
-        } else {
-          setCookie('noDate','false',1);
-        }
-      });
-      //toggle QR code scanning option during validation of signature
-      $('#toggleButCamRoyal').on('change', function(event){
-        openCamBranch(); //validation using QR code or password
-      });
 
-      //selecting page
-      $('#selPageSign').on('change', function(event){
-        pointMainPDF(parseInt($('#selPageSign').val(),10)); //point to the selected page number
-        var todo = {num:parseInt($('#selPageSign').val(),10)-1,filepath: $('#disPath').val(),user:getCookie('me')};
-        //query the server to update the signing page
-        if ($('#fileroute').val()!='empty'){
-          $.ajax({
-            type: 'GET',
-            url: '/signpdf',
-            data: todo,
-            success: function(data){
-              document.getElementById('canvasPDF').src = "/assets/signcanvas.html";
-            }
-          });
-        }
-      });
     });

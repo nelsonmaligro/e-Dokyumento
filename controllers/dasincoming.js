@@ -157,6 +157,7 @@ module.exports = function(app, arrDB) {
         if (user){
           if ((user.level.toUpperCase()==='DUTYADMIN') || (user.level.toUpperCase()==='SECRETARY')){
             fs.readdir(drivetmp +'Release', function(err,items){
+              items = items.filter(file => {return fs.statSync(drivetmp +'Release/'+file).isFile();});
               if (items.length > 0){
                 let sortArr = utilsdocms.checkPermission(items, drivetmp +'Release/');
                 if (err) console.log(err);
@@ -179,6 +180,7 @@ module.exports = function(app, arrDB) {
                 if (!err) {
                   if (items.length > 0) {
                     let sortArr = utilsdocms.checkPermission(items, drivetmp +'incoming-temp/');
+                    sortArr = sortArr.filter(file => {return fs.statSync(drivetmp +'incoming-temp/'+file).isFile();});
                     let newArr = [];
                     sortArr.forEach((item)=>{
                       newArr.push({action:'yes',file:item});
@@ -193,6 +195,7 @@ module.exports = function(app, arrDB) {
                 if (!err) {
                   if (items.length > 0) {
                     let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
+                    sortArr = sortArr.filter(file => {return fs.statSync(drivetmp + user.group + '/'+file).isFile();});
                     let newArr = [];
                     sortArr.forEach((item, idx)=>{
                       monitoring.findLastBranch(item, user.group, function(found){
@@ -229,7 +232,7 @@ module.exports = function(app, arrDB) {
               if (fs.existsSync(path.resolve(drivetmp+"incoming-temp/" + req.body.fileroute))){
                 console.log('post incoming route duty');
                 routeduty.routeThis(req,res,drivetmp + 'incoming-temp', drivetmp, drive +'incoming/', docBr, user.level, user.group, (succ)=>{
-                  if (succ) monitoring.addBrMonitor(req,res, user, path.resolve(drivetmp));
+                  if (succ) monitoring.UpdFileMonitor(req,res, user, path.resolve(drivetmp));
                 });
               } else return res.json('fail');
             } else return res.json('fail');
@@ -274,16 +277,14 @@ module.exports = function(app, arrDB) {
                 dbhandle.actlogsCreate(id, Date.now(), 'Route Document with non-Duty Admin Privilege to:' + req.body.branch.toString(), req.body.fileroute, req.ip);
                 monitoring.getOriginator(req.body.fileroute, function(branch){
                   if ((branch.toUpperCase() != user.group.toUpperCase()) && (branch!='')) {
-                    monitoring.findLastBranch(req.body.fileroute, user.group.toUpperCase(), (boolRet)=>{
-                      if ((boolRet) || (req.body.branch.includes(branch.toUpperCase())) || (branch.toUpperCase() =='ALL BRANCHES')) {
-                        routeduty.routNoRefEncIncoming(req,res,drivetmp + user.group + "/", docBr);
+                      routeduty.routNoRefEncIncoming(req,res,drivetmp + user.group + "/", docBr);
+                      //if ((req.body.branch.includes(branch.toUpperCase())) || (branch.toUpperCase() =='ALL BRANCHES')) {
                         monitoring.addRouteOnly(req.body.fileroute, req.body.branch, path.resolve(drivetmp));
-                      }  else res.json('noroute');
-                    })
+                      //}
                   } else {
                     routeduty.routeThis(req, res, drivetmp + user.group + "/", drivetmp, drive +'incoming/', docBr, user.level, user.group, (succ)=>{
                       if (succ){
-                        monitoring.addBrMonitor(req, res, user, path.resolve(drivetmp));
+                        monitoring.UpdFileMonitor(req, res, user, path.resolve(drivetmp));
                         if (!req.body.branch.toString().toUpperCase().includes('ALL BRANCHES'))
                         dbhandle.docDel(drivetmp + user.group + "/" +req.body.fileroute,()=>{});
                       }
@@ -311,7 +312,7 @@ module.exports = function(app, arrDB) {
           utilsdocms.validateQRPass(req.body.user,req.body.hashval, function (valid){
             if (valid) {
               routeduty.routeThis(req, res, req.body.path + "/", drivetmp, drive +'incoming/', docBr, user.level, user.group, (succ)=>{
-                if (succ) monitoring.UpdFileMonitor(req, res, path.resolve(drivetmp),  user.group, user.level);
+                if (succ) monitoring.UpdFileMonitor(req, res, user, path.resolve(drivetmp));
               });
 
             }else res.json('fail');
@@ -362,6 +363,7 @@ module.exports = function(app, arrDB) {
             disReadDir = new promise((resolve, reject)=>{
               fs.readdir(drivetmp +'incoming-temp',(err,files)=>{
                 let sortArr = utilsdocms.checkPermission(files, drivetmp +'incoming-temp/');
+                sortArr = sortArr.filter(file => {return fs.statSync(drivetmp +'incoming-temp/'+file).isFile();});
                 if (err) reject(err); var def="empty"; let items = sortArr;
                 if (items.length > 0) {def=items[0];} let disFile = def;
                 if ((boolFile) && (req.params.file!='release')) {disFile = req.params.file; if (!fs.existsSync(drivetmp + 'incoming-temp/'+ disFile)) disFile = def;}
@@ -373,6 +375,7 @@ module.exports = function(app, arrDB) {
               let disRelease = new promise((resolve, reject)=>{
                 fs.readdir(drivetmp +'Release', function(err,files){
                   let sortArr = utilsdocms.checkPermission(files, drivetmp +'Release/');//here
+                  sortArr = sortArr.filter(file => {return fs.statSync(drivetmp +'Release/'+file).isFile();});
                   if (err) reject(err);
                   resolve({disFile:items.disFile,items:items.items,release:sortArr});
                 });
@@ -410,6 +413,7 @@ module.exports = function(app, arrDB) {
             if (!fs.existsSync(drivetmp + user.group)) fs.mkdirSync(drivetmp + user.group);
             fs.readdir(drivetmp + user.group, function(err,items){
               let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
+              sortArr = sortArr.filter(file => {return fs.statSync(drivetmp + user.group + '/'+file).isFile();});
               if (err) console.log(err); var def="empty";
               if (sortArr.length > 0) {def=sortArr[0];} var disDrive = '/drive/';var disFile = def;
               if (boolFile) disFile = req.params.file;
