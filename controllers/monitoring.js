@@ -33,25 +33,21 @@ exports.updateMonitor = function (req, res){
   });
 };
 
-//handle adding branch to the document in the monitoring
-exports.addBrMonitor = function addBrMonitor(req, res, user, path){
-  console.log('Add Branch to File Monitoring');
+//handle updating of filename and branch in the monitoring.
+exports.UpdFileMonitor = function (req, res, user, path){
+  console.log('Update File Monitoring');
+  deyt = dateformat(Date.now(),"dd mmm yyyy HH:MM"); arrBr = [];
   dbhandle.monitorFindFile(req.body.monitfile, function(result){
-    deyt = dateformat(Date.now(),"dd mmm yyyy HH:MM");
-    if (!result) {
-      let disBranch =  req.body.branch;
-      if ((user.level.toUpperCase()!="DUTYADMIN") && (user.level.toUpperCase()!="SECRETARY")) disBranch.unshift(user.group.toUpperCase());
-      //console.log(disBranch);
-      dbhandle.monitorCreate (req.body.newfile, req.body.newfile, deyt, disBranch, path);
-      let actBranch = disBranch[0].toUpperCase(); let found = false;
-      disBranch.forEach((itemBr)=>{
-        if ((itemBr.toUpperCase()!='ALL BRANCHES') && (!found)) { actBranch = itemBr.toUpperCase(); found = true; }
-      })
-      dbhandle.commologsUpdate (dateformat(Date.now(),'yyyy'), dateformat(Date.now(),'mmm').toUpperCase(), actBranch,()=>{});
-    }
-    else {
+    if (result) {
       result.route.push({deyt:deyt,branch:req.body.branch});
       dbhandle.monitorAddRoute(req.body.newfile, result.filename, result.route, path);
+    } else {
+      if ((user.level.toUpperCase()!="DUTYADMIN") && (user.level.toUpperCase()!="SECRETARY")) arrBr.push(user.group.toUpperCase());
+      req.body.branch.forEach((itemBr)=> {
+        if  (itemBr.toUpperCase()!=user.group.toUpperCase()) arrBr.push(itemBr.toUpperCase());
+      });
+      dbhandle.monitorCreate (req.body.newfile, req.body.newfile, deyt, arrBr, path);
+      dbhandle.commologsUpdate (dateformat(Date.now(),'yyyy'), dateformat(Date.now(),'mmm').toUpperCase(), user.group.toUpperCase(),()=>{});
     }
   });
 };
@@ -141,26 +137,7 @@ exports.searchRefEnc = function (req, callback){
     return callback(null, null);
   }
 };
-//handle updating of filename and branch in the monitoring...if the original file is used as referenced for the new file
-exports.UpdFileMonitor = function (req, res, path, group, level){
-  console.log('Update File Monitoring');
-  deyt = dateformat(Date.now(),"dd mmm yyyy HH:MM"); arrBr = [];
-  dbhandle.monitorFindFile(req.body.monitfile, function(result){
-    if (result) {
-      result.route.push({deyt:deyt,branch:req.body.branch});
-      dbhandle.monitorAddRoute(req.body.newfile, result.filename, result.route, path);
-    } else {
-      let actBranch = req.body.branch[0].toUpperCase(); let found = false;
-      req.body.branch.forEach((itemBr)=>{
-        if ((itemBr.toUpperCase()!='ALL BRANCHES') && (!found)) { actBranch = itemBr.toUpperCase(); found = true; }
-      });
-      if ((level.toUpperCase()!="DUTYADMIN") && (level.toUpperCase()!="SECRETARY")) arrBr.push(group.toUpperCase());
-      arrBr.push(actBranch); //disBranch.unshift(group.toUpperCase());
-      dbhandle.monitorCreate (req.body.newfile, req.body.newfile, deyt, arrBr, path);
-      dbhandle.commologsUpdate (dateformat(Date.now(),'yyyy'), dateformat(Date.now(),'mmm').toUpperCase(), group.toUpperCase(),()=>{});
-    }
-  });
-};
+
 //get the origina branch from the monitoring
 exports.getOriginator = function (filename, callback){
   console.log('Get Originator from Monitoring');

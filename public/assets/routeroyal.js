@@ -172,7 +172,7 @@ function releasethisdoc(){
           newdata = data.replace(/ /g,"___");newdata = newdata.replace(/\(/g,'u--');newdata = newdata.replace(/\)/g,'v--');newdata = newdata.replace(/\./g,'---');
           newpath = realpath.replace(/ /g,"___");newpath=newpath.replace(/\(/g,"u--");newpath=newpath.replace(/\)/g,"v--");newpath=newpath.replace(/\./g,"z--");
           $('#divEnc').append("<div id='enc-"+newdata+"'>&nbsp;&nbsp;&nbsp;&nbsp;<button type='button' onclick=delEncRef('enc','"+newdata+"','arrEnc') class='btn btn-danger btn-sm fa fa-times'></button><button type='button' class='btn btn-link btn-sm' onclick=dispAttach('"+newpath+"','"+newdata+"')>"+data+"</button></div>");
-          $('#butCancelSign').click();$('#divToggleSign').hide();$('#butReturn').hide();
+          $('#butCancelSignRoyal').click();$('#divToggleSign').hide();$('#butReturn').hide();
         }
         $('#overlay').hide()
       }
@@ -189,7 +189,7 @@ $('#butRelease3').on('click', async function(event){
   openCam();$('#routeattachPage').hide();
 });
 //handle releasing of document ... no signature...the AGM routes document to GM without signature
-$('#butRelease1').on('click', async function(event){
+$('#butRelease4').on('click', async function(event){
   //specify where to release.....if AGM then release to GM, if GM then release to secretary
   if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) releaseTo = 'Boss';
   else releaseTo = 'Release';
@@ -223,18 +223,18 @@ $('#butApprove').on('click', function(event){
       document.getElementById('disContentMobile').style.display="none";
       $('#disAnnotate').hide();
       //Update html elements
-      if (!$('#disPath').val().toUpperCase().includes($('#fileroute').val().toUpperCase())) $('#butRelease1').html("<i class='fa fa-save'></i>&nbsp; Save");
+      if (!$('#disPath').val().toUpperCase().includes($('#fileroute').val().toUpperCase())) $('#butRelease4').html("<i class='fa fa-save'></i>&nbsp; Save");
       else {
         $('#divretbranch').show();
         //update html elements for AGM and GM.....AGM will have release button without signature while GM will have signature for all releases
-        if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) $('#butRelease1').html("<i class='fa fa-upload'></i>&nbsp;Release to Boss");
-        else $('#butRelease1').html("<i class='fa fa-upload'></i>&nbsp;Release this");
+        if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) $('#butRelease4').html("<i class='fa fa-upload'></i>&nbsp;Release to Boss");
+        else $('#butRelease4').html("<i class='fa fa-upload'></i>&nbsp;Release this");
       }
     }
   });
 });
 //handle cancel signing
-$('#butCancelSign').on('click', function(event){
+$('#butCancelSignRoyal').on('click', function(event){
   $.ajax({
     type: 'POST',
     url: '/cancelsign',

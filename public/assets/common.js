@@ -1,5 +1,97 @@
 var disWindow = null;
 var disClock = null;
+
+//populate the page selector and updaet the iframe for document signing
+function updateSelectPage(){
+  //populate select page
+  loadPDF($('#disPath').val()).then(function(res){
+    $('#selPageSign').empty();
+    for (var i=1; i<=res; i++){
+      $('#selPageSign').append("<option value='"+i.toString()+"'>"+i.toString()+"</option>");
+    }
+    $("#selPageSign").chosen({
+      no_results_text: "Oops, nothing found!",
+      width: "60px"
+    });
+    $('#selPageSign').trigger("chosen:updated");
+  });
+  //get first page and load to Canvas PDF
+  var todo = {num:0,filepath: $('#disPath').val(),user:getCookie('me')};
+  if ($('#fileroute').val()!='empty'){
+    $.ajax({
+      type: 'GET',
+      url: '/signpdf',
+      data: todo,
+      success: function(data){
+        document.getElementById('canvasPDF').src = "/assets/signcanvas.html";
+      }
+    });
+  }
+}
+//handle click on signing
+$('#signDocBut').on('click',function(event){
+  document.getElementById('canvasPDF').src = "/assets/signcanvas.html";
+  $('#divSign').show(); $('#origButtons').hide();
+  $('#disContent').hide();$('#disFrame').show();
+  document.getElementById('disContentMobile').style.display="none";
+  updateSelectPage();
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+    if (window.matchMedia("(orientation: portrait)").matches) document.getElementById('avatarHere').style.top="-70px";
+  }
+});
+//handle clicking cancel button during signing
+$('#butCancelSign').on('click', function(event){
+  $.ajax({
+    type: 'POST',
+    url: '/cancelsign',
+    success: function(data) { //return to normal page
+      $('#divSign').hide(); $('#origButtons').show();
+      $('#disContent').show();$('#disFrame').hide();
+      //check if mobile browser
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+        document.getElementById('disContent').style.display="none";
+        document.getElementById('disContentMobile').style.display="";
+      }
+      location.reload();
+    }
+  });
+});
+//handle save button after signing
+$('#butRelease1').on('click', function(event){
+  $('#routeBody').hide();$('#routeattachPage').hide();$('#disrouteTitle').show();
+  $('#divroyalCam').show();$('#routebutConfirm').hide();$('#disContRout').hide();$('#passapp').hide();
+  openCamBranch(); //validation using QR code or password
+});
+//hnadle switch for date on signing
+$('#toggledate').change(function(event){
+  if ($('#toggledate').prop('checked')){
+    setCookie('noDate','true',1);
+  } else {
+    setCookie('noDate','false',1);
+  }
+});
+//toggle QR code scanning option during validation of signature
+$('#toggleButCamRoyal').on('change', function(event){
+  openCamBranch(); //validation using QR code or password
+});
+
+//selecting page
+$('#selPageSign').on('change', function(event){
+  pointMainPDF(parseInt($('#selPageSign').val(),10)); //point to the selected page number
+  var todo = {num:parseInt($('#selPageSign').val(),10)-1,filepath: $('#disPath').val(),user:getCookie('me')};
+  //query the server to update the signing page
+  if ($('#fileroute').val()!='empty'){
+    $.ajax({
+      type: 'GET',
+      url: '/signpdf',
+      data: todo,
+      success: function(data){
+        document.getElementById('canvasPDF').src = "/assets/signcanvas.html";
+      }
+    });
+  }
+});
+
 //function to display certificate information in an alert box
 function displaycertinfo() {
   let digicert = JSON.parse(getCookie('digitalcert'));
@@ -357,10 +449,7 @@ function delNotiFile(filepath) {
   this.event.stopPropagation();
   filepath = filepath.replace(/___/g, " ");filepath = filepath.replace(/u--/g, '(');filepath = filepath.replace(/v--/g, ')');filepath = filepath.replace(/---/g, '.');
   var user = getCookie('me');
-  var todo = {
-    path: filepath,
-    user: user
-  };
+  var todo = {path: filepath,user: user};
   $.ajax({
     type: 'POST',
     url: '/delnotifile',
@@ -377,12 +466,12 @@ function delNotiFile(filepath) {
 }
 //handle add comment
 function addComment() {
-
+  let page = 'open';
+  if (window.location.toString().includes("/incoming")) page = 'incoming';
   if ($('#commentinput').val() != "") {
     $('#addCommentBut').hide();
     var disID = getCookie('me');
     disBranch = disID + '-' + Date.now().toString();
-
     //update cookie
     var arrComment = [];
     try {
@@ -394,22 +483,32 @@ function addComment() {
       content: $('#commentinput').val()
     });
     setCookie('arrComm', JSON.stringify(arrComment), 1);
-    sleep(3000).then(() => { //delay for 3 seconds then prepend (apppend at the beggining) to comment side bar
-      $('#allComments').prepend(" " +
-        "<div id='" + disBranch + "' class='box'> " +
-        "<a style='color:black;font-family:arial;'><i class='fa fa-tag'></i>&nbsp;" + disID +
-        "<i onclick=removeComment('" + disBranch + "') style='margin-top:-8px;color:black;' class='btn btn-lg float-right fa fa-times'></i></i></a>" +
-        "<div id='commContent'><p>" + $('#commentinput').val() + "</p></div></div><br id='br-" + disBranch + "'>");
-    }).then(() => {
-      $('#commentinput').val('');
-      $('#addCommentBut').show();
+    //send to server the all comments for updating
+    var todo = {page:page, realpath:getCookie('realpath'), fileroute:$('#fileroute').val(),user: disID, comments:JSON.stringify(arrComment)};
+    $.ajax({
+      type: 'POST',
+      url: '/updatecomment',
+      data: todo,
+      success: function(data) {
+        sleep(1000).then(() => { //delay then prepend (apppend at the beggining) to comment side bar
+          $('#allComments').prepend(" " +
+            "<div id='" + disBranch + "' class='box'> " +
+            "<a style='color:black;font-family:arial;'><i class='fa fa-tag'></i>&nbsp;" + disID +
+            "<i onclick=removeComment('" + disBranch + "') style='margin-top:-8px;color:black;' class='btn btn-lg float-right fa fa-times'></i></i></a>" +
+            "<div id='commContent'><p>" + $('#commentinput').val() + "</p></div></div><br id='br-" + disBranch + "'>");
+        }).then(() => {
+          $('#commentinput').val('');
+          $('#addCommentBut').show();
+        });
+      }
     });
   }
-
-
 }
 //handle remove comment
 async function removeComment(disBranch) {
+  let page = 'open';
+  if (window.location.toString().includes("/incoming")) page = 'incoming';
+  var disID = getCookie('me');
   var arrComment = [];
   var disComment = JSON.parse(getCookie('arrComm'));
   if (disComment.length > 0) arrComment = disComment;
@@ -420,10 +519,19 @@ async function removeComment(disBranch) {
     return res != found;
   });
   await setCookie('arrComm', JSON.stringify(resArr), 1);
-  sleep(2000).then(() => { //wait 2 seconds and remove from the comment sidebar
-    $('#' + disBranch).remove();
-    $('#br-' + disBranch).remove();
+  var todo = {page:page, realpath:getCookie('realpath'), fileroute:$('#fileroute').val(),user: disID, comments:JSON.stringify(resArr)};
+  $.ajax({
+    type: 'POST',
+    url: '/updatecomment',
+    data: todo,
+    success: function(data) {
+      sleep(1000).then(() => { //delay and remove from the comment sidebar
+        $('#' + disBranch).remove();
+        $('#br-' + disBranch).remove();
+      });
+    }
   });
+
 }
 
 //handle delete documents

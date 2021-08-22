@@ -29,8 +29,11 @@ function brsubmitQRPass(content){
   var fileroute = $('#fileroute');
   var realpath = getCookie('realpath');
   var user = getCookie('me');
+  let windowpage = 'open';
+  if (window.location.toString().includes("/incoming")) windowpage = 'incoming';
+
   //let buffCont = new Buffer(content);
-  var todo = {hashval:hash, filepath:$('#disPath').val(), realpath:realpath, num:parseInt($('#selPageSign').val(),10)-1,fileroute: fileroute.val(), user:user};
+  var todo = {page:windowpage, hashval:hash, filepath:$('#disPath').val(), realpath:realpath, num:parseInt($('#selPageSign').val(),10)-1,fileroute: fileroute.val(), user:user};
   if (fileroute.val()!='empty'){
     $.ajax({
       type: 'POST',
@@ -40,11 +43,15 @@ function brsubmitQRPass(content){
         if (data!='fail'){
           //return to original page with merged sign image
           closeDialog();$('#routemodClose').click();
-          setCookie('fileOpn','/drive/PDF-temp/'+data,1);
-          setCookie('fileAI',data,1); $('#passapproyal').hide();
-          $('#app').hide();sleep(10000);
-          triggerButFile(); //re-display the file and update cookies... refer to openfile.js
-          $('#butCancelSign').click();
+          if (window.location.toString().includes("/incoming")) {
+              window.location.reload(); return;
+          } else {
+            setCookie('fileOpn','/drive/PDF-temp/'+data,1);
+            setCookie('fileAI',data,1); $('#passapproyal').hide();
+            $('#app').hide();sleep(10000);
+            triggerButFile(); //re-display the file and update cookies... refer to openfile.js
+            $('#butCancelSign').click();
+          }
         } else {alert('QR Code or Password Invalid!'); $('#verPassroyal').val('');}
         $('#overlay').hide();
       }
