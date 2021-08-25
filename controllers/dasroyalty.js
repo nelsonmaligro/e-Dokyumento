@@ -114,38 +114,44 @@ module.exports = function(app, arrDB){
                 if (!fs.existsSync(drive+user.group+'/Released')) fs.mkdirSync(drive+user.group+'/Released');
                 utilsdocms.makeDir(drive+user.group+'/Released/', year, month);
                 //copy signed PDF from temp to next branch
-                let dstFile = req.body.fileroute;
-                if (fs.existsSync(drivetmp+'PDF-temp/'+req.body.user+'.res.pdf')) {
+                let dstFile = req.body.fileroute, monitBranch = 'GM';
+                if (fs.existsSync(drivetmp+'PDF-temp/'+req.body.user+'.res.pdf')) { //if document is signed (with .res.pdf extension)
                   if (fs.existsSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf')){
                     fs.copyFileSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drive+user.group+'/Released/'+year+'/'+month+'/'+req.body.fileroute+'.pdf'); //make a copy to drive folder
                     if (fs.existsSync(drivetmp+'PDF-temp/'+req.body.user+'.res.pdf')) fs.unlinkSync(drivetmp+'PDF-temp/'+req.body.user+'.res.pdf');
                   }
                   if (dochandle.getExtension(req.body.fileroute)!='.pdf') dstFile = req.body.fileroute+'.pdf';
-                  if (req.body.branch=='Originator'){
+                  if (req.body.branch=='Originator'){ //back to the originator
                     monitoring.getOriginator(req.body.fileroute, function(branch){
-                      routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + branch + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
+                      monitBranch = branch;
+                      if ((branch.toUpperCase()==user.group.toUpperCase()) || (branch.trim()=='')) monitBranch='incoming-temp'; //if no originator
+                      routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + monitBranch + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
                     });
-                  } else if (req.body.branch=='Boss'){
+                  } else if (req.body.branch=='Boss') {// to GM/Top Management
                     dbhandle.settingDis((setting)=>{
+                      monitBranch = setting.topmgmt;
                       routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + setting.topmgmt + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
                     });
-                  } else routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + req.body.branch + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
-                } else {
+                  } else { //to Secretatary/ Receiving
+                    monitBranch = req.body.branch;
+                    routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + req.body.branch + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
+                  }
+                } else { //if document is not signed
                   if (req.body.branch=='Boss'){
                     dbhandle.settingDis((setting)=>{
+                      monitBranch = setting.topmgmt;
                       routeduty.routRoyal(req,res,drivetmp+user.group+'/'+req.body.fileroute, drivetmp + setting.topmgmt + '/' + req.body.fileroute, req.body.fileroute, drivetmp+user.group+'/'+req.body.fileroute);
                     });
                   } else routeduty.routRoyal(req,res,drivetmp+user.group+'/'+req.body.fileroute, drivetmp + req.body.branch + '/' + req.body.fileroute, req.body.fileroute, drivetmp+user.group+'/'+req.body.fileroute);
                 }
-                dbhandle.monitorFindFile(req.body.fileroute, function(result){ //delete in monitoring
+                //Update document monitoring
+                dbhandle.monitorFindTitle(req.body.fileroute, function(result){ //
                   if (result) {
                     deyt = dateformat(Date.now(),"dd mmm yyyy HH:MM");
-                    if ((user.level.toUpperCase()=="CO") || (user.level.toUpperCase()=="GM")) dbhandle.actlogsCreate(id, Date.now(), 'Released signed document and forward to duty Admin', req.body.fileroute, req.ip);
-                    else if ((user.level.toUpperCase()=="DEP") || (user.level.toUpperCase()=="EAGM")) dbhandle.actlogsCreate(id, Date.now(), 'Released Document and forward to the Boss Incoming', req.body.fileroute, req.ip);
-                    dbhandle.settingDis((setting)=>{
-                      result.route.push({deyt:deyt,branch:setting.topmgmt});
-                      dbhandle.monitorAddRoute(dstFile, req.body.fileroute, result.route, path.resolve(drivetmp));
-                    });
+                    dbhandle.actlogsCreate(id, Date.now(), 'Released signed document', req.body.fileroute, req.ip); //log released document
+                    result.route.push({deyt:deyt,branch:monitBranch});
+                    dbhandle.monitorAddRoute(dstFile, req.body.fileroute, result.route, path.resolve(drivetmp));
+                    dbhandle.monitorUpdateFilename(req.body.fileroute, dstFile);
                   }
                 });
               }).catch((err)=>{console.log(err);});

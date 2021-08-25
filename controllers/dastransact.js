@@ -328,7 +328,7 @@ module.exports = function(app, arrDB){
       console.log('toggle previous routing slip ');
       var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
       if (req.body.toggle=='true'){
-        dbhandle.monitorFindFile(req.body.filename, (result)=>{
+        dbhandle.monitorFindTitle(req.body.filename, (result)=>{
           if (!result) {
             dbhandle.tempmonitorFindFile(req.body.filename, function(tempresult){
               if (tempresult) {
@@ -343,7 +343,7 @@ module.exports = function(app, arrDB){
           fs.copyFileSync(drivetmp + 'PDF-temp/routemonitor-'+ req.body.filename +'.pdf', drive+"Routing Slip/"+year+"/"+month+"/"+"route-"+req.body.filename+".pdf");
         }
       } else {
-        dbhandle.monitorFindFile(req.body.filename, (result)=>{
+        dbhandle.monitorFindTitle(req.body.filename, (result)=>{
           if (result) {
             dbhandle.tempmonitorFindFile(req.body.filename, function(tempresult){
               if (tempresult) {
@@ -375,7 +375,7 @@ module.exports = function(app, arrDB){
     function searchrefmonitor(req, res, id){
       console.log('Search reference and enclosure in monitoring');
       let deyt = dateformat(Date.now(),"dd mmm yyyy HH:MM");var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
-      dbhandle.monitorFindFile(req.body.filename, function (filename){
+      dbhandle.monitorFindTitle(req.body.filename, function (filename){
         if (!filename){
           dbhandle.tempmonitorFindFile(req.body.filename, function(disFile){
             if (!disFile) {
@@ -424,7 +424,7 @@ module.exports = function(app, arrDB){
               filesrch = req.body.monitfile;
             }
 
-            dbhandle.monitorFindFile(filesrch, function (file){
+            dbhandle.monitorFindTitle(filesrch, function (file){
               //count routed branch to estimate line location
               //console.log(req.body.filename,req.body.monitfile,filesrch, file);
               var cnt = 1;

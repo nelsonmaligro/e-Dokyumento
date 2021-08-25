@@ -243,7 +243,7 @@ module.exports = function(app, arrDB) {
               console.log('post incoming return to branch');
               monitoring.getOriginator(req.body.fileroute, function(branch){
                 dbhandle.actlogsCreate(id, Date.now(), 'Return Document to Branch: ' + branch.toString(), req.body.fileroute, req.ip);
-                if (branch.toUpperCase()==user.group.toUpperCase()) branch = "N6F";
+                if (branch.toUpperCase()==user.group.toUpperCase()) branch = "incoming-temp";
                 routeduty.routNoRefEnc(req,res,drivetmp + user.group + "/", drivetmp + branch + '/');
                 monitoring.addRouteOnly(req.body.fileroute, branch, path.resolve(drivetmp));
               });
@@ -259,7 +259,7 @@ module.exports = function(app, arrDB) {
               monitoring.updateMonitor(req, res);
               utilsdocms.addTag(arrDB.tag, req.body.tag); //add additional hash tags for the documents
               //save a copy to temp monitoring
-              dbhandle.monitorFindFile(req.body.fileroute, (result)=>{
+              dbhandle.monitorFindTitle(req.body.fileroute, (result)=>{
                 if (result) {
                   dbhandle.tempmonitorFindFile(req.body.fileroute, function(tempresult){
                     if (tempresult) {
@@ -270,22 +270,23 @@ module.exports = function(app, arrDB) {
                 }
               });
             } else return res.redirect('/incoming');
-          } else if (req.body.save=='incomingroute') { //branch routes doc to other branch
+          } else if (req.body.save=='incomingroute') { //routing document from web temp folder to other branches
             console.log('post incoming route branch');
             utilsdocms.validateQRPass(req.body.user,req.body.hashval, function (valid){
               if (valid) {
                 dbhandle.actlogsCreate(id, Date.now(), 'Route Document with non-Duty Admin Privilege to:' + req.body.branch.toString(), req.body.fileroute, req.ip);
-                monitoring.getOriginator(req.body.fileroute, function(branch){
-                  if ((branch.toUpperCase() != user.group.toUpperCase()) && (branch!='')) {
+                monitoring.getOriginator(req.body.fileroute, function(branch) {
+                  if ((branch.toUpperCase() != user.group.toUpperCase()) && (branch!='')) { //if not the orginator of the document
                       routeduty.routNoRefEncIncoming(req,res,drivetmp + user.group + "/", docBr);
                       //if ((req.body.branch.includes(branch.toUpperCase())) || (branch.toUpperCase() =='ALL BRANCHES')) {
                         monitoring.addRouteOnly(req.body.fileroute, req.body.branch, path.resolve(drivetmp));
                       //}
-                  } else {
+                  } else { //if originator of the document
                     routeduty.routeThis(req, res, drivetmp + user.group + "/", drivetmp, drive +'incoming/', docBr, user.level, user.group, (succ)=>{
                       if (succ){
                         monitoring.UpdFileMonitor(req, res, user, path.resolve(drivetmp));
-                        if (!req.body.branch.toString().toUpperCase().includes('ALL BRANCHES'))
+                        //monitoring.addRouteOnly(req.body.fileroute, req.body.branch, path.resolve(drivetmp));
+                        if (!req.body.branch.toString().toUpperCase().includes('ALL BRANCHES')) //if not routed to all branches
                         dbhandle.docDel(drivetmp + user.group + "/" +req.body.fileroute,()=>{});
                       }
                     });
@@ -320,8 +321,8 @@ module.exports = function(app, arrDB) {
 
         } else if (req.body.save=='archive') {
           if (fs.existsSync(path.resolve(drivetmp+'Release/' + req.body.fileroute))){
-            dbhandle.monitorFindFile(req.body.fileroute, (result)=>{ //delete from monitoring
-              if (result) dbhandle.monitorDel(req.body.fileroute,()=>{});
+            dbhandle.monitorFindTitle(req.body.fileroute, (result)=>{ //delete from monitoring
+              if (result) dbhandle.monitorDel(result.filename,()=>{});
             });
             dbhandle.tempmonitorFindFile(req.body.fileroute, function(tempresult){ //delete from temp monitoring
               if (tempresult) dbhandle.tempmonitorDel(req.body.fileroute,()=>{});
@@ -358,114 +359,126 @@ module.exports = function(app, arrDB) {
       dbhandle.generateList(arrDB.tag, function (res){ docTag = res; });
       dbhandle.userFind(id, function(user){
         dbhandle.groupFind(user.group, function (groups){
-          if ((user.level.toUpperCase()==='DUTYADMIN') || (user.level.toUpperCase()==='SECRETARY')) {
-            var disDrive = '/drive/';
-            disReadDir = new promise((resolve, reject)=>{
-              fs.readdir(drivetmp +'incoming-temp',(err,files)=>{
-                let sortArr = utilsdocms.checkPermission(files, drivetmp +'incoming-temp/');
-                sortArr = sortArr.filter(file => {return fs.statSync(drivetmp +'incoming-temp/'+file).isFile();});
-                if (err) reject(err); var def="empty"; let items = sortArr;
-                if (items.length > 0) {def=items[0];} let disFile = def;
-                if ((boolFile) && (req.params.file!='release')) {disFile = req.params.file; if (!fs.existsSync(drivetmp + 'incoming-temp/'+ disFile)) disFile = def;}
-                else if ((boolFile) && (req.params.file=='release')) {disFile = req.params.relfile; }
-                resolve({disFile:disFile,items:items});
-              });
-            }).then((items)=>{
-              var relitems = [];
-              let disRelease = new promise((resolve, reject)=>{
-                fs.readdir(drivetmp +'Release', function(err,files){
-                  let sortArr = utilsdocms.checkPermission(files, drivetmp +'Release/');//here
-                  sortArr = sortArr.filter(file => {return fs.statSync(drivetmp +'Release/'+file).isFile();});
-                  if (err) reject(err);
-                  resolve({disFile:items.disFile,items:items.items,release:sortArr});
+          if (!fs.existsSync(drivetmp + user.group)) fs.mkdirSync(drivetmp + user.group);
+          new promise((resolve, reject)=>{ //check for presence of metadata file
+            if ((boolFile) && (fs.existsSync(drivetmp + user.group +'/metadata/'+req.params.file+'.txt'))) {
+              utilsdocms.metafiletoarray(req.params.file, drivetmp + user.group +'/metadata/', (ref, enc, comment)=>{
+                dbhandle.docFind(drivetmp + user.group +'/'+req.params.file, (found) => {
+                  if (!found) dbhandle.docCreate(utilsdocms.generateID(), req.params.file, drivetmp + user.group +'/'+req.params.file, '', id, [], Date.now().toString(), fs.statSync(drivetmp + user.group +'/'+req.params.file).size, '', '', ref, enc, comment);
+                  else dbhandle.docUpdateMetaComment(drivetmp + user.group +'/'+req.params.file,ref, enc, comment);
+                  fs.unlinkSync(drivetmp + user.group +'/metadata/'+req.params.file+'.txt');
+                  resolve();
                 });
-              }).then((params)=>{
-                let disFile = params.disFile, items = params.items, relitems = params.release;
-                utilsdocms.resolveRoutingSlip(null, disFile);
-                if (req.params.file!='release'){ //if not in release folder
-                  if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
-                    if (!notExt.includes(dochandle.getExtension(disFile).toLowerCase())){
-                      dochandle.convDoctoPDF(drivetmp + 'incoming-temp/'+ disFile, drivetmp + 'PDF-temp/'+ disFile +'.pdf',function(){
-                        return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'incoming-temp', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile + '.pdf', files:items, disp:disFile, docBr:docBr});
-                      });
-                    } else {
-                      return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'incoming-temp', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'No Pending Files.pdf', files:items, disp:disFile, docBr:docBr});
-                    }
-                  } else {
-                    if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + 'incoming-temp/' + disFile);
-                    if (JSON.stringify(signRes)!='[]') { if (signRes.message.includes("subfilter")) signRes = [];}
-                    return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'incoming-temp', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'incoming-temp/'+ disFile, files:items, disp:disFile, docBr:docBr});
-                  }
-                } else { //if in release folder
-                  if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
-                    dochandle.convDoctoPDF(drivetmp + 'Release/'+ disFile, drivetmp + 'PDF-temp/'+ disFile +'.pdf', function(){
-                      return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'Release', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile + '.pdf', files:items, disp:disFile, docBr:docBr});
-                    });
-                  }else {
-                    if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + 'Release/'+ disFile);
-                    if (JSON.stringify(signRes)!='[]') { if (signRes.message.includes("subfilter")) signRes = [];}
-                    return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'Release', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'Release/'+ disFile, files:items, disp:disFile, docBr:docBr});
-                  }
-                }
-              }).catch((err)=>{ console.log(err);});
-            }).catch((err)=>{console.log(err);});
-          } else if ((user.level.toUpperCase()==='DEP') || (user.level.toUpperCase()==='CO') || (user.level.toUpperCase()==='EAGM') || (user.level.toUpperCase()==='GM')) {
-            if (!fs.existsSync(drivetmp + user.group)) fs.mkdirSync(drivetmp + user.group);
-            fs.readdir(drivetmp + user.group, function(err,items){
-              let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
-              sortArr = sortArr.filter(file => {return fs.statSync(drivetmp + user.group + '/'+file).isFile();});
-              if (err) console.log(err); var def="empty";
-              if (sortArr.length > 0) {def=sortArr[0];} var disDrive = '/drive/';var disFile = def;
-              if (boolFile) disFile = req.params.file;
-              if (!fs.existsSync(drivetmp + user.group +'/'+disFile)) disFile = def;
-              dbhandle.docFind(drivetmp + user.group +'/'+disFile, function (found) {
-                let disCat = 'none';
-                if (found) disCat = found.category;
-                utilsdocms.resolveRoutingSlip(found, disFile);
-                if (fs.existsSync(drivetmp + 'PDF-temp/'+id+'.res.pdf')) fs.unlink(drivetmp + 'PDF-temp/'+id+'.res.pdf',()=>{});
-                if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
-                  dochandle.convDoctoPDF(drivetmp + user.group +'/'+disFile,drivetmp + 'PDF-temp/'+disFile +'.pdf', function(){
-                    return res.render('incomingroyal', {layout:'layout-royal', signres:signRes, realdrive:drive, level:user.level, category:disCat, mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile +'.pdf', files:sortArr, disp:disFile, branch:user.group});
-                  });
-                }else {
-                  if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + user.group +'/'+ disFile);
-                  if (JSON.stringify(signRes)!='[]') { if (signRes.message.includes("subfilter")) signRes = [];}
-                  return res.render('incomingroyal', {layout:'layout-royal', signres:signRes, realdrive:drive, level:user.level, category:disCat, mailfiles:user.mailfiles, docPers:groups, path:disDrive + user.group +'/'+ disFile, files:sortArr, disp:disFile, branch:user.group});
-                }
               });
-            });
-          } else {
-            if (!fs.existsSync(drivetmp + user.group)) fs.mkdirSync(drivetmp + user.group);
-            fs.readdir(drivetmp + user.group, function(err,items) {
-              let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
-              if (err) console.log(err);var def="empty";
-              if (sortArr.length > 0) {def=sortArr[0];} var disDrive = '/drive/';var disFile = def;
-              if (boolFile) disFile = req.params.file;
-              if (!fs.existsSync(drivetmp + user.group +'/'+disFile)) disFile = def;
-              let editFile = path.resolve(drive +'Recoverhere/'+ user.group.toUpperCase() + '/' + disFile);
-              if (fs.existsSync(editFile)) {
-                fs.copyFileSync(editFile,drivetmp + user.group +'/'+disFile);
-                fs.unlinkSync(editFile);
-              }
-              dbhandle.docFind(drivetmp + user.group +'/'+disFile, function (found){
-                utilsdocms.resolveRoutingSlip(found, disFile);
-                monitoring.getOriginator(disFile, function(branch){
-                  let runScanAI = 'true';
-                  if ((branch=='')||(branch.toUpperCase()==user.group.toUpperCase())) runScanAI = 'true';
-                  else  runScanAI = 'false';
+            } else resolve();
+          }).then(()=>{ //process document query and send back to client
+            if ((user.level.toUpperCase()==='DUTYADMIN') || (user.level.toUpperCase()==='SECRETARY')) {
+              var disDrive = '/drive/';
+              disReadDir = new promise((resolve, reject)=>{
+                fs.readdir(drivetmp +'incoming-temp',(err,files)=>{
+                  let sortArr = utilsdocms.checkPermission(files, drivetmp +'incoming-temp/');
+                  sortArr = sortArr.filter(file => {return fs.statSync(drivetmp +'incoming-temp/'+file).isFile();});
+                  if (err) reject(err); var def="empty"; let items = sortArr;
+                  if (items.length > 0) {def=items[0];} let disFile = def;
+                  if ((boolFile) && (req.params.file!='release')) {disFile = req.params.file; if (!fs.existsSync(drivetmp + 'incoming-temp/'+ disFile)) disFile = def;}
+                  else if ((boolFile) && (req.params.file=='release')) {disFile = req.params.relfile; }
+                  resolve({disFile:disFile,items:items});
+                });
+              }).then((items)=>{
+                var relitems = [];
+                let disRelease = new promise((resolve, reject)=>{
+                  fs.readdir(drivetmp +'Release', function(err,files){
+                    let sortArr = utilsdocms.checkPermission(files, drivetmp +'Release/');//here
+                    sortArr = sortArr.filter(file => {return fs.statSync(drivetmp +'Release/'+file).isFile();});
+                    if (err) reject(err);
+                    resolve({disFile:items.disFile,items:items.items,release:sortArr});
+                  });
+                }).then((params)=>{
+                  let disFile = params.disFile, items = params.items, relitems = params.release;
+                  utilsdocms.resolveRoutingSlip(null, disFile);
+                  if (req.params.file!='release'){ //if not in release folder
+                    if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
+                      if (!notExt.includes(dochandle.getExtension(disFile).toLowerCase())){
+                        dochandle.convDoctoPDF(drivetmp + 'incoming-temp/'+ disFile, drivetmp + 'PDF-temp/'+ disFile +'.pdf',function(){
+                          return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'incoming-temp', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile + '.pdf', files:items, disp:disFile, docBr:docBr});
+                        });
+                      } else {
+                        return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'incoming-temp', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'No Pending Files.pdf', files:items, disp:disFile, docBr:docBr});
+                      }
+                    } else {
+                      if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + 'incoming-temp/' + disFile);
+                      if (JSON.stringify(signRes)!='[]') { if (signRes.message.includes("subfilter")) signRes = [];}
+                      return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'incoming-temp', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'incoming-temp/'+ disFile, files:items, disp:disFile, docBr:docBr});
+                    }
+                  } else { //if in release folder
+                    if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
+                      dochandle.convDoctoPDF(drivetmp + 'Release/'+ disFile, drivetmp + 'PDF-temp/'+ disFile +'.pdf', function(){
+                        return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'Release', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile + '.pdf', files:items, disp:disFile, docBr:docBr});
+                      });
+                    }else {
+                      if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + 'Release/'+ disFile);
+                      if (JSON.stringify(signRes)!='[]') { if (signRes.message.includes("subfilter")) signRes = [];}
+                      return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'Release', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'Release/'+ disFile, files:items, disp:disFile, docBr:docBr});
+                    }
+                  }
+                }).catch((err)=>{ console.log(err);});
+              }).catch((err)=>{console.log(err);});
+            } else if ((user.level.toUpperCase()==='DEP') || (user.level.toUpperCase()==='CO') || (user.level.toUpperCase()==='EAGM') || (user.level.toUpperCase()==='GM')) {
+              fs.readdir(drivetmp + user.group, function(err,items){
+                let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
+                sortArr = sortArr.filter(file => {return fs.statSync(drivetmp + user.group + '/'+file).isFile();});
+                if (err) console.log(err); var def="empty";
+                if (sortArr.length > 0) {def=sortArr[0];} var disDrive = '/drive/';var disFile = def;
+                if (boolFile) disFile = req.params.file;
+                if (!fs.existsSync(drivetmp + user.group +'/'+disFile)) disFile = def;
+                dbhandle.docFind(drivetmp + user.group +'/'+disFile, function (found) {
+                  let disCat = 'none';
+                  if (found) disCat = found.category;
+                  utilsdocms.resolveRoutingSlip(found, disFile);
+                  if (fs.existsSync(drivetmp + 'PDF-temp/'+id+'.res.pdf')) fs.unlink(drivetmp + 'PDF-temp/'+id+'.res.pdf',()=>{});
                   if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
                     dochandle.convDoctoPDF(drivetmp + user.group +'/'+disFile,drivetmp + 'PDF-temp/'+disFile +'.pdf', function(){
-                      return res.render('incomingbranch', {layout:'layout-user',  signres:signRes, realdrive:drive, level:user.level, runscanai:runScanAI, mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile +'.pdf', files:items, disp:disFile, branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag});
+                      return res.render('incomingroyal', {layout:'layout-royal', signres:signRes, realdrive:drive, level:user.level, category:disCat, mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile +'.pdf', files:sortArr, disp:disFile, branch:user.group});
                     });
                   }else {
                     if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + user.group +'/'+ disFile);
                     if (JSON.stringify(signRes)!='[]') { if (signRes.message.includes("subfilter")) signRes = [];}
-                    return res.render('incomingbranch', {layout:'layout-user', signres:signRes, realdrive:drive, level:user.level,  runscanai:runScanAI, mailfiles:user.mailfiles, docPers:groups, path:disDrive + user.group +'/'+ disFile, files:items, disp:disFile, branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag});
+                    return res.render('incomingroyal', {layout:'layout-royal', signres:signRes, realdrive:drive, level:user.level, category:disCat, mailfiles:user.mailfiles, docPers:groups, path:disDrive + user.group +'/'+ disFile, files:sortArr, disp:disFile, branch:user.group});
                   }
                 });
               });
-            });
-          }
+            } else {
+              fs.readdir(drivetmp + user.group, function(err,items) {
+                let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
+                if (err) console.log(err);var def="empty";
+                if (sortArr.length > 0) {def=sortArr[0];} var disDrive = '/drive/';var disFile = def;
+                if (boolFile) disFile = req.params.file;
+                if (!fs.existsSync(drivetmp + user.group +'/'+disFile)) disFile = def;
+                let editFile = path.resolve(drive +'Recoverhere/'+ user.group.toUpperCase() + '/' + disFile);
+                if (fs.existsSync(editFile)) {
+                  fs.copyFileSync(editFile,drivetmp + user.group +'/'+disFile);
+                  fs.unlinkSync(editFile);
+                }
+                dbhandle.docFind(drivetmp + user.group +'/'+disFile, function (found){
+                  utilsdocms.resolveRoutingSlip(found, disFile);
+                  monitoring.getOriginator(disFile, function(branch){
+                    let runScanAI = 'true';
+                    if ((branch=='')||(branch.toUpperCase()==user.group.toUpperCase())) runScanAI = 'true';
+                    else  runScanAI = 'false';
+                    if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
+                      dochandle.convDoctoPDF(drivetmp + user.group +'/'+disFile,drivetmp + 'PDF-temp/'+disFile +'.pdf', function(){
+                        return res.render('incomingbranch', {layout:'layout-user',  signres:signRes, realdrive:drive, level:user.level, runscanai:runScanAI, mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'PDF-temp/'+ disFile +'.pdf', files:items, disp:disFile, branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag});
+                      });
+                    }else {
+                      if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + user.group +'/'+ disFile);
+                      if (JSON.stringify(signRes)!='[]') { if (signRes.message.includes("subfilter")) signRes = [];}
+                      return res.render('incomingbranch', {layout:'layout-user', signres:signRes, realdrive:drive, level:user.level,  runscanai:runScanAI, mailfiles:user.mailfiles, docPers:groups, path:disDrive + user.group +'/'+ disFile, files:items, disp:disFile, branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag});
+                    }
+                  });
+                });
+              });
+            }
+          }).catch((err)=>{console.log(err);});
         });
       });
     };

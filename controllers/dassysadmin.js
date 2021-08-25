@@ -306,7 +306,7 @@ module.exports = function(app, arrDB){
             break;
             case 'editdrive':
             console.log('Update Drive Setting');
-            dbhandle.settingUpdate(req.body.maindrive,req.body.publicdrive,req.body.publicstr, ()=>{
+            dbhandle.settingUpdate(req.body.maindrive,req.body.transferpath,req.body.publicdrive,req.body.publicstr, ()=>{
               res.json('successful');
               dbhandle.actlogsCreate(id, Date.now(), 'Update Drive Setting', 'none', req.ip);
             });

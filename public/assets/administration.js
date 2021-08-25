@@ -68,7 +68,7 @@ $(document).ready(function(){
   });
   //handle save drive setting
   $('#butSaveDrive').on('click', function(event){
-    var todo = {action:'editdrive', maindrive:$('#drivePath').val().trim(),publicdrive:$('#publicPath').val().trim(), publicstr:$('#publicStr').val().trim()};
+    var todo = {action:'editdrive', maindrive:$('#drivePath').val().trim(), transferpath:$('#transferPath').val().trim(),publicdrive:$('#publicPath').val().trim(), publicstr:$('#publicStr').val().trim()};
     $.ajax({
       type: 'POST',
       url: '/updateserver',

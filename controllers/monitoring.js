@@ -16,7 +16,7 @@ const promisify = require('util').promisify;
 exports.addMonitor = function addMonitor(req, res, path){
   console.log('Add File Monitoring');
   deyt = dateformat(Date.now(),"dd mmm yyyy HH:MM");
-  dbhandle.monitorFindFile(req.body.monitfile, function(result){
+  dbhandle.monitorFindTitle(req.body.monitfile, function(result){
     if (!result) {
       dbhandle.monitorCreate (req.body.newfile, req.body.newfile, deyt, req.body.branch, path);
       dbhandle.commologsUpdate (dateformat(Date.now(),'yyyy'), dateformat(Date.now(),'mmm').toUpperCase(), req.body.branch.toUpperCase(),()=>{});
@@ -28,20 +28,21 @@ exports.addMonitor = function addMonitor(req, res, path){
 exports.updateMonitor = function (req, res){
   console.log('Add File Monitoring');
   deyt = dateformat(Date.now(),"dd mmm yyyy HH:MM");
-  dbhandle.monitorFindFile(req.body.fileroute, function(result){
+  dbhandle.monitorFindTitle(req.body.fileroute, function(result){
     if (result) dbhandle.monitorUpdateFile (result.filename, req.body.newfile, result.route, result.filepath,()=>{});
   });
 };
 
-//handle updating of filename and branch in the monitoring.
+//handle adding routing branch to the document in the monitoring.....document is openned in the file server (file open command)
 exports.UpdFileMonitor = function (req, res, user, path){
   console.log('Update File Monitoring');
   deyt = dateformat(Date.now(),"dd mmm yyyy HH:MM"); arrBr = [];
-  dbhandle.monitorFindFile(req.body.monitfile, function(result){
+  dbhandle.monitorFindTitle(req.body.monitfile, function(result){
     if (result) {
       result.route.push({deyt:deyt,branch:req.body.branch});
       dbhandle.monitorAddRoute(req.body.newfile, result.filename, result.route, path);
     } else {
+      //add the user who openned the file as the originator of the doc in the monitoring
       if ((user.level.toUpperCase()!="DUTYADMIN") && (user.level.toUpperCase()!="SECRETARY")) arrBr.push(user.group.toUpperCase());
       req.body.branch.forEach((itemBr)=> {
         if  (itemBr.toUpperCase()!=user.group.toUpperCase()) arrBr.push(itemBr.toUpperCase());
@@ -51,17 +52,17 @@ exports.UpdFileMonitor = function (req, res, user, path){
     }
   });
 };
-//handle adding branch to the document in the monitoring
+//handle adding routing branch to the document in the monitoring.....document is within incoming branches
 exports.addRouteOnly = function (filename, branch, path){
   console.log('Add Branch to Route Monitoring no change to title');
-  dbhandle.monitorFindFile(filename, function(result){
+  dbhandle.monitorFindTitle(filename, function(result){
     deyt = dateformat(Date.now(),"dd mmm yyyy HH:MM");
     if (result) {
       result.route.push({deyt:deyt,branch:branch});
       dbhandle.monitorAddRoute(filename, result.filename, result.route, path);
     } else {
       dbhandle.monitorCreate (filename, filename, deyt, branch, path);
-      dbhandle.commologsUpdate (dateformat(Date.now(),'yyyy'), dateformat(Date.now(),'mmm').toUpperCase(), branch.toUpperCase(),()=>{});
+      dbhandle.commologsUpdate (dateformat(Date.now(),'yyyy'), dateformat(Date.now(),'mmm').toUpperCase(), JSON.stringify(branch).toUpperCase(),()=>{});
     }
   });
 
@@ -141,16 +142,15 @@ exports.searchRefEnc = function (req, callback){
 //get the origina branch from the monitoring
 exports.getOriginator = function (filename, callback){
   console.log('Get Originator from Monitoring');
-  dbhandle.monitorFindFile(filename, function(result){
+  dbhandle.monitorFindTitle(filename, function(result){
     if (result) callback(result.route[0].branch[0]);
     else callback('');
   });
 };
 //get last branch routed
-//get the origina branch from the monitoring
+//check if the current group is within the last branch routed
 exports.findLastBranch = function (filename, group, callback){
-  //console.log('Find Last Branch from Monitoring');
-  dbhandle.monitorFindFile(filename, function(result){
+  dbhandle.monitorFindTitle(filename, function(result){
     if (result){
       let disRoute = result.route[result.route.length-1];
       if (disRoute.branch.toString().toUpperCase().includes(group.toUpperCase())) callback(true);

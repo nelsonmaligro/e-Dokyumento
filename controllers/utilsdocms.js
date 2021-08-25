@@ -19,8 +19,9 @@ const verifyPDF = require('./verify/verifyPDF');
 const VerifyPDFError = require('./verify/VerifyPDFError');
 //var promise = require('promise');
 
-var drivetmp = "public/drive/", drive = "D:/Drive/";
+var drivetmp = "public/drive/"; let drive = "D:/Drive/";let transferPath='N:/';
 dbhandle.settingDis((setting)=>{drivetmp = setting.publicdrive;});
+dbhandle.settingDis((setting)=>{transferPath = setting.transferpath;});
 
 dbhandle.settingDis((setting)=>{
   drive = setting.maindrive;
@@ -42,6 +43,66 @@ dbhandle.settingDis((setting)=>{
       fs.copyFileSync(drivetmp + 'routeblank.pdf',drive + 'Routing Slip/'+year+'/'+month+'/'+'route-'+ disFile +'.pdf');
     }
   };
+  //store db metadata to file
+  exports.savemetatofile = function (filename, ref, enc, comment, callback) {
+     //verify folders
+     if (fs.existsSync(transferPath)){
+       try {
+         if (!fs.existsSync(transferPath +'metadata')) fs.mkdirSync(transferPath +'metadata');
+         if (!fs.existsSync(transferPath +'metadata/reference')) fs.mkdirSync(transferPath +'metadata/reference');
+         if (!fs.existsSync(transferPath +'metadata/enclosure')) fs.mkdirSync(transferPath +'metadata/enclosure');
+         let strWrite = '';
+         //store References
+         ref.forEach((item, i) => {
+           if (fs.existsSync(item)) fs.copyFileSync(item, transferPath + 'metadata/reference/' + path.basename(item));
+           strWrite = strWrite + 'ref::'+ path.basename(item) + '\r\n';
+         });
+         //store Enclosures
+         enc.forEach((item, i) => {
+           if (fs.existsSync(item)) fs.copyFileSync(item, transferPath + 'metadata/enclosure/' + path.basename(item));
+           strWrite = strWrite + 'enc::'+ path.basename(item) + '\r\n';
+         });
+         //append comment
+         strWrite = strWrite + 'comment::'+ JSON.stringify(comment);
+         //store metadata to file
+         fs.writeFileSync(transferPath+ 'metadata/' + filename + '.txt', strWrite);
+         fs.copyFileSync(drivetmp + 'Release/' + filename, transferPath+filename);
+         fs.unlinkSync(drivetmp + 'Release/' + filename);
+         callback('success');
+       } catch (error) {callback('fail');}
+     } else {
+       callback('fail');
+     }
+
+  }
+  //get meta file and out to array
+  exports.metafiletoarray = function (filename, path, callback) {
+    let arrRef = [], arrEnc = [], arrComment = [];
+          let strCont = fs.readFileSync(path + filename+'.txt', 'UTF-8'); //read the metafile
+          let strLines = strCont.split(/\r?\n/); //read by lines
+          strLines.forEach((item, i) => {
+            data = item.split('::');// split the string to get the actual file and array
+            switch (data[0]) {
+              case 'ref': //copy ref file from web temp path /group/metadata to drive/incoming...store to array
+                if (fs.existsSync(path + 'reference/' + data[1])) {
+                  fs.copyFileSync(path + 'reference/' + data[1], drive + 'incoming/'+ data[1]);
+                  fs.unlinkSync(path + 'reference/' + data[1]);
+                }
+                arrRef.push(drive + 'incoming/'+ data[1]);
+                break;
+              case 'enc': //copy enc file from web temp path /group/metadata to drive/incoming...store to array
+                if (fs.existsSync(path + 'enclosure/' + data[1])) {
+                  fs.copyFileSync(path + 'enclosure/' + data[1], drive + 'incoming/'+ data[1]);
+                  fs.unlinkSync(path + 'enclosure/' + data[1]);
+                }
+                arrEnc.push(drive + 'incoming/'+ data[1]);
+                break;
+              case 'comment': //parse the comment in JSON string and store to array
+                arrComment = JSON.parse(data[1]);break;
+            }
+          });
+          callback(arrRef,arrEnc,arrComment); //output ref, enc, comment
+  }
   //validate token
   exports.validToken = function (req, res, callback){
     var token = req.cookies['token'];

@@ -19463,3 +19463,90 @@ ReferenceError: file is not defined
     at D:\Projects\PN DocMS\controllers\dasincoming.js:160:48
     at FSReqCallback.oncomplete (fs.js:171:23)
     at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Unexpected token ')'
+D:\Projects\PN DocMS\controllers\utilsdocms.js:70
+       } catch () {callback('fail');} 
+                ^
+
+SyntaxError: Unexpected token ')'
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\dochandle.js:17:20)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasmonitor.js:18:21)
+    at D:\Projects\PN DocMS\index.js:59:7
+Unexpected token ')'
+D:\Projects\PN DocMS\controllers\utilsdocms.js:70
+       } catch () {callback('fail');} 
+                ^
+
+SyntaxError: Unexpected token ')'
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\dochandle.js:17:20)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasmonitor.js:18:21)
+    at D:\Projects\PN DocMS\index.js:59:7
+Unexpected token ')'
+D:\Projects\PN DocMS\controllers\utilsdocms.js:72
+       } catch () {callback('fail');}
+                ^
+
+SyntaxError: Unexpected token ')'
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\dochandle.js:17:20)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasmonitor.js:18:21)
+    at D:\Projects\PN DocMS\index.js:59:7
+monitorFindFile is not defined
+ReferenceError: monitorFindFile is not defined
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:239:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+branch.toUpperCase is not a function
+TypeError: branch.toUpperCase is not a function
+    at D:\Projects\PN DocMS\controllers\monitoring.js:65:115
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:240:9
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+branch.toUpperCase is not a function
+TypeError: branch.toUpperCase is not a function
+    at D:\Projects\PN DocMS\controllers\monitoring.js:65:130
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:240:9
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+    at runNextTicks (internal/process/task_queues.js:62:3)
+    at processImmediate (internal/timers.js:434:9)
+    at process.topLevelDomainCallback (domain.js:144:15)
+    at process.callbackTrampoline (internal/async_hooks.js:129:14)

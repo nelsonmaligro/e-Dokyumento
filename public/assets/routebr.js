@@ -26,9 +26,9 @@ function scanDoc(){
     document.getElementById("actBr").style.display = "none";
     $('#butScan').hide();    $("#butDiv").show();
     document.getElementById("selDiv").style.display = "none";
-    $('#docArchive').show();$('#routebutBr').hide();$('#docSaveFile').hide();
+    $('#docArchive').show();$('#docTransN').show();$('#routebutBr').hide();$('#docSaveFile').hide();
   } else { //if file selected is in the incoming route folder
-    $('#docArchive').hide();$('#routebutBr').show();$('#docSaveFile').show();
+    $('#docArchive').hide();$('#docTransN').hide();$('#routebutBr').show();$('#docSaveFile').show();
     var todo = {fileroute: fileroute.val(), id:disID, path:disPath.val()};
     //check if file is already selected to bypass scanning for loaded documents
     if ((fileroute.val()!='Empty File') && (fileroute.val()!='empty') && (!checkCookie())){ //if file is selected
@@ -139,6 +139,26 @@ $('#docArchive').on('click', function(event){
   }
   return false;
 });
+//transfer the released file to the Server mapped drive (external drive)
+$('#docTransN').on('click', function(event){
+  var fileroute = $('#fileroute');
+  var todo = {user:getCookie('me'),  fileroute: fileroute.val() };
+  if (fileroute.val()!='empty'){
+    $.ajax({
+      type: 'POST',
+      url: '/savemetatofile',
+      data: todo,
+      success: function(data){
+        if (data=='success')  location.replace('/incoming');
+        else {
+          alert('Transfer Failed! Check mapped drive and write permission.');
+          location.reload();
+        }
+      }
+    });
+  }
+  return false;
+});
 //Load when html renders
 $(document).ready(function(){
   setCookie('viewBr','incomingroute',1);
@@ -168,7 +188,7 @@ $(document).ready(function(){
   //handle click on confirm routing button
   $('#routebutConfirm').on('click', function(event){
     if (!$('#newfile').val().includes('.')) {alert ('File extension not recognized!'); return false;}
-    
+
     if ($('#routeselBr').val()==null) {
       alert('Input Branch to Route!'); return;
     }

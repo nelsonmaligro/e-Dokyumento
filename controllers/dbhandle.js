@@ -31,7 +31,6 @@ const docSchema = new Schema({
   size: Number,
   content: String,
   routeslip: String,
-  reference: [],
   enclosure: [],
   reference: [],
   comment: [],
@@ -73,6 +72,7 @@ const settingSchema = new Schema({
   maindrive: String,
   publicdrive: String,
   publicstr: String,
+  transferpath:String,
   ai:String,
   topmgmt:String,
 });
@@ -233,20 +233,19 @@ exports.genMonitor = function genMonitor(callback){
 
 //find monitoring by title
 exports.monitorFindTitle = function monitorFindTitle(title, callback){
-  //find file
-  monitorModel.findOne({title:{'$regex':'^'+title+'$','$options':'i'}}, function (err, res){
-
-    //console.log(res);
-    callback(res);
+  title = title.replace(/\(/g,'\\(');title = title.replace(/\)/g,'\\)');
+  monitorModel.findOne({title:{'$regex':'^'+title+'$','$options':'i'}}, function (err, res){ //find title
+    if (!res) {
+      monitorModel.findOne({filename:{'$regex':'^'+title+'$','$options':'i'}}, function (err, res){ //search in filename also
+        callback (res);
+      });
+    } else callback(res);
   });
 };
 //find monitoring by filename
 exports.monitorFindFile = function monitorFindFile(title, callback){
-  //find file
   title = title.replace(/\(/g,'\\(');title = title.replace(/\)/g,'\\)');
-  monitorModel.findOne({filename:{'$regex':'^'+title+'$','$options':'i'}}, function (err, res){
-
-    //console.log(res);
+  monitorModel.findOne({filename:{'$regex':'^'+title+'$','$options':'i'}}, function (err, res){   //find file
     callback(res);
   });
 };
@@ -301,7 +300,7 @@ exports.monitorCopy = function (Title, Filename, Filepath, Route){
 exports.monitorEdit = function monitorEdit(Title, Filename, Deyt, Branch, Filepath){
   //Create records
   var disDoc = {
-    filename: Title,
+    title: Title,
     filepath: Filepath,
     route:[{
       deyt: Deyt,
@@ -354,15 +353,13 @@ exports.monitorUpdateFile = function (oldFile, newFile, Route, Filepath, callbac
 };
 //add documents to monitoring
 exports.monitorAddRoute = function monitorAddRoute(Title, Filename, Route, Filepath){
-  //Create records
   var disDoc = {
-    filename:Title,
-    filepath: Filepath,
+    //filename:Title,
+    //filepath: Filepath,
     route: Route,
   };
   Filename = Filename.replace(/\(/g,'\\(');Filename = Filename.replace(/\)/g,'\\)');
   monitorModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
-
     console.log('Updated successfully!');
   });
 };
@@ -570,6 +567,19 @@ exports.docUpdateMeta = function docUpdateMeta(Filename, Category, Projects, Ref
     console.log('Metadata Updated successfully!');
   });
 };
+//Update Document metadata, reference, and enclosure
+exports.docUpdateMetaComment = function docUpdateMetaComment(Filename, Ref, Encl, Comment){
+  //Create records
+  var disDoc = {
+    comment:Comment,
+    reference: Ref,
+    enclosure: Encl
+  };
+  Filename = Filename.replace(/\(/g,'\\(');Filename = Filename.replace(/\)/g,'\\)');
+  docModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
+    console.log('Metadata with Comment Updated successfully!');
+  });
+};
 //Update Document comment
 exports.docUpdateComment = function docUpdateComment(Filename,  Comment){
   //Create records
@@ -729,15 +739,15 @@ exports.validateFullname = function (name, pass, callback){
   });
 };
 //create setting
-exports.settingCreate = function (Maindrive, Publicdrive, Publicstr, AI) {
-  var newSetting = new settingModel({server:'localhost', maindrive:Maindrive, publicdrive:Publicdrive, publicstr:Publicstr, ai:AI});
+exports.settingCreate = function (Maindrive, Transferpath, Publicdrive, Publicstr, AI) {
+  var newSetting = new settingModel({server:'localhost', maindrive:Maindrive, transferpath:Transferpath, publicdrive:Publicdrive, publicstr:Publicstr, ai:AI});
   newSetting.save(function(err){
     console.log('setting saved successfully!')
   });
 };
 //Update setting
-exports.settingUpdate = function (Maindrive, Publicdrive, Publicstr, callback) {
-  var disSetting = {maindrive:Maindrive, publicdrive:Publicdrive, publicstr:Publicstr};
+exports.settingUpdate = function (Maindrive,Transferpath, Publicdrive, Publicstr, callback) {
+  var disSetting = {maindrive:Maindrive, transferpath:Transferpath, publicdrive:Publicdrive, publicstr:Publicstr};
   settingModel.updateOne({server:'localhost'},[{$set:disSetting}], function(err){
     console.log('setting updated successfully!')
     callback();
