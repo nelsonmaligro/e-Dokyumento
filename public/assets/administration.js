@@ -68,7 +68,7 @@ $(document).ready(function(){
   });
   //handle save drive setting
   $('#butSaveDrive').on('click', function(event){
-    var todo = {action:'editdrive', maindrive:$('#drivePath').val().trim(),publicdrive:$('#publicPath').val().trim(), publicstr:$('#publicStr').val().trim()};
+    var todo = {action:'editdrive', maindrive:$('#drivePath').val().trim(), transferpath:$('#transferPath').val().trim(),publicdrive:$('#publicPath').val().trim(), publicstr:$('#publicStr').val().trim()};
     $.ajax({
       type: 'POST',
       url: '/updateserver',
@@ -196,6 +196,8 @@ $('#butSaveGroup').on('click', function(event){
       if (data=='successful'){
         $('#selectBranch').append("<option value= '"+ $('#newBranch').val().trim() +"' id= '"+$('#newBranch').val().trim()+"' >"+$('#newBranch').val().trim()+"</option>");
         $('#newBranch').val('');
+        let arrBranches = Array.from(document.getElementById("selectBranch").options).map(e => e.value); //get all branches
+        if (!arrBranches.includes('ALL BRANCHES')) alert('Please add ALL BRANCHES for simultaneous distribution');      
       } else alert('Updating Failed!')
     }
   });

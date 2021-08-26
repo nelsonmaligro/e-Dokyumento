@@ -7,17 +7,21 @@ Helper Modules for Routing Documents
 @copyright 2020
 @license GPL
 */
+const utilsdocms = require('./utilsdocms');
 const path = require('path');
 const  fs = require('fs');
 const dateformat = require('dateformat');
 const dbhandle = require('./dbhandle');
 const getcontent = require('./getcontent');
-var drivePublic = "public/drive/", driveMain = "D:/Drive/";
+var drivePublic = "public/drive/", driveMain = "D:/Drive/"; execBranch = [];
 dbhandle.settingDis((setting)=>{drivePublic = setting.publicdrive;});
+utilsdocms.getExecBranch((branch)=>{execBranch=branch;}); //get all executive branches
+
 //var driveMain = "D:/drive/";
 //var drivePublic = "public/drive/";
 dbhandle.settingDis((setting)=>{
   driveMain = setting.maindrive;
+
   //handle updating document database
   function updateDBdoc(dst, file, req){
     dbhandle.docFind(dst + file, function(res){
@@ -216,7 +220,8 @@ dbhandle.settingDis((setting)=>{
     if (req.body.branch.toString().toUpperCase().includes('ALL BRANCHES')){
       branches.forEach (function (branch){
         //check if not executive branches
-        if (!req.body.branch.includes(branch) && (branch.toUpperCase()!="EXO") && (branch.toUpperCase()!="DN6") && (branch.toUpperCase()!="N6") && (branch.toUpperCase()!="ASST.G.M.") && (branch.toUpperCase()!="G.M.") && (branch.toUpperCase()!="SECRETARY-RECEIVING")) {
+        if ((!req.body.branch.includes(branch)) && (!execBranch.includes(branch)) && (branch.toUpperCase!='ALL BRANCHES')) {
+        //if (!req.body.branch.includes(branch) && (branch.toUpperCase()!="EXO") && (branch.toUpperCase()!="DN6") && (branch.toUpperCase()!="N6") && (branch.toUpperCase()!="ASST.G.M.") && (branch.toUpperCase()!="G.M.") && (branch.toUpperCase()!="SECRETARY-RECEIVING")) {
           var dst = drivePublic + branch +"/";
           if (!fs.existsSync(drivePublic + branch)) fs.mkdirSync(drivePublic + branch);
           if ((dst + req.body.fileroute).toUpperCase() != newsrc.toUpperCase())  {//not the originator
@@ -257,9 +262,9 @@ dbhandle.settingDis((setting)=>{
       fs.copyFile(newsrc, dstincoming, function(err) {
         //if (err) console.log(err);
         console.log("Successfully copied to drive/incoming folder!");
-        if ((usrLvl.toUpperCase()==='DUTYADMIN') || (usrLvl.toUpperCase()==='SECRETARY')) updateDBdoc(incoming, req.body.newfile, req);//update database
+        if (usrLvl.toUpperCase()==='SECRETARY') updateDBdoc(incoming, req.body.newfile, req);//update database
         var dst =  "";
-        req.body.branch.forEach (function(branch){
+        req.body.branch.forEach (function(branch){ //iterate through branches and route doc
           if (branch.toUpperCase()!='ALL BRANCHES')  {
             dst = drive + branch +"/"+ req.body.newfile;
             if (!fs.existsSync(drive + branch)) fs.mkdirSync(drive + branch);
@@ -268,13 +273,14 @@ dbhandle.settingDis((setting)=>{
               updateDBdocNoContent(drive + branch +"/", req.body.newfile, req);//update database
             }
             //add to AI/ ML trainining datasets
-            if ((usrLvl.toUpperCase()=='DUTYADMIN') || (usrLvl.toUpperCase()=='SECRETARY')) aiTrain(driveMain + 'textML/'+req.body.fileroute+'.txt',driveMain + 'textML/'+branch,req.body.fileroute);
+            if (usrLvl.toUpperCase()=='SECRETARY') aiTrain(driveMain + 'textML/'+req.body.fileroute+'.txt',driveMain + 'textML/'+branch,req.body.fileroute);
           };
         });
         //if all branches
         if (req.body.branch.toString().toUpperCase().includes('ALL BRANCHES')){
           branches.forEach (function (branch){
-            if (!req.body.branch.includes(branch) && (branch.toUpperCase()!="EXO") && (branch.toUpperCase()!="DN6") && (branch.toUpperCase()!="N6")  && (branch.toUpperCase()!="ASST.G.M.") && (branch.toUpperCase()!="G.M.") && (branch.toUpperCase()!="SECRETARY-RECEIVING")) {
+            if ((!req.body.branch.includes(branch)) && (!execBranch.includes(branch)) && (branch.toUpperCase!='ALL BRANCHES')) {
+            //if (!req.body.branch.includes(branch) && (branch.toUpperCase()!="EXO") && (branch.toUpperCase()!="DN6") && (branch.toUpperCase()!="N6")  && (branch.toUpperCase()!="ASST.G.M.") && (branch.toUpperCase()!="G.M.") && (branch.toUpperCase()!="SECRETARY-RECEIVING")) {
               dst = drive + branch +"/"+ req.body.newfile;
               if (!fs.existsSync(drive + branch)) fs.mkdirSync(drive + branch);
               if (path.resolve(dst).toUpperCase() != path.resolve(newsrc).toUpperCase()) { //not the Originator
@@ -293,7 +299,7 @@ dbhandle.settingDis((setting)=>{
                 await res.json('successful');
               });
             } else {
-              if ((usrLvl.toUpperCase()==='DUTYADMIN') || (usrLvl.toUpperCase()==='SECRETARY')) {
+              if (usrLvl.toUpperCase()==='SECRETARY') {
                 fs.unlink(newsrc, async function(err) {
                   if (!err) console.log('File was removed from temp');
                   await res.json('successful');

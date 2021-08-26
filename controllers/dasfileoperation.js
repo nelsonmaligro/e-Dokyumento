@@ -92,10 +92,22 @@ module.exports = function(app, arrDB){
         savemetadoc(req, res, id);
       });
     });
+    //post handle save metadata on file open
+    app.post('/savemetatofile', urlencodedParser, function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        savemetatofile(req, res, id);
+      });
+    });
     //post handle edit file within client incoming view
     app.post('/editincoming', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         editincoming(req, res, id);
+      });
+    });
+    //post handle edit file within client incoming view
+    app.post('/returnrelease', urlencodedParser, function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        returnrelease(req, res, id);
       });
     });
     //get handle upload file
@@ -216,6 +228,23 @@ module.exports = function(app, arrDB){
         console.log('edit incoming document');
       });
     }
+    //handle return released documents to the originating branch
+    function returnrelease(req,res,id){
+      dbhandle.userFind(id, function (user){
+        let filepath = drivetmp+'Release/';
+        if (fs.existsSync(path.resolve(filepath +req.body.fileroute))) {
+            monitoring.getOriginator(req.body.fileroute, function(branch) {
+              //ensure to return the document to appropriate branch....transfer to incoming-temp if no originator
+              if ((branch.toUpperCase()==user.group.toUpperCase()) || (branch.toUpperCase()=='ALL BRANCHES') || (branch.trim()=='')) branch = "incoming-temp";
+              dbhandle.actlogsCreate(id, Date.now(), 'Return Document to Branch: ' + branch.toString(), req.body.fileroute, req.ip);
+              routeduty.routNoRefEnc(req,res, drivetmp + "Release/", drivetmp + branch + '/');
+              monitoring.addRouteOnly(req.body.fileroute, branch, path.resolve(drivetmp));
+              res.json('success');
+            });
+          } else res.json('fail');
+        });
+        console.log('return released document to the originator');
+    }
     //handle delete documents
     function deletedoc(req,res,id){
       dbhandle.userFind(req.body.user, function (user){
@@ -226,43 +255,46 @@ module.exports = function(app, arrDB){
           else filepath= drivetmp+req.body.branch+'/'+req.body.filepath;
         }
         //console.log(filepath);
-        if (req.body.branch!="fileopen"){ //if routing
+        if (req.body.branch!="fileopen") { //if routing....the document is in the web temp folder
           monitoring.getOriginator(req.body.filename, function(branch){
-            monitoring.findLastBranch(req.body.filename, user.group, function(found){
+            monitoring.findLastBranch(req.body.filename, user.group, function(found){ //check if current group is not the last branch routed
               //console.log(branch.toUpperCase() + req.body.branch.toUpperCase());
-              if (!found)  { //All Branches - not part of routing
+              if (!found)  { //if not the last branch
                 if (branch.toString().toUpperCase().includes(user.group.toUpperCase())) { //if originator
-                  dbhandle.monitorFindFile(req.body.filename, function(result){ //delete in monitoring
-                    if (result) dbhandle.monitorDel(req.body.filename, function(){});
+                  dbhandle.monitorFindTitle(req.body.filename, function(result){ //delete in monitoring
+                    if (result) dbhandle.monitorDel(result.filename, function(){});
                   });
                 }
                 dbhandle.docFind(filepath, function(docres){ //delete in pndocs
                   if (docres) dbhandle.docDel(filepath,()=>{});
                 });
+                //transfer to recovery folder
                 if (fs.existsSync(filepath)){
                   if (!fs.existsSync(drive+'Recoverhere/')) fs.mkdirSync(drive+'Recoverhere/');
                   fs.copyFileSync(filepath,drive+'Recoverhere/'+req.body.filename)
                   fs.unlink(filepath, (err)=>{if (err) console.log(err);});
                 }
-                res.json('successful');
-                console.log(req.body.branch.toUpperCase());
-                if (req.body.branch.toUpperCase()=="RELEASE")  { //remove file from monitoring and temp monitoring
+                res.json('successful'); //respond to client
+                //if the secretary/ receiving deletes the document within the web temp folder...emove file from monitoring and temp monitoring
+                if (req.body.branch.toUpperCase()=="RELEASE")  {
                   dbhandle.actlogsCreate(id, Date.now(), 'Released document deleted', req.body.filename, req.ip);
-                  dbhandle.monitorFindFile(req.body.filename, (result)=>{
+                  dbhandle.monitorFindTitle(req.body.filename, (result)=>{ //remove from the monitoring
                     if (result) dbhandle.monitorDel(result.filename,()=>{});
                   });
+                  //backup this monitoring record
                   dbhandle.tempmonitorFindFile(req.body.filename, function(tempresult){
                     if (tempresult) dbhandle.tempmonitorDel(req.body.filename,()=>{});
                   });
                 } else dbhandle.actlogsCreate(id, Date.now(), 'Delete document during routing - branch for info', req.body.filename, req.ip);
-              } else { //part of routing
+              } else { //if part of of the routing
                 if (branch.toString().toUpperCase().includes(user.group.toUpperCase())) { //if originator
-                  dbhandle.monitorFindFile(req.body.filename, function(result){ //delete in monitoring
-                    if (result) dbhandle.monitorDel(req.body.filename, function(){});
+                  dbhandle.monitorFindTitle(req.body.filename, function(result){ //delete in monitoring
+                    if (result) dbhandle.monitorDel(result.filename, function(){});
                   });
                   dbhandle.docFind(filepath, function(docres){ //delete in pndocs
                     if (docres) dbhandle.docDel(filepath,()=>{});
                   });
+                  //transfer to recovery folder
                   if (fs.existsSync(filepath)){
                     if (!fs.existsSync(drive+'Recoverhere/')) fs.mkdirSync(drive+'Recoverhere/');
                     fs.copyFileSync(filepath,drive+'Recoverhere/'+req.body.filename)
@@ -275,7 +307,7 @@ module.exports = function(app, arrDB){
 
             });
           });
-        } else {
+        } else { //if document is in the drive (file server)
           dbhandle.docFind(filepath, function(docres){ //delete in pndocs
             if (docres) dbhandle.docDel(filepath,()=>{});
           });
@@ -327,6 +359,27 @@ module.exports = function(app, arrDB){
           });
 
         console.log('Save Metadata document on file open');
+      });
+    }
+    //handle save metadata on file open
+    function savemetatofile(req,res,id){
+      dbhandle.userFind(req.body.user, function (user){
+          dbhandle.docFind(drivetmp +'Release/'+req.body.fileroute, function(docres){
+            if (docres){
+              utilsdocms.savemetatofile(req.body.fileroute, docres.reference, docres.enclosure, docres.comment, (retStr) => {
+                res.json(retStr);
+              })
+            } else  {
+              utilsdocms.savemetatofile(req.body.fileroute, [], [], [], (retStr) => {
+                res.json(retStr);
+              });
+            }
+            dbhandle.monitorFindTitle(req.body.fileroute, (result)=>{ //delete from monitoring
+              if (result) dbhandle.monitorDel(result.filename,()=>{});
+            });
+          });
+
+        console.log('Save Metadata to file');
       });
     }
     //handle file download
@@ -438,7 +491,7 @@ module.exports = function(app, arrDB){
             if (found){
               disComm= found.comment; rout= found.routeslip;ref = found.reference;enc = found.enclosure; disClas = found.category; disTag = found.projects;
             }
-            dbhandle.monitorFindFile(disFile, (file)=>{
+            dbhandle.monitorFindTitle(disFile, (file)=>{
               utilsdocms.resolveRoutingSlip(found, disFile);
               if (fs.existsSync(disPath+disFile)){
                 if (dochandle.getExtension(disFile)!='.pdf') { //if file is not pdf the convert doc

@@ -68,19 +68,19 @@ https://sourceforge.net/projects/e-dokyumento/files/Install%20e-Dokyumento%20on%
    1. staff-marketing             staff@123           STAFF               MARKETING
    2. manager-finance             manager@123         MANAGER             FINANCE
    3. staff-secretary             staff@123           SECRETARY           SECRETARY-RECEIVING
-   4. boss                        boss@123            GM                  G.M.
-   5. boss.wannabe                boss@123            EAGM                ASST.G.M.
-   6. administrator               admin@123           ADMIN
+   4. boss                        boss@123            EXECUTIVE           GM
+   5. boss.wannabe                boss@123            EXECUTIVE           EAGM
+   6. administrator               admin@123           SysAdmin
 </code></pre>
 
 # Roadmap
 
-  1. Automate re-training of Machine Learning for improved document classification
-  2. Advance Searching or search files through date, size, classifications, tags, etc.
+  1. Android and IOS Versions
+  2. Automate re-training of Machine Learning for improved document classification
   3. Online or web-based editing
   4. Integration with MS Active Directory for improved file server security
   5. Customizable Workflow
-  6. Android and IOS Versions
+ 
 
 # Credit
 

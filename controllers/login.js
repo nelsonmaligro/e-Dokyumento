@@ -53,7 +53,7 @@ module.exports = function(app){
           res.cookie('me',user.userN);
           res.cookie('fileAI','');
           if (user.level.toUpperCase()=='SYSADMIN') res.redirect('/kalikot');
-          else if ((user.level.toUpperCase()!='DUTYADMIN') && (user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='GM') && (user.level.toUpperCase()!='EAGM') && (user.level.toUpperCase()!='CO') && (user.level.toUpperCase()!='DEP')) {
+          else if ((user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='EXECUTIVE')) {
             res.redirect('/explorer');
           } else res.redirect('/dashlogs');
 
@@ -79,16 +79,8 @@ module.exports = function(app){
             console.log('invalid password')
             return done(null, false, "wrongPass");
           }
-          if (user.level.toUpperCase()=='DUTYADMIN') {
-            var disUser = {level:"DutyBranch"};
-            userModel.updateOne({userN:{'$regex':'^'+username+'$','$options':'i'}},[{$set:disUser}], function(err){
-              clearIncoming(username);
-              return done(null, user, "Valid");
-            });
-          } else {
             clearIncoming(username);
             return done(null, user, "Valid");
-          }
         });
       } catch (error) {
         return done(error);

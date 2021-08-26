@@ -152,13 +152,13 @@ module.exports = function(app, arrDB){
     function switchduty(req, res, id){
       console.log("switch duty");
       dbhandle.userFind(id, function(user){
-        if (user.level.toUpperCase()=='DUTYBRANCH') {
-          dbhandle.updateLevel(id,"DutyAdmin",()=>{
+        if (user.level.toUpperCase()=='STAFF') {
+          dbhandle.updateLevel(id,"SECRETARY",()=>{
             res.json('successful');
             dbhandle.actlogsCreate(id, Date.now(), 'User toggled privilege to Duty Admin', 'none', req.ip);
           });
-        } else if (user.level.toUpperCase()=='DUTYADMIN') {
-          dbhandle.updateLevel(id,"DutyBranch",()=>{
+        } else if (user.level.toUpperCase()=='SECRETARY') {
+          dbhandle.updateLevel(id,"STAFF",()=>{
             res.json('successful');
             dbhandle.actlogsCreate(id, Date.now(), 'User toggled privilege to Duty Branch', 'none', req.ip);
           });
@@ -259,9 +259,9 @@ module.exports = function(app, arrDB){
           if (err) console.log(err);var def="empty";
           let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
           if (sortArr.length > 0) {def=sortArr[0];} var disDrive = '/drive/';var disFile = def;
-          if ((user.level.toUpperCase()==='DUTYADMIN') || (user.level.toUpperCase()==='SECRETARY')) {
+          if (user.level.toUpperCase()==='SECRETARY') {
             return res.render('myprofile', { layout:'layout-receive', realdrive:drive, fullname:user.email, level:user.level, release:[], branch:'incoming-temp', mailfiles:user.mailfiles, docPers:[], path:disDrive + 'PDF-temp/'+ disFile + '.pdf', files:sortArr, disp:disFile, docBr:docBr});
-          } else if ((user.level.toUpperCase()==='DEP') || (user.level.toUpperCase()==='CO') || (user.level.toUpperCase()==='EAGM') || (user.level.toUpperCase()==='GM')) {
+          } else if (user.level.toUpperCase()==='EXECUTIVE') {
             return res.render('myprofile', {layout:'layout-royal', realdrive:drive, fullname:user.email, level:user.level, category:'none', mailfiles:user.mailfiles, docPers:[], path:disDrive + 'PDF-temp/'+ disFile +'.pdf', files:sortArr, disp:disFile, branch:user.group});
           } else {
             return res.render('myprofile', {layout:'layout-user', realdrive:drive, fullname:user.email, level:user.level, runscanai:'false', mailfiles:user.mailfiles, docPers:[], path:disDrive + 'PDF-temp/'+ disFile +'.pdf', files:sortArr, disp:disFile, branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag});
@@ -306,7 +306,7 @@ module.exports = function(app, arrDB){
             break;
             case 'editdrive':
             console.log('Update Drive Setting');
-            dbhandle.settingUpdate(req.body.maindrive,req.body.publicdrive,req.body.publicstr, ()=>{
+            dbhandle.settingUpdate(req.body.maindrive,req.body.transferpath,req.body.publicdrive,req.body.publicstr, ()=>{
               res.json('successful');
               dbhandle.actlogsCreate(id, Date.now(), 'Update Drive Setting', 'none', req.ip);
             });
@@ -341,17 +341,19 @@ module.exports = function(app, arrDB){
             case 'addgroup':
             console.log('Add Branch/ Group');
             dbhandle.addListCall(arrDB.branch,req.body.group, (success)=>{
-              if (success) {res.json('successful'); dbhandle.actlogsCreate(id, Date.now(), 'Add Branch/Group', 'none', req.ip); }
-              else res.json('fail');
+                if (success) {res.json('successful'); dbhandle.actlogsCreate(id, Date.now(), 'Add Branch/Group', 'none', req.ip); }
+                else res.json('fail');
             });
             break;
             case 'delgroup':
             console.log('Delete Branch/ Group');
-            req.body.group.forEach((group, idx)=>{
-              dbhandle.delList(arrDB.branch, group, ()=>{
-                if (idx==req.body.group.length -1) {res.json('successful'); dbhandle.actlogsCreate(id, Date.now(), 'Delete Branch/Group', 'none', req.ip); }
+            if (!JSON.stringify(req.body.group).toUpperCase().includes('ALL BRANCHES')){
+              req.body.group.forEach((group, idx)=>{
+                dbhandle.delList(arrDB.branch, group, ()=>{
+                  if (idx==req.body.group.length -1) {res.json('successful'); dbhandle.actlogsCreate(id, Date.now(), 'Delete Branch/Group', 'none', req.ip); }
+                });
               });
-            });
+            } else res.json('fail');
             break;
             case 'addclass':
             console.log('Add Classification');
