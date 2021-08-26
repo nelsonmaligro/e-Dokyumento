@@ -649,8 +649,6 @@ exports.userCreate = function (UserN, PassW, Email, Group, Level, Path, Files) {
   var hashVal = PassW;
   var salt = crypto.randomBytes(16).toString('hex');
   var passCrypt = crypto.pbkdf2Sync(hashVal, salt, 10000, 512, 'sha512').toString('hex');
-  //var dislevel=dutyAdmin, sysAdmin, dutyBranch, oicBranch, exo, dep, co
-  //var dislevel=SECRETARY, sysAdmin, STAFF, MANAGER, EAGM, GM
   var newUser = new userModel({userN:UserN, hashP:passCrypt, email:Email, salt:salt, group:Group, level:Level, path:Path, mailfiles:Files});
   newUser.save(function(err){
 

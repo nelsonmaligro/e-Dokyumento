@@ -26,9 +26,9 @@ function scanDoc(){
     document.getElementById("actBr").style.display = "none";
     $('#butScan').hide();    $("#butDiv").show();
     document.getElementById("selDiv").style.display = "none";
-    $('#docArchive').show();$('#docTransN').show();$('#routebutBr').hide();$('#docSaveFile').hide();
+    $('#docArchive').show();$('#docTransN').show();$('#docRouteBr').show();$('#routebutBr').hide();$('#docSaveFile').hide();
   } else { //if file selected is in the incoming route folder
-    $('#docArchive').hide();$('#docTransN').hide();$('#routebutBr').show();$('#docSaveFile').show();
+    $('#docArchive').hide();$('#docTransN').hide();$('#docRouteBr').hide();$('#routebutBr').show();$('#docSaveFile').show();
     var todo = {fileroute: fileroute.val(), id:disID, path:disPath.val()};
     //check if file is already selected to bypass scanning for loaded documents
     if ((fileroute.val()!='Empty File') && (fileroute.val()!='empty') && (!checkCookie())){ //if file is selected
@@ -138,6 +138,26 @@ $('#docArchive').on('click', function(event){
     });
   }
   return false;
+});
+//Return document to orignating branch
+$('#docRouteBr').on('click', function(event){
+  var fileroute = $('#fileroute');$('#overlay').show()
+  var user = getCookie('me');
+  sleep(5000).then(()=>{ //set delay for synchronization
+    var arrComm = getCookie('arrComm');
+    var todo = {save:'return',fileroute: fileroute.val(), user:user, comments:arrComm};
+    if (fileroute.val()!='empty'){
+      $.ajax({
+        type: 'POST',
+        url: '/returnrelease',
+        data: todo,
+        success: function(data){
+          location.replace('/incoming/release/');
+          $('#overlay').hide()
+        }
+      });
+    }
+  });
 });
 //transfer the released file to the Server mapped drive (external drive)
 $('#docTransN').on('click', function(event){

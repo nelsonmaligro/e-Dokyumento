@@ -18,21 +18,11 @@
             </select>
             <label>Access Level/Privilege</label>
             <select id="selAccess" data-placeholder="Select Access Privilege" multiple class="standardSelect" tabindex="5" >
-              <% if (topmgmt.toUpperCase().includes('G.M.') || topmgmt.toUpperCase().includes('GM') || topmgmt.toUpperCase().includes('PRES') || topmgmt.toUpperCase().includes('MANAGER')) { %>
                 <option value="SECRETARY" >SECRETARY</option>
                 <option value="STAFF" >STAFF</option>
                 <option value="MANAGER" >MANAGER</option>
-                <option value="EAGM">EAGM</option>
-                <option value="GM" >GM</option>
+                <option value="EXECUTIVE" >EXECUTIVE</option>
                 <option value="SysAdmin" >SysAdmin</option>
-            <% } else { %>
-              <option value="DutyAdmin" >DutyAdmin</option>
-              <option value="DutyBranch" >DutyBranch</option>
-              <option value="OICBranch" >OICBranch</option>
-              <option value="DEP" >DEP</option>
-              <option value="CO" >CO</option>
-              <option value="SysAdmin" >SysAdmin</option>
-            <% } %>
             </select>
             <label>Mapped Drive Path (For Editing Document)</label>
             <input class="col-md-12" id="drivePath" type="text" class="form-control-sm" placeholder="Z:/">

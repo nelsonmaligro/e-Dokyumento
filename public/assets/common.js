@@ -395,7 +395,7 @@ function gotoMain() {
   $('#divToggleSign').show();
   $('#butReturn').show();
   //if AGM ang GM (executive branches) reload the main page for signing and approval
-  if (($('#disLevel').val().toUpperCase() == "DEP") || ($('#disLevel').val().toUpperCase() == "CO") || ($('#disLevel').val().toUpperCase() == "AGM") || ($('#disLevel').val().toUpperCase() == "GM")) {
+  if ($('#disLevel').val().toUpperCase() == "EXECUTIVE") {
     $('#selPage').empty();
     loadPDF(getCookie('fileOpn')).then(function(res) { //load the main page for signing
       $('#selPage').empty();
@@ -408,11 +408,11 @@ function gotoMain() {
     $('#disFrame').hide();
     $('#divSign').hide();
     //return release and approve button for the AGM and GM respectively
-    if (($('#disLevel').val().toUpperCase() == "DEP") || ($('#disLevel').val().toUpperCase() == "AGM")) {
-      $('#butApprove').hide();
+    if ($('#disLevel').val().toUpperCase()== "EXECUTIVE") {
+      $('#butApprove').hide();$('#butCancelSignEnc').hide();
       $('#butRelease2').show();
     } else {
-      $('#butApprove').show();
+      $('#butApprove').show();$('#butCancelSignEnc').show();
       $('#butRelease2').hide();
     }
   }

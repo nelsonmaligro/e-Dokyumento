@@ -111,7 +111,7 @@ module.exports = function(app, arrDB){
       let year = dateformat(Date.now(),'yyyy');
       dbhandle.userFind(id, function(user) {
         //filter dashboard monitoring to specific user level
-        if ((user.level.toUpperCase()!='DUTYADMIN') && (user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='GM') && (user.level.toUpperCase()!='EAGM') && (user.level.toUpperCase()!='CO') && (user.level.toUpperCase()!='DEP')) {
+        if ((user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='EXECUTIVE')) {
           docBr = []; docBr.push(user.group.toUpperCase()); // set single branch only if not authorized
         }
         dbhandle.commologsGen(year, docBr, (result)=>{
@@ -143,7 +143,7 @@ module.exports = function(app, arrDB){
           let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
           if (err) console.log(err);
           //show explorer if not authorized
-          if ((user.level.toUpperCase()!='SYSADMIN') && (user.level.toUpperCase()!='DUTYADMIN') && (user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='GM') && (user.level.toUpperCase()!='EAGM') && (user.level.toUpperCase()!='CO') && (user.level.toUpperCase()!='DEP')) {
+          if ((user.level.toUpperCase()!='SYSADMIN') && (user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='EXECUTIVE')) {
             dbhandle.groupFind(user.group, function (groups){
               fs.readdir(drivetmp + user.group, function(err,items){
                 let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
@@ -164,6 +164,7 @@ module.exports = function(app, arrDB){
       dbhandle.monitorFindTitle(req.params.file, (result)=>{
         disBranch = req.params.branch;
         if (disBranch=='none') disBranch = result.route[result.route.length-1].branch;
+        if (JSON.stringify(disBranch.includes(','))) {disBranch = disBranch[disBranch.length-1];}//if branch is array
         if (fs.existsSync(drivetmp + disBranch +'/'+disFile)){
           if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
             dochandle.convDoctoPDF(drivetmp + disBranch +'/'+disFile,drivetmp + 'PDF-temp/'+disFile +'.pdf', function(){
@@ -192,7 +193,7 @@ module.exports = function(app, arrDB){
         if (found) {
           dbhandle.userFind(id, function(user){
             monitoring.getOriginator(req.body.filename, function(branch){
-              if ((user.group.toUpperCase()==branch.toUpperCase()) || (user.level.toUpperCase()=='SYSADMIN') || ((branch.toUpperCase()=="ALL BRANCHES") && ((user.level.toUpperCase()=='DUTYADMIN') || (user.level.toUpperCase()=='SECRETARY')))) {
+              if ((user.group.toUpperCase()==branch.toUpperCase()) || (user.level.toUpperCase()=='SYSADMIN') || ((branch.toUpperCase()=="ALL BRANCHES") &&  (user.level.toUpperCase()=='SECRETARY'))) {
                 dbhandle.monitorFindTitle(req.body.filename, function(result){
                   if (result){
                     dbhandle.monitorDel(result.filename, function(){
@@ -216,7 +217,7 @@ module.exports = function(app, arrDB){
           result.reverse();
           result.forEach((item, i) => {
             //filter chart monitor to specific user level
-            if ((user.level.toUpperCase()!='SYSADMIN') && (user.level.toUpperCase()!='DUTYADMIN') && (user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='GM') && (user.level.toUpperCase()!='EAGM') && (user.level.toUpperCase()!='CO') && (user.level.toUpperCase()!='DEP')) {
+            if ((user.level.toUpperCase()!='SYSADMIN') && (user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='EXECUTIVE')) {
               if (item.route[0].branch[0].toUpperCase()==user.group.toUpperCase()) {
                 arrRes.push(item); //add to array for this branch only
               }
@@ -280,7 +281,7 @@ module.exports = function(app, arrDB){
               result.reverse();
               result.forEach((item, i) => {
                 //filter chart monitor to specific user level
-                if ((user.level.toUpperCase()!='SYSADMIN') && (user.level.toUpperCase()!='DUTYADMIN') && (user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='GM') && (user.level.toUpperCase()!='EAGM') && (user.level.toUpperCase()!='CO') && (user.level.toUpperCase()!='DEP')) {
+                if ((user.level.toUpperCase()!='SYSADMIN') && (user.level.toUpperCase()!='SECRETARY') && (user.level.toUpperCase()!='EXECUTIVE')) {
                   if (item.route[0].branch[0].toUpperCase()==user.group.toUpperCase()) {
                     arrRes.push(item); //add to array for this branch only
                   }

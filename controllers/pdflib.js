@@ -28,9 +28,9 @@ dbhandle.settingDis((setting)=>{
         dbhandle.actlogSignEdit(logFileSrc[logFileSrc.length-1], logFileDst[logFileDst.length-1]);
       });
       var existingPdfBytes = fs.readFileSync(path.resolve(url));
-      const pdfDoc = await PDFDocument.load(existingPdfBytes);
+      const pdfDoc = await PDFDocument.load(existingPdfBytes, {ignoreEncryption: true});
       var pagePdfBytes = fs.readFileSync(path.resolve(pagePath));
-      const pagepdfDoc = await PDFDocument.load(pagePdfBytes);
+      const pagepdfDoc = await PDFDocument.load(pagePdfBytes, {ignoreEncryption: true});
 
       const newpdfDoc = await PDFDocument.create()
       const pages = pdfDoc.getPages();
@@ -50,7 +50,7 @@ dbhandle.settingDis((setting)=>{
     const url = srcPath
     if (fs.existsSync(url)){
       var existingPdfBytes = fs.readFileSync(path.resolve(url));
-      const pdfDoc = await PDFDocument.load(existingPdfBytes);
+      const pdfDoc = await PDFDocument.load(existingPdfBytes, {ignoreEncryption: true});
       const newpdfDoc = await PDFDocument.create()
       //const pages = pdfDoc.getPages();
       //const firstPage = pages[num];
@@ -72,7 +72,7 @@ dbhandle.settingDis((setting)=>{
 
       qrcode.toFile(drive+group+'/Signature/' + id +'.qr.png', serDate, { color: {dark: '#00F', light: '#0000' } }, async function (err) {
         var existingPdfBytes = fs.readFileSync(path.resolve(url));
-        const pdfDoc = await PDFDocument.load(existingPdfBytes);
+        const pdfDoc = await PDFDocument.load(existingPdfBytes, {ignoreEncryption: true});
         const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
         const pages = pdfDoc.getPages();
         const firstPage = pages[0];
@@ -129,7 +129,7 @@ dbhandle.settingDis((setting)=>{
     const url = srcPath;
     if (fs.existsSync(url)){
       var existingPdfBytes = fs.readFileSync(path.resolve(url));
-      const pdfDoc = await PDFDocument.load(existingPdfBytes);
+      const pdfDoc = await PDFDocument.load(existingPdfBytes, {ignoreEncryption: true});
       const pages = pdfDoc.getPages();
       const firstPage = pages[0];
       const { width, height } = firstPage.getSize();
@@ -153,24 +153,24 @@ dbhandle.settingDis((setting)=>{
   //Add signature into routing slip
   exports.addSignRoutePDF = async function (level, cnt, srcPath, dstPath, req, group, callback) {
     var url = srcPath; var actBr = req.body.branch;
-    if ((req.body.view == 'openroute') && ((level.toUpperCase()!='DUTYADMIN') && (level.toUpperCase()!='SECRETARY'))) actBr = group;
+    if ((req.body.view == 'openroute') && (level.toUpperCase()!='SECRETARY')) actBr = group;
     let disFrom = group.toUpperCase();
-    if ((level.toUpperCase()=='DUTYADMIN') || (level.toUpperCase()=='SECRETARY')) disFrom = 'Admin';
+    if (level.toUpperCase()=='SECRETARY') disFrom = 'Admin';
     //calculate line nr
-    var disY = 469;
     var disX = 250 ;
-    if ((level.toUpperCase()=='CO') || (level.toUpperCase()=='GM')){
-      disY = disY + 87;
-    } else if ((level.toUpperCase()=='DEP') || (level.toUpperCase()=='EAGM')){
-      disY = disY + 58;
-    }else {
+    var disY = 469 + 87;
+    //if ((level.toUpperCase()=='CO') || (level.toUpperCase()=='GM')){
+    //  disY = disY + 87;
+    //} else if ((level.toUpperCase()=='DEP') || (level.toUpperCase()=='EAGM')){
+    //  disY = disY + 58;
+    //}else {
       for (x=1; x<cnt; x++){
         disY = disY - 29;
       }
-    }
+    //}
     if (fs.existsSync(url)){
       var existingPdfBytes = fs.readFileSync(path.resolve(url));
-      const pdfDoc = await PDFDocument.load(existingPdfBytes);
+      const pdfDoc = await PDFDocument.load(existingPdfBytes, {ignoreEncryption: true});
       const helveticaFont = await pdfDoc.embedFont(StandardFonts.Helvetica);
       const pages = pdfDoc.getPages();
       const firstPage = pages[0];

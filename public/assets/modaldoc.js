@@ -39,10 +39,10 @@ function dispAttach(disDir, disFile){
         setCookie('newpathdraw',newData.filepath, 1);
         togglePanelHide(false);$('#overlay').hide()//display spinner
         //if AGM ang GM (executive branches) reload the main page for signing and approval
-        if ((newData.level.toUpperCase()=='CO') || (newData.level.toUpperCase()=='DEP') || (newData.level.toUpperCase()=='GM') || (newData.level.toUpperCase()=='EAGM')) {
+        if (newData.level.toUpperCase()=='EXECUTIVE') {
           $('#divToggleSign').hide();
           $('#butApprove').show();$('#butRelease2').hide();$('#butReturn').hide();
-          $('#selPage').empty();
+          $('#selPage').empty();$('#butCancelSignEnc').show();
           loadPDF(newData.filepath).then(function(res){
             $('#selPage').empty();
             for (var i=1; i<=res; i++) {$('#selPage').append("<option value='"+i.toString()+"'>"+i.toString()+"</option>");}
@@ -73,7 +73,7 @@ function dispAttach(disDir, disFile){
     else togglepage = false;
     mainfiledis = false;
     //hide annotation option if not executive branch...only the executive branch can annotate attachment files
-    if (($('#disLevel').val().toUpperCase()!="DEP") && ($('#disLevel').val().toUpperCase()!="CO") && ($('#disLevel').val().toUpperCase()!="EAGM") && ($('#disLevel').val().toUpperCase()!="GM")) $('#disAnnotate').hide();
+    if ($('#disLevel').val().toUpperCase()!="EXECUTIVE") $('#disAnnotate').hide();
   } else { //else if the page number is selected then display the specific page
     var num = disFile.replace('Page_','');
     PDFObject.embed(getCookie('fileOpn'), "#pdf_view",{page:num});

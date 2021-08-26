@@ -104,6 +104,12 @@ module.exports = function(app, arrDB){
         editincoming(req, res, id);
       });
     });
+    //post handle edit file within client incoming view
+    app.post('/returnrelease', urlencodedParser, function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        returnrelease(req, res, id);
+      });
+    });
     //get handle upload file
     app.get('/fileupload', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
@@ -221,6 +227,23 @@ module.exports = function(app, arrDB){
         });
         console.log('edit incoming document');
       });
+    }
+    //handle return released documents to the originating branch
+    function returnrelease(req,res,id){
+      dbhandle.userFind(id, function (user){
+        let filepath = drivetmp+'Release/';
+        if (fs.existsSync(path.resolve(filepath +req.body.fileroute))) {
+            monitoring.getOriginator(req.body.fileroute, function(branch) {
+              //ensure to return the document to appropriate branch....transfer to incoming-temp if no originator
+              if ((branch.toUpperCase()==user.group.toUpperCase()) || (branch.toUpperCase()=='ALL BRANCHES') || (branch.trim()=='')) branch = "incoming-temp";
+              dbhandle.actlogsCreate(id, Date.now(), 'Return Document to Branch: ' + branch.toString(), req.body.fileroute, req.ip);
+              routeduty.routNoRefEnc(req,res, drivetmp + "Release/", drivetmp + branch + '/');
+              monitoring.addRouteOnly(req.body.fileroute, branch, path.resolve(drivetmp));
+              res.json('success');
+            });
+          } else res.json('fail');
+        });
+        console.log('return released document to the originator');
     }
     //handle delete documents
     function deletedoc(req,res,id){

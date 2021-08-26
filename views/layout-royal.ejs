@@ -151,7 +151,20 @@
                   <div class="col col-sm-2 float-left"><button id="butReturn" type="button" class="btn btn-danger btn-sm"><i class="fa fa-thumbs-down"></i>&nbsp;Return to Branch</button></div>
                   <div class="col col-sm-6 float-left row" style="display:none;width:480px;" id='divSign'>
                     <div  id = "divButCancelMobile" class="col col-sm-1"><button id="butCancelSignRoyal" type="button" class="btn btn-danger btn-sm"><i class="fa fa-times"></i>&nbsp;Cancel</button></div>
-                    <div  id = "divButReleaseMobile" class="col col-sm-2" style="left:330px;"><button  style='font-style:Arial;' id="butRelease4" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#routingModal"><i class="fa fa-upload"></i>&nbsp;Release</button></div>
+                    <div  id = "divButReleaseMobile" class="col col-sm-2" style="left:330px;">
+                      <!-- Dropdown for 2nd Release bitton-->
+                      <div class="user-area dropdown float-left">
+                        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <button  style='font-style:Arial;' id="butRelease4" type="button" class="btn btn-primary btn-sm"><i class="fa fa-upload"></i>&nbsp;Release to:</button>
+                        </a>
+                        <div  class="user-menu dropdown-menu">
+                          <% if (disTop =="false") { for (var i=0; i < docBr.length; i++) { %>
+                            <li><a class="<% if (docBr[i].toUpperCase()==branch.toUpperCase()) { %> disabled <% } %> dropdown-item bg-flat-color-1" data-toggle="modal" data-target="#routingModal" onclick="releaseBr('<%= docBr[i] %>')" href="#" data-toggle="modal" data-target="#routingModal"><%= docBr[i] %></a></li>
+                          <% } } %>
+                          <li><a class="dropdown-item bg-flat-color-3" onclick="releaseBr('SECRETARY')" href="#" data-toggle="modal" data-target="#routingModal">Secretary</a></li>
+                        </div>
+                    </div>
+                   </div>
                     <div id = "divButPageMobile" class="col col-sm-6 row" style="border:dashed;left:50px;">
                       <div  id = "divButLblMobile" class="col-sm-1" style="left:-25px;top:2px;"><h6>Page:</h6></div>
                       <div  id = "divButNrMobile" class="col-sm-3" style="left:-12px;"><select name="selPage" id="selPage" class="form-control-sm form-control"></select></div>
@@ -159,13 +172,27 @@
                     </div>
                     <div id='pdfPage' class="col col-sm-2 float-left" style="display:none"></div>
                   </div>
-                  <div id='butapproveMobile'class="col col-sm-2"><button style="display:none;" id="butApprove" type="button" class="btn btn-primary btn-sm"><i class="fa ti-slice"></i>&nbsp; Sign this</button></div>
+                  <div id='divSignEnc'class="col col-sm-2"><button id="butSignEnc" style="font-style:Arial;display:none;" type="button" class="btn btn-primary btn-sm" onclick="releaseBr('SECRETARY')" href="#" data-toggle="modal" data-target="#routingModal"><i class="fa fa-upload"></i>&nbsp;Save</button></div>
+                  <div class="col col-sm-1"><button style="display:none;" id="butCancelSignEnc" type="button" class="btn btn-danger btn-sm"><i class="fa fa-times"></i>&nbsp;Cancel</button></div>
+                  <div id="butapproveMobile"class="col col-sm-2"><button style="display:none;" id="butApprove" type="button" class="btn btn-primary btn-sm"><i class="fa ti-slice"></i>&nbsp; Sign this</button></div>
                   <div id='divretbranch' class="col col-sm-1" style='display:none;left:50px;'><button  id="butRelease3" style='font-style:Arial;' type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#routingModal" ><i class="fa fa-upload"></i>&nbsp;Return to Branch</button></div>
                   <div class="col-1" style='display:none;' id='headerbuffer2'>&nbsp;</div>
-                  <div class="col col-sm-2"><button  id="butRelease2" style='font-style:Arial;' type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#routingModal"><i class="fa fa-upload"></i>&nbsp;Release this</button></div>
-                  <div class="col-sm-6" style='display:none;' id='headerbuffer3'>&nbsp;</div>
-                  <div id="divToggleSign"class="col col-sm-1 float-left"><input data-height="20px" id="toggleRelease"  data-size="mini" data-width="92" type="checkbox" data-style="ios"checked data-toggle="toggle" data-on="Release&nbsp;" data-off="&nbsp;&nbsp;Sign" data-onstyle="warning" data-offstyle="secondary"></div>
+                  <div id='divButRel2' class="col col-sm-2" >
+                    <!-- Dropdown for First Release button-->
+                    <div  class="user-area dropdown float-left">
+                      <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button  id="butRelease2" style='font-style:Arial;' type="button" class="btn btn-primary btn-sm" ><i class="fa fa-upload"></i>&nbsp;Release to:</button>
+                      </a>
+                      <div  class="user-menu dropdown-menu">
+                        <% if (disTop =="false") { for (var i=0; i < docBr.length; i++) { %>
+                          <li><a class="<% if (docBr[i].toUpperCase()==branch.toUpperCase()) { %> disabled <% } %> dropdown-item bg-flat-color-1" onclick="releaseBr('<%= docBr[i] %>')" href="#" data-toggle="modal" data-target="#routingModal"><%= docBr[i] %></a></li>
+                        <% } } %>
+                        <li><a class="dropdown-item bg-flat-color-3" onclick="releaseBr('SECRETARY')" href="#" data-toggle="modal" data-target="#routingModal">Secretary</a></li>
+                      </div>
+                   </div>
                 </div>
+                <div class="col-sm-6" style='display:none;' id='headerbuffer3'>&nbsp;</div>
+                <div id="divToggleSign"class="col col-sm-1 float-left"><input data-height="20px" id="toggleRelease"  data-size="mini" data-width="92" type="checkbox" data-style="ios"checked data-toggle="toggle" data-on="Release&nbsp;" data-off="&nbsp;&nbsp;Sign" data-onstyle="warning" data-offstyle="secondary"></div>
               </form>
 
               <script>
@@ -195,17 +222,19 @@
                   document.getElementById('divButNrMobile').className = 'col-sm-3';
                   document.getElementById('divButNrMobile').style.left = '18px';
                   document.getElementById('divToggledate').style.left = '25px';
-
+                  document.getElementById('divButRel2').style.left = '10px';
 
                 } else {
-                  document.getElementById('headerbuffer2').style.left = '270px'
-                  document.getElementById('butapproveMobile').style.left = '60px';
+                  document.getElementById('headerbuffer2').style.left = '370px'
+                  document.getElementById('butapproveMobile').style.left = '90px';
+                  document.getElementById('divButRel2').style.left = '-60px';
                   document.getElementById('headerHere1').style.left = '-25px';
 
                 }
 
                 if (window.location.toString().includes("/incoming")) document.getElementById('bufferHere').style.width = '0px';
-              } </script>
+              } else document.getElementById('divToggleSign').style.left = '-100px'; //if desktop PC...not mobile
+            </script>
 
             </div>
 
@@ -455,6 +484,7 @@
         <script src="/assets/cookie.js"></script>
         <script src="/assets/modaldoc.js"></script>
         <script src="/assets/common.js"></script>
+
         <script src="/assets/routeroyal.js"></script>
 
         <script src="/vendors/chosen/chosen.jquery.min.js"></script>

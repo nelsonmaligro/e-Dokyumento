@@ -113,35 +113,28 @@ module.exports = function(app, arrDB){
                 if (!fs.existsSync(drive+user.group)) fs.mkdirSync(drive+user.group);
                 if (!fs.existsSync(drive+user.group+'/Released')) fs.mkdirSync(drive+user.group+'/Released');
                 utilsdocms.makeDir(drive+user.group+'/Released/', year, month);
-                //copy signed PDF from temp to next branch
-                let dstFile = req.body.fileroute, monitBranch = 'GM';
+                //copy signed PDF from temp to the drive under group released folder
+                let dstFile = req.body.fileroute;
                 if (fs.existsSync(drivetmp+'PDF-temp/'+req.body.user+'.res.pdf')) { //if document is signed (with .res.pdf extension)
                   if (fs.existsSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf')){
                     fs.copyFileSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drive+user.group+'/Released/'+year+'/'+month+'/'+req.body.fileroute+'.pdf'); //make a copy to drive folder
                     if (fs.existsSync(drivetmp+'PDF-temp/'+req.body.user+'.res.pdf')) fs.unlinkSync(drivetmp+'PDF-temp/'+req.body.user+'.res.pdf');
                   }
-                  if (dochandle.getExtension(req.body.fileroute)!='.pdf') dstFile = req.body.fileroute+'.pdf';
+                  if (dochandle.getExtension(req.body.fileroute)!='.pdf') dstFile = req.body.fileroute+'.pdf'; //ensure pdf format
+                  //route the document
                   if (req.body.branch=='Originator'){ //back to the originator
                     monitoring.getOriginator(req.body.fileroute, function(branch){
-                      monitBranch = branch;
-                      if ((branch.toUpperCase()==user.group.toUpperCase()) || (branch.trim()=='')) monitBranch='incoming-temp'; //if no originator
-                      routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + monitBranch + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
+                      if ((branch.toUpperCase()==user.group.toUpperCase()) || (branch.trim()=='')) branch='incoming-temp'; //if no originator
+                      routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + branch + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
                     });
-                  } else if (req.body.branch=='Boss') {// to GM/Top Management
-                    dbhandle.settingDis((setting)=>{
-                      monitBranch = setting.topmgmt;
-                      routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + setting.topmgmt + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
-                    });
-                  } else { //to Secretatary/ Receiving
-                    monitBranch = req.body.branch;
+                  } else if (req.body.branch=='SECRETARY') {// to Secretary....Release folder
+                      routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + 'Release/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
+                  } else { //to Specfic Executive Branch
                     routeduty.routRoyal(req,res,drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp + req.body.branch + '/'+ dstFile, dstFile, drivetmp+user.group+'/'+req.body.fileroute);
                   }
                 } else { //if document is not signed
-                  if (req.body.branch=='Boss'){
-                    dbhandle.settingDis((setting)=>{
-                      monitBranch = setting.topmgmt;
-                      routeduty.routRoyal(req,res,drivetmp+user.group+'/'+req.body.fileroute, drivetmp + setting.topmgmt + '/' + req.body.fileroute, req.body.fileroute, drivetmp+user.group+'/'+req.body.fileroute);
-                    });
+                  if (req.body.branch=='SECRETARY'){
+                      routeduty.routRoyal(req,res,drivetmp+user.group+'/'+req.body.fileroute, drivetmp + 'Release/' + req.body.fileroute, req.body.fileroute, drivetmp+user.group+'/'+req.body.fileroute);
                   } else routeduty.routRoyal(req,res,drivetmp+user.group+'/'+req.body.fileroute, drivetmp + req.body.branch + '/' + req.body.fileroute, req.body.fileroute, drivetmp+user.group+'/'+req.body.fileroute);
                 }
                 //Update document monitoring
@@ -149,7 +142,7 @@ module.exports = function(app, arrDB){
                   if (result) {
                     deyt = dateformat(Date.now(),"dd mmm yyyy HH:MM");
                     dbhandle.actlogsCreate(id, Date.now(), 'Released signed document', req.body.fileroute, req.ip); //log released document
-                    result.route.push({deyt:deyt,branch:monitBranch});
+                    result.route.push({deyt:deyt,branch:req.body.branch});
                     dbhandle.monitorAddRoute(dstFile, req.body.fileroute, result.route, path.resolve(drivetmp));
                     dbhandle.monitorUpdateFilename(req.body.fileroute, dstFile);
                   }

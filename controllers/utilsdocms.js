@@ -18,10 +18,11 @@ const os = require('os');
 const verifyPDF = require('./verify/verifyPDF');
 const VerifyPDFError = require('./verify/VerifyPDFError');
 //var promise = require('promise');
-
+let topmgmt = 'GM';
 var drivetmp = "public/drive/"; let drive = "D:/Drive/";let transferPath='N:/';
 dbhandle.settingDis((setting)=>{drivetmp = setting.publicdrive;});
 dbhandle.settingDis((setting)=>{transferPath = setting.transferpath;});
+dbhandle.settingDis((setting)=>{topmgmt = setting.topmgmt;});
 
 dbhandle.settingDis((setting)=>{
   drive = setting.maindrive;
@@ -216,3 +217,14 @@ dbhandle.settingDis((setting)=>{
   }
 
 });
+//get branches with EXECUTIVE levels
+exports.getExecBranch = function (callback){
+  dbhandle.genUsers((users)=>{
+    let arrBr = [];
+    users.forEach((item, i) => {
+      if (item.level.toUpperCase()=='EXECUTIVE') arrBr.push(item.group);
+    });
+    uniqBr = arrBr.filter(function(item, pos) { return arrBr.indexOf(item) == pos; }); //get unique array
+    callback(uniqBr);
+  });
+}

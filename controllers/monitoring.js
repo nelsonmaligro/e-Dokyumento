@@ -43,7 +43,7 @@ exports.UpdFileMonitor = function (req, res, user, path){
       dbhandle.monitorAddRoute(req.body.newfile, result.filename, result.route, path);
     } else {
       //add the user who openned the file as the originator of the doc in the monitoring
-      if ((user.level.toUpperCase()!="DUTYADMIN") && (user.level.toUpperCase()!="SECRETARY")) arrBr.push(user.group.toUpperCase());
+      if (user.level.toUpperCase()!="SECRETARY") arrBr.push(user.group.toUpperCase());
       req.body.branch.forEach((itemBr)=> {
         if  (itemBr.toUpperCase()!=user.group.toUpperCase()) arrBr.push(itemBr.toUpperCase());
       });

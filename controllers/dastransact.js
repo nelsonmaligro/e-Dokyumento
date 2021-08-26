@@ -419,7 +419,7 @@ module.exports = function(app, arrDB){
             var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
             var filesrch = req.body.filename;
             if (req.body.filename != req.body.monitfile) {
-              if (!fs.existsSync(drivetmp+'PDF-temp/route-'+req.body.filename+".pdf")) fs.copyFileSync()
+              if (!fs.existsSync(drivetmp+'PDF-temp/route-'+req.body.filename+".pdf")) fs.copyFileSync(drivetmp+'routeblank.pdf', drivetmp+'PDF-temp/route-'+req.body.filename+".pdf")
               fs.copyFileSync(drivetmp+'PDF-temp/route-'+req.body.filename+".pdf", drive+"Routing Slip/"+year+"/"+month+"/"+"route-"+req.body.filename+".pdf");
               filesrch = req.body.monitfile;
             }

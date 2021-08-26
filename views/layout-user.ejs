@@ -185,7 +185,7 @@
                               <a class="dropdown-item dropdown-toggle bg-flat-color-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><i class="fa fa-angle-left"></i>&nbsp;&nbsp;Route to Branch&nbsp;&nbsp;</a>
                               <ul class="dropdown-menu">
                                 <% for (var i=0; i < docBr.length; i++) { %>
-                                  <%  if ((docBr[i].toUpperCase()=='ALL BRANCHES') || (docBr[i].toUpperCase()=='EXO') || (docBr[i].toUpperCase()=='DN6') || (docBr[i].toUpperCase()=='N6') || (docBr[i].toUpperCase()=='ASST.G.M.') || (docBr[i].toUpperCase()=='G.M.')) { %>
+                                  <%  if (docBr[i].toUpperCase()=='ALL BRANCHES') { %>
                                     <div style="height:1px;border-color:black;"> </div>
                                     <li><a class="<% if (docBr[i].toUpperCase()==branch.toUpperCase()) { %> disabled <% } %>  dropdown-item bg-flat-color-4" onclick="routeBr('<%= docBr[i] %>')" href="#" data-toggle="modal" data-target="#routingModal"><%= docBr[i] %></a></li>
                                     <% } else { %>
@@ -219,7 +219,7 @@
                                           <li><a id='docDownload' href="#" class="dropdown-item bg-flat-color-4" >Download File</a></li>
                                         </ul>
                                       </li>
-                                       <% if ((level.toUpperCase()=='OICBRANCH' ) || (level.toUpperCase()=='DEP' ) || (level.toUpperCase()=='CO' ) || (level.toUpperCase()=='GM' ) || (level.toUpperCase()=='EAGM') || (level.toUpperCase()=='MANAGER')) { %>
+                                       <% if ((level.toUpperCase()=='EXECUTIVE') || (level.toUpperCase()=='MANAGER')) { %>
                                         <li> <a id="signDocBut" class="dropdown-item"  style="background-color:purple;color:white;display:none;" onmouseover="this.style.background='white';this.style.color='black';" onmouseout="this.style.background='purple';this.style.color='white';" href="#">
                                           Sign Document</a></li>
                                            <% } %>
@@ -289,9 +289,12 @@
                                             </div>
                                           </ul>
                                         </li>
-                                        <% if ((level.toUpperCase()=='DUTYADMIN') || (level.toUpperCase()=='DUTYBRANCH') ) { %>
+                                        <!-- enable this when need arises-->
+                                        <!--
+                                        <% if ((level.toUpperCase()=='SECRETARY') || (level.toUpperCase()=='STAFF') ) { %>
                                           <li><a id="switchDuty" class="nav-link"  href="#"><i class="fa fa-random"></i> Toggle Duty</a></li>
                                           <% } %>
+                                            -->
                                           <li><a id="disCheckDrive" class="nav-link"  href="#"><i class="fa fa-cog"></i> Check map drive</a></li>
                                           <li><a id="disLogout" class="nav-link" href="#"><i class="fa fa-power-off"></i> Logout</a></li>
                                         </div>

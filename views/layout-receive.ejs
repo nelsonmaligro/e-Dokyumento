@@ -173,10 +173,11 @@
                     <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><button type="button" id = "butAction" class="btn btn-success btn-sm"><i class="fa fa-magic"></i>&nbsp;Action&nbsp;<i class="fa fa-angle-down"></i></button></a>
                     <div class="user-menu dropdown-menu">
                       <li><a id='routebutBr'class="dropdown-item bg-flat-color-3" href="#" data-toggle="modal" data-target="#routingModal">Route to Branch</a></li>
-                      <li><a id='docDownload' href="#" class="dropdown-item bg-flat-color-2" >Download File</a></li>
                       <li><a id='docSaveFile' href="#" style="font-size:12px;" class="dropdown-item bg-flat-color-5">Save to Server/Incoming</a></li>
-                      <li><a style="display:none;" id='docArchive' href="#" style="font-size:12px;" class="dropdown-item bg-flat-color-5">Save to Server/Archive</a></li>
+                      <li><a style="display:none;" id='docRouteBr' href="#" style="font-size:12px;" class="dropdown-item bg-flat-color-1">Return to Branch</a></li>
                       <li><a style="display:none;" id='docTransN' href="#" style="font-size:12px;" class="dropdown-item bg-flat-color-3">Transfer to Map N:\</a></li>
+                      <li><a style="display:none;" id='docArchive' href="#" style="font-size:12px;" class="dropdown-item bg-flat-color-5">Save to Server/Archive</a></li>
+                      <li><a id='docDownload' href="#" class="dropdown-item bg-flat-color-2" >Download File</a></li>
                       <li><a id='docDelete' href="#" class="dropdown-item bg-flat-color-4">Delete File</a></li>
 
                     </div>
@@ -202,9 +203,12 @@
                             <% }); %>
                           </ul>
                         </li>
-                        <% if ((level.toUpperCase()=='DUTYADMIN') || (level.toUpperCase()=='DUTYBRANCH')) { %>
+                        <!-- enable this when need arises-->
+                        <!--
+                        <% if ((level.toUpperCase()=='SECRETARY') || (level.toUpperCase()=='STAFF')) { %>
                         <li><a id="switchDuty" class="nav-link"  href="#"><i class="fa fa-random"></i> Toggle Duty</a></li>
                         <% } %>
+                        -->
                         <li><a id="disCheckDrive" class="nav-link"  href="#"><i class="fa fa-cog"></i> Check map drive</a></li>
                         <li><a id="disLogout" class="nav-link" href="#"><i class="fa fa-power-off"></i> Logout</a></li>
                       </div>

@@ -1,5 +1,5 @@
 //initialize web cam settings for QR Code scanning
-var valPass = false; var togglecam = false; var lastQRCode = ""; var disPass = ""; var releaseTo = 'Release';
+var valPass = false; var togglecam = false; var lastQRCode = ""; var disPass = ""; var releaseTo = 'SECRETARY';
 var scanner = new Instascan.Scanner({ video: document.getElementById('preview') });
 //detect QR Code perform validation
 scanner.addListener('scan', function (content, image) {
@@ -28,13 +28,8 @@ $('#toggleButCam').on('change', function(event){
 });
 //function for validating signature using QR code or password
 function submitQRPass(content){
-  //determine the next route of the document by identifying the level of access.....check whether GM or AGM... only the GM has release folder
-  var hash = new Hashes.SHA512().b64(content); var branch= "N6"; var action= '6';
-  if ($('#disLevel').val().toUpperCase()=='DEP') {branch = "N6"; action='1';}
-  else if ($('#disLevel').val().toUpperCase()=='AGM') {branch = "GM"; action='1';}
-  else if ($('#disLevel').val().toUpperCase()=='DUTYADMIN') branch = "Duty Admin";
-  else branch = "Receiving";
-  var todo = {filename:$('#fileroute').val(),monitfile:$('#fileroute').val(),user:getCookie('me'),hashval:hash, action:action,remark:'', branch:branch,subject:''};
+  var hash = new Hashes.SHA512().b64(content); var action= '1,2'; //var branch= "N6";
+  var todo = {filename:$('#fileroute').val(),monitfile:$('#fileroute').val(),user:getCookie('me'),hashval:hash, action:action,remark:'', branch:releaseTo,subject:''};
   //post the equivalent hashed password and the file to be routed
   $.ajax({
     type: 'POST',
@@ -125,7 +120,7 @@ function releasethisdoc(){
     var fileroute = $('#fileroute');
     var user = getCookie('me');
     var distime = 1000;
-    if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) distime = 5000;
+    if (($('#disTopLevel').val().toLowerCase()=="false")) distime = 5000;
     sleep(distime).then(()=>{ //delay execution for synchronization
       var arrComm = getCookie('arrComm');
       var todo = {comments:arrComm, hashval:lastQRCode, filepath:$('#disPath').val(), num:parseInt($('#selPage').val(),10)-1,fileroute: fileroute.val(), branch:releaseTo, user:user};
@@ -150,7 +145,6 @@ function releasethisdoc(){
     let splitFile = $('#disPath').val().split('/'); let fileroute = splitFile[splitFile.length-1];
     var realpath = getCookie('realpath');
     var user = getCookie('me');
-    let branch
     var todo = {hashval:lastQRCode, filepath:$('#disPath').val(), origenc:getCookie('origEncFile'), origfile: $('#fileroute').val(), realpath:realpath, num:parseInt($('#selPage').val(),10)-1, user:user};
     $.ajax({
       type: 'POST',
@@ -182,30 +176,20 @@ function releasethisdoc(){
 }
 //handle return to the originator
 $('#butRelease3').on('click', async function(event){
-  releaseTo = 'Originator'; //specify routing of document back to the originator
+  releaseTo = 'Originator';
   $('#disrouteTitle').show();routetoBranchApp();//display routing slip
   togglecam=false; valPass=false;
   $('#divroyalCam').show();//$('#royalbutConfirm').show();
   openCam();$('#routeattachPage').hide();
 });
-//handle releasing of document ... no signature...the AGM routes document to GM without signature
-$('#butRelease4').on('click', async function(event){
-  //specify where to release.....if AGM then release to GM, if GM then release to secretary
-  if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) releaseTo = 'Boss';
-  else releaseTo = 'Release';
-  $('#disrouteTitle').show();routetoBranchApp();togglecam=false; valPass=false;
-  $('#divroyalCam').show();//$('#royalbutConfirm').show();
-  openCam();$('#routeattachPage').hide();
-});
-//handle signing and releasing of document
-$('#butRelease2').on('click', async function(event){
+//handle releasing of document to specific Executive Branch
+function releaseBr(branch){
   //specify where to sign and release.....if AGM then release to GM, if GM then release to secretary
-  if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) releaseTo = 'Boss';
-  else releaseTo = 'Release';
+  releaseTo = branch;
   $('#disrouteTitle').show();routetoBranchApp();togglecam=false; valPass=false;
   $('#divroyalCam').show();//$('#royalbutConfirm').show();
   openCam();$('#routeattachPage').hide();
-});
+}
 //Sign Document
 $('#butApprove').on('click', function(event){
   var todo = {num:0,filepath: $('#disPath').val(),user:getCookie('me')};
@@ -217,24 +201,22 @@ $('#butApprove').on('click', function(event){
       //update signing page
       document.getElementById('canvasPDF').src = "/assets/signcanvas.html";
       $('#disContent').hide();$('#disFrame').show();
-      $('#butApprove').hide();$('#butRelease2').hide();
+      $('#butApprove').hide();$('#butRelease2').hide();$('#butCancelSignEnc').hide();
       $('#divSign').show();$('#butReturn').hide();
       $('#divToggleSign').hide();$('#divToggledate').show();
       document.getElementById('disContentMobile').style.display="none";
       $('#disAnnotate').hide();
       //Update html elements
-      if (!$('#disPath').val().toUpperCase().includes($('#fileroute').val().toUpperCase())) $('#butRelease4').html("<i class='fa fa-save'></i>&nbsp; Save");
-      else {
+      if (!$('#disPath').val().toUpperCase().includes($('#fileroute').val().toUpperCase())) { //if main file
+        $('#butRelease4').hide(); $('#butSignEnc').show();
+      } else { //if enclosure
         $('#divretbranch').show();
-        //update html elements for AGM and GM.....AGM will have release button without signature while GM will have signature for all releases
-        if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) $('#butRelease4').html("<i class='fa fa-upload'></i>&nbsp;Release to Boss");
-        else $('#butRelease4').html("<i class='fa fa-upload'></i>&nbsp;Release this");
       }
     }
   });
 });
-//handle cancel signing
-$('#butCancelSignRoyal').on('click', function(event){
+//function cancel signing and return to Normal
+function cancelSign(){
   $.ajax({
     type: 'POST',
     url: '/cancelsign',
@@ -259,6 +241,14 @@ $('#butCancelSignRoyal').on('click', function(event){
       location.reload();
     }
   });
+}
+//handle cancel signing Main file
+$('#butCancelSignRoyal').on('click', function(event){
+  location.reload();
+});
+//handle cancel signing Enclosure file
+$('#butCancelSignEnc').on('click', function(event){
+  location.reload();
 });
 //handle password keypress..... perform validation when enter is pressed
 $('#verPass').keypress(function(e){
@@ -291,7 +281,7 @@ function returnToSender(disBool){
   var user = getCookie('me');
   sleep(5000).then(()=>{ //set delay for synchronization
     var arrComm = getCookie('arrComm');
-    var todo = {save:'return',fileroute: fileroute.val(), user:user, comments:arrComm};
+    var todo = {save:'return',fileroute: fileroute.val(), user:user, comments:arrComm, branch:'Originator', action:'2,5', remark:''};
     if (fileroute.val()!='empty'){
       $.ajax({
         type: 'POST',
@@ -369,15 +359,15 @@ $(document).ready(function(){
   setCookie('fileAI',$('#newfile').val(),1);
   setCookie('noDate','true',1); setCookie('category',$('#disCateg').val(),1);
   //initialize release button for AGM and GM
-  if (($('#disLevel').val().toUpperCase()=="DEP") || ($('#disLevel').val().toUpperCase()=="AGM")) {
-    $('#butRelease2').html("<i class='fa fa-upload'></i>&nbsp;Release to Boss");
+
+  if ($('#disTopLevel').val().toUpperCase()=="TRUE") {
+    $('#butApprove').show();$('#butRelease2').hide();
+  } else {
+    //$('#butRelDrop2').html("<i class='fa fa-upload'></i>&nbsp;Release to:");
     $('#toggleRelease').bootstrapToggle('toggle');
     $('#butApprove').hide();$('#butRelease2').show();
-  } else {
-    $('#butApprove').show();$('#butRelease2').hide();
   }
-  if ($('#disCateg').val().toUpperCase().includes('DISPOSITION') || $('#disCateg').val().toUpperCase().includes('DF')) //this may be removed
-  $('#toggledate').bootstrapToggle('toggle');
+  //$('#toggledate').bootstrapToggle('toggle');
   setCookie('arrRef',JSON.stringify([]));setCookie('arrEnc',JSON.stringify([]));setCookie('arrComm',JSON.stringify([]),1);
   queryDoc();//query document database to populate metadata
   if ($('#fileroute').val()=='empty') {

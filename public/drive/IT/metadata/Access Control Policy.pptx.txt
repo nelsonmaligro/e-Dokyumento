@@ -1,3 +1,0 @@
-ref::PN PKI Policy.docx
-enc::Install e-Dokyumento on Ubuntu Linux.pdf
-comment::[{"branch":"manager-it-1629789739581","content":"pls check"}]
