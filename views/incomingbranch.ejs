@@ -71,6 +71,7 @@
 
     </div>
   <% } %>
+
   <!-- Mobile Friendly -->
   <script>
     if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
@@ -95,21 +96,27 @@
    </script>
       <!-- /Mobile Friendly -->
 
-  <!-- Digital Signature Floating -->
-  <% if (JSON.stringify(signres)!='[]') { let mainnfo = [signres.authenticity,signres.integrity,signres.expired,signres.meta.certs[0].issuedBy,signres.meta.certs[0].issuedTo, signres.meta.certs[0].validityPeriod];  %>
-    <div id='disDigCert' class="digicert" style='<% if (signres.message!='signed') {%>display:none;<%}%>border:1;background-color:Gray;border-radius:6px;width:200px;height:40px;padding-left:10px;padding-top:4px;'>
-      <% if (signres.verified) { %>
-      <button  id="digcertDraw" class="btn btn-sm btn-success" type="button" onclick="displaycertinfoparam('<%= JSON.stringify(mainnfo) %>')">
-        <i class="fa fa-check"></i> Valid Digital Signature
-      </button>&nbsp;
-      <% } else {%>
-        <button  id="digcertDraw" class="btn btn-sm btn-danger" type="button" onclick="displaycertinfoparam('<%= JSON.stringify(mainnfo) %>')">
-          <i class="fa fa-times"></i> Invalid Digital Signature
-        </button>&nbsp;
+      <!-- Digital Signature Floating -->
+      <% if (JSON.stringify(signres)!='[]') { let mainnfo = [signres.authenticity,signres.integrity,signres.expired,signres.meta.certs[0].issuedBy,signres.meta.certs[0].issuedTo, signres.meta.certs[0].validityPeriod];  %>
+        <div id='disDigCert' class="digicert" style='<% if (signres.message!='signed') {%>display:none;<%}%>border:1;background-color:Gray;border-radius:6px;width:225px;height:40px;padding-left:10px;padding-top:4px;'>
+          <% if (signres.verified) { %>
+          <button  id="digcertDraw" class="btn btn-sm btn-success" type="button" onclick="displaycertinfoparam('<%= JSON.stringify(mainnfo) %>')">
+            <i class="fa fa-check"></i> Verified Digital Certificate
+          </button>
+          <% } else {%>
+            <button  id="digcertDraw" class="btn btn-sm btn-danger" type="button" onclick="displaycertinfoparam('<%= JSON.stringify(mainnfo) %>')">
+              <i class="fa fa-times"></i> Unverified Digital Certificiate
+            </button>
+          <% } %>
+        </div>
+      <% } else { %>
+        <div id='disDigCertAttach' class="digicert" style='display:none;border:1;background-color:Gray;border-radius:6px;width:225px;height:40px;padding-left:10px;padding-top:4px;'>
+          <button  id="digcertDrawAttach" class="btn btn-sm btn-danger" type="button">
+            <i class="fa fa-times"></i> Unverified Digital Certificate
+          </button>
+        </div>
       <% } %>
-    </div>
-  <% } %>
-  <!-- /Digital Signature FLoating -->
+      <!-- /Digital Signature FLoating -->
 
   <!-- Modal Dialog Box Certificate Information -->
   <button id='certtoggleDialog' style='display:none' type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#certstaticModal"> </button>

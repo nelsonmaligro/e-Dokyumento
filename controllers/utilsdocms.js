@@ -26,6 +26,8 @@ dbhandle.settingDis((setting)=>{topmgmt = setting.topmgmt;});
 
 dbhandle.settingDis((setting)=>{
   drive = setting.maindrive;
+  const { extractSignature } = require ('./dist/helpers');
+  const { getCertificatesInfoFromPDF } = require('./verify/certificateDetails');
   //function for Handling Routing Slip
   exports.resolveRoutingSlip  = function (found, disFile) {
     var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
@@ -128,6 +130,16 @@ dbhandle.settingDis((setting)=>{
   exports.verifySign = function(path){
     let signedPdfBuffer = fs.readFileSync(path);
     let verifyResult = verifyPDF(signedPdfBuffer);
+    if (!verifyResult.verified){
+      //const certs = getCertificatesInfoFromPDF(signedPdfBuffer);
+      //let data = extractSignature(signedPdfBuffer);
+      //console.log(data);
+      // manipulate data byte
+      //const bytePosition = byteRange[1] + byteRange[2] + 100;
+      //const originalByte = signedPdfBuffer[bytePosition];
+      //signedPdfBuffer[bytePosition] = originalByte + 1;
+      //verifyResult = verifyPDF(signedPdfBuffer);
+    }
     return verifyResult;
     //var disMeta = verifyResult.meta;
     //var disCert = disMeta.certs;

@@ -27,8 +27,8 @@ $('#toggleButCam').on('change', function(event){
   openCam();
 });
 //function for validating signature using QR code or password
-function submitQRPass(content){
-  var hash = new Hashes.SHA512().b64(content); var action= '1,2'; //var branch= "N6";
+function submitQRPass(hash){
+  var action= '1,2'; //var branch= "N6";
   var todo = {filename:$('#fileroute').val(),monitfile:$('#fileroute').val(),user:getCookie('me'),hashval:hash, action:action,remark:'', branch:releaseTo,subject:''};
   //post the equivalent hashed password and the file to be routed
   $.ajax({
@@ -37,7 +37,7 @@ function submitQRPass(content){
     data: todo,
     success: function(data){
       if (data=='successful') {
-        lastQRCode = hash; disPass = content;
+        lastQRCode = hash; disPass = hash;
         $('#routeattachPage').hide();
         var options = {
           height: "400px",
@@ -215,6 +215,10 @@ $('#butApprove').on('click', function(event){
     }
   });
 });
+//handle save button click
+$('#butSignEnc').on('click',(event)=>{
+  $('#routeattachPage').hide();
+});
 //function cancel signing and return to Normal
 function cancelSign(){
   $.ajax({
@@ -252,11 +256,15 @@ $('#butCancelSignEnc').on('click', function(event){
 });
 //handle password keypress..... perform validation when enter is pressed
 $('#verPass').keypress(function(e){
-  if (e.which==13) submitQRPass($('#verPass').val());
+  if (e.which==13) {
+    var hash = new Hashes.SHA512().b64($('#verPass').val());
+    submitQRPass(hash);
+  }
 });
 //handle validate password click
 $('#validatePass').on('click', function (event){
-  submitQRPass($('#verPass').val());
+  var hash = new Hashes.SHA512().b64($('#verPass').val());
+  submitQRPass(hash);
 });
 //close dialog when cancel button click
 $('#routeButCanc').on('click', function(event){

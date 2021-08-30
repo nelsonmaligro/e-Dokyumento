@@ -18,6 +18,14 @@ const dbhandle = require('./dbhandle');
 var drive = 'D:/Drive/';
 dbhandle.settingDis((setting)=>{
   drive = setting.maindrive;
+  //PDF version Conversion by PDF-Lib
+  exports.convertPDFver = async function (srcPath, dstPath, callback) {
+      var existingPdfBytes = fs.readFileSync(path.resolve(srcPath));
+      const pdfDoc = await PDFDocument.load(existingPdfBytes, {ignoreEncryption: true});
+      const pdfBytes = await pdfDoc.save({ useObjectStreams: false });
+      fs.writeFileSync(dstPath, pdfBytes);
+      callback();
+  };
   //Get page from selected page number and save to PDF-temp
   exports.mergePDF = async function (srcPath, dstPath, pagePath, num, callback) {
     const url = srcPath
@@ -152,10 +160,10 @@ dbhandle.settingDis((setting)=>{
   };
   //Add signature into routing slip
   exports.addSignRoutePDF = async function (level, cnt, srcPath, dstPath, req, group, callback) {
-    var url = srcPath; var actBr = req.body.branch;
-    if ((req.body.view == 'openroute') && (level.toUpperCase()!='SECRETARY')) actBr = group;
+    var url = srcPath; var actBr = group;
+    if (level.toUpperCase()=='SECRETARY') actBr = req.body.branch;
     let disFrom = group.toUpperCase();
-    if (level.toUpperCase()=='SECRETARY') disFrom = 'Admin';
+    if (level.toUpperCase()=='SECRETARY') disFrom = 'SECRETARY';
     //calculate line nr
     var disX = 250 ;
     var disY = 469 + 87;

@@ -95,15 +95,18 @@
     <header id="header" class="header">
       <div class="header-menu">
         <div class="col-sm-12">
+          <!-- Avatar-->
           <div id="avatarHere"  class="header-right"> <div style="width:100px;display:none;"  id="bufferHere"></div>
           <div class="user-area dropdown float-right">
             <a id= 'userProf' href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               <img id="pixID" class="user-avatar rounded-circle" src="/images/nelson.jpg" alt="User Avatar">
               <span class="count"><%= mailfiles.length %></span>
             </a>
-
+            <!-- User Account Dropdown-->
             <div class="user-menu dropdown-menu">
               <li><a class="nav-link" href="/myprofile"><i class="fa fa-user"></i> My Profile</a></li>
+              <li><a class="nav-link" onclick="popUpQR()" href="#"><i class="fa fa-qrcode"></i> My QR Code</a></li>
+
               <li class="dropdown-submenu">
                 <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" href="#"><i class="fa fa-envelope"></i> Mail <span class="count"><%= mailfiles.length %></span></a>
                 <ul id='mailnoti'class="dropdown-menu" style="left:-220px!important;width:210px!important;padding-left:5px;">
@@ -172,7 +175,7 @@
                     </div>
                     <div id='pdfPage' class="col col-sm-2 float-left" style="display:none"></div>
                   </div>
-                  <div id='divSignEnc'class="col col-sm-2"><button id="butSignEnc" style="font-style:Arial;display:none;" type="button" class="btn btn-primary btn-sm" onclick="releaseBr('SECRETARY')" href="#" data-toggle="modal" data-target="#routingModal"><i class="fa fa-upload"></i>&nbsp;Save</button></div>
+                  <div id='divSignEnc'class="col col-sm-2"><button id="butSignEnc" style="font-style:Arial;display:none;" type="button" class="btn btn-primary btn-sm" href="#" data-toggle="modal" data-target="#routingModal"><i class="fa fa-upload"></i>&nbsp;Save</button></div>
                   <div class="col col-sm-1"><button style="display:none;" id="butCancelSignEnc" type="button" class="btn btn-danger btn-sm"><i class="fa fa-times"></i>&nbsp;Cancel</button></div>
                   <div id="butapproveMobile"class="col col-sm-2"><button style="display:none;" id="butApprove" type="button" class="btn btn-primary btn-sm"><i class="fa ti-slice"></i>&nbsp; Sign this</button></div>
                   <div id='divretbranch' class="col col-sm-1" style='display:none;left:50px;'><button  id="butRelease3" style='font-style:Arial;' type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#routingModal" ><i class="fa fa-upload"></i>&nbsp;Return to Branch</button></div>

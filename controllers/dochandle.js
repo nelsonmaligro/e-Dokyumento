@@ -23,7 +23,6 @@ exports.convDoctoPDF = function(Src, Dst, callback) {
   var wordBuffer = fs.readFileSync(Src);
   toPdf(wordBuffer).then(
     (pdfBuffer) => {
-      //console.log('in');
       fs.writeFileSync(Dst, pdfBuffer);
       callback();
     }, (err) => {

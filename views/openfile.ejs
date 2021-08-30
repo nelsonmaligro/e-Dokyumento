@@ -54,13 +54,33 @@
     <!-- /content -->
   </div><!-- ./wrapper -->
   <!-- Digital Signature Floating -->
-  <div id='disDigCert' class="digicert" style='display:none;border:1;background-color:Gray;border-radius:6px;width:200px;height:40px;padding-left:10px;padding-top:4px;'>
-    <button  id="digcertDraw" class="btn btn-sm btn-danger" type="button" onclick="displaycertinfo()" >
-      <i class="fa fa-times"></i> Invalid Digital Signature
+  <div id='disDigCert' class="digicert" style='display:none;border:1;background-color:Gray;border-radius:6px;width:220px;height:40px;padding-left:10px;padding-top:4px;'>
+    <button  id="digcertDraw" class="btn btn-sm btn-danger" type="button">
+      <i class="fa fa-times"></i> Unverified Digital Certificate
     </button>&nbsp;
   </div>
   <!-- /Digital Signature FLoating -->
-
+  <!-- Modal Dialog Box Certificate Information -->
+  <button id='certtoggleDialog' style='display:none' type="button" class="btn btn-secondary mb-1" data-toggle="modal" data-target="#certstaticModal"> </button>
+  <div  class="modal fade" id="certstaticModal" tabindex="-1" role="dialog" aria-labelledby="staticModalLabel" aria-hidden="true" data-backdrop="static">
+    <div class="modal-dialog modal-sm"  role="document">
+      <div class="modal-content" style='min-width:450px;' >
+        <div class="modal-header">
+          <h5 class="modal-title">Certificate Information</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div id= 'certmodDisp' class="modal-body">
+          Content
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Dialog Box Certificate Information -->
   <button style="margin-top:-15px; display:none;" id="butFileopen" type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#largeModal">Add File</button>
 
   <script src="/assets/openfile.js"></script

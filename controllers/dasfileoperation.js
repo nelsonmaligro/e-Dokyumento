@@ -452,24 +452,31 @@ module.exports = function(app, arrDB){
     function showFile(req, res, id){
       dbhandle.userFind(id, function(user){
         var disDrive = '/drive/';
+        //remove the default 'd:/drive' string if used as the default drive
         let newDrive = req.body.path;
         if (newDrive.toUpperCase().includes('D:/DRIVE')) {
           let drivePre = newDrive.substring(0,8);
           newDrive = newDrive.replace(drivePre,drive.substring(0,drive.length-1));
         }
+        let signRes = []; //initialize sign information
         var disFile = req.body.file; var disPath= newDrive;
-        if (dochandle.getExtension(disFile)!='.pdf'){
-          dochandle.convDoctoPDF(disPath+disFile, drivetmp + 'PDF-temp/'+ disFile +'.pdf', function(){
-            var arrBr = disDrive + 'PDF-temp/'+ disFile +'.pdf';
-            res.json(JSON.stringify({filepath:arrBr, level:user.level}));
-          });
-        }else {
-          fs.copyFile(disPath+disFile, drivetmp + 'PDF-temp/'+ disFile, function(err) {
-            if (err) console.log(err);
-            var arrBr = disDrive + 'PDF-temp/'+ disFile
-            res.json(JSON.stringify({filepath:arrBr, level:user.level}));
-          });
-        }
+        if (fs.existsSync(disPath+disFile)) { //if file is found
+          if (dochandle.getExtension(disFile)!='.pdf'){ //if not pdf file the return file path to client with no signature info
+            dochandle.convDoctoPDF(disPath+disFile, drivetmp + 'PDF-temp/'+ disFile +'.pdf', function(){
+              var arrBr = disDrive + 'PDF-temp/'+ disFile +'.pdf';
+              res.json(JSON.stringify({filepath:arrBr, level:user.level, signRes:signRes}));
+            });
+          } else { //if pdf file then validate digital certificate and return filepath
+            signRes = utilsdocms.verifySign(disPath+disFile);
+            if (JSON.stringify(signRes)!='[]') { if (!signRes.message.includes("signed")) signRes = [];} //if error on validation
+            fs.copyFile(disPath+disFile, drivetmp + 'PDF-temp/'+ disFile, function(err) {
+              if (err) console.log(err);
+              var arrBr = disDrive + 'PDF-temp/'+ disFile;
+              res.json(JSON.stringify({filepath:arrBr, level:user.level, signRes:signRes}));
+            });
+          }
+        } else res.json(JSON.stringify({filepath:'', level:user.level, signRes:[]}));
+
       });
     }
     //process post file open function
@@ -493,17 +500,18 @@ module.exports = function(app, arrDB){
             }
             dbhandle.monitorFindTitle(disFile, (file)=>{
               utilsdocms.resolveRoutingSlip(found, disFile);
-              if (fs.existsSync(disPath+disFile)){
+              if (fs.existsSync(disPath+disFile)) { //if file exists
                 if (dochandle.getExtension(disFile)!='.pdf') { //if file is not pdf the convert doc
                   if (fs.existsSync(drivetmp + 'PDF-temp/'+ disFile +'.pdf')) fs.unlinkSync(drivetmp + 'PDF-temp/'+ disFile +'.pdf');
                   dochandle.convDoctoPDF(disPath+disFile, drivetmp + 'PDF-temp/'+ disFile +'.pdf', function(){
                     var arrBr = [{disComm:disComm, openpath:user.path, realpath:disPath, path:disDrive + 'PDF-temp/'+ disFile +'.pdf',files:sortArr,disp:disFile,branch:user.group,docClass:docClass, docTag:docTag, rout:rout, ref:ref, enc:enc, disClas:disClas, disTag:disTag}];
                     res.json(JSON.stringify(arrBr));
                   });
-                }else {
+                }else { //if file is a PDF
                   fs.copyFile(disPath+disFile, drivetmp + 'PDF-temp/'+ disFile, function(err) {
                     if (err) console.log(err);
                     let signRes = utilsdocms.verifySign(drivetmp + 'PDF-temp/'+ disFile);
+                    if (JSON.stringify(signRes)!='[]') { if (!signRes.message.includes("signed")) signRes = [];} //if error on validation
                     var arrBr = [{signres:signRes, disComm:disComm, openpath:user.path, realpath:disPath, path:disDrive + 'PDF-temp/'+ disFile,files:sortArr,disp:disFile,branch:user.group,docClass:docClass, docTag:docTag, rout:rout, ref:ref, enc:enc, disClas:disClas, disTag:disTag}];
                     res.json(JSON.stringify(arrBr));
                   });

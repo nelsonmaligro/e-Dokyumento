@@ -163,9 +163,21 @@ module.exports = function(app, arrDB){
       var disDrive = '/drive/';var disFile = req.params.file;
       dbhandle.monitorFindTitle(req.params.file, (result)=>{
         disBranch = req.params.branch;
-        if (disBranch=='none') disBranch = result.route[result.route.length-1].branch;
         if (JSON.stringify(disBranch.includes(','))) {disBranch = disBranch[disBranch.length-1];}//if branch is array
-        if (fs.existsSync(drivetmp + disBranch +'/'+disFile)){
+        foundfile = 'none';
+        //try selected branch first...when viewed in the chart monitoring
+        if (fs.existsSync(drivetmp + disBranch +'/'+disFile)) foundfile = drivetmp + disBranch +'/'+disFile;
+        else { //try the last routed branch
+          if (result) disBranch = result.route[result.route.length-1].branch;
+          if (JSON.stringify(disBranch.includes(','))) { //if branch is array
+            tempBranch = disBranch[disBranch.length-1];
+            if (tempBranch.toUpperCase()=='ALL BRANCHES') tempBranch = disBranch[0];
+            disBranch = tempBranch;
+          }
+          if (fs.existsSync(drivetmp + disBranch +'/'+disFile)) foundfile = drivetmp + disBranch +'/'+disFile;
+        }
+
+        if (foundfile!='none') { //if found send to client for display
           if ((dochandle.getExtension(disFile)!='.pdf') && (disFile!='empty')){
             dochandle.convDoctoPDF(drivetmp + disBranch +'/'+disFile,drivetmp + 'PDF-temp/'+disFile +'.pdf', function(){
               return res.render('commofile', {layout:'commofile', path:disDrive + 'PDF-temp/'+ disFile +'.pdf'});

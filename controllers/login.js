@@ -7,7 +7,7 @@ Primary Controller - Handle client login
 @license GPL
 */
 module.exports = function(app){
-
+  const qrcode = require('qrcode');
   const mongoose = require('mongoose');
   const passport = require('passport');
   var localStrategy = require('passport-local').Strategy;
@@ -77,10 +77,17 @@ module.exports = function(app){
           //Validate password and make sure it matches with the corresponding hash stored in the database
           if(!user || !user.validatePassword(password)) {
             console.log('invalid password')
-            return done(null, false, "wrongPass");
+            return done(null, false, "wrongPass"); //deny sender to login
+          } else {
+            //ensure presence of folders in the file server
+            if (!fs.existsSync(drive+user.group)) fs.mkdirSync(drive+user.group);
+            if (!fs.existsSync(drive+user.group + '/Signature')) fs.mkdirSync(drive+user.group + '/Signature');
+            //create QR code for the hash password
+            qrcode.toFile(drive+user.group+'/Signature/' + username +'.login.qr.png', password, { color: {dark: '#00F', light: '#0000'}, width: 300, height: 300 }, async function (err) {
+              clearIncoming(username);
+              return done(null, user, "Valid"); //allow sender to login
+            });
           }
-            clearIncoming(username);
-            return done(null, user, "Valid");
         });
       } catch (error) {
         return done(error);

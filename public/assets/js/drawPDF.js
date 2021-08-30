@@ -229,11 +229,16 @@ $(document).ready(function(){
     mode = 'text';document.getElementById('canvasPDF').style.cursor = "text";
   }
 
-  sleep(5000).then(()=>{
+  sleep(4000).then(()=>{
     $('#overlay').hide();
     pattern = ctx.createPattern(document.getElementById('canvasPDF'), "no-repeat");
   });
   //}
   //initialize input text
   $("#inputText").autoresize({padding:2,minWidth:0,maxWidth:5000});
+  //initialize drawing page
+  let discanvas = document.getElementById('canvasPDF');
+  var b64Image = discanvas.toDataURL('image/png');
+  b64Image.replace(/^data:image\/(png|jpg);base64,/, "");
+  window.localStorage.setItem("drawimage",b64Image);
 });

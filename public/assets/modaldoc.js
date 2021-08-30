@@ -35,37 +35,42 @@ function dispAttach(disDir, disFile){
       data: todo,
       success: function(data){
         let newData = JSON.parse(data);
-        PDFObject.embed(newData.filepath, "#pdf_view"); //display attachment file to PDF
-        setCookie('newpathdraw',newData.filepath, 1);
-        togglePanelHide(false);$('#overlay').hide()//display spinner
-        //if AGM ang GM (executive branches) reload the main page for signing and approval
-        if (newData.level.toUpperCase()=='EXECUTIVE') {
-          $('#divToggleSign').hide();
-          $('#butApprove').show();$('#butRelease2').hide();$('#butReturn').hide();
-          $('#selPage').empty();$('#butCancelSignEnc').show();
-          loadPDF(newData.filepath).then(function(res){
-            $('#selPage').empty();
-            for (var i=1; i<=res; i++) {$('#selPage').append("<option value='"+i.toString()+"'>"+i.toString()+"</option>");}
-            $('#selPage').trigger("chosen:updated");
-          });
-          $('#disPath').val(newData.filepath);
-          var todo = {num:0,filepath: newData.filepath,user:getCookie('me')};
-          //query the server to update the signing canvas page
-          $.ajax({
-            type: 'GET',
-            url: '/signpdf',
-            data: todo,
-            success: function(data){
-              document.getElementById('canvasPDF').src = "/assets/signcanvas.html";
-            }
-          });
-        }
-        //check if mobile browser
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
-          document.getElementById('disContent').style.display="none";
-          document.getElementById('disContentMobile').style.display="";
-          loadPDFtoCanvas(newData.filepath);
-        }
+        togglePanelHide(false);$('#overlay').hide()//hide spinner
+        if (newData.filepath.trim() != '') { //if file is present
+          PDFObject.embed(newData.filepath, "#pdf_view"); //display attachment file to PDF
+          setCookie('newpathdraw',newData.filepath, 1);
+          $('#disDigCert').hide();//hide the digital validation info first
+          validateDigiSignDoc(newData.signRes); //go to common.js for signature validation
+          //for executive branches update the HTML elements and buttons for signing and approval
+          if (newData.level.toUpperCase()=='EXECUTIVE') {
+            $('#divToggleSign').hide();
+            $('#butApprove').show();$('#butRelease2').hide();$('#butReturn').hide();
+            $('#selPage').empty();$('#butCancelSignEnc').show();
+            loadPDF(newData.filepath).then(function(res){
+              $('#selPage').empty();
+              for (var i=1; i<=res; i++) {$('#selPage').append("<option value='"+i.toString()+"'>"+i.toString()+"</option>");}
+              $('#selPage').trigger("chosen:updated");
+            });
+            $('#disPath').val(newData.filepath);
+            var todo = {num:0,filepath: newData.filepath,user:getCookie('me')};
+            //query the server to update the signing canvas page
+            $.ajax({
+              type: 'GET',
+              url: '/signpdf',
+              data: todo,
+              success: function(data){
+                document.getElementById('canvasPDF').src = "/assets/signcanvas.html";
+              }
+            });
+          }
+          //check if mobile browser
+          if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+            document.getElementById('disContent').style.display="none";
+            document.getElementById('disContentMobile').style.display="";
+            loadPDFtoCanvas(newData.filepath);
+          }
+        } else alert('File not Found!');
+
       }
     });
     //determine of page is toggled for main or attachment. This is for the annotation
@@ -114,21 +119,7 @@ function showFile(disFile, disDir, flag){
         //toggle digital signature verification
         let parseData = JSON.parse(data);
         parseData.forEach(function (disData){
-          let signature = disData.signres;
-          if (signature){
-            if (signature.message!='signed'){
-              $('#disDigCert').hide();
-            } else {
-              //display certificate information
-              $('#disDigCert').show();
-              setCookie('digitalcert', JSON.stringify(signature),1);
-              if (signature.verified) {
-                $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-success" type="button" onclick="displaycertinfo()" > <i class="fa fa-check"></i> Valid Digital Signature </button>&nbsp;');
-              } else {
-                $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-danger" type="button" onclick="displaycertinfo()" > <i class="fa fa-times"></i> Invalid Digital Signature </button>&nbsp;');
-              }
-            }
-          }
+          validateDigiSignDoc(disData.signres); //go to common.js for signature validation
         });
         //check if mobile browser
         if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
