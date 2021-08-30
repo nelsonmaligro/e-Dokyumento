@@ -20001,3 +20001,432 @@ TypeError: utilsdocms.getExecBranch is not a function
     at D:\Projects\PN DocMS\controllers\dbhandle.js:773:5
     at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
     at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Unexpected token '{'
+D:\Projects\PN DocMS\controllers\dochandle.js:32
+    }).catch(){
+              ^
+
+SyntaxError: Unexpected token '{'
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasmonitor.js:18:21)
+    at D:\Projects\PN DocMS\index.js:59:7
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:773:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Unexpected token '{'
+D:\Projects\PN DocMS\controllers\dochandle.js:32
+    }).catch {
+             ^
+
+SyntaxError: Unexpected token '{'
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasmonitor.js:18:21)
+    at D:\Projects\PN DocMS\index.js:59:7
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:773:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Unexpected token '.'
+D:\Projects\PN DocMS\controllers\dochandle.js:33
+      if (fs.existsSync(Dst)) fs.copyFileSync(Src, Dst);
+            ^
+
+SyntaxError: Unexpected token '.'
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasmonitor.js:18:21)
+    at D:\Projects\PN DocMS\index.js:59:7
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:773:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+callback is not a function
+TypeError: callback is not a function
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:613:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+    at runNextTicks (internal/process/task_queues.js:62:3)
+    at processImmediate (internal/timers.js:434:9)
+    at process.topLevelDomainCallback (domain.js:144:15)
+    at process.callbackTrampoline (internal/async_hooks.js:129:14)
+Cannot read property 'route' of null
+TypeError: Cannot read property 'route' of null
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:166:51
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:240:9
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+console.logo is not a function
+TypeError: console.logo is not a function
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:166:17
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:240:9
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Unexpected identifier
+D:\Projects\PN DocMS\controllers\routeduty.js:32
+      if ((res) && (res.routeslip.trim()!='')) routslipTemp res.routeslip;
+                                                            ^^^
+
+SyntaxError: Unexpected identifier
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasroyalty.js:16:19)
+    at D:\Projects\PN DocMS\index.js:60:7
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:785:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Unexpected identifier
+D:\Projects\PN DocMS\controllers\routeduty.js:32
+      if ((res) && (res.routeslip.trim()!='')) routslipTemp res.routeslip;
+                                                            ^^^
+
+SyntaxError: Unexpected identifier
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasroyalty.js:16:19)
+    at D:\Projects\PN DocMS\index.js:60:7
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:785:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Unexpected identifier
+D:\Projects\PN DocMS\controllers\routeduty.js:31
+    if ((res) && (res.routeslip.trim()!='')) routslipTemp res.routeslip;
+                                                          ^^^
+
+SyntaxError: Unexpected identifier
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasroyalty.js:16:19)
+    at D:\Projects\PN DocMS\index.js:60:7
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:785:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+disBranch.toUpperCase is not a function
+TypeError: disBranch.toUpperCase is not a function
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:173:27
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:242:12
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Unexpected token ')'
+D:\Projects\PN DocMS\controllers\pdflib.js:156
+    if (level.toUpperCase()=='SECRETARY')) actBr = req.body.branch;
+                                         ^
+
+SyntaxError: Unexpected token ')'
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasroyalty.js:20:18)
+    at D:\Projects\PN DocMS\index.js:60:7
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:785:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Unexpected token ')'
+D:\Projects\PN DocMS\controllers\pdflib.js:156
+    if (level.toUpperCase()=='SECRETARY')) actBr = req.body.branch;
+                                         ^
+
+SyntaxError: Unexpected token ')'
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasroyalty.js:20:18)
+    at D:\Projects\PN DocMS\index.js:60:7
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:785:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+EBUSY: resource busy or locked, copyfile 'public/drive/PDF-temp/Install e-Dokyumento on Ubuntu Linux.pdf.manager-it.pdf' -> 'D:/drive/Install e-Dokyumento on Ubuntu Linux.pdf.manager-it.pdf'
+Error: EBUSY: resource busy or locked, copyfile 'public/drive/PDF-temp/Install e-Dokyumento on Ubuntu Linux.pdf.manager-it.pdf' -> 'D:/drive/Install e-Dokyumento on Ubuntu Linux.pdf.manager-it.pdf'
+    at Object.copyFileSync (fs.js:1991:3)
+    at D:\Projects\PN DocMS\controllers\dastransact.js:308:24
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:613:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+ENOENT: no such file or directory, open 'D:/drive/Install e-Dokyumento on Ubuntu Linux.pdf'
+Error: ENOENT: no such file or directory, open 'D:/drive/Install e-Dokyumento on Ubuntu Linux.pdf'
+    at Object.openSync (fs.js:476:3)
+    at Object.readFileSync (fs.js:377:35)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:129:30)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:469:32
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:624:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+signres is not defined
+ReferenceError: signres is not defined
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:475:27
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Cannot read property '0' of undefined
+TypeError: Cannot read property '0' of undefined
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:475:39
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Cannot read property 'length' of undefined
+TypeError: Cannot read property 'length' of undefined
+    at Object.getExtension (D:\Projects\PN DocMS\controllers\dochandle.js:35:16)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:453:38
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:228:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'length' of undefined
+TypeError: Cannot read property 'length' of undefined
+    at Object.getExtension (D:\Projects\PN DocMS\controllers\dochandle.js:35:16)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:454:38
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:228:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'length' of undefined
+TypeError: Cannot read property 'length' of undefined
+    at Object.getExtension (D:\Projects\PN DocMS\controllers\dochandle.js:35:16)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:454:38
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:228:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'length' of undefined
+TypeError: Cannot read property 'length' of undefined
+    at Object.getExtension (D:\Projects\PN DocMS\controllers\dochandle.js:35:16)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:454:38
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:228:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'length' of undefined
+TypeError: Cannot read property 'length' of undefined
+    at Object.getExtension (D:\Projects\PN DocMS\controllers\dochandle.js:35:16)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:454:38
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:228:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+missing ) after argument list
+D:\Projects\PN DocMS\controllers\routeduty.js:212
+      };
+      ^
+
+SyntaxError: missing ) after argument list
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasroyalty.js:16:19)
+    at D:\Projects\PN DocMS\index.js:60:7
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:785:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'route' of null
+TypeError: Cannot read property 'route' of null
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:171:22
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:240:9
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'route' of null
+TypeError: Cannot read property 'route' of null
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:171:30
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:240:9
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'route' of null
+TypeError: Cannot read property 'route' of null
+    at D:\Projects\PN DocMS\controllers\dasmonitor.js:172:22
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:240:9
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+extractSignature is not defined
+ReferenceError: extractSignature is not defined
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:132:29)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:458:68
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:236:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:43:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:133:29)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:458:68
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:237:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:43:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:133:29)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:458:68
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:237:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:43:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:133:29)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:458:68
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:240:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:43:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:134:29)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:458:68
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:241:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:43:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:133:29)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:458:68
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:241:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Failed to parse the ByteRange.
+Error: Failed to parse the ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:56:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:133:29)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:458:68
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:241:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+getCertificatesInfoFromPDF is not defined
+ReferenceError: getCertificatesInfoFromPDF is not defined
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:133:21)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:458:68
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:243:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot find module './verify'
+Require stack:
+- D:\Projects\PN DocMS\controllers\utilsdocms.js
+- D:\Projects\PN DocMS\controllers\dochandle.js
+- D:\Projects\PN DocMS\controllers\dasmonitor.js
+- D:\Projects\PN DocMS\index.js
+Error: Cannot find module './verify'
+Require stack:
+- D:\Projects\PN DocMS\controllers\utilsdocms.js
+- D:\Projects\PN DocMS\controllers\dochandle.js
+- D:\Projects\PN DocMS\controllers\dasmonitor.js
+- D:\Projects\PN DocMS\index.js
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:880:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:725:27)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:30:42
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:785:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+    at runNextTicks (internal/process/task_queues.js:62:3)
+    at processImmediate (internal/timers.js:434:9)
+    at process.topLevelDomainCallback (domain.js:144:15)
+    at process.callbackTrampoline (internal/async_hooks.js:129:14)
+Too few bytes to parse DER.
+Error: Too few bytes to parse DER.
+    at _checkBufferLength (D:\Projects\PN DocMS\node_modules\node-forge\lib\asn1.js:357:17)
+    at _fromDer (D:\Projects\PN DocMS\node_modules\node-forge\lib\asn1.js:466:3)
+    at Object.asn1.fromDer (D:\Projects\PN DocMS\node_modules\node-forge\lib\asn1.js:448:10)
+    at getMessageFromSignature (D:\Projects\PN DocMS\controllers\verify\helpers\general.js:31:29)
+    at getCertificatesInfoFromPDF (D:\Projects\PN DocMS\controllers\verify\certificateDetails.js:38:28)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:134:21)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:458:68
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:244:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Too few bytes to parse DER.
+Error: Too few bytes to parse DER.
+    at _checkBufferLength (D:\Projects\PN DocMS\node_modules\node-forge\lib\asn1.js:357:17)
+    at _fromDer (D:\Projects\PN DocMS\node_modules\node-forge\lib\asn1.js:466:3)
+    at Object.asn1.fromDer (D:\Projects\PN DocMS\node_modules\node-forge\lib\asn1.js:448:10)
+    at getMessageFromSignature (D:\Projects\PN DocMS\controllers\verify\helpers\general.js:31:29)
+    at getCertificatesInfoFromPDF (D:\Projects\PN DocMS\controllers\verify\certificateDetails.js:38:28)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:134:21)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:458:68
+    at D:\Projects\PN DocMS\controllers\utilsdocms.js:245:5
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:673:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Failed to parse the ByteRange.
+Error: Failed to parse the ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:56:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:137:29)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:483:68
+    at D:\Projects\PN DocMS\controllers\monitoring.js:147:10
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:240:9
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Failed to parse the ByteRange.
+Error: Failed to parse the ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:56:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:137:29)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:483:68
+    at D:\Projects\PN DocMS\controllers\monitoring.js:147:10
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:240:9
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Failed to parse the ByteRange.
+Error: Failed to parse the ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:56:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:18)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:483:68
+    at D:\Projects\PN DocMS\controllers\monitoring.js:147:10
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:240:9
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Failed to parse the ByteRange.
+Error: Failed to parse the ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:56:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:18)
+    at D:\Projects\PN DocMS\controllers\dasincoming.js:483:68
+    at D:\Projects\PN DocMS\controllers\monitoring.js:147:10
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:240:9
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)

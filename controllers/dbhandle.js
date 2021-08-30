@@ -514,6 +514,18 @@ exports.docUpdateEncOnly = function (Filename, Encl){
     console.log('Updated successfully!');
   });
 };
+//Update Document except reference and enclosure
+exports.docUpdateTitleFileOnly = function (Title, Filename, newFilename){
+  //Create records
+  var disDoc = {
+    filename: newFilename,
+    title: Title
+  };
+  Filename = Filename.replace(/\(/g,'\\(');Filename = Filename.replace(/\)/g,'\\)');
+  docModel.updateOne({filename:{'$regex':'^'+Filename+'$','$options':'i'}},[{$set:disDoc}], function(err){
+    console.log('Updated successfully!');
+  });
+};
 //edit Documents date, size, title, filename, and content only
 exports.docEditWatch = function(Id, Title, Filename, Deyt, Size, Content){
   //Create records

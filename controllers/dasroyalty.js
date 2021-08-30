@@ -191,6 +191,8 @@ module.exports = function(app, arrDB){
     function getsignpdf(req, res, id, boolFile){
       console.log('return pages to the signing PDF');
       pdflib.returnPage(publicstr+req.query.filepath, drivetmp+'PDF-temp/'+req.query.user+'.pdf',req.query.num,() =>{
+        if (fs.existsSync(drivetmp+'PDF-temp/'+id+'.new.drw.png')) fs.unlinkSync(drivetmp+'PDF-temp/'+id+'.new.drw.png');
+        if (fs.existsSync(drivetmp+'PDF-temp/'+id+'.res.pdf')) fs.unlinkSync(drivetmp+'PDF-temp/'+id+'.res.pdf');
         res.json('successful');
       });
     };

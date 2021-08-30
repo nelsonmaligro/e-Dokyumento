@@ -52,6 +52,7 @@ $(document).ready(function(){
             document.getElementById('canvasPDF').src = "/assets/drawcanvas.html";
             $('#disAnnotate2').show();drawclick = true;
             $('#disContent').hide();$('#disFrame').show();
+            
           }
         });
       } else { // if page is toggled for the main file
@@ -183,6 +184,7 @@ $(document).ready(function(){
       data: todo,
       success: function(data){
         document.getElementById('canvasPDF').src = "/assets/drawcanvas.html";
+
       }
     });
   });

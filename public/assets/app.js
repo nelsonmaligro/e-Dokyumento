@@ -23,9 +23,8 @@ function openCamBranch(){
   }
 }
 //function for submitting password or QR validation in order to merge the signature into the original file
-function brsubmitQRPass(content){
+function brsubmitQRPass(hash){
   $('#overlay').show();
-  var hash = new Hashes.SHA512().b64(content);
   var fileroute = $('#fileroute');
   var realpath = getCookie('realpath');
   var user = getCookie('me');
@@ -88,10 +87,9 @@ function openCam(){
   }
 }
 //function for submitting password or QR validation in order to merge the signature into the routing slip
-function submitQRPass(content){
+function submitQRPass(hash){
   let viewBr = 'incoming';
   if (window.location.toString().includes("/fileopen")) viewBr = 'openroute';
-  var hash = new Hashes.SHA512().b64(content);
   var todo = {view:viewBr, filename:$('#fileroute').val(),monitfile:$('#lbltmp').val(),user:getCookie('me'),hashval:hash, action:$('#routeselAct').val(),remark:$('#routeRemark').val(), branch:$('#routeselBr').val(),subject:$('#routeSubject').val()};
   $.ajax({
     type: 'POST',
@@ -237,23 +235,29 @@ $(document).ready(function(){
   $('#verPass').keypress(function(e){
     if (e.which==13) {
       $('#passapp').hide(); valPass = false;
-      submitQRPass($('#verPass').val()); $('#verPass').val('');
+      let hash = new Hashes.SHA512().b64($('#verPass').val());
+      submitQRPass(hash); $('#verPass').val('');
     }
   })
   //handle validate password click for routing slip
   $('#validatePass').on('click', function (event){
     $('#passapp').hide(); valPass = false;
-    submitQRPass($('#verPass').val()); $('#verPass').val('');
+    let hash = new Hashes.SHA512().b64($('#verPass').val());
+    submitQRPass(hash); $('#verPass').val('');
   });
   //When password box keypress hits enter
   $('#verPassroyal').keypress(function(e){
     if (e.which==13) {
-      brvalPass = false;brsubmitQRPass($('#verPassroyal').val()); $('#verPassroyal').val('');
+      brvalPass = false;
+      let hash = new Hashes.SHA512().b64($('#verPassroyal').val());
+      brsubmitQRPass(hash); $('#verPassroyal').val('');
     }
   })
   //handle validate password click for Manager's signature
   $('#validatePassroyal').on('click', function (event){
-    brvalPass = false;brsubmitQRPass($('#verPassroyal').val()); $('#verPassroyal').val('');
+    brvalPass = false;
+    let hash = new Hashes.SHA512().b64($('#verPassroyal').val());
+    brsubmitQRPass(hash); $('#verPassroyal').val('');
   });
 
   $('#routeButCanc').on('click', function(event){

@@ -19,10 +19,11 @@ module.exports = function(app, arrDB){
   //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
-  var drivetmp = "public/drive/", drive = "D:/Drive/", publicstr = 'public';
+  var drivetmp = "public/drive/", drive = "D:/Drive/", publicstr = 'public', topmgmt='GM';
   var cacertdrive = 'controllers/verify/helpers/CAcert/';
   dbhandle.settingDis((setting)=>{drivetmp = setting.publicdrive;});
   dbhandle.settingDis((setting)=>{publicstr = setting.publicstr;});
+  dbhandle.settingDis((setting)=>{topmgmt = setting.topmgmt;});
 
   //list all document classification and tags
   var docClass = []; var docTag = []; var docBr = [];    var grpUsrs = [];
@@ -262,7 +263,8 @@ module.exports = function(app, arrDB){
           if (user.level.toUpperCase()==='SECRETARY') {
             return res.render('myprofile', { layout:'layout-receive', realdrive:drive, fullname:user.email, level:user.level, release:[], branch:'incoming-temp', mailfiles:user.mailfiles, docPers:[], path:disDrive + 'PDF-temp/'+ disFile + '.pdf', files:sortArr, disp:disFile, docBr:docBr});
           } else if (user.level.toUpperCase()==='EXECUTIVE') {
-            return res.render('myprofile', {layout:'layout-royal', realdrive:drive, fullname:user.email, level:user.level, category:'none', mailfiles:user.mailfiles, docPers:[], path:disDrive + 'PDF-temp/'+ disFile +'.pdf', files:sortArr, disp:disFile, branch:user.group});
+            let disTop = 'false'; if (user.group.toUpperCase()==topmgmt.toUpperCase()) disTop = 'true';
+            return res.render('myprofile', {layout:'layout-royal', realdrive:drive, fullname:user.email, level:user.level, category:'none', mailfiles:user.mailfiles, docPers:[], path:disDrive + 'PDF-temp/'+ disFile +'.pdf', files:sortArr, disp:disFile, branch:user.group, disTop:disTop, docBr:docBr});
           } else {
             return res.render('myprofile', {layout:'layout-user', realdrive:drive, fullname:user.email, level:user.level, runscanai:'false', mailfiles:user.mailfiles, docPers:[], path:disDrive + 'PDF-temp/'+ disFile +'.pdf', files:sortArr, disp:disFile, branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag});
           }

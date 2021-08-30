@@ -16,27 +16,10 @@ function triggerButFile(){
         //toggle digital signature verification
         let parseData = JSON.parse(data);
         parseData.forEach(function (disData){
-          let signature = disData.signres;
-          if (signature){
-            if (signature.message!='signed'){
-              $('#disDigCert').hide();
-            } else {
-              $('#disDigCert').show();
-              setCookie('digitalcert', JSON.stringify(signature),1);
-              if (signature.verified) {
-                $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-success" type="button" onclick="displaycertinfo()"> <i class="fa fa-check"></i> Valid Digital Signature </button>&nbsp;');
-              } else {
-                $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-danger" type="button" onclick="displaycertinfo()"> <i class="fa fa-times"></i> Invalid Digital Signature </button>&nbsp;');
-              }
-            }
-          }
+          openfilevalidatecert(disData.signres);
         });
         //check if mobile browser
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
-          document.getElementById('disContent').style.display="none";
-          document.getElementById('disContentMobile').style.display="";
-          loadPDFtoCanvas($('#disPath').val());
-        }
+        displayforMobile();
       }
     });
     setCookie('mailnoti','false');
@@ -47,12 +30,10 @@ function triggerButFile(){
       document.getElementById("Page").style.display = "none";
       modalDisplay('fileopen','D:/drive'); //perform function when opening file.....initialize directory
     } else { //if file is already selected.....the page is only reloaded
-      $('#fileroute').val(getCookie('fileAI'));selChose();
+      //assign element values for the opened file
+      $('#fileroute').val(getCookie('fileAI'));selChose();$('#overlay').show();
       $('#newfile').val(getCookie('fileAI'));$("#selClas").val(getCookie('clasAI'));
-      $('#disPath').val(getCookie('fileOpn'));
-      $('#selTag').val(JSON.parse(getCookie('tagAI')));
-      //reload pdf page
-      $('#overlay').show();
+      $('#disPath').val(getCookie('fileOpn'));$('#selTag').val(JSON.parse(getCookie('tagAI')));
       //query updated file to be loaded
       var todo = {path:getCookie('realpath'),file:$('#newfile').val()};
       $.ajax({
@@ -60,39 +41,44 @@ function triggerButFile(){
         url: '/fileopen',
         data: todo,
         success: function(data){
-
           $('#overlay').hide();
-          PDFObject.embed(getCookie('fileOpn'), "#pdf_view");
-          queryDoc();
+          PDFObject.embed(getCookie('fileOpn'), "#pdf_view"); //load file on the canvas
+          queryDoc(); //store metadata of the document...go to common.js
           //toggle digital signature verification
           let parseData = JSON.parse(data);
           parseData.forEach(function (disData){
-            let signature = disData.signres;
-            if (signature){
-              if (signature.message!='signed'){
-                $('#disDigCert').hide();
-              } else {
-                $('#disDigCert').show();
-                setCookie('digitalcert', JSON.stringify(signature),1);
-                if (signature.verified) {
-                  $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-success" type="button" onclick="displaycertinfo()"> <i class="fa fa-check"></i> Valid Digital Signature </button>&nbsp;');
-                } else {
-                  $('#disDigCert').html('<button  id="digcertDraw" class="btn btn-sm btn-danger" type="button" onclick="displaycertinfo()" > <i class="fa fa-times"></i> Invalid Digital Signature </button>&nbsp;');
-                }
-              }
-            }
+            openfilevalidatecert(disData.signres);
           });
-          //for mobile phone users
-          if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
-            document.getElementById('disContent').style.display="none";
-            document.getElementById('disContentMobile').style.display="";
-            loadPDFtoCanvas($('#disPath').val());
-          }
+          displayforMobile(); //display for mobile browser
         }
       });
     }
   }
-
+}
+//function to match the display for the mobile browser
+function displayforMobile(){
+  //for mobile phone users
+  if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
+    document.getElementById('disContent').style.display="none";
+    document.getElementById('disContentMobile').style.display="";
+    loadPDFtoCanvas($('#disPath').val());
+  }
+}
+//function for validating attched digital certificate of the file openned
+function openfilevalidatecert(signres){
+  if (signres){
+    if (signres.message!='signed'){
+      $('#disDigCert').hide();
+    } else {
+      $('#disDigCert').show();
+      mainnfo = [signres.authenticity,signres.integrity,signres.expired,signres.meta.certs[0].issuedBy,signres.meta.certs[0].issuedTo, signres.meta.certs[0].validityPeriod];
+      if (signres.verified) {
+        $('#disDigCert').html("<button  id='digcertDraw' class='btn btn-sm btn-success' type='button' onclick='displaycertinfoparam("+JSON.stringify(mainnfo)+")'> <i class='fa fa-check'></i> Verified Digital Certificate </button>&nbsp;");
+      } else {
+        $('#disDigCert').html("<button  id='digcertDraw' class='btn btn-sm btn-danger' type='button' onclick='displaycertinfoparam("+JSON.stringify(mainnfo)+")'> <i class='fa fa-times'></i> Unverified Digital Certificate </button>&nbsp;");
+      }
+    }
+  }
 }
 //handle opening of file
 function handleOpenFile(data){
@@ -160,7 +146,6 @@ function handleOpenFile(data){
           arrComm.push({branch:comm.branch,content:comm.content});
         });
         setCookie('arrComm',JSON.stringify(arrComm),1); //set comments
-
       });
     }
 
@@ -171,11 +156,7 @@ function handleOpenFile(data){
       if (getCookie('showExploreFile')=='true'){
         setCookie('showExploreFile','false',1);
         showFile(getCookie('fileAI'), getCookie('realpath'), 'fileopen'); //load the file selected from the explorer page.....from modal.js
-        if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))  {
-          document.getElementById('disContent').style.display="none";
-          document.getElementById('disContentMobile').style.display="";
-          loadPDFtoCanvas($('#disPath').val());
-        }
+        displayforMobile();
       } else triggerButFile(); //fire up opening of file with modal dialog
 
       //initialize elements in the page

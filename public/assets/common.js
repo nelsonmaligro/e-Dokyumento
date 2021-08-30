@@ -31,7 +31,7 @@ function updateSelectPage(){
 //handle click on signing
 $('#signDocBut').on('click',function(event){
   document.getElementById('canvasPDF').src = "/assets/signcanvas.html";
-  $('#divSign').show(); $('#origButtons').hide();
+  $('#divSign').show(); $('#origButtons').hide();$('#disAnnotate').hide();
   $('#disContent').hide();$('#disFrame').show();
   document.getElementById('disContentMobile').style.display="none";
   updateSelectPage();
@@ -92,26 +92,17 @@ $('#selPageSign').on('change', function(event){
   }
 });
 
-//function to display certificate information in an alert box
-function displaycertinfo() {
-  let digicert = JSON.parse(getCookie('digitalcert'));
-  alert("Digital Signature Status: " + digicert.message + "\n" +
-    "Verified:" + digicert.verified + "     Authenticity:" + digicert.verified + "     Integrity:" + digicert.integrity + "\n" +
-    "=======================================" + "\n" +
-    "Issued By: " + digicert.meta.certs[0].issuedBy.commonName + ',' + digicert.meta.certs[0].issuedBy.organizationName + '\n' +
-    "Issued By: " + digicert.meta.certs[0].issuedTo.commonName + ',' + digicert.meta.certs[0].issuedTo.organizationName + '\n' +
-    "Validity Period: " + digicert.meta.certs[0].validityPeriod.notAfter);
-}
 //function to display certification information in a modal dialog box
 function displaycertinfoparam(data) {
-  let digicert = JSON.parse(data);
+  digicert = data;
+  if (!Array.isArray(data)) digicert = JSON.parse(data);
   //[signres.authenticity,signres.integrity,signres.expired,signres.meta.certs[0].issuedBy,signres.meta.certs[0].issuedTo, signres.meta.certs[0].validityPeriod]
-  $('#certmodDisp').html('<h6>Intermediate/Signing CA Verified:&nbsp;&nbsp;' + JSON.stringify(digicert[0]).toUpperCase() + '</h6>' +
+  $('#certmodDisp').html('<h6>Trusted CA Verified:&nbsp;&nbsp;' + JSON.stringify(digicert[0]).toUpperCase() + '</h6>' +
     '<h6> Document Integrity             :  ' + JSON.stringify(digicert[1]).toUpperCase() + '</h6>' +
     '<hr />' +
     '<h6>Certificate Details :</h6>' +
-    '<br>Issued By:&nbsp;' + JSON.stringify(digicert[3].commonName) + ',' + JSON.stringify(digicert[3].organizationName) +
-    '<br>Issued To:&nbsp;' + JSON.stringify(digicert[4].commonName) + ',' + JSON.stringify(digicert[4].organizationName) +
+    'Issued By:&nbsp;' + JSON.stringify(digicert[3].commonName) +
+    '<br>Issued To:&nbsp;' + JSON.stringify(digicert[4].commonName) +
     '<br>Validity Period:&nbsp;' + JSON.stringify(digicert[5].notAfter)
   );
   $('#certtoggleDialog').click();
@@ -357,7 +348,7 @@ function loadRefEnc() {
     if (disComm.length > 0) arrComm = disComm;
     $('#allComments').empty();
     arrComm.reverse().forEach(function(comm) {
-      var name = comm.branch.split('-');
+      var name = comm.branch.split('---');
       $('#allComments').append(" " +
         "<div id='" + comm.branch + "' class='box'> " +
         "<a style='color:black;font-family:arial;'><i class='fa fa-tag'></i>&nbsp;" + name[0] +
@@ -389,6 +380,8 @@ function selChose() {
 }
 //handle main file onclick
 function gotoMain() {
+  location.reload();
+  /*
   $('#disPath').val(getCookie('fileOpn'));
   PDFObject.embed(getCookie('fileOpn'), "#pdf_view"); //reload the main page
   setCookie('newpathdraw', getCookie('fileOpn'), 1);
@@ -427,7 +420,33 @@ function gotoMain() {
     document.getElementById('disContentMobile').style.display = "";
     loadPDFtoCanvas($('#disPath').val());
   }
+  */
 }
+//function to display QR Code
+function popUpQR(){
+  let todo = {user: getCookie('me')};
+  $.ajax({
+    type: 'POST',
+    url: '/showqrcode',
+    data: todo,
+    success: function(data) {
+       qrwindow = window.open("/drive/PDF-temp/"+getCookie('me')+".login.qr.png","My QR Code",'resizable=yes,top=0,width=100,heigh=300');
+       let loop = setInterval(function() {
+         if(qrwindow.closed) {
+           $.ajax({
+            type: 'POST',
+            url: '/delqrcode',
+            data: todo,
+            success: function(data) {
+            }
+          });
+          clearInterval(loop);
+         }
+       },2000);
+    }
+  });
+}
+
 //handle close popup disWindow
 function closWindow() {
   disWindow.close();
@@ -471,7 +490,7 @@ function addComment() {
   if ($('#commentinput').val() != "") {
     $('#addCommentBut').hide();
     var disID = getCookie('me');
-    disBranch = disID + '-' + Date.now().toString();
+    disBranch = disID + '---' + Date.now().toString();
     //update cookie
     var arrComment = [];
     try {
@@ -651,8 +670,38 @@ $(document).ready(function() {
   loadPDFtoCanvas($('#disPath').val());
 
 });
+//function to validate digital certificate in the signature when reference and enclosure is clicked
+let mainnfo = [];
+function validateDigiSignDoc(signres){
+  if (JSON.stringify(signres)!='[]') {
+    mainnfo = [signres.authenticity,signres.integrity,signres.expired,signres.meta.certs[0].issuedBy,signres.meta.certs[0].issuedTo, signres.meta.certs[0].validityPeriod];
+    //setCookie('digitalcert',JSON.stringify(mainnfo),1);
+    if (signres.verified){
+      if (window.location.toString().includes("/incoming")) { //if attachment is openned in web temp folder(/incoming)
+        $('#digcertDrawAttach').attr('class', 'btn btn-sm btn-success');
+        $('#digcertDrawAttach').html("<i class='fa fa-check'></i> Verified Digital Cerificate");$('#disDigCertAttach').show();
+      } else { //if attachment is openned in server drive
+        $('#disDigCert').html("<button  id='digcertDraw' class='btn btn-sm btn-success' type='button' onclick='displaycertinfoparam("+JSON.stringify(mainnfo)+")'> <i class='fa fa-check'></i> Verified Digital Certificate </button>");
+        $('#disDigCert').show();
+      }
+    } else {
+      if (window.location.toString().includes("/incoming")) { //if attachment is openned in web temp folder(/incoming)
+        $('#digcertDrawAttach').attr('class', 'btn btn-sm btn-danger');
+        $('#digcertDrawAttach').html("<i class='fa fa-times'></i> Unverified Digital Certificate");$('#disDigCertAttach').show();
+      } else { //if attachment is openned in server drive
+        $('#disDigCert').html("<button  id='digcertDraw' class='btn btn-sm btn-danger' type='button' onclick='displaycertinfoparam("+JSON.stringify(mainnfo)+")'> <i class='fa fa-times'></i> Unverified Digital Cerificate </button>");
+        $('#disDigCert').show();
+      }
+    }
+  } else { //if no attached digital certificate
+    mainnfo = [];$('#disDigCert').hide();$('#disDigCertAttach').hide(); //hide validation info button
+  }
 
-
+}
+//handle digital certificate info button clicked
+$('#digcertDrawAttach').on('click', (event)=>{
+  if (mainnfo)  displaycertinfoparam(JSON.stringify(mainnfo));
+});
 
 //function to Load the PDF to the canvas
 function loadPDFtoCanvas(url) {

@@ -22,61 +22,63 @@ utilsdocms.getExecBranch((branch)=>{execBranch=branch;}); //get all executive br
 dbhandle.settingDis((setting)=>{
   driveMain = setting.maindrive;
 
-  //handle updating document database
+  //function for initializing and updating routing slip
+  function initializeRouteslip(origfile, newfile, res) {
+    //initialize routing slip
+    var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
+    makeDir(driveMain + 'Routing Slip/',year, month); //ensure presence of folder
+    var routslipTemp = driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+newfile+'.pdf'; //initialize with newfile
+    if ((res) && (res.routeslip.trim()!='')) routslipTemp = res.routeslip; //if routeslip is present in the DB
+    //copy routingslip from web temp folder to the drive/routingslip
+    if (fs.existsSync(drivePublic + 'PDF-temp/route-'+ origfile +'.pdf')) fs.copyFileSync(drivePublic + 'PDF-temp/route-'+ origfile +'.pdf', routslipTemp);
+    return routslipTemp;
+  }
+  //handle updating document database witch content //slow
   function updateDBdoc(dst, file, req){
     dbhandle.docFind(dst + file, function(res){
-      var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
-      makeDir(driveMain + 'Routing Slip/',year, month);
+      //initialize and Update routing slip
+      let routslipTemp = initializeRouteslip(req.body.fileroute,req.body.newfile, res);
+      //scan the document and extract the text
       getcontent.getContent(dst + req.body.newfile,req.body.newfile,function (discontent){
-        //console.log(req.body.fileroute+':'+req.body.newfile);
-        if (fs.existsSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf')) fs.copyFileSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf',driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.newfile+'.pdf');
-        var routslipTemp = driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.newfile+'.pdf';
-        discontent = discontent.substring(0,2000);
+        discontent = discontent.substring(0,2000); //get only 2000 characters for searching
+        //get reference
         var arrRef = JSON.parse(req.body.refs); newRef = [];
         arrRef.forEach(function (ref){
           if (ref.path.substring(ref.path.length-1)=="/") newRef.push(ref.path+ref.file);
           else newRef.push(ref.path+'/'+ref.file);
         });
+        //get enclosure
         var arrEnc = JSON.parse(req.body.encs); newEnc = [];
         arrEnc.forEach(function (enc){
           if (enc.path.substring(enc.path.length-1)=="/") newEnc.push(enc.path+enc.file);
           else newEnc.push(enc.path+'/'+enc.file);
         });
-        var arrComment = JSON.parse(req.body.comments); newComm = [];
-        arrComment.forEach(function (comment){
-          newComm.push({branch:comment.branch, content:comment.content});
-        });
-        //console.log( dst+req.body.newfile+'#'+req.body.class+':'+req.body.tag+':'+newRef+':'+newEnc+':'+newComm)
-        if (!res) dbhandle.docCreate (generateID(), req.body.newfile, dst+req.body.newfile, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(dst + req.body.newfile).size, discontent, routslipTemp, newRef, newEnc, newComm);
-        else  dbhandle.docEdit (res.id,req.body.newfile, dst+req.body.newfile, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(dst + req.body.newfile).size, discontent, routslipTemp, newRef, newEnc, newComm);
+        //Update document DB metadata
+        if (!res) dbhandle.docCreate (generateID(), req.body.newfile, dst+req.body.newfile, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(dst + req.body.newfile).size, discontent, routslipTemp, newRef, newEnc, []);
+        else  dbhandle.docEdit (res.id,req.body.newfile, dst+req.body.newfile, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(dst + req.body.newfile).size, discontent, routslipTemp, newRef, newEnc);
       });
     });
   }
-  //handle updating document database with no content
+  //handle updating document database with no content...faster
   function updateDBdocNoContent(dst, file, req){
     dbhandle.docFind(dst + file, function(res){
-      var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
-      makeDir(driveMain + 'Routing Slip/',year, month);
-
-        if (fs.existsSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf')) fs.copyFileSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf',driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.newfile+'.pdf');
-        var routslipTemp = driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.newfile+'.pdf';
+        //initialize and Update routing slip
+        let routslipTemp = initializeRouteslip(req.body.fileroute,req.body.newfile, res);
+        //get references
         var arrRef = JSON.parse(req.body.refs); newRef = [];
         arrRef.forEach(function (ref){
           if (ref.path.substring(ref.path.length-1)=="/") newRef.push(ref.path+ref.file);
           else newRef.push(ref.path+'/'+ref.file);
         });
+        //get enclosures
         var arrEnc = JSON.parse(req.body.encs); newEnc = [];
         arrEnc.forEach(function (enc){
           if (enc.path.substring(enc.path.length-1)=="/") newEnc.push(enc.path+enc.file);
           else newEnc.push(enc.path+'/'+enc.file);
         });
-        var arrComment = JSON.parse(req.body.comments); newComm = [];
-        arrComment.forEach(function (comment){
-          newComm.push({branch:comment.branch, content:comment.content});
-        });
-        //console.log( dst+req.body.newfile+'#'+req.body.class+':'+req.body.tag+':'+newRef+':'+newEnc+':'+newComm)
-        if (!res) dbhandle.docCreate (generateID(), req.body.newfile, dst+req.body.newfile, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(dst + req.body.newfile).size, '', routslipTemp, newRef, newEnc, newComm);
-        else  dbhandle.docEdit (res.id,req.body.newfile, dst+req.body.newfile, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(dst + req.body.newfile).size, '', routslipTemp, newRef, newEnc, newComm);
+        //Update document DB metadata
+        if (!res) dbhandle.docCreate (generateID(), req.body.newfile, dst+req.body.newfile, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(dst + req.body.newfile).size, '', routslipTemp, newRef, newEnc, []);
+        else  dbhandle.docEdit (res.id,req.body.newfile, dst+req.body.newfile, req.body.class, req.body.user, JSON.parse(req.body.tag), Date.now().toString(), fs.statSync(dst + req.body.newfile).size, '', routslipTemp, newRef, newEnc);
     });
   }
   //handle updating document database no refence and enclosure
@@ -84,25 +86,11 @@ dbhandle.settingDis((setting)=>{
     dbhandle.docFind(src + req.body.fileroute, function(res){
       if (res) {
         dbhandle.docFind(dst + req.body.fileroute, function(disRes){
-          var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
-          makeDir(driveMain + 'Routing Slip/',year, month);
-          //olddst = dst; dst = dst + req.body.fileroute;
-          if (fs.existsSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf')) fs.copyFileSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf',driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.fileroute+'.pdf');
-          var routslipTemp = driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.fileroute+'.pdf';
-          var arrComment = JSON.parse(req.body.comments); let newComm = [];
-          if (disRes) newComm = disRes.comment;
-          arrComment.forEach(function (comment){
-            let nothere = true;
-            if (disRes){
-              disRes.comment.forEach((comme)=>{
-                if (comme.branch.toUpperCase() == comment.branch.toUpperCase()) nothere = false;
-              });
-            }
-            if (nothere) {newComm.push({branch:comment.branch, content:comment.content});}
-          });
-
-          if (!disRes) dbhandle.docCreate (generateID(), req.body.fileroute, dst+req.body.fileroute, res.category, res.author, res.projects, res.deyt, res.size, res.content, routslipTemp, res.reference, res.enclosure, newComm);
-          else dbhandle.docUpdateNoRefEncIncoming(dst + req.body.fileroute, routslipTemp, newComm);
+          //initialize and Update routing slip
+          let routslipTemp = initializeRouteslip(req.body.fileroute,req.body.fileroute, res);
+          //Update document DB metadata
+          if (!disRes) dbhandle.docCreate (generateID(), req.body.fileroute, dst+req.body.fileroute, res.category, res.author, res.projects, res.deyt, res.size, res.content, routslipTemp, res.reference, res.enclosure, []);
+          else dbhandle.docUpdateNoRefEncIncoming(dst + req.body.fileroute, routslipTemp);
         });
       }
     });
@@ -111,18 +99,12 @@ dbhandle.settingDis((setting)=>{
   function updateDBdocNoRefEnc(src, dst, req){
     dbhandle.docFind(src + req.body.fileroute, function(res){
       if (res){
-        var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
-        makeDir(driveMain + 'Routing Slip/',year, month);
-        //olddst = dst; dst = dst + req.body.fileroute;
-        if (fs.existsSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf')) fs.copyFileSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf',driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.fileroute+'.pdf');
-        var routslipTemp = driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.fileroute+'.pdf';
-        var arrComment = JSON.parse(req.body.comments); newComm = [];
-        arrComment.forEach(function (comment){
-          newComm.push({branch:comment.branch, content:comment.content});
-        });
-        dbhandle.docFind(dst + req.body.fileroute, function(disRes){
-          if ((disRes) && (res.id!=disRes.id)) {dbhandle.docDel(dst + req.body.fileroute,()=>{dbhandle.docUpdateNoRefEnc(res.id, dst + req.body.fileroute, routslipTemp, newComm);});}
-          else dbhandle.docUpdateNoRefEnc(res.id, dst + req.body.fileroute, routslipTemp, newComm);
+        //initialize and Update routing slip
+        let routslipTemp = initializeRouteslip(req.body.fileroute,req.body.fileroute, res);
+        //update source document DB for the destination branch....change path of the file to the destination branch
+        dbhandle.docFind(dst + req.body.fileroute, function(disRes){ //search if destination branch has same doc...then delete it
+          if ((disRes) && (res.id!=disRes.id)) {dbhandle.docDel(dst + req.body.fileroute,()=>{dbhandle.docUpdateNoRefEnc(res.id, dst + req.body.fileroute, routslipTemp);});}
+          else dbhandle.docUpdateNoRefEnc(res.id, dst + req.body.fileroute, routslipTemp);
         });
       }
     });
@@ -131,18 +113,12 @@ dbhandle.settingDis((setting)=>{
   function updateDBdocRoyal(src, dst, req){
     dbhandle.docFind(src, function(res){
       if (res){
-        var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
-        makeDir(driveMain + 'Routing Slip/',year, month);
-        //olddst = dst; dst = dst + req.body.fileroute;
-        if (fs.existsSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf')) fs.copyFileSync(drivePublic + 'PDF-temp/route-'+ req.body.fileroute +'.pdf',driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.fileroute+'.pdf');
-        var routslipTemp = driveMain+'Routing Slip/'+year+'/'+month+'/'+'route-'+req.body.fileroute+'.pdf';
-        var arrComment = JSON.parse(req.body.comments); newComm = [];
-        arrComment.forEach(function (comment){
-          newComm.push({branch:comment.branch, content:comment.content});
-        });
-        dbhandle.docFind(dst, function(disRes){
-          if ((disRes) && (res.id!=disRes.id)) {dbhandle.docDel(dst,()=>{dbhandle.docUpdateNoRefEnc(res.id, dst, routslipTemp, newComm);});}
-          else dbhandle.docUpdateNoRefEnc(res.id, dst, routslipTemp, newComm);
+        //initialize and Update routing slip
+        let routslipTemp = initializeRouteslip(req.body.fileroute,req.body.fileroute, res);
+        //update source document DB for the destination branch....change path of the file to the destination branch
+        dbhandle.docFind(dst, function(disRes){ //search if destination branch has same doc...then delete it
+          if ((disRes) && (res.id!=disRes.id)) {dbhandle.docDel(dst,()=>{dbhandle.docUpdateNoRefEnc(res.id, dst, routslipTemp);});}
+          else dbhandle.docUpdateNoRefEnc(res.id, dst, routslipTemp);
         });
       }
     });
@@ -221,16 +197,20 @@ dbhandle.settingDis((setting)=>{
       branches.forEach (function (branch){
         //check if not executive branches
         if ((!req.body.branch.includes(branch)) && (!execBranch.includes(branch)) && (branch.toUpperCase!='ALL BRANCHES')) {
-        //if (!req.body.branch.includes(branch) && (branch.toUpperCase()!="EXO") && (branch.toUpperCase()!="DN6") && (branch.toUpperCase()!="N6") && (branch.toUpperCase()!="ASST.G.M.") && (branch.toUpperCase()!="G.M.") && (branch.toUpperCase()!="SECRETARY-RECEIVING")) {
           var dst = drivePublic + branch +"/";
           if (!fs.existsSync(drivePublic + branch)) fs.mkdirSync(drivePublic + branch);
-          if ((dst + req.body.fileroute).toUpperCase() != newsrc.toUpperCase())  {//not the originator
-            if (!fs.existsSync(dst + req.body.fileroute)) fs.copyFileSync(newsrc, dst+req.body.fileroute); //prevent overwrite
-            updateDBdocNoRefEncIncoming(src, dst, req);//Update document database
-          }
+          if (!fs.existsSync(dst + req.body.fileroute)) fs.copyFileSync(newsrc, dst+req.body.fileroute); //prevent overwrite
+          updateDBdocNoRefEncIncoming(src, dst, req);//Update document database
         };
       });
     };
+    //check all branches with same file....then update DB of the file
+    branches.forEach((item, i) => {//iterate throug branches
+      if ((fs.existsSync(drivePublic+item+'/'+req.body.fileroute)) && (!req.body.branch.includes(item))) {
+        var dst = drivePublic + item +"/";
+        updateDBdocNoRefEncIncoming(src, dst, req);//Update document database
+      };
+    });
     //remove from temp after copy to incoming
     if (!req.body.branch.toString().toUpperCase().includes('ALL BRANCHES')) {
       //dbhandle.docDel(newsrc,()=>{});
@@ -262,7 +242,7 @@ dbhandle.settingDis((setting)=>{
       fs.copyFile(newsrc, dstincoming, function(err) {
         //if (err) console.log(err);
         console.log("Successfully copied to drive/incoming folder!");
-        if (usrLvl.toUpperCase()==='SECRETARY') updateDBdoc(incoming, req.body.newfile, req);//update database
+        if (usrLvl.toUpperCase()==='SECRETARY') updateDBdoc(incoming, req.body.newfile, req);//update DB with content
         var dst =  "";
         req.body.branch.forEach (function(branch){ //iterate through branches and route doc
           if (branch.toUpperCase()!='ALL BRANCHES')  {
@@ -280,27 +260,30 @@ dbhandle.settingDis((setting)=>{
         if (req.body.branch.toString().toUpperCase().includes('ALL BRANCHES')){
           branches.forEach (function (branch){
             if ((!req.body.branch.includes(branch)) && (!execBranch.includes(branch)) && (branch.toUpperCase!='ALL BRANCHES')) {
-            //if (!req.body.branch.includes(branch) && (branch.toUpperCase()!="EXO") && (branch.toUpperCase()!="DN6") && (branch.toUpperCase()!="N6")  && (branch.toUpperCase()!="ASST.G.M.") && (branch.toUpperCase()!="G.M.") && (branch.toUpperCase()!="SECRETARY-RECEIVING")) {
               dst = drive + branch +"/"+ req.body.newfile;
               if (!fs.existsSync(drive + branch)) fs.mkdirSync(drive + branch);
-              if (path.resolve(dst).toUpperCase() != path.resolve(newsrc).toUpperCase()) { //not the Originator
-                if (!fs.existsSync(dst)) fs.copyFileSync(dstincoming, dst);
-                updateDBdocNoContent(drive + branch +"/", req.body.newfile, req);//update database
-              }
+              if (!fs.existsSync(dst)) fs.copyFileSync(dstincoming, dst);
+              updateDBdocNoContent(drive + branch +"/", req.body.newfile, req);//update database
             };
           });
         };
+        //check all branches with same file....then update DB of the file
+        branches.forEach((item, i) => {//iterate throug branches
+          if ((fs.existsSync(drivetmp+item+'/'+req.body.newfile)) && (!req.body.branch.includes(item))) {
+            updateDBdocNoContent(drive + item +"/", req.body.newfile, req);//update database
+          };
+        });
         //remove from temp after copy to incoming
         setTimeout(()=>{
-          if (req.body.save!='openroute'){
-            if (!req.body.branch.toString().toUpperCase().includes('ALL BRANCHES')) {
-              fs.unlink(newsrc, async function(err) {
+          if (req.body.save!='openroute'){//if routing inside the web temp folder ...not through open file command
+            if (!req.body.branch.toString().toUpperCase().includes('ALL BRANCHES')) { //if originator is not included as recipient
+              fs.unlink(newsrc, async function(err) { //remove the source file
                 if (!err) console.log('File was removed from temp');
                 await res.json('successful');
               });
             } else {
-              if (usrLvl.toUpperCase()==='SECRETARY') {
-                fs.unlink(newsrc, async function(err) {
+              if (usrLvl.toUpperCase()==='SECRETARY') { //if sender is secretary
+                fs.unlink(newsrc, async function(err) { //remove the source file
                   if (!err) console.log('File was removed from temp');
                   await res.json('successful');
                 });

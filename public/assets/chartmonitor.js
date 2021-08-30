@@ -152,9 +152,15 @@ function updateCanvas(data){
   myTable.clear();disFiles = []; newDatasets = [];
   var arrData = JSON.parse(data);
   var count = 0; bodyCount = 0;
+  //get list of titles, get duplicates, and store in Array
+  arrTit = []; arrData.forEach((item) => {arrTit.push(item.title.substring(0,15));});
+  dupTit = arrTit.filter((item, index) => arrTit.indexOf(item) !== index);
   //iterate through files
-  arrData.forEach(function (items, index){
-    disFiles.push(items.title.substring(0,15)); //get the title of the file (15 characters only)
+  arrData.forEach(function (items, index) {
+    //prevent duplicate title
+    let disTitle = items.title.substring(0,15);
+    if (dupTit.includes(items.title.substring(0,15))) disTitle = items.title.substring(0,13)+'~'+index.toString();
+    disFiles.push(disTitle); //get the title of the file (15 characters only)
     var disSets = [];
     //iterate all branches routed in the file
     items.route.reverse().forEach(function (route){
@@ -164,7 +170,7 @@ function updateCanvas(data){
         comma = ",";
       });
       //create points for the branch on the canvas
-      disSets.push({x:route.deyt, y:items.title.substring(0,15), label:branch, filename:items.filename, path:items.filepath});
+      disSets.push({x:route.deyt, y:disTitle, label:branch, filename:items.filename, path:items.filepath});
     });
     //assign color for the point
     disColor = randomColor(1);

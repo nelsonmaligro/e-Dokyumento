@@ -3,13 +3,17 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var _exportNames = {
+  SignPdf: true,
+  SignPdfError: true
+};
 Object.defineProperty(exports, "SignPdfError", {
   enumerable: true,
   get: function () {
     return _SignPdfError.default;
   }
 });
-exports.default = exports.SignPdf = exports.DEFAULT_BYTE_RANGE_PLACEHOLDER = void 0;
+exports.default = exports.SignPdf = void 0;
 
 var _nodeForge = _interopRequireDefault(require("node-forge"));
 
@@ -17,14 +21,37 @@ var _SignPdfError = _interopRequireDefault(require("./SignPdfError"));
 
 var _helpers = require("./helpers");
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+Object.keys(_helpers).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  if (key in exports && exports[key] === _helpers[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _helpers[key];
+    }
+  });
+});
 
-const DEFAULT_BYTE_RANGE_PLACEHOLDER = '**********';
-exports.DEFAULT_BYTE_RANGE_PLACEHOLDER = DEFAULT_BYTE_RANGE_PLACEHOLDER;
+var _const = require("./helpers/const");
+
+Object.keys(_const).forEach(function (key) {
+  if (key === "default" || key === "__esModule") return;
+  if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  if (key in exports && exports[key] === _const[key]) return;
+  Object.defineProperty(exports, key, {
+    enumerable: true,
+    get: function () {
+      return _const[key];
+    }
+  });
+});
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 class SignPdf {
   constructor() {
-    this.byteRangePlaceholder = DEFAULT_BYTE_RANGE_PLACEHOLDER;
+    this.byteRangePlaceholder = _const.DEFAULT_BYTE_RANGE_PLACEHOLDER;
     this.lastSignature = null;
   }
 
@@ -45,16 +72,17 @@ class SignPdf {
 
     let pdf = (0, _helpers.removeTrailingNewLine)(pdfBuffer); // Find the ByteRange placeholder.
 
-    const byteRangePlaceholder = [0, `/${this.byteRangePlaceholder}`, `/${this.byteRangePlaceholder}`, `/${this.byteRangePlaceholder}`];
-    const byteRangeString = `/ByteRange [${byteRangePlaceholder.join(' ')}]`;
-    const byteRangePos = pdf.indexOf(byteRangeString);
+    const {
+      byteRangePlaceholder
+    } = (0, _helpers.findByteRange)(pdf);
 
-    if (byteRangePos === -1) {
-      throw new _SignPdfError.default(`Could not find ByteRange placeholder: ${byteRangeString}`, _SignPdfError.default.TYPE_PARSE);
-    } // Calculate the actual ByteRange that needs to replace the placeholder.
+    if (!byteRangePlaceholder) {
+      throw new _SignPdfError.default(`Could not find empty ByteRange placeholder: ${byteRangePlaceholder}`, _SignPdfError.default.TYPE_PARSE);
+    }
 
+    const byteRangePos = pdf.indexOf(byteRangePlaceholder); // Calculate the actual ByteRange that needs to replace the placeholder.
 
-    const byteRangeEnd = byteRangePos + byteRangeString.length;
+    const byteRangeEnd = byteRangePos + byteRangePlaceholder.length;
     const contentsTagPos = pdf.indexOf('/Contents ', byteRangeEnd);
     const placeholderPos = pdf.indexOf('<', contentsTagPos);
     const placeholderEnd = pdf.indexOf('>', placeholderPos);
@@ -65,7 +93,7 @@ class SignPdf {
     byteRange[2] = byteRange[1] + placeholderLengthWithBrackets;
     byteRange[3] = pdf.length - byteRange[2];
     let actualByteRange = `/ByteRange [${byteRange.join(' ')}]`;
-    actualByteRange += ' '.repeat(byteRangeString.length - actualByteRange.length); // Replace the /ByteRange placeholder with the actual ByteRange
+    actualByteRange += ' '.repeat(byteRangePlaceholder.length - actualByteRange.length); // Replace the /ByteRange placeholder with the actual ByteRange
 
     pdf = Buffer.concat([pdf.slice(0, byteRangePos), Buffer.from(actualByteRange), pdf.slice(byteRangeEnd)]); // Remove the placeholder signature
 
