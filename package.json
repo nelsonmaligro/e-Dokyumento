@@ -9,7 +9,7 @@
   "license": "ISC",
   "dependencies": {
     "annotator": "^2.0.0-dev.2",
-    "bcrypt": "^5.0.0",
+    "bcrypt": "^5.0.1",
     "body-parser": "^1.19.0",
     "browse-directory": "0.0.3",
     "child_process": "^1.0.2",
@@ -56,6 +56,6 @@
     "textract": "^2.5.0",
     "util": "^0.12.1",
     "word-extractor": "^0.3.0",
-    "xlsx": "^0.15.5"
+    "xlsx": "^0.17.3"
   }
 }

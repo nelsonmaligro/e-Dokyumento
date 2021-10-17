@@ -14,9 +14,10 @@ Note: since JSZip 3 removed critical functionality, this version assigns to the
 */
 (function(e){
 	if("object"==typeof exports&&"undefined"!=typeof module&&"undefined"==typeof DO_NOT_EXPORT_JSZIP)module.exports=e();
-	else if("function"==typeof define&&define.amd&&"undefined"==typeof DO_NOT_EXPORT_JSZIP){JSZipSync=e();define([],e);}
+	else if("function"==typeof define&&define.amd&&"undefined"==typeof DO_NOT_EXPORT_JSZIP){JSZipSync=e();define('j',[],e);}
 	else{
 		var f;
+		"undefined"!=typeof globalThis?f=globalThis:
 		"undefined"!=typeof window?f=window:
 		"undefined"!=typeof global?f=global:
 		"undefined"!=typeof $ && $.global?f=$.global:
@@ -328,9 +329,9 @@ DataReader.prototype = {
         // see implementations
     },
     /**
-     * Find the last occurence of a zip signature (4 bytes).
+     * Find the last occurrence of a zip signature (4 bytes).
      * @param {string} sig the signature to find.
-     * @return {number} the index of the last occurence, -1 if not found.
+     * @return {number} the index of the last occurrence, -1 if not found.
      */
     lastIndexOfSignature: function(sig) {
         // see implementations

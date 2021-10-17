@@ -87,25 +87,19 @@ module.exports = function(app, arrDB){
           if (result) {
             console.log('Release Document');
             var year = dateformat(Date.now(),'yyyy');var month = dateformat(Date.now(),'mmm').toUpperCase();
+            //merge the signed page and save to a new pdf file
             pdflib.mergePDF(publicstr+req.body.filepath, drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp+'PDF-temp/'+req.body.user+'.res.pdf', parseInt(req.body.num,10), () =>{
               new Promise ((resolve,reject)=>{
-                if (fs.existsSync(drive+user.group+'/Signature/' + id +'.cert.p12')) {
+                if (fs.existsSync(drive+user.group+'/Signature/' + id +'.cert.p12')) { //if digital certificate exist
+                  //add digital signature
                   let p12Buffer = fs.readFileSync(drive+user.group+'/Signature/' + id +'.cert.p12');
-                  //fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, disNewFile + '.sign.pdf');
-                  dochandle.convDoctoPDF(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf' + '.sign.pdf', function(){
-                    let pdfBuffer = fs.readFileSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf' + '.sign.pdf');
-                    pdfBuffer = plainAddPlaceholder({ pdfBuffer, reason: 'I approved and signed this document.', signatureLength: 1612,});
-                    //let buf64 = Buffer.from(req.body.crtx, 'base64')
+                    let pdfBuffer = fs.readFileSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf');
+                    pdfBuffer = plainAddPlaceholder({ pdfBuffer, reason: 'I approved and signed this document.',  name: id, });
                     let buf64 = fs.readFileSync(drive+user.group+'/Signature/' + id +'.cert.psk',"utf8");
                     buf64 = Buffer.from(buf64, 'base64');
-                    try {
-                      pdfBuffer = signer.sign(pdfBuffer, p12Buffer, {passphrase:buf64.toString("utf8")},);
-                      fs.writeFileSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf'+'.new.sign.pdf', pdfBuffer);
-                      fs.copyFileSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf' + '.new.sign.pdf', drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf'); //make a copy to drive folder
-                      resolve();
-                    } catch {resolve();}
-
-                  });
+                    pdfBuffer = signer.sign(pdfBuffer, p12Buffer, {passphrase:buf64.toString("utf8")},);
+                    fs.writeFileSync(drivetmp+'PDF-temp/'+req.body.fileroute+'.'+req.body.user+'.pdf', pdfBuffer);
+                    resolve();
                 } else resolve();
 
               }).then(()=>{

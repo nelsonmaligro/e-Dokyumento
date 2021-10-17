@@ -396,7 +396,7 @@ module.exports = function(app, arrDB) {
                     let result = readWebTempFolder(files,drivetmp +'incoming-temp/',req.params.file, boolFile);
                     let disFile = result.disFile, sortArr = result.sortArr;//assign result values
                     if ((boolFile) && (req.params.file=='release')) {disFile = req.params.relfile; } //if release file selected
-                    resolve({disFile:disFile,items:items});
+                    resolve({disFile:disFile,items:sortArr});
                   });
                 }).then((items) => { //read files inside the release web temp folder
                   new Promise((resolve,reject)=>{ //create new promise
@@ -420,7 +420,7 @@ module.exports = function(app, arrDB) {
                         }
                       } else { //if document is PDF, the verify the digital signature and return the PDF file
                         if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + 'incoming-temp/' + disFile);
-                        if (JSON.stringify(signRes)!='[]') { if (!signRes.message.includes("signed")) signRes = [];}
+                        if (JSON.stringify(signRes)!='[]') { if ((!signRes.message.includes("signed")) && (!signRes.message.includes("Multiple Signature")))  signRes = [];}
                         return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'incoming-temp', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'incoming-temp/'+ disFile, files:items, disp:disFile, docBr:docBr});
                       }
                     } else { // if secretary opens released files
@@ -432,7 +432,7 @@ module.exports = function(app, arrDB) {
                         });
                       } else { //if document is PDF, verify digital signature and return the PDF file
                         if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + 'Release/'+ disFile);
-                        if (JSON.stringify(signRes)!='[]') { if (!signRes.message.includes("signed")) signRes = [];}
+                        if (JSON.stringify(signRes)!='[]') { if ((!signRes.message.includes("signed")) && (!signRes.message.includes("Multiple Signature")))  signRes = [];}
                         return res.render('incomingadmin', { layout:'layout-receive', signres:signRes, realdrive:drive, level:user.level, release:relitems, branch:'Release', mailfiles:user.mailfiles, docPers:groups, path:disDrive + 'Release/'+ disFile, files:items, disp:disFile, docBr:docBr});
                       }
                     }
@@ -456,7 +456,7 @@ module.exports = function(app, arrDB) {
                         });
                       } else { //if document is PDF, verify digital signature and return the PDF file
                         if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + user.group +'/'+ disFile);
-                        if (JSON.stringify(signRes)!='[]') { if (!signRes.message.includes("signed")) signRes = [];}
+                        if (JSON.stringify(signRes)!='[]') { if ((!signRes.message.includes("signed")) && (!signRes.message.includes("Multiple Signature")))  signRes = [];}
                         return res.render('incomingroyal', {layout:'layout-royal', signres:signRes, realdrive:drive, category:disCat, mailfiles:user.mailfiles, docPers:groups, path:disDrive + user.group +'/'+ disFile, files:sortArr, disp:disFile, branch:user.group, docBr:uniqBr, disTop:disTop});
                       }
                     });
@@ -481,8 +481,7 @@ module.exports = function(app, arrDB) {
                         });
                       }else { //if document is PDF, verify digital signature and return the PDF file
                         if (disFile!='empty') signRes = utilsdocms.verifySign(drivetmp + user.group +'/'+ disFile);
-                        //console.log(signRes);
-                        if (JSON.stringify(signRes)!='[]') { if (!signRes.message.includes("signed")) signRes = [];}
+                        if (JSON.stringify(signRes)!='[]') { if ((!signRes.message.includes("signed")) && (!signRes.message.includes("Multiple Signature")))  signRes = [];}
                         return res.render('incomingbranch', {layout:'layout-user', signres:signRes, realdrive:drive, level:user.level,  runscanai:runScanAI, mailfiles:user.mailfiles, docPers:groups, path:disDrive + user.group +'/'+ disFile, files:sortArr, disp:disFile, branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag});
                       }
                     });

@@ -48,7 +48,7 @@ dbhandle.settingDis((setting)=>{
         else [disPage] = await newpdfDoc.copyPages(pagepdfDoc,[0]);
         newpdfDoc.addPage(disPage);
       }
-      const pdfBytes = await newpdfDoc.save();
+      const pdfBytes = await newpdfDoc.save({ useObjectStreams: false });
       fs.writeFileSync(dstPath, pdfBytes);
     } else console.log('sign PDF not found');
     callback();
@@ -64,7 +64,7 @@ dbhandle.settingDis((setting)=>{
       //const firstPage = pages[num];
       const [disPage] =  await newpdfDoc.copyPages(pdfDoc,[num]);
       newpdfDoc.addPage(disPage);
-      const pdfBytes = await newpdfDoc.save();
+      const pdfBytes = await newpdfDoc.save({ useObjectStreams: false });
       fs.writeFileSync(dstPath, pdfBytes);
       callback();
     } else console.log('error');

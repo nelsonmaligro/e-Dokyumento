@@ -1,5 +1,6 @@
 const forge = require('node-forge');
 const VerifyPDFError = require('./VerifyPDFError');
+const { getSignatureMeta } = require('./helpers/general');
 const {
   extractSignature,
   getMessageFromSignature,
@@ -13,11 +14,10 @@ const {
 const { extractCertificatesDetails } = require('./certificateDetails');
 
 module.exports = (pdf) => {
-   try {
 	const pdfBuffer = preparePDF(pdf);
+   try {
 	checkForSubFilter(pdfBuffer);
-  
-    const { signature, signedData, signatureMeta } = extractSignature(pdfBuffer);
+    const { signature, signedData, signatureMeta, byteRanges } = extractSignature(pdfBuffer);
     const message = getMessageFromSignature(signature);
     const {
       certificates,
@@ -69,8 +69,19 @@ module.exports = (pdf) => {
       integrity,
       expired,
       meta: { certs: parsedCerts, signatureMeta },
+	  signRange: byteRanges.length,
     });
   } catch (err) {
-    return ({ verified: false, message: err.message });
+
+	//Get Number of Signatures - Byte Ranges
+	const byteRangeStrings = pdf.toString().match(/\/ByteRange\s*\[{1}\s*(?:(?:\d*|\/\*{10})\s+){3}(?:\d+|\/\*{10}){1}\s*]{1}/g);
+	if (byteRangeStrings) {
+		//const byteRangePlaceholder = byteRangeStrings.find(s => s.includes(`/${'**********'}`));
+	    let byteRanges = byteRangeStrings.map(brs => brs.match(/[^[\s]*(?:\d|\/\*{10})/g));
+		let signatureMeta = getSignatureMeta(pdfBuffer);
+		return ({ verified: true, message: 'Multiple Signature', signRange: byteRanges.length, meta: signatureMeta });
+	} else return ({ verified: false, message: err.message, signRange: 0 });
+
+	
   }
 };

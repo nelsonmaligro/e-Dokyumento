@@ -468,7 +468,7 @@ module.exports = function(app, arrDB){
             });
           } else { //if pdf file then validate digital certificate and return filepath
             signRes = utilsdocms.verifySign(disPath+disFile);
-            if (JSON.stringify(signRes)!='[]') { if (!signRes.message.includes("signed")) signRes = [];} //if error on validation
+            if (JSON.stringify(signRes)!='[]') { if ((!signRes.message.includes("signed")) && (!signRes.message.includes("Multiple Signature")))  signRes = [];} //if error on validation
             fs.copyFile(disPath+disFile, drivetmp + 'PDF-temp/'+ disFile, function(err) {
               if (err) console.log(err);
               var arrBr = disDrive + 'PDF-temp/'+ disFile;
@@ -511,7 +511,7 @@ module.exports = function(app, arrDB){
                   fs.copyFile(disPath+disFile, drivetmp + 'PDF-temp/'+ disFile, function(err) {
                     if (err) console.log(err);
                     let signRes = utilsdocms.verifySign(drivetmp + 'PDF-temp/'+ disFile);
-                    if (JSON.stringify(signRes)!='[]') { if (!signRes.message.includes("signed")) signRes = [];} //if error on validation
+                    if (JSON.stringify(signRes)!='[]') { if ((!signRes.message.includes("signed")) && (!signRes.message.includes("Multiple Signature"))) signRes = [];} //if error on validation
                     var arrBr = [{signres:signRes, disComm:disComm, openpath:user.path, realpath:disPath, path:disDrive + 'PDF-temp/'+ disFile,files:sortArr,disp:disFile,branch:user.group,docClass:docClass, docTag:docTag, rout:rout, ref:ref, enc:enc, disClas:disClas, disTag:disTag}];
                     res.json(JSON.stringify(arrBr));
                   });

@@ -67,16 +67,22 @@ function displayforMobile(){
 //function for validating attched digital certificate of the file openned
 function openfilevalidatecert(signres){
   if (signres){
-    if (signres.message!='signed'){
+    if ((signres.message!='signed') && (signres.message!='Multiple Signature')) { //if no signature.... refer to controllers/verify/verifyPDF.js
       $('#disDigCert').hide();
     } else {
       $('#disDigCert').show();
-      mainnfo = [signres.authenticity,signres.integrity,signres.expired,signres.meta.certs[0].issuedBy,signres.meta.certs[0].issuedTo, signres.meta.certs[0].validityPeriod];
-      if (signres.verified) {
+      if (signres.message=='signed') { //single signature
+        mainnfo = [signres.authenticity.toString().toUpperCase(),signres.integrity.toString().toUpperCase(),signres.expired.toString().toUpperCase(),signres.meta.certs[0].issuedBy.commonName,signres.meta.certs[0].issuedTo.commonName, signres.meta.certs[0].validityPeriod.notAfter];
+        if (signres.verified) {
+          $('#disDigCert').html("<button  id='digcertDraw' class='btn btn-sm btn-success' type='button' onclick='displaycertinfoparam("+JSON.stringify(mainnfo)+")'> <i class='fa fa-check'></i> Verified Digital Certificate </button>&nbsp;");
+        } else {
+          $('#disDigCert').html("<button  id='digcertDraw' class='btn btn-sm btn-danger' type='button' onclick='displaycertinfoparam("+JSON.stringify(mainnfo)+")'> <i class='fa fa-times'></i> Unverified Digital Certificate </button>&nbsp;");
+        }
+      } else { //multiple signature
+        mainnfo = [signres.signRange.toString() + ' Valid Digital Signatures', 'TRUE', 'Multiple Date', 'Multiple Certificate','Originator: '+ signres.meta.name, 'Multiple Validity'];
         $('#disDigCert').html("<button  id='digcertDraw' class='btn btn-sm btn-success' type='button' onclick='displaycertinfoparam("+JSON.stringify(mainnfo)+")'> <i class='fa fa-check'></i> Verified Digital Certificate </button>&nbsp;");
-      } else {
-        $('#disDigCert').html("<button  id='digcertDraw' class='btn btn-sm btn-danger' type='button' onclick='displaycertinfoparam("+JSON.stringify(mainnfo)+")'> <i class='fa fa-times'></i> Unverified Digital Certificate </button>&nbsp;");
       }
+
     }
   }
 }
