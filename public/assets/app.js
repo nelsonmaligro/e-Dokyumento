@@ -122,8 +122,8 @@ function routetoBranchApp(branch){
   $('#routeBody').show();$('#routeattachPage').show();$('#disrouteTitle').hide();
   $('#divroyalCam').hide();$('#royalbutConfirm').hide();$('#routebutConfirm').show();
   //this is to establish exclusivity of the session and prevent inconsistent metadata to be sent
-  if (window.location.toString().includes("/incoming")) { //when routing documents
-    if (getCookie('viewBr') != "incomingroute") {
+  if ((window.location.toString().includes("/incoming")) || (window.location.toString().includes("/taskboard"))) { //when routing documents
+    if ((getCookie('viewBr') != "incomingroute") && (getCookie('viewBr') != "taskroute")) {
       alert('Multiple session opened! Repeat changes on metadata upon reloading...'); window.location.reload(); return;
     }
   } else if (window.location.toString().includes("/fileopen")) { //when opening files

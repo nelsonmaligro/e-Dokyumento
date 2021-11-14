@@ -97,13 +97,13 @@ function displaycertinfoparam(data) {
   digicert = data;
   if (!Array.isArray(data)) digicert = JSON.parse(data);
   //[signres.authenticity,signres.integrity,signres.expired,signres.meta.certs[0].issuedBy,signres.meta.certs[0].issuedTo, signres.meta.certs[0].validityPeriod]
-  $('#certmodDisp').html('<h6>Trusted CA Verified:&nbsp;&nbsp;' + JSON.stringify(digicert[0]).toUpperCase() + '</h6>' +
-    '<h6> Document Integrity             :  ' + JSON.stringify(digicert[1]).toUpperCase() + '</h6>' +
+  $('#certmodDisp').html('<h6>Trusted CA Verified:&nbsp;&nbsp;' + JSON.stringify(digicert[0]) + '</h6>' +
+    '<h6> Document Integrity             :  ' + JSON.stringify(digicert[1]) + '</h6>' +
     '<hr />' +
     '<h6>Certificate Details :</h6>' +
-    'Issued By:&nbsp;' + JSON.stringify(digicert[3].commonName) +
-    '<br>Issued To:&nbsp;' + JSON.stringify(digicert[4].commonName) +
-    '<br>Validity Period:&nbsp;' + JSON.stringify(digicert[5].notAfter)
+    'Issued By:&nbsp;' + JSON.stringify(digicert[3]) +
+    '<br>Issued To:&nbsp;' + JSON.stringify(digicert[4]) +
+    '<br>Validity Period:&nbsp;' + JSON.stringify(digicert[5])
   );
   $('#certtoggleDialog').click();
 }
@@ -673,10 +673,29 @@ $(document).ready(function() {
 //function to validate digital certificate in the signature when reference and enclosure is clicked
 let mainnfo = [];
 function validateDigiSignDoc(signres){
-  if (JSON.stringify(signres)!='[]') {
-    mainnfo = [signres.authenticity,signres.integrity,signres.expired,signres.meta.certs[0].issuedBy,signres.meta.certs[0].issuedTo, signres.meta.certs[0].validityPeriod];
-    //setCookie('digitalcert',JSON.stringify(mainnfo),1);
-    if (signres.verified){
+  if (JSON.stringify(signres)!='[]') { //with digital signature
+    if (signres.message=='signed') { //single signature
+      mainnfo = [signres.authenticity.toString().toUpperCase(),signres.integrity.toString().toUpperCase(),signres.expired,signres.meta.certs[0].issuedBy.commonName,signres.meta.certs[0].issuedTo.commonName, signres.meta.certs[0].validityPeriod.notAfter];
+      //setCookie('digitalcert',JSON.stringify(mainnfo),1);
+      if (signres.verified) { //with valid CA certificate
+        if (window.location.toString().includes("/incoming")) { //if attachment is openned in web temp folder(/incoming)
+          $('#digcertDrawAttach').attr('class', 'btn btn-sm btn-success');
+          $('#digcertDrawAttach').html("<i class='fa fa-check'></i> Verified Digital Cerificate");$('#disDigCertAttach').show();
+        } else { //if attachment is openned in server drive
+          $('#disDigCert').html("<button  id='digcertDraw' class='btn btn-sm btn-success' type='button' onclick='displaycertinfoparam("+JSON.stringify(mainnfo)+")'> <i class='fa fa-check'></i> Verified Digital Certificate </button>");
+          $('#disDigCert').show();
+        }
+      } else {
+        if (window.location.toString().includes("/incoming")) { //if attachment is openned in web temp folder(/incoming)
+          $('#digcertDrawAttach').attr('class', 'btn btn-sm btn-danger');
+          $('#digcertDrawAttach').html("<i class='fa fa-times'></i> Unverified Digital Certificate");$('#disDigCertAttach').show();
+        } else { //if attachment is openned in server drive
+          $('#disDigCert').html("<button  id='digcertDraw' class='btn btn-sm btn-danger' type='button' onclick='displaycertinfoparam("+JSON.stringify(mainnfo)+")'> <i class='fa fa-times'></i> Unverified Digital Cerificate </button>");
+          $('#disDigCert').show();
+        }
+      }
+    } else { //multiple signature
+      mainnfo = [signres.signRange.toString() + ' Valid Digital Signatures', 'TRUE', 'Multiple Date', 'Multiple Certificate','Originator: '+ signres.meta.name, 'Multiple Validity'];
       if (window.location.toString().includes("/incoming")) { //if attachment is openned in web temp folder(/incoming)
         $('#digcertDrawAttach').attr('class', 'btn btn-sm btn-success');
         $('#digcertDrawAttach').html("<i class='fa fa-check'></i> Verified Digital Cerificate");$('#disDigCertAttach').show();
@@ -684,19 +703,11 @@ function validateDigiSignDoc(signres){
         $('#disDigCert').html("<button  id='digcertDraw' class='btn btn-sm btn-success' type='button' onclick='displaycertinfoparam("+JSON.stringify(mainnfo)+")'> <i class='fa fa-check'></i> Verified Digital Certificate </button>");
         $('#disDigCert').show();
       }
-    } else {
-      if (window.location.toString().includes("/incoming")) { //if attachment is openned in web temp folder(/incoming)
-        $('#digcertDrawAttach').attr('class', 'btn btn-sm btn-danger');
-        $('#digcertDrawAttach').html("<i class='fa fa-times'></i> Unverified Digital Certificate");$('#disDigCertAttach').show();
-      } else { //if attachment is openned in server drive
-        $('#disDigCert').html("<button  id='digcertDraw' class='btn btn-sm btn-danger' type='button' onclick='displaycertinfoparam("+JSON.stringify(mainnfo)+")'> <i class='fa fa-times'></i> Unverified Digital Cerificate </button>");
-        $('#disDigCert').show();
-      }
     }
+
   } else { //if no attached digital certificate
     mainnfo = [];$('#disDigCert').hide();$('#disDigCertAttach').hide(); //hide validation info button
   }
-
 }
 //handle digital certificate info button clicked
 $('#digcertDrawAttach').on('click', (event)=>{

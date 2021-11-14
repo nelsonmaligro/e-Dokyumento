@@ -49,7 +49,7 @@ const plainAddPlaceholder = ({
   pdfBuffer,
   reason,
   contactInfo = 'emailfromp1289@gmail.com',
-  name = 'Name from p12',
+  name = 'e-Dokyu',
   location = 'Location from p12',
   signatureLength = _const.DEFAULT_SIGNATURE_LENGTH,
   subFilter = _const.SUBFILTER_ADOBE_PKCS7_DETACHED
