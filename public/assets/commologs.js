@@ -142,7 +142,7 @@ $(document).ready(function() {
   togglePanelHide(true);
   $('#formroute').hide();
   $('#overlay').hide()//display spinner
-  let except =['All Branches', 'EXO', 'DN6', 'N6','G.M.','ASST.G.M.','SECRETARY-RECEIVING'];
+  let except =['ALL BRANCHES', 'SECRETARY-RECEIVING'];
 
   var options = $('#tempSelBr option');
   var values = new Array;

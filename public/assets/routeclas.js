@@ -214,7 +214,10 @@ $(document).ready(function(){
             } else if (data=='noroute') { //this is to prevent duplicate routing of document
               alert('Simultaneous routing detected. You may delete this document if you are not the action branch.');
               togglePanelProc(false);
-            } else location.replace('/incoming');
+            } else {
+              if (window.location.toString().includes("/incoming")) location.replace('/incoming');
+              else if (window.location.toString().includes("/taskboard")) location.replace('/taskboard');
+            }
             //togglePanelProc(false);
           }
         });

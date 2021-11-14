@@ -48,6 +48,12 @@ module.exports = function(app, arrDB){
         getChartMonitor(req, res, id);
       });
     });
+    //get taskboard monitoring
+    app.get('/taskboard', function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        getTaskMonitor(req, res, id);
+      });
+    });
     //get document routing in chart monitor without layouts
     app.get('/chartmonitornolayout', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
@@ -70,6 +76,18 @@ module.exports = function(app, arrDB){
     app.post('/chartmonitor', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         postChartMonitor(req, res, id);
+      });
+    });
+    //post handle display taskboard monitoring
+    app.post('/taskmonitor', urlencodedParser, function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        postTaskMonitor(req, res, id);
+      });
+    });
+    //post handle update route file through taskboard
+    app.post('/taskincoming', urlencodedParser, function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        postTaskIncoming(req, res, id);
       });
     });
     //post handle delete file from monitoring
@@ -105,6 +123,58 @@ module.exports = function(app, arrDB){
     });
     //
     //------------------------------------------FUNCTIONS START HERE----------------------------------------------------
+    //Process post update route file through taskboard
+    function postTaskIncoming(req, res, id){
+      let year = dateformat(Date.now(),'yyyy');
+      dbhandle.userFind(id, function(user) {
+        dbhandle.docFind(drivetmp + user.group +'/'+req.body.file, function (found){
+          utilsdocms.resolveRoutingSlip(found, req.body.file); //update routing slip
+          res.json('success');
+        })
+      });
+      console.log('Post Query Taskboard Monitor');
+    }
+    //Process get taskboard monitoring
+    function getTaskMonitor(req, res, id){
+      //refresh lists
+      dbhandle.generateList(arrDB.class, function (res){ docClass = res; });
+      dbhandle.generateList(arrDB.tag, function (res){ docTag = res; });
+      dbhandle.userFind(id, function(user){
+        dbhandle.groupFind(user.group, function (groups){
+          fs.readdir(drivetmp + user.group, function(err,items){
+            let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
+            if (err) console.log(err);var def="empty";
+            var disDrive = '/drive/';rout= "";ref = [];enc = [];
+            if (sortArr.length > 0) {def=sortArr[0];}
+            //res.render('openfile', {layout:'layout-user', path:disDrive +'No Pending Files.pdf', files:items, disp:"Empty File", branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag, rout:rout, ref:ref, enc:enc});
+            res.render('taskboard', {layout:'layout-user', realdrive:drive, level:user.level, mailfiles:user.mailfiles, docPers:groups, openpath:user.path, path:disDrive +'No Pending Files.pdf', files:sortArr, disp:"Empty File", branch:user.group, docBr:docBr, docClass:docClass, docTag:docTag, rout:rout, ref:ref, enc:enc});
+          });
+        });
+      });
+    }
+    //Process post taskboard Monitoring function
+    function postTaskMonitor(req, res, id){
+      dbhandle.generateList(arrDB.branch, function (res){ docBr = res; });
+      let year = dateformat(Date.now(),'yyyy');
+      dbhandle.userFind(id, function(user) {
+          dbhandle.genMonitor(async (disMonitor)=>{
+            arrBranch = new Array;
+            docBr.forEach((branch)=>{
+              var count = 0;
+              let taskNames = [];
+              disMonitor.forEach((item)=>{
+                let disBranch = item.route[item.route.length-1].branch;
+                if ((disBranch[disBranch.length-1]).toUpperCase()=="ALL BRANCHES") {
+                  if ((disBranch[0]).toUpperCase()==branch.toUpperCase()) taskNames.push(item.title);
+                } else if ((disBranch[disBranch.length-1]).toUpperCase()==branch.toUpperCase()) taskNames.push(item.title);
+              });
+              arrBranch.push({branch:branch,title:taskNames});
+            });
+            await res.json(JSON.stringify(arrBranch));
+          });
+      });
+      console.log('Post Query Taskboard Monitor');
+    }
     //Process post dashboard logs
     function postdashlogs(req, res, id){
       dbhandle.generateList(arrDB.branch, function (res){ docBr = res; });
