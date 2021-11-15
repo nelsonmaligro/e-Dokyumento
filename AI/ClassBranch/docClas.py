@@ -38,27 +38,26 @@ try:
             origpath = maindrv[0]["maindrive"]+"textML"
             #validate training folders and copy to retrainAI
             if not (os.path.exists (origpath + '/retrainAI')): os.mkdir(origpath + '/retrainAI')
+            # loop through the branches ...select the branch folder inside the textML folder and copy to  retrainAI folder
             for dir in dbBranch:
                 try:
-                    #if (os.path.exists(origpath + '/retrainAI/' + dir["name"])): shutil.rmtree(origpath + '/retrainAI/' + dir["name"])
-                    if (os.path.exists (origpath + '/' + dir["name"])):
+                    if (os.path.exists (origpath + '/' + dir["name"])): #if branch folder exist
                         try:
-                            if (os.path.exists(origpath + '/retrainAI/' + dir["name"])):
-                                for files in os.listdir(origpath + '/'+dir["name"]):
+                            if (os.path.exists(origpath + '/retrainAI/' + dir["name"])): #if same folder exist inside the retrainAI
+                                for files in os.listdir(origpath + '/'+dir["name"]): #copy all files from textML to retrainAI
                                     shutil.copy2(origpath + '/'+dir["name"]+'/'+files, origpath + '/retrainAI/'+ dir["name"])
-                            else: shutil.copytree(origpath + '/'+dir["name"], origpath + '/retrainAI/'+ dir["name"])
+                            else: shutil.copytree(origpath + '/'+dir["name"], origpath + '/retrainAI/'+ dir["name"]) #if none then create the folder
                             shutil.rmtree(origpath + '/' + dir["name"])
                         except: pass
-                    else:
+                    else: # if branch folder inside the retrainAI not exist then create the folder and 3 dummy files
                         os.mkdir(origpath + '/retrainAI/'+ dir["name"])
                         open(origpath + '/retrainAI/' + dir["name"] + '/file1.txt', 'w').write(dir["name"])
                         open(origpath + '/retrainAI/' + dir["name"] + '/file2.txt', 'w').write(dir["name"])
                         open(origpath + '/retrainAI/' + dir["name"] + '/file3.txt', 'w').write(dir["name"])
                 except: pass
-
             path_train = origpath + '/retrainAI'
-            # For reproducibility
-            np.random.seed(1237)
+            np.random.seed(1237) # For reproducibility
+            # create dataset for branch folders (target) and the contained files (filenames)
             files_train = skds.load_files(path_train, load_content=False)
 
             label_index = files_train.target
@@ -67,7 +66,7 @@ try:
             labelled_files = files_train.filenames
             data_tags = ["filename","category","content"]
             data_list = []
-            # Read and add data from file to a list
+            # Read and add content from file to a list
             i=0
             for f in labelled_files:
                 content = Path(f).read_text(encoding="utf-8",errors='ignore').replace("\n", " ")
@@ -75,7 +74,7 @@ try:
                 data_list.append((f.replace("\\", "/"),label_names[label_index[i]],content))
                 i += 1
 
-            # We have training data available as dictionary filename, category, data
+            # transfer the list to a dataframe with column names: filename, category, data
             data = pd.DataFrame.from_records(data_list, columns=data_tags)
 
             # set sizes
@@ -95,8 +94,8 @@ try:
             test_tags = data['category'][train_size:]
             test_files_names = data['filename'][train_size:]
 
+            # convert content into numbers
             # define Tokenizer with Vocab Size
-
             tokenizer = Tokenizer(num_words=vocab_size)
             tokenizer.fit_on_texts(train_posts)
             x_train = tokenizer.texts_to_matrix(train_posts, mode='tfidf')
@@ -149,13 +148,7 @@ try:
 
     if __name__ == '__main__':
         main(sys.argv[1:])
-    
+
 except:
    print(sys.exc_info()[0])
    pass
-
-
-
-
-
-
