@@ -43,8 +43,8 @@ module.exports = function(app, arrDB){
   dbhandle.settingDis((setting)=>{
     drive = setting.maindrive;
     const signer = new nodesign.SignPdf;
-    const {pdfkitAddPlaceholder, extractSignature, removeTrailingNewLine, plainAddPlaceholder} = require ('./dist/helpers');
-
+    const {plainAddPlaceholder, extractSignature, removeTrailingNewLine} = require ('./dist/helpers');
+    //const {plainAddPlaceholder } = require ('node-pdfsign');
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
     //post handle update comment
@@ -297,8 +297,7 @@ module.exports = function(app, arrDB){
             //merge the signed page to the original document
             pdflib.mergePDF(publicstr+req.body.filepath, drivetmp+'PDF-temp/'+disNewFile, drivetmp+'PDF-temp/'+req.body.user+'.res.pdf', parseInt(req.body.num,10), () =>{
               new Promise ((resolve,reject)=>{ //attach digital certificate if present
-                if (req.body.page == 'open') disRealpath = req.body.realpath;
-                else disRealpath = drivetmp+'PDF-temp/';
+                disRealpath = drivetmp+'PDF-temp/';
                 if (fs.existsSync(drive+user.group+'/Signature/' + id +'.cert.p12')) { //if user has certificate
                   addDigitalCert(user.group, id, disRealpath, disNewFile,()=>{
                       resolve();
@@ -307,6 +306,7 @@ module.exports = function(app, arrDB){
               }).then(()=>{ //copy merged document to specific destination and update DB
                 if (req.body.page == 'open') { //if file/open command or the file is in the server drive
                   dbhandle.docDel(req.body.realpath + disNewFile,()=>{ //delete destination doc DB to create a new
+                    console.log('file copied');
                     fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile, req.body.realpath + disNewFile); //copy the merged document to the drive folder
                     let newID = utilsdocms.generateID();
                     dbhandle.docFind(req.body.realpath+req.body.fileroute, function (found) { //search source doc DB
@@ -338,25 +338,17 @@ module.exports = function(app, arrDB){
     function addDigitalCert(group, id, realpath, disNewFile, callback){
       console.log('Add digital certificate to the signature');
       let p12Buffer = fs.readFileSync(drive+group+'/Signature/' + id +'.cert.p12');
-      //convert to PDF in order to attach the digital certificate
-      pdflib.convertPDFver(drivetmp+'PDF-temp/' + disNewFile, drivetmp+'PDF-temp/' + disNewFile + '.sign.pdf', function(){
-      try {
-        let pdfBuffer = fs.readFileSync(drivetmp+'PDF-temp/' + disNewFile + '.sign.pdf');
-        pdfBuffer = removeTrailingNewLine(pdfBuffer);
-        pdfBuffer = plainAddPlaceholder({ pdfBuffer, reason: 'I approved and signed this document.'});
-        //read the certificate
-        let buf64 = fs.readFileSync(drive+group+'/Signature/' + id +'.cert.psk',"utf8");
-        buf64 = Buffer.from(buf64, 'base64');
+          pdfBuffer = fs.readFileSync(realpath + disNewFile);
+          pdfBuffer = plainAddPlaceholder({ pdfBuffer, reason: 'I approved and signed this document.', name: id, });
+          //read the certificate
+          let buf64 = fs.readFileSync(drive+group+'/Signature/' + id +'.cert.psk',"utf8");
+          buf64 = Buffer.from(buf64, 'base64');
           //attach the certificate to the PDF
           pdfBuffer = signer.sign(pdfBuffer, p12Buffer, {asn1StrictParsing: false,passphrase:buf64.toString("utf8")},);
-          fs.writeFileSync(drivetmp+'PDF-temp/' + disNewFile + '.new.sign.pdf',pdfBuffer);
-          fs.copyFileSync(drivetmp+'PDF-temp/' + disNewFile + '.new.sign.pdf',realpath + disNewFile); //make a copy to drive folder
-          //const {signature, signedData} = extractSignature(pdfBuffer);
-          //console.log(signature);
+          fs.writeFileSync(realpath + disNewFile,pdfBuffer);
           callback();
-        } catch(error) {console.log(error);callback();}
-      });
     };
+
     //process toggle continue routing or new routing slip
     function togglepdfrout(req, res, id){
       console.log('toggle previous routing slip ');

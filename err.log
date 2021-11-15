@@ -20430,3 +20430,667 @@ Error: Failed to parse the ByteRange.
     at D:\Projects\PN DocMS\controllers\dbhandle.js:240:9
     at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
     at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Callback must be a function. Received undefined
+TypeError [ERR_INVALID_CALLBACK]: Callback must be a function. Received undefined
+    at maybeCallback (fs.js:160:9)
+    at Object.readFile (fs.js:311:14)
+    at D:\Projects\PN DocMS\controllers\dastransact.js:361:32
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Callback must be a function. Received undefined
+TypeError [ERR_INVALID_CALLBACK]: Callback must be a function. Received undefined
+    at maybeCallback (fs.js:160:9)
+    at Object.readFile (fs.js:311:14)
+    at D:\Projects\PN DocMS\controllers\dastransact.js:361:32
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+ENOENT: no such file or directory, open 'public/drive/PDF-temp/Cyber Bulletin Nr 6 -MITM.docx.manager-qa.pdf.1.sign.pdf'
+Error: ENOENT: no such file or directory, open 'public/drive/PDF-temp/Cyber Bulletin Nr 6 -MITM.docx.manager-qa.pdf.1.sign.pdf'
+    at Object.openSync (fs.js:476:3)
+    at Object.readFileSync (fs.js:377:35)
+    at D:\Projects\PN DocMS\controllers\dastransact.js:361:32
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+ENOENT: no such file or directory, open 'public/drive/PDF-temp/Cyber Bulletin Nr 6 -MITM.docx.manager-qa.pdf.1.sign.pdf'
+Error: ENOENT: no such file or directory, open 'public/drive/PDF-temp/Cyber Bulletin Nr 6 -MITM.docx.manager-qa.pdf.1.sign.pdf'
+    at Object.openSync (fs.js:476:3)
+    at Object.readFileSync (fs.js:377:35)
+    at D:\Projects\PN DocMS\controllers\dastransact.js:361:32
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Too few bytes to parse DER.
+Error: Too few bytes to parse DER.
+    at _checkBufferLength (D:\Projects\PN DocMS\node_modules\node-forge\lib\asn1.js:357:17)
+    at _fromDer (D:\Projects\PN DocMS\node_modules\node-forge\lib\asn1.js:466:3)
+    at Object.asn1.fromDer (D:\Projects\PN DocMS\node_modules\node-forge\lib\asn1.js:448:10)
+    at getMessageFromSignature (D:\Projects\PN DocMS\controllers\verify\helpers\general.js:31:29)
+    at getCertificatesInfoFromPDF (D:\Projects\PN DocMS\controllers\verify\certificateDetails.js:38:28)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:21)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Too few bytes to parse DER.
+Error: Too few bytes to parse DER.
+    at _checkBufferLength (D:\Projects\PN DocMS\node_modules\node-forge\lib\asn1.js:357:17)
+    at _fromDer (D:\Projects\PN DocMS\node_modules\node-forge\lib\asn1.js:466:3)
+    at Object.asn1.fromDer (D:\Projects\PN DocMS\node_modules\node-forge\lib\asn1.js:448:10)
+    at getMessageFromSignature (D:\Projects\PN DocMS\controllers\verify\helpers\general.js:31:29)
+    at getCertificatesInfoFromPDF (D:\Projects\PN DocMS\controllers\verify\certificateDetails.js:38:28)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:136:21)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to parse the ByteRange.
+Error: Failed to parse the ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:56:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:138:18)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Identifier 'extractSignature' has already been declared
+D:\Projects\PN DocMS\controllers\utilsdocms.js:154
+  const extractSignature = (pdf) => {
+        ^
+
+SyntaxError: Identifier 'extractSignature' has already been declared
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\dochandle.js:17:20)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasmonitor.js:18:21)
+    at D:\Projects\PN DocMS\index.js:59:7
+Cannot read property '1' of null
+TypeError: Cannot read property '1' of null
+    at extractDigiSign (D:\Projects\PN DocMS\controllers\utilsdocms.js:170:23)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:134:21)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Cannot read property '1' of null
+TypeError: Cannot read property '1' of null
+    at extractDigiSign (D:\Projects\PN DocMS\controllers\utilsdocms.js:170:21)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:134:21)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Cannot read property '1' of null
+TypeError: Cannot read property '1' of null
+    at extractDigiSign (D:\Projects\PN DocMS\controllers\utilsdocms.js:170:23)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:134:21)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Cannot perform Construct on a detached ArrayBuffer
+TypeError: Cannot perform Construct on a detached ArrayBuffer
+    at new Uint8Array (<anonymous>)
+    at new FastBuffer (internal/buffer.js:951:1)
+    at Uint8Array.slice (buffer.js:1112:10)
+    at extractObject (D:\Projects\PN DocMS\node_modules\node-pdf-verifier\dist\asn1-parser.js:54:19)
+    at Object.ans1Parser (D:\Projects\PN DocMS\node_modules\node-pdf-verifier\dist\asn1-parser.js:6:16)
+    at Object.decodeSignedData (D:\Projects\PN DocMS\node_modules\node-pdf-verifier\dist\asn1.js:132:12)
+    at Object.extractSignersInfo (D:\Projects\PN DocMS\node_modules\node-pdf-verifier\dist\verifier.js:26:26)
+    at Object.verifyPdf (D:\Projects\PN DocMS\node_modules\node-pdf-verifier\dist\app.js:6:23)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:34)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Cannot perform Construct on a detached ArrayBuffer
+TypeError: Cannot perform Construct on a detached ArrayBuffer
+    at new Uint8Array (<anonymous>)
+    at new FastBuffer (internal/buffer.js:951:1)
+    at Uint8Array.slice (buffer.js:1112:10)
+    at extractObject (D:\Projects\PN DocMS\node_modules\node-pdf-verifier\dist\asn1-parser.js:54:19)
+    at Object.ans1Parser (D:\Projects\PN DocMS\node_modules\node-pdf-verifier\dist\asn1-parser.js:6:16)
+    at Object.decodeSignedData (D:\Projects\PN DocMS\node_modules\node-pdf-verifier\dist\asn1.js:132:12)
+    at Object.extractSignersInfo (D:\Projects\PN DocMS\node_modules\node-pdf-verifier\dist\verifier.js:26:26)
+    at Object.verifyPdf (D:\Projects\PN DocMS\node_modules\node-pdf-verifier\dist\app.js:6:23)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:34)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Cannot find module 'node-pdf-verifier'
+Require stack:
+- D:\Projects\PN DocMS\controllers\utilsdocms.js
+- D:\Projects\PN DocMS\controllers\dochandle.js
+- D:\Projects\PN DocMS\controllers\dasmonitor.js
+- D:\Projects\PN DocMS\index.js
+Error: Cannot find module 'node-pdf-verifier'
+Require stack:
+- D:\Projects\PN DocMS\controllers\utilsdocms.js
+- D:\Projects\PN DocMS\controllers\dochandle.js
+- D:\Projects\PN DocMS\controllers\dasmonitor.js
+- D:\Projects\PN DocMS\index.js
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:880:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:725:27)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\utilsdocms.js:20:20)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\dochandle.js:17:20)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+pdfSign.verify is not a function
+TypeError: pdfSign.verify is not a function
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:26)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+pdfSign.extractSignature is not a function
+TypeError: pdfSign.extractSignature is not a function
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:26)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to parse the ByteRange.
+Error: Failed to parse the ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:56:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:136:18)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+The first argument must be of type string or an instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received an instance of Object
+TypeError [ERR_INVALID_ARG_TYPE]: The first argument must be of type string or an instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received an instance of Object
+    at Function.from (buffer.js:333:9)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:137:40)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:43:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:137:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+oldsignedPdfBuffer.from is not a function
+TypeError: oldsignedPdfBuffer.from is not a function
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:140:42)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+The first argument must be of type string or an instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received undefined
+TypeError [ERR_INVALID_ARG_TYPE]: The first argument must be of type string or an instance of Buffer, ArrayBuffer, or Array or an Array-like Object. Received undefined
+    at Function.from (buffer.js:333:9)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:140:30)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Cannot read property '0' of undefined
+TypeError: Cannot read property '0' of undefined
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:140:34)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:43:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:142:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:43:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:142:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:43:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:142:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:43:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:143:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:43:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:145:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+The "target" argument must be an instance of Buffer or Uint8Array. Received an instance of Array
+TypeError [ERR_INVALID_ARG_TYPE]: The "target" argument must be an instance of Buffer or Uint8Array. Received an instance of Array
+    at _copy (buffer.js:212:11)
+    at Buffer.copy (buffer.js:769:12)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:141:54)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+The "target" argument must be an instance of Buffer or Uint8Array. Received an instance of Array
+TypeError [ERR_INVALID_ARG_TYPE]: The "target" argument must be an instance of Buffer or Uint8Array. Received an instance of Array
+    at _copy (buffer.js:212:11)
+    at Buffer.copy (buffer.js:769:12)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:141:54)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to parse the ByteRange.
+Error: Failed to parse the ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:56:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:145:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to parse the ByteRange.
+Error: Failed to parse the ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:56:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:145:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+extractSignature.getSubstringIndex is not a function
+TypeError: extractSignature.getSubstringIndex is not a function
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:145:33)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+getSubstringIndex is not a function
+TypeError: getSubstringIndex is not a function
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:145:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to parse the ByteRange.
+Error: Failed to parse the ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:56:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:145:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to parse the ByteRange.
+Error: Failed to parse the ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:56:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:145:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+verextractSignature is not a function
+TypeError: verextractSignature is not a function
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:147:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed byte range verification.
+Error: Failed byte range verification.
+    at extractSignature (D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:40:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:144:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+No ByteRangeStrings found within PDF buffer
+Error: No ByteRangeStrings found within PDF buffer
+    at findByteRange (D:\Projects\PN DocMS\controllers\dist\helpers\findByteRange.js:28:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:138:18)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+_const is not defined
+ReferenceError: _const is not defined
+    at D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:25:74
+    at Array.find (<anonymous>)
+    at extractSignature (D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:25:49)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:144:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Cannot find module './const'
+Require stack:
+- D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js
+- D:\Projects\PN DocMS\controllers\verify\helpers\index.js
+- D:\Projects\PN DocMS\controllers\verify\verifyPDF.js
+- D:\Projects\PN DocMS\controllers\utilsdocms.js
+- D:\Projects\PN DocMS\controllers\dochandle.js
+- D:\Projects\PN DocMS\controllers\dasmonitor.js
+- D:\Projects\PN DocMS\index.js
+Error: Cannot find module './const'
+Require stack:
+- D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js
+- D:\Projects\PN DocMS\controllers\verify\helpers\index.js
+- D:\Projects\PN DocMS\controllers\verify\verifyPDF.js
+- D:\Projects\PN DocMS\controllers\utilsdocms.js
+- D:\Projects\PN DocMS\controllers\dochandle.js
+- D:\Projects\PN DocMS\controllers\dasmonitor.js
+- D:\Projects\PN DocMS\index.js
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:880:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:725:27)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:5:14)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\verify\helpers\index.js:1:26)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+DEFAULT_BYTE_RANGE_PLACEHOLDER is not defined
+ReferenceError: DEFAULT_BYTE_RANGE_PLACEHOLDER is not defined
+    at D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:26:74
+    at Array.find (<anonymous>)
+    at extractSignature (D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:26:49)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:144:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\dist\helpers\extractSignature.js:43:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:140:17)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Cannot read property '0' of undefined
+TypeError: Cannot read property '0' of undefined
+    at extractSignature (D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:31:30)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:145:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+No ByteRangeStrings found within PDF buffer
+Error: No ByteRangeStrings found within PDF buffer
+    at findByteRange (D:\Projects\PN DocMS\controllers\dist\helpers\findByteRange.js:28:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:138:18)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:13:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:147:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:13:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:147:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:13:11)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:147:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+_SignPdfError is not defined
+ReferenceError: _SignPdfError is not defined
+    at extractSignature (D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:23:5)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:147:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Cannot read property 'find' of null
+TypeError: Cannot read property 'find' of null
+    at extractSignature (D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:26:49)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:147:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:23:10)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:147:16)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Unexpected token '.'
+D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:37
+	ByteRanges.length,
+	          ^
+
+SyntaxError: Unexpected token '.'
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\verify\helpers\index.js:1:26)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:12:5)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+Unexpected token '.'
+D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:37
+	byteRanges.length,
+	          ^
+
+SyntaxError: Unexpected token '.'
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\verify\helpers\index.js:1:26)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:12:5)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+byteRanges is not defined
+ReferenceError: byteRanges is not defined
+    at module.exports (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:75:65)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:24)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+cannot find subfilter
+Error: cannot find subfilter
+    at checkForSubFilter (D:\Projects\PN DocMS\controllers\verify\helpers\general.js:22:11)
+    at module.exports (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:17:2)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:24)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:13:11)
+    at module.exports (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:17:63)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:24)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at extractSignature (D:\Projects\PN DocMS\controllers\verify\helpers\extractSignature.js:13:11)
+    at module.exports (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:74:39)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:24)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Failed to locate ByteRange.
+Error: Failed to locate ByteRange.
+    at module.exports (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:78:9)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:24)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Assignment to constant variable.
+TypeError: Assignment to constant variable.
+    at module.exports (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:79:17)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:24)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Cannot find module '../../packages/buffer'
+Require stack:
+- D:\Projects\PN DocMS\controllers\verify\verifyPDF.js
+- D:\Projects\PN DocMS\controllers\utilsdocms.js
+- D:\Projects\PN DocMS\controllers\dochandle.js
+- D:\Projects\PN DocMS\controllers\dasmonitor.js
+- D:\Projects\PN DocMS\index.js
+Error: Cannot find module '../../packages/buffer'
+Require stack:
+- D:\Projects\PN DocMS\controllers\verify\verifyPDF.js
+- D:\Projects\PN DocMS\controllers\utilsdocms.js
+- D:\Projects\PN DocMS\controllers\dochandle.js
+- D:\Projects\PN DocMS\controllers\dasmonitor.js
+- D:\Projects\PN DocMS\index.js
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:880:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:725:27)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:3:20)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\utilsdocms.js:18:19)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+Cannot find module '../../packages/buffer'
+Require stack:
+- D:\Projects\PN DocMS\controllers\verify\verifyPDF.js
+- D:\Projects\PN DocMS\controllers\utilsdocms.js
+- D:\Projects\PN DocMS\controllers\dochandle.js
+- D:\Projects\PN DocMS\controllers\dasmonitor.js
+- D:\Projects\PN DocMS\index.js
+Error: Cannot find module '../../packages/buffer'
+Require stack:
+- D:\Projects\PN DocMS\controllers\verify\verifyPDF.js
+- D:\Projects\PN DocMS\controllers\utilsdocms.js
+- D:\Projects\PN DocMS\controllers\dochandle.js
+- D:\Projects\PN DocMS\controllers\dasmonitor.js
+- D:\Projects\PN DocMS\index.js
+    at Function.Module._resolveFilename (internal/modules/cjs/loader.js:880:15)
+    at Function.Module._load (internal/modules/cjs/loader.js:725:27)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:3:20)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\utilsdocms.js:18:19)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+Assignment to constant variable.
+TypeError: Assignment to constant variable.
+    at module.exports (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:81:17)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:24)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Cannot read property 'map' of null
+TypeError: Cannot read property 'map' of null
+    at module.exports (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:81:42)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:24)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Assignment to constant variable.
+TypeError: Assignment to constant variable.
+    at module.exports (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:81:17)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:24)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Assignment to constant variable.
+TypeError: Assignment to constant variable.
+    at module.exports (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:81:17)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:24)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Unexpected token 'return'
+D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:82
+		return ({ verified: false, message: err.message, signRange: byteRanges.length, meta: signatureMeta });
+		^^^^^^
+
+SyntaxError: Unexpected token 'return'
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\utilsdocms.js:18:19)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\dochandle.js:17:20)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+Unexpected token 'return'
+D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:82
+		return ({ verified: false, message: err.message, signRange: byteRanges.length, meta: signatureMeta });
+		^^^^^^
+
+SyntaxError: Unexpected token 'return'
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\utilsdocms.js:18:19)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\dochandle.js:17:20)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+str.match is not a function
+TypeError: str.match is not a function
+    at D:\Projects\PN DocMS\controllers\verify\helpers\general.js:37:23
+    at getSignatureMeta (D:\Projects\PN DocMS\controllers\verify\helpers\general.js:44:40)
+    at module.exports (D:\Projects\PN DocMS\controllers\verify\verifyPDF.js:81:23)
+    at Object.exports.verifySign (D:\Projects\PN DocMS\controllers\utilsdocms.js:135:24)
+    at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
+    at FSReqCallback.oncomplete (fs.js:171:23)
+    at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)

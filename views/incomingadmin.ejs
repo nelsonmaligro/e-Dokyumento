@@ -32,18 +32,24 @@
         </script>
         <!-- /content -->
         <!-- Digital Signature Floating -->
-        <% if (JSON.stringify(signres)!='[]') { let mainnfo = [signres.authenticity,signres.integrity,signres.expired,signres.meta.certs[0].issuedBy,signres.meta.certs[0].issuedTo, signres.meta.certs[0].validityPeriod];  %>
-          <div id='disDigCert' class="digicert" style='<% if (signres.message!='signed') {%>display:none;<%}%>border:1;background-color:Gray;border-radius:6px;width:225px;height:40px;padding-left:10px;padding-top:4px;'>
+        <% if (JSON.stringify(signres)!='[]') {  let mainnfo = []; %>
+          <div id='disDigCert' class="digicert" style='<% if ((signres.message!='signed') && (signres.message!='Multiple Signature')) {%>display:none;<%}%>border:1;background-color:Gray;border-radius:6px;width:225px;height:40px;padding-left:10px;padding-top:4px;'>
+          <% if (signres.message == 'signed') { mainnfo = [signres.authenticity.toString().toUpperCase(),signres.integrity.toString().toUpperCase(),signres.expired,signres.meta.certs[0].issuedBy.commonName,signres.meta.certs[0].issuedTo.commonName, signres.meta.certs[0].validityPeriod.notAfter]; %>
             <% if (signres.verified) { %>
-            <button  id="digcertDraw" class="btn btn-sm btn-success" type="button" onclick="displaycertinfoparam('<%= JSON.stringify(mainnfo) %>')">
-              <i class="fa fa-check"></i> Verified Digital Certificate
-            </button>
+              <button  id="digcertDraw" class="btn btn-sm btn-success" type="button" onclick="displaycertinfoparam('<%= JSON.stringify(mainnfo) %>')">
+                <i class="fa fa-check"></i> Verified Digital Certificate
+              </button>
             <% } else {%>
               <button  id="digcertDraw" class="btn btn-sm btn-danger" type="button" onclick="displaycertinfoparam('<%= JSON.stringify(mainnfo) %>')">
                 <i class="fa fa-times"></i> Unverified Digital Certificiate
               </button>
             <% } %>
-          </div>
+          <% } else { mainnfo = [signres.signRange + ' Valid Digital Signatures', 'TRUE', 'Multiple Date', 'Multiple Certificate','Originator: '+ signres.meta.name, 'Multiple Validity']; %>
+            <button  id="digcertDraw" class="btn btn-sm btn-success" type="button" onclick="displaycertinfoparam('<%= JSON.stringify(mainnfo) %>')">
+              <i class="fa fa-check"></i> Verified Digital Certificate
+            </button>
+          <% } %>
+        </div>
         <% } else { %>
           <div id='disDigCertAttach' class="digicert" style='display:none;border:1;background-color:Gray;border-radius:6px;width:225px;height:40px;padding-left:10px;padding-top:4px;'>
             <button  id="digcertDrawAttach" class="btn btn-sm btn-danger" type="button">

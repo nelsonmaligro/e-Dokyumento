@@ -17,6 +17,9 @@ const dbhandle = require('./dbhandle');
 const os = require('os');
 const verifyPDF = require('./verify/verifyPDF');
 const VerifyPDFError = require('./verify/VerifyPDFError');
+const {plainAddPlaceholder, extractSignature, findByteRange, removeTrailingNewLine} = require ('./dist/helpers');
+const verextractSignature = require ('./verify/helpers/extractSignature');
+//const pdfSign = require('node-pdfsign');
 //var promise = require('promise');
 let topmgmt = 'GM';
 var drivetmp = "public/drive/"; let drive = "D:/Drive/";let transferPath='N:/';
@@ -130,21 +133,9 @@ dbhandle.settingDis((setting)=>{
   exports.verifySign = function(path){
     let signedPdfBuffer = fs.readFileSync(path);
     let verifyResult = verifyPDF(signedPdfBuffer);
-    if (!verifyResult.verified){
-      //const certs = getCertificatesInfoFromPDF(signedPdfBuffer);
-      //let data = extractSignature(signedPdfBuffer);
-      //console.log(data);
-      // manipulate data byte
-      //const bytePosition = byteRange[1] + byteRange[2] + 100;
-      //const originalByte = signedPdfBuffer[bytePosition];
-      //signedPdfBuffer[bytePosition] = originalByte + 1;
-      //verifyResult = verifyPDF(signedPdfBuffer);
-    }
     return verifyResult;
-    //var disMeta = verifyResult.meta;
-    //var disCert = disMeta.certs;
-    //console.log(verifyResult);
   };
+
   //run ML from python
   exports.runPy = function (pathPy, pathtxt){
     return new Promise(function(success, nosuccess) {
