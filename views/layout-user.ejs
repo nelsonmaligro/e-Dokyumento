@@ -12,11 +12,8 @@
   <title>e-Dokyumento</title>
   <meta name="description" content="Pinoy Document Management System">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-
-
   <link rel="apple-touch-icon" href="/logo2.png">
   <link rel="shortcut icon" href="/favicon.ico">
-
   <link rel="stylesheet" href="/vendors/bootstrap/dist/css/bootstrap.css">
   <link rel="stylesheet" href="/vendors/font-awesome/css/font-awesome.min.css">
   <link rel="stylesheet" href="/vendors/themify-icons/css/themify-icons.css">
@@ -29,6 +26,7 @@
 
   <link href='/vendors/bootstrap/dist/css/font.css' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="/vendors/chosen/chosen.min.css">
+
   <!-- Theme style -->
   <link rel="stylesheet" href="/vendors/bootstrap/dist/css/side.css">
   <link href="/vendors/bootstrap/dist/css/file-explore.css" rel="stylesheet" type="text/css">
@@ -37,10 +35,10 @@
   <link href="/vendors/bootstrap/dist/css/bootstrap-toggle.min.css" rel="stylesheet" type="text/css">
   <script type="text/javascript" src="/assets/hashes.js"></script>
   <link rel="stylesheet" media="all"  href="/assets/css/daterangepicker.css" />
+
   <script src="/vendors/jquery/dist/jquery.min.js"></script>
   <script type="text/javascript" src="/assets/js/moment.min.js"></script>
   <script type="text/javascript" src="/assets/js/daterangepicker.js"></script>
-
 </head>
 
 <body>
@@ -632,9 +630,11 @@
                                   <div class=" float-left"><input value= "<%= realdrive %>" type="hidden" id="realdrive"  name="realdrive"></div>
                                   <audio  src="/images/noti.wav" type="audio/mpeg" id="soundNoti" autostart="false"></audio>
 
+                                  <!-- store files -->
+                                  <div id="arrFiles" data-locations="[<%= files.map(function(p){ return '"' + p + '"'; }).join(',')%>]">
+                                  <div id="userLevel" data-locations="<%= level.toUpperCase() %>">
 
                                   <!-- Right Panel -->
-
                                   <script src="/vendors/jquery/dist/jquery.min.js"></script>
                                   <script src="/vendors/popper.js/dist/umd/popper.min.js"></script>
                                   <script src="/vendors/bootstrap/dist/js/bootstrap.min.js"></script>

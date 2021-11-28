@@ -56,6 +56,15 @@ const monitorSchema = new Schema({
     branch: [],
   }],
 });
+//Taskboard DB
+const taskboardSchema = new Schema({
+  boardtitle: String,
+  element:[{
+    id: String,
+    title: String,
+    date: String,
+  }],
+});
 //Monitoring DB
 const tempmonitorSchema = new Schema({
   title: String,
@@ -96,6 +105,7 @@ const activitylogsSchema = new Schema({
 var docModel = new mongoose.model('pnDocs',docSchema);
 var userModel = new mongoose.model('userAccs',userSchema);
 var monitorModel = new mongoose.model('monitorAccs',monitorSchema);
+var taskModel = new mongoose.model('taskboards',taskboardSchema);
 var tempmonitorModel = new mongoose.model('tempmonitorAccs',tempmonitorSchema);
 var settingModel = new mongoose.model('settings',settingSchema);
 var commologsModel = new mongoose.model('commologs',commologsSchema);
@@ -221,11 +231,46 @@ exports.actlogFilterOne = function actlogFilterOne(Doc, callback){
     }
   });
 };
-//find monitoring by title
+//Generate lists in the taskboard
+exports.genTask = function genTask(callback){
+  taskModel.find(function (err, res){
+    //console.log(res);
+    callback(res);
+  });
+};
+//find list in the taskboard by title
+exports.taskFindTitle = function taskFindTitle(title, callback){
+  title = title.replace(/\(/g,'\\(');title = title.replace(/\)/g,'\\)');
+  taskModel.findOne({boardtitle:{'$regex':'^'+title+'$','$options':'i'}}, function (err, res){ //find title
+     callback(res);
+  });
+};
+//update lists in the taskboard
+exports.taskUpdateList = function taskUpdateList (title, elements, callback){
+  //Update records
+  var disList = {
+    element:JSON.parse(elements),
+  };
+  //Create records
+  var newList = new taskModel({
+    boardtitle: title,
+    element: JSON.parse(elements),
+  });
+  title = title.replace(/\(/g,'\\(');title = title.replace(/\)/g,'\\)');
+  taskModel.findOne({boardtitle:{'$regex':'^'+title+'$','$options':'i'}}, function (err, res){ //find title
+    if (!res) {
+      newList.save(function(err){ callback(); });
+    } else {
+      taskModel.updateOne({boardtitle:{'$regex':'^'+title+'$','$options':'i'}},[{$set:disList}], function(err){
+        callback();
+      });
+    }
+    console.log('Taskboard Updated successfully!');
+  });
+};
+//Generate files in the monitoring
 exports.genMonitor = function genMonitor(callback){
-  //find file
   monitorModel.find(function (err, res){
-
     //console.log(res);
     callback(res);
   });

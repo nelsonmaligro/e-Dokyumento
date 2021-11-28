@@ -26,10 +26,11 @@ module.exports = function(app, arrDB){
   dbhandle.settingDis((setting)=>{drivetmp = setting.publicdrive;});
 
   //list all document classification and tags
-  var docClass = []; var docTag = []; var docBr = [];    var grpUsrs = [];
+  var docClass = []; var docTag = []; var docBr = []; var grpUsrs = [], tasks = [];
   dbhandle.generateList(arrDB.class, function (res){ docClass = res; });
   dbhandle.generateList(arrDB.tag, function (res){ docTag = res; });
   dbhandle.generateList(arrDB.branch, function (res){ docBr = res; });
+  dbhandle.genTask((res)=>{ tasks = res; });
 
   dbhandle.settingDis((setting)=>{
     drive = setting.maindrive;
@@ -76,6 +77,12 @@ module.exports = function(app, arrDB){
     app.post('/chartmonitor', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         postChartMonitor(req, res, id);
+      });
+    });
+    //post handle upadate lists in the taskboard
+    app.post('/taskupdate', urlencodedParser, function(req,res){
+      utilsdocms.validToken(req, res,  function (decoded, id){
+        postTaskUpdate(req, res, id);
       });
     });
     //post handle display taskboard monitoring
@@ -134,15 +141,24 @@ module.exports = function(app, arrDB){
       });
       console.log('Post Query Taskboard Monitor');
     }
+    //Process post update lists in the taskboard
+    function postTaskUpdate(req, res, id){
+      dbhandle.taskUpdateList(req.body.title, req.body.arrEle, function() {
+          res.json('success');
+      });
+      console.log('Post Update List in the Taskboard');
+    }
     //Process get taskboard monitoring
     function getTaskMonitor(req, res, id){
       //refresh lists
       dbhandle.generateList(arrDB.class, function (res){ docClass = res; });
       dbhandle.generateList(arrDB.tag, function (res){ docTag = res; });
-      dbhandle.userFind(id, function(user){
+      dbhandle.userFind(id, function(user){ let groupID = user.group;
+        if (user.level.toUpperCase()=="SECRETARY") groupID = "incoming-temp";
+        else groupID = user.group;
         dbhandle.groupFind(user.group, function (groups){
-          fs.readdir(drivetmp + user.group, function(err,items){
-            let sortArr = utilsdocms.checkPermission(items, drivetmp + user.group + '/');
+          fs.readdir(drivetmp + groupID, function(err,items){
+            let sortArr = utilsdocms.checkPermission(items, drivetmp + groupID + '/');
             if (err) console.log(err);var def="empty";
             var disDrive = '/drive/';rout= "";ref = [];enc = [];
             if (sortArr.length > 0) {def=sortArr[0];}
@@ -152,9 +168,11 @@ module.exports = function(app, arrDB){
         });
       });
     }
+    
     //Process post taskboard Monitoring function
     function postTaskMonitor(req, res, id){
       dbhandle.generateList(arrDB.branch, function (res){ docBr = res; });
+      dbhandle.genTask((res)=>{ tasks = res; });
       let year = dateformat(Date.now(),'yyyy');
       dbhandle.userFind(id, function(user) {
           dbhandle.genMonitor(async (disMonitor)=>{
@@ -168,9 +186,10 @@ module.exports = function(app, arrDB){
                   if ((disBranch[0]).toUpperCase()==branch.toUpperCase()) taskNames.push(item.title);
                 } else if ((disBranch[disBranch.length-1]).toUpperCase()==branch.toUpperCase()) taskNames.push(item.title);
               });
-              arrBranch.push({branch:branch,title:taskNames});
+              arrBranch.push({branch:branch, title:taskNames}); //Lists from MontoringDB
             });
-            await res.json(JSON.stringify(arrBranch));
+            let finArr = {branches:arrBranch, dbtasks:tasks}; //add lists from TaskboardDB
+            await res.json(JSON.stringify(finArr));
           });
       });
       console.log('Post Query Taskboard Monitor');

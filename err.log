@@ -21094,3 +21094,43 @@ TypeError: str.match is not a function
     at D:\Projects\PN DocMS\controllers\dasfileoperation.js:513:46
     at FSReqCallback.oncomplete (fs.js:171:23)
     at FSReqCallback.callbackTrampoline (internal/async_hooks.js:131:14)
+Unexpected end of JSON input
+SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at Object.exports.searchRefEnc (D:\Projects\PN DocMS\controllers\monitoring.js:76:21)
+    at D:\Projects\PN DocMS\controllers\dastransact.js:408:26
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:373:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Unexpected end of JSON input
+SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at Object.exports.searchRefEnc (D:\Projects\PN DocMS\controllers\monitoring.js:76:21)
+    at D:\Projects\PN DocMS\controllers\dastransact.js:408:26
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:373:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Unexpected end of JSON input
+SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at Object.exports.searchRefEnc (D:\Projects\PN DocMS\controllers\monitoring.js:76:21)
+    at D:\Projects\PN DocMS\controllers\dastransact.js:408:26
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:373:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Unexpected end of JSON input
+SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at Object.exports.searchRefEnc (D:\Projects\PN DocMS\controllers\monitoring.js:76:21)
+    at D:\Projects\PN DocMS\controllers\dastransact.js:408:26
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:419:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Unexpected end of JSON input
+SyntaxError: Unexpected end of JSON input
+    at JSON.parse (<anonymous>)
+    at Object.exports.searchRefEnc (D:\Projects\PN DocMS\controllers\monitoring.js:76:21)
+    at D:\Projects\PN DocMS\controllers\dastransact.js:408:26
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:419:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)

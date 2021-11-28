@@ -110,7 +110,7 @@ function displaycertinfoparam(data) {
 //query document database to populate metadata
 function queryDoc() {
   let disPath = '';
-  if (window.location.toString().includes("/incoming")) disPath = 'public/drive/' + $('#disBranch').val() + '/' + $('#newfile').val();
+  if ((window.location.toString().includes("/incoming")) || (window.location.toString().includes("/taskboard"))) disPath = 'public/drive/' + $('#disBranch').val() + '/' + $('#newfile').val();
   else disPath = getCookie('realpath') + $('#newfile').val();
   var todo = {
     path: disPath

@@ -1,15 +1,26 @@
 <link rel="stylesheet" href="/vendors/font-awesome-4.7/css/font-awesome.min.css">
+<link rel="stylesheet" href="/assets/css/contextstyle.css">
 <script src="/assets/js/jquery.213.min.js"></script>
 <script src="/assets/js/pdfobject.min.js"></script>
 <link rel="stylesheet" href="/vendors/kanban/jkanban.css" />
 
-<div class="col-md-12">
-  <div id="myKanban"></div>
-</div>
+  <div data-id="1" class="content tasks task col-md-12">
+      <div class="task__content" id="myKanban"></div>
+  </div>
 
 
 <!-- needed -->
   <div class=" float-left"><input value= "<%= branch %>" type="hidden" id="disBranch" name="disBranch" href="#" data-toggle="modal" data-target="#routingModal"></div>
 <!-- .needed -->
+<!-- right click context menu -->
+<nav id="context-menu" class="context-menu">
+    <ul class="context-menu__items">
+      <li class="context-menu__item">
+        <a href="#" id="contDel" class="context-menu__link" data-action="Delete"><i class="fa fa-times"></i> Delete Item</a>
+      </li>
+    </ul>
+  </nav>
+  <!-- right click context menu -->
+<script type="text/javascript" src="/assets/js/contextmenu.js"></script>
 <script type="text/javascript" src="vendors/kanban/jkanban.js"></script>
 <script type="text/javascript" src="/assets/taskboard.js"></script>
