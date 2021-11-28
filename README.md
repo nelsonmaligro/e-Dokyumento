@@ -36,6 +36,12 @@ and approving (digital signature) of documents.
 ### 11. Intelligent Document classification using Machine Learning
 ### 12. Document Tracking using QR Code
 
+#  New Features
+### 13. File Explorer
+    -  Browser-based file managing interface of the mapped drive 
+### 14. Kanban Taskboard
+    -  Monitors document routing using the Kanban Taskboard and allows basic functionality of a Kanban for workflow management.
+
 # Installation 
 ### Method 1:  Using the ISO
 
@@ -92,6 +98,8 @@ https://sourceforge.net/projects/e-dokyumento/files/Install%20e-Dokyumento%20on%
 6. nextapps-de/flexsearch
 7. paulmillr/chokidar
 8. schmich/instascan
+9. riktar/jkanban
+10. callmenick/Custom-Context-Menu
 
 
 # License
