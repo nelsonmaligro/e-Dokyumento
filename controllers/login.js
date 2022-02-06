@@ -7,6 +7,7 @@ Primary Controller - Handle client login
 @license GPL
 */
 module.exports = function(app){
+  var bodyParser = require('body-parser');
   const qrcode = require('qrcode');
   const mongoose = require('mongoose');
   const passport = require('passport');
@@ -14,12 +15,15 @@ module.exports = function(app){
   var path = require('path');
   var bodyParser = require('body-parser');
   var dbhandle = require('./dbhandle');
+  const utilsdocms = require('./utilsdocms');
   const dateformat = require('dateformat');
   var fs = require('fs');
   const userModel = require('../models/accounts');
   const monitoring = require('./monitoring');
   var daysexpire = 10;
   var drivetmp = "public/drive/", drive = "D:/Drive/", publicstr='public';
+  var urlencodedParser = bodyParser.urlencoded({extended:true});
+
   dbhandle.settingDis((setting)=>{drivetmp = setting.publicdrive;});
   dbhandle.settingDis((setting)=>{publicstr = setting.publicstr;});
 
@@ -31,6 +35,36 @@ module.exports = function(app){
 
     app.use(passport.initialize());
     app.use(passport.session());
+
+    //test login for Android adapter
+    app.get('/login-adapter', function(req, res){
+      return res.render('login-adapter', {layout:'empty', error:'Valid'});
+    });
+    //post to validate password prior delete file from monitoring
+    app.post('/login-adapter',  function(req,res, next) {
+      dbhandle.userFind(req.body.username, function (user) {
+        //console.log(req.body.user,req.body.hashval);
+        if (user){
+          passport.authenticate('login', {session:false}, function (err,passportuser,info){
+            if (err) {res.json('error');}
+            if (!passportuser) {
+              console.log('Password Invalid');
+              res.json('Password Invalid');
+            } else if (passportuser) {
+              const user = passportuser;
+              user.token = passportuser.generateJWT();
+              //console.log(user.toAuthJSON());
+              //res.cookie('token', user.toAuthJSON());
+              res.setHeader('token',JSON.stringify(user.toAuthJSON()));
+              res.json('ok');
+            }
+          })(req,res,next);
+        } else {
+          console.log('user invalid');
+          res.json('User Invalid');
+        }
+      });
+    });
 
     //get verify documents QR Code
     app.get('/verifydoc', function(req, res){

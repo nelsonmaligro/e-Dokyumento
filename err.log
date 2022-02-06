@@ -21134,3 +21134,59 @@ SyntaxError: Unexpected end of JSON input
     at D:\Projects\PN DocMS\controllers\dbhandle.js:419:5
     at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
     at processTicksAndRejections (internal/process/task_queues.js:75:11)
+urlencodedParser is not defined
+ReferenceError: urlencodedParser is not defined
+    at D:\Projects\PN DocMS\controllers\login.js:45:32
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:830:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+    at runNextTicks (internal/process/task_queues.js:62:3)
+    at processImmediate (internal/timers.js:434:9)
+    at process.topLevelDomainCallback (domain.js:144:15)
+    at process.callbackTrampoline (internal/async_hooks.js:129:14)
+urlencodedParser is not defined
+ReferenceError: urlencodedParser is not defined
+    at D:\Projects\PN DocMS\controllers\login.js:45:32
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:830:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+    at runNextTicks (internal/process/task_queues.js:62:3)
+    at processImmediate (internal/timers.js:434:9)
+    at process.topLevelDomainCallback (domain.js:144:15)
+    at process.callbackTrampoline (internal/async_hooks.js:129:14)
+urlencodedParser is not defined
+ReferenceError: urlencodedParser is not defined
+    at D:\Projects\PN DocMS\controllers\login.js:45:32
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:830:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+    at runNextTicks (internal/process/task_queues.js:62:3)
+    at processImmediate (internal/timers.js:434:9)
+    at process.topLevelDomainCallback (domain.js:144:15)
+    at process.callbackTrampoline (internal/async_hooks.js:129:14)
+Cannot read property 'salt' of null
+TypeError: Cannot read property 'salt' of null
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:785:53
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+Cannot read property 'salt' of null
+TypeError: Cannot read property 'salt' of null
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:785:53
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+result is not defined
+ReferenceError: result is not defined
+    at D:\Projects\PN DocMS\controllers\login.js:46:53
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:669:7
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+req is not defined
+ReferenceError: req is not defined
+    at D:\Projects\PN DocMS\controllers\login.js:81:8
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:830:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+    at runNextTicks (internal/process/task_queues.js:62:3)
+    at processImmediate (internal/timers.js:434:9)
+    at process.topLevelDomainCallback (domain.js:144:15)
+    at process.callbackTrampoline (internal/async_hooks.js:129:14)
