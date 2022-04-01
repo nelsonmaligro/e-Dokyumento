@@ -118,6 +118,18 @@ dbhandle.settingDis((setting)=>{
       callback(decoded, req.cookies['me']);
     });
   };
+  //validate token from android app
+  exports.validTokenAndroid = function (req, res, callback){
+    var token = req.cookies['token'];
+    try { token = JSON.parse(token);} catch {}
+    if (!token) { callback([], 'invalid');} //if no token
+    else { //if token is available
+      jwt.verify(token.token, 'secret', function (err, decoded){
+        if (err) { console.log('token error'); callback([], 'invalid');} //invalid token
+        else callback(decoded, token.userN); //invalid token
+      });
+    }
+  };
   //function generate unique numeric // ID
   exports.generateID = function generateID(){
     var dateVal = Date.now().toString();

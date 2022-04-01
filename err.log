@@ -21190,3 +21190,47 @@ ReferenceError: req is not defined
     at processImmediate (internal/timers.js:434:9)
     at process.topLevelDomainCallback (domain.js:144:15)
     at process.callbackTrampoline (internal/async_hooks.js:129:14)
+Unexpected token 'return'
+D:\Projects\PN DocMS\controllers\utilsdocms.js:125
+    if (!token) { return return res.json('invalid');}
+                         ^^^^^^
+
+SyntaxError: Unexpected token 'return'
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\dochandle.js:17:20)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasmonitor.js:18:21)
+    at D:\Projects\PN DocMS\index.js:59:7
+missing ) after argument list
+D:\Projects\PN DocMS\controllers\utilsdocms.js:125
+    if (!token) { callback([]], 'invalid');}
+                            ^
+
+SyntaxError: missing ) after argument list
+    at wrapSafe (internal/modules/cjs/loader.js:979:16)
+    at Module._compile (internal/modules/cjs/loader.js:1027:27)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at Object.<anonymous> (D:\Projects\PN DocMS\controllers\dochandle.js:17:20)
+    at Module._compile (internal/modules/cjs/loader.js:1063:30)
+    at Object.Module._extensions..js (internal/modules/cjs/loader.js:1092:10)
+    at Module.load (internal/modules/cjs/loader.js:928:32)
+    at Function.Module._load (internal/modules/cjs/loader.js:769:14)
+    at Module.require (internal/modules/cjs/loader.js:952:19)
+    at require (internal/modules/cjs/helpers.js:88:18)
+    at module.exports (D:\Projects\PN DocMS\controllers\dasmonitor.js:18:21)
+    at D:\Projects\PN DocMS\index.js:59:7
