@@ -252,6 +252,7 @@ module.exports = function(app, arrDB){
         if (req.body.branch=="fileopen") filepath = req.body.filepath;
         else {
           if (req.body.branch.toUpperCase()=="RELEASE") filepath= drivetmp+'Release/'+req.body.filepath;
+          else if (req.body.branch.toUpperCase()=="INCOMING-TEMP") filepath= drivetmp+'incoming-temp/'+req.body.filepath;
           else filepath= drivetmp+req.body.branch+'/'+req.body.filepath;
         }
         //console.log(filepath);
@@ -389,7 +390,11 @@ module.exports = function(app, arrDB){
       var decodeBr = Buffer.from(req.params.view,'base64').toString('ascii');
       if (decodeBr == 'fileopen'){
         if (fs.existsSync(decode)) res.download(decode);
-      } else res.download(path.resolve(drivetmp+decodeBr+'/'+decode));
+      } else {
+        //console.log(decodeBr);
+        if (decodeBr=="INCOMING-TEMP") decodeBr = "incoming-temp";
+        res.download(path.resolve(drivetmp+decodeBr+'/'+decode));
+      }
       dbhandle.actlogsCreate(id, Date.now(), 'File downloaded by the user', decode, req.ip);
     }
 

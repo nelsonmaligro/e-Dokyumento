@@ -128,6 +128,21 @@ module.exports = function(app, arrDB){
         });
       });
     });
+    //post to validate user....test on android
+    app.post('/validateuserandroid', urlencodedParser, function(req,res){
+      utilsdocms.validTokenAndroid(req, res,  function (decoded, id){
+        if (id != "invalid"){
+          console.log("valid android session")
+          dbhandle.userFind(id, function(user) {
+            if (user) res.json('User ID sent is Valid');
+            else res.json('Invalid');
+          });
+        } else {
+          console.log("Invalid android session")
+          res.json('Invalid Session');
+        }
+      });
+    });
     //
     //------------------------------------------FUNCTIONS START HERE----------------------------------------------------
     //Process post update route file through taskboard
@@ -168,7 +183,7 @@ module.exports = function(app, arrDB){
         });
       });
     }
-    
+
     //Process post taskboard Monitoring function
     function postTaskMonitor(req, res, id){
       dbhandle.generateList(arrDB.branch, function (res){ docBr = res; });

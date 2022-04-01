@@ -9,6 +9,7 @@ Primary Controller - Handle client login
 module.exports = function(app){
   var bodyParser = require('body-parser');
   const qrcode = require('qrcode');
+  const jwt = require('jsonwebtoken');
   const mongoose = require('mongoose');
   const passport = require('passport');
   var localStrategy = require('passport-local').Strategy;
@@ -56,7 +57,7 @@ module.exports = function(app){
               //console.log(user.toAuthJSON());
               //res.cookie('token', user.toAuthJSON());
               res.setHeader('token',JSON.stringify(user.toAuthJSON()));
-              res.json('ok');
+              res.json('User Valid');
             }
           })(req,res,next);
         } else {
