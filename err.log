@@ -21234,3 +21234,39 @@ SyntaxError: missing ) after argument list
     at require (internal/modules/cjs/helpers.js:88:18)
     at module.exports (D:\Projects\PN DocMS\controllers\dasmonitor.js:18:21)
     at D:\Projects\PN DocMS\index.js:59:7
+RateLimit is not a constructor
+TypeError: RateLimit is not a constructor
+    at D:\Projects\PN DocMS\index.js:43:21
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:830:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+RateLimit is not a constructor
+TypeError: RateLimit is not a constructor
+    at D:\Projects\PN DocMS\index.js:43:21
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:830:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+RateLimit is not a constructor
+TypeError: RateLimit is not a constructor
+    at D:\Projects\PN DocMS\index.js:43:21
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:830:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+rateLimit is not a constructor
+TypeError: rateLimit is not a constructor
+    at D:\Projects\PN DocMS\index.js:43:21
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:830:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+http.use is not a function
+TypeError: http.use is not a function
+    at D:\Projects\PN DocMS\index.js:50:12
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:830:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)
+http.use is not a function
+TypeError: http.use is not a function
+    at D:\Projects\PN DocMS\index.js:50:12
+    at D:\Projects\PN DocMS\controllers\dbhandle.js:830:5
+    at D:\Projects\PN DocMS\node_modules\mongoose\lib\model.js:5065:18
+    at processTicksAndRejections (internal/process/task_queues.js:75:11)

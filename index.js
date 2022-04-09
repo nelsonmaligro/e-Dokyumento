@@ -20,13 +20,10 @@ var http = require('http');
 var https = require('https');
 const fs = require('fs');
 var domain = require('domain');
-
+var rateLimit = require('express-rate-limit');
 var morgan = require('morgan')
 // create a write stream (in append mode)
 //var accessLogStream = fs.createWriteStream('access-'+Date.now()+'.log',{flags: 'a'});
-
-
-
 
 var d = domain.create();
 setTimeout (()=>{
@@ -42,6 +39,16 @@ setTimeout (()=>{
       drive = setting.maindrive;
       var app = express();
       const httpApp = express();
+      // set up rate limiter: maximum of five requests per minute
+      var limiter =  rateLimit({
+        windowMs: 1*60*1000, // 1 minute
+        max: 5
+      });
+
+      // apply rate limiter to all requests
+      app.use(limiter);
+      httpApp.use(limiter);
+
       // setup the logger
       //app.use(morgan('combined', {stream: accessLogStream}))
       //View Engine
