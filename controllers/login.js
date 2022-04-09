@@ -21,6 +21,7 @@ module.exports = function(app){
   var fs = require('fs');
   const userModel = require('../models/accounts');
   const monitoring = require('./monitoring');
+  var rateLimit = require('express-rate-limit');
   var daysexpire = 10;
   var drivetmp = "public/drive/", drive = "D:/Drive/", publicstr='public';
   var urlencodedParser = bodyParser.urlencoded({extended:true});
@@ -36,15 +37,7 @@ module.exports = function(app){
 
     app.use(passport.initialize());
     app.use(passport.session());
-    // set up rate limiter: maximum of five requests per minute
-    var limiter =  rateLimit({
-      windowMs: 1*60*1000, // 1 minute
-      max: 5
-    });
-
-    // apply rate limiter to all requests
-    app.use(limiter);
-    //test login for Android adapter
+  //test login for Android adapter
     app.get('/login-adapter', function(req, res){
       return res.render('login-adapter', {layout:'empty', error:'Valid'});
     });
