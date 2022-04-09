@@ -19,6 +19,8 @@ module.exports = function(app, arrDB){
   const monitoring = require('./monitoring');
   const utilsdocms = require('./utilsdocms');
   const dateformat = require('dateformat');
+  var rateLimit = require('express-rate-limit');
+
   //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
@@ -36,15 +38,7 @@ module.exports = function(app, arrDB){
     drive = setting.maindrive;
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
-    // set up rate limiter: maximum of five requests per minute
-    var limiter =  rateLimit({
-      windowMs: 1*60*1000, // 1 minute
-      max: 5
-    });
-
-    // apply rate limiter to all requests
-    app.use(limiter);
-    //get show document routing in table monitor
+      //get show document routing in table monitor
     app.get('/tablemonitor', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         getTableMonitor(req, res, id);

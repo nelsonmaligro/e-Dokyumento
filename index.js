@@ -39,10 +39,10 @@ setTimeout (()=>{
       drive = setting.maindrive;
       var app = express();
       const httpApp = express();
-      // set up rate limiter: maximum of five requests per minute
+      // set up rate limiter: maximum of 5000 requests per minute
       var limiter =  rateLimit({
         windowMs: 1*60*1000, // 1 minute
-        max: 5
+        max: 5000
       });
 
       // apply rate limiter to all requests
