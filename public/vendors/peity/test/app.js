@@ -32,13 +32,24 @@ var show = function(req, res) {
   }
 }
 
-var app = express()
-  .set('view engine', 'ejs')
-  .set('views', __dirname + '/views')
-  .get('/jquery.min.js', jquery)
-  .get('/jquery.peity.js', peity)
-  .get('/style.css', style)
-  .get('/', index)
-  .get('/:id', show)
+var app = express();
+// set up rate limiter: maximum of five requests per minute
+var rateLimit = require('express-rate-limit');
+var limiter = rateLimit({
+windowMs: 1*60*1000, // 1 minute
+max: 5
+});
+
+// apply rate limiter to all requests
+app.use(limiter);
+  app.set('view engine', 'ejs');
+  app.set('views', __dirname + '/views');
+  app.get('/jquery.min.js', jquery);
+  app.get('/jquery.peity.js', peity);
+  app.get('/style.css', style);
+  app.get('/', index);
+  app.get('/:id', show);
+
+
 
 module.exports = app
