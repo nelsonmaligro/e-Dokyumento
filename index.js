@@ -22,6 +22,7 @@ const fs = require('fs');
 var domain = require('domain');
 var rateLimit = require('express-rate-limit');
 var morgan = require('morgan')
+process.env.salt = 'secret';
 // create a write stream (in append mode)
 //var accessLogStream = fs.createWriteStream('access-'+Date.now()+'.log',{flags: 'a'});
 
@@ -34,7 +35,6 @@ setTimeout (()=>{
   });
 
   d.run(function() {
-
     dbhandle.settingDis((setting)=>{
       drive = setting.maindrive;
       var app = express();

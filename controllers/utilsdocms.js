@@ -113,7 +113,7 @@ dbhandle.settingDis((setting)=>{
   exports.validToken = function (req, res, callback){
     var token = req.cookies['token'];
     if (!token) { return res.render('login', {layout:'empty', error:'Valid'});}
-    jwt.verify(token.token, 'secret', function (err, decoded){
+    jwt.verify(token.token, process.env.salt, function (err, decoded){
       if (err) { console.log('token error'); return res.render('login', {layout:'empty', error:'Valid'});}
       callback(decoded, req.cookies['me']);
     });
@@ -124,7 +124,7 @@ dbhandle.settingDis((setting)=>{
     try { token = JSON.parse(token);} catch {}
     if (!token) { callback([], 'invalid');} //if no token
     else { //if token is available
-      jwt.verify(token.token, 'secret', function (err, decoded){
+      jwt.verify(token.token, process.env.salt, function (err, decoded){
         if (err) { console.log('token error'); callback([], 'invalid');} //invalid token
         else callback(decoded, token.userN); //invalid token
       });
