@@ -45,6 +45,13 @@ module.exports = function(app, arrDB){
     var upload = multer({ storage : storage}).single('fileinput');
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
+    // set up rate limiter: maximum of 5000 requests per minute
+    var limiter =  rateLimit({
+      windowMs: 1*60*1000, // 1 minute
+      max: 5000
+    });
+    app.use(limiter);
+
     //post handle explorer show file
     app.post('/explorershow', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){

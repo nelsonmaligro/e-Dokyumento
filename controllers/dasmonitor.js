@@ -38,7 +38,14 @@ module.exports = function(app, arrDB){
     drive = setting.maindrive;
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
-      //get show document routing in table monitor
+    // set up rate limiter: maximum of 5000 requests per minute
+    var limiter =  rateLimit({
+      windowMs: 1*60*1000, // 1 minute
+      max: 5000
+    });
+    app.use(limiter);
+
+    //get show document routing in table monitor
     app.get('/tablemonitor', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         getTableMonitor(req, res, id);

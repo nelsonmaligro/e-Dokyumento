@@ -44,8 +44,6 @@ setTimeout (()=>{
         windowMs: 1*60*1000, // 1 minute
         max: 5000
       });
-
-      // apply rate limiter to all requests
       app.use(limiter);
       httpApp.use(limiter);
 
