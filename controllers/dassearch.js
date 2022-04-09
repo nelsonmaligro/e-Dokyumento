@@ -16,8 +16,6 @@ module.exports = function(app, arrDB){
   const dochandle = require('./dochandle');
   const utilsdocms = require('./utilsdocms');
   const dateformat = require('dateformat');
-  var rateLimit = require('express-rate-limit');
-
   //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
@@ -35,13 +33,6 @@ module.exports = function(app, arrDB){
     drive = setting.maindrive;
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
-    // set up rate limiter: maximum of 5000 requests per minute
-    var limiter =  rateLimit({
-      windowMs: 1*60*1000, // 1 minute
-      max: 5000
-    });
-    app.use(limiter);
-
     //handle post advance search
     app.post('/searchadv', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){

@@ -26,9 +26,7 @@ module.exports = function(app, arrDB){
   const jwt = require('jsonwebtoken');
   const PDFDocument = require('pdfkit');
   const nodesign = require('node-pdfsign');
-  var rateLimit = require('express-rate-limit');
-
-
+  
   //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
@@ -49,13 +47,6 @@ module.exports = function(app, arrDB){
     //const {plainAddPlaceholder } = require ('node-pdfsign');
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
-    // set up rate limiter: maximum of 5000 requests per minute
-    var limiter =  rateLimit({
-      windowMs: 1*60*1000, // 1 minute
-      max: 5000
-    });
-    app.use(limiter);
-
     //post handle update comment
     app.post('/updatecomment', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){

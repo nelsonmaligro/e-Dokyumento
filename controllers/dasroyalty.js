@@ -21,8 +21,6 @@ module.exports = function(app, arrDB){
   const utilsdocms = require('./utilsdocms');
   const dateformat = require('dateformat');
   var multer = require('multer');
-  var rateLimit = require('express-rate-limit');
-
   const PDFDocument = require('pdfkit');
   const nodesign = require('node-pdfsign');
   //initialize url encoding, cookies, and default drive path
@@ -47,13 +45,6 @@ module.exports = function(app, arrDB){
 
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
-    // set up rate limiter: maximum of 5000 requests per minute
-    var limiter =  rateLimit({
-      windowMs: 1*60*1000, // 1 minute
-      max: 5000
-    });
-    app.use(limiter);
-    
     //get handle signing document
     app.get('/signpdf', function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){

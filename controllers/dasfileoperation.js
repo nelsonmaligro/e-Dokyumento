@@ -21,8 +21,6 @@ module.exports = function(app, arrDB){
   const dateformat = require('dateformat');
   var multer = require('multer');
   const getcontent = require('./getcontent');
-  var rateLimit = require('express-rate-limit');
-
   //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
@@ -45,13 +43,6 @@ module.exports = function(app, arrDB){
     var upload = multer({ storage : storage}).single('fileinput');
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
-    // set up rate limiter: maximum of 5000 requests per minute
-    var limiter =  rateLimit({
-      windowMs: 1*60*1000, // 1 minute
-      max: 5000
-    });
-    app.use(limiter);
-
     //post handle explorer show file
     app.post('/explorershow', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){

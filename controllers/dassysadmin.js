@@ -16,8 +16,7 @@ module.exports = function(app, arrDB){
   const utilsdocms = require('./utilsdocms');
   const dateformat = require('dateformat');
   var multer = require('multer');
-  var rateLimit = require('express-rate-limit');
-
+  
   //initialize url encoding, cookies, and default drive path
   app.use(cookieParser());
   var urlencodedParser = bodyParser.urlencoded({extended:true});
@@ -47,13 +46,6 @@ module.exports = function(app, arrDB){
     var cacertfile = multer({ storage : storage}).single('cacertinput');
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
-    // set up rate limiter: maximum of 5000 requests per minute
-    var limiter =  rateLimit({
-      windowMs: 1*60*1000, // 1 minute
-      max: 5000
-    });
-    app.use(limiter);
-
     //post handle switching user privilege from branch duty to office admin - not applicable for staff and secretary
     app.post('/switchduty', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
