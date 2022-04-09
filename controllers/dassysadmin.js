@@ -45,6 +45,14 @@ module.exports = function(app, arrDB){
     var cacertfile = multer({ storage : storage}).single('cacertinput');
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
+    // set up rate limiter: maximum of five requests per minute
+    var limiter =  rateLimit({
+      windowMs: 1*60*1000, // 1 minute
+      max: 5
+    });
+
+    // apply rate limiter to all requests
+    app.use(limiter);
     //post handle switching user privilege from branch duty to office admin - not applicable for staff and secretary
     app.post('/switchduty', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
