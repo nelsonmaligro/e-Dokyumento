@@ -47,6 +47,14 @@ module.exports = function(app, arrDB){
     //const {plainAddPlaceholder } = require ('node-pdfsign');
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
+    // set up rate limiter: maximum of five requests per minute
+    var limiter =  rateLimit({
+      windowMs: 1*60*1000, // 1 minute
+      max: 5
+    });
+
+    // apply rate limiter to all requests
+    app.use(limiter);
     //post handle update comment
     app.post('/updatecomment', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){

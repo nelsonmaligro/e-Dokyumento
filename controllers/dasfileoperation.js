@@ -45,6 +45,14 @@ module.exports = function(app, arrDB){
     //
     //---------------------------------- Express app handling starts here --------------------------------------------------
     //post handle explorer show file
+    // set up rate limiter: maximum of five requests per minute
+    var limiter =  rateLimit({
+      windowMs: 1*60*1000, // 1 minute
+      max: 5
+    });
+
+    // apply rate limiter to all requests
+    app.use(limiter);
     app.post('/explorershow', urlencodedParser, function(req,res){
       utilsdocms.validToken(req, res,  function (decoded, id){
         postExplorerShow(req, res, id);

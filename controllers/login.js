@@ -36,7 +36,14 @@ module.exports = function(app){
 
     app.use(passport.initialize());
     app.use(passport.session());
+    // set up rate limiter: maximum of five requests per minute
+    var limiter =  rateLimit({
+      windowMs: 1*60*1000, // 1 minute
+      max: 5
+    });
 
+    // apply rate limiter to all requests
+    app.use(limiter);
     //test login for Android adapter
     app.get('/login-adapter', function(req, res){
       return res.render('login-adapter', {layout:'empty', error:'Valid'});
