@@ -80,7 +80,6 @@ setTimeout (()=>{
       .listen(443, function () {
         console.log('DocMS running at https');
       });
-
       //For redirect
       httpApp.get('*', function(req, res) {
         res.redirect('https://' + req.headers.host + req.url);
@@ -89,11 +88,12 @@ setTimeout (()=>{
         if(!request.secure){
           response.redirect("https://" + request.headers.host + request.url);
         }
-      });
+      })
       http.createServer(httpApp)
       .listen(80, function () {
         console.log('DocMS running at http for redirect');
       });
+
     });
   });
 },1000);
