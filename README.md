@@ -63,11 +63,8 @@ https://sourceforge.net/projects/e-dokyumento/files/Install%20e-Dokyumento%20on%
      3. Build the image - "docker-compose build".
      4. Run the image - "docker-compose up" 
         note: Dont forget to shutdown the container upon exit - "docker-compose down". This is to prevent error in mongoDB. 
-  
-  
-# Demo
-### Pull e-Dokyumento from Docker hub : "docker pull nelsonmaligro/edokyumento"
-### Run the image: docker run -p 443:443 -it nelsonmaligro/edokyumento
+ 
+# Demo: https://e-dokyumento.herokuapp.com/
   <pre><code>
   Default Accounts:
   Username                        Password            Privilege           Department/Branch
@@ -78,6 +75,9 @@ https://sourceforge.net/projects/e-dokyumento/files/Install%20e-Dokyumento%20on%
    5. boss.wannabe                boss@123            EXECUTIVE           EAGM
    6. administrator               admin@123           SysAdmin
 </code></pre>
+# Docker Hub:
+### Pull e-Dokyumento from Docker hub : "docker pull nelsonmaligro/edokyumento"
+### Run the image: docker run -p 443:443 -it nelsonmaligro/edokyumento
 
 # Roadmap
 
