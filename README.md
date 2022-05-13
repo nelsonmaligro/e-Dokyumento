@@ -65,8 +65,8 @@ https://sourceforge.net/projects/e-dokyumento/files/Install%20e-Dokyumento%20on%
         note: Dont forget to shutdown the container upon exit - "docker-compose down". This is to prevent error in mongoDB. 
  
 # Demo: 
-https://e-dokyumento.herokuapp.com/
-https://edokyu.seillig.com/
+#https://e-dokyumento.herokuapp.com/
+#https://edokyu.seillig.com/
   <pre><code>
   Default Accounts:
   Username                        Password            Privilege           Department/Branch
