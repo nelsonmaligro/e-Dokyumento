@@ -48,7 +48,7 @@ module.exports = function(app){
     app.get('/login-adapter', function(req, res){
       return res.render('login-adapter', {layout:'empty', error:'Valid'});
     });
-    //post to validate password prior delete file from monitoring
+    //Post login for Android adapter
     app.post('/login-adapter',  function(req,res, next) {
       dbhandle.userFind(req.body.username, function (user) {
         //console.log(req.body.user,req.body.hashval);

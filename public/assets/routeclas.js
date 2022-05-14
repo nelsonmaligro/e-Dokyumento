@@ -217,6 +217,7 @@ $(document).ready(function(){
             } else {
               if (window.location.toString().includes("/incoming")) location.replace('/incoming');
               else if (window.location.toString().includes("/taskboard")) location.replace('/taskboard');
+              else location.replace('/explorer');
             }
             //togglePanelProc(false);
           }

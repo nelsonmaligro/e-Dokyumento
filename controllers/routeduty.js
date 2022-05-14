@@ -289,7 +289,7 @@ dbhandle.settingDis((setting)=>{
                 });
               } else res.json('successful');
             }
-          }else res.json('successful');
+          } else res.json('successful');
         },5000);
       });
       callback(true);
