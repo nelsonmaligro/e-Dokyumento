@@ -40,7 +40,7 @@
     "node-forge": "^0.10.0",
     "node-pdfsign": "^1.0.3",
     "node-stream-zip": "^1.9.1",
-    "nodemon": "^2.0.7",
+    "nodemon": "^2.0.20",
     "office-to-pdf": "^4.0.0",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
