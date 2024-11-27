@@ -30,7 +30,7 @@
     "fs": "0.0.1-security",
     "hidefile": "^3.0.0",
     "jshashes": "^1.0.8",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "make": "^0.8.1",
     "mocha": "^7.1.2",
     "mongoose": "^5.13.1",
