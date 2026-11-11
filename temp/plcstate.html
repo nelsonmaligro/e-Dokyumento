@@ -1,0 +1,125 @@
+{% extends 'mgmbase.html' %}
+
+{% block title %} Logic Controller - Siemens S7-1200 {% endblock %}
+
+{% block style%} <style></style> {% endblock %}
+
+
+{% block script %} 
+
+<script>
+    var updateInterval = 2000; // Update interval in milliseconds
+    // Function to auto-refresh the page
+    function timedRefresh(timeoutPeriod) {
+        setTimeout("location.reload(true);",timeoutPeriod);
+    }
+    
+    window.onload = timedRefresh(updateInterval); // refresh every 2 sec.
+</script>
+
+{% endblock %}
+
+{% block mgmContent %}
+
+<ul class="list-group">
+
+    <li class="list-group-item">
+        <h3> <b class="text-primary"> PLC Address State </b></h3>
+     {% if posts["registerVal"] | select | list | length > 7 %}
+        <div class="alert alert-danger mt-2" role="alert">
+            <strong>Warning:</strong> High Temperature
+
+        </div>
+    {% endif %}
+
+{{  posts["flag"]  }}
+        <p> </p>
+    </li>
+    <br>
+    <div class="row">
+        <div class="col-sm-3">
+
+            <li class="list-group-item">   
+                <b class="text-primary">PLC Input Group</b> 
+                <p> </p>
+                <table class="table table-bordered table-sm">
+                    <thead class="table-dark">
+                      <tr>
+                        <th>Address</th>
+                        <th>Voltage</th>
+                        <th>Byte_Idx</th>
+                        <th>Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for regVal in posts["registerVal"] %}
+                        <tr>
+                            <td><span class="badge bg-secondary">0x0000000{{loop.index0//4+1}}</span></td>
+                            {% if regVal %}
+                                <td><span class="badge bg-success">{{posts["inputVol"][loop.index0]}} V</span></td>
+                            {% else %}
+                                <td><span class="badge bg-dark"> 0 V </span></td>
+                            {% endif%}
+                            <td>B-{{loop.index0 % 4}}</td>
+                            {% if regVal %}
+                                <td><span class="badge bg-success"> True</span></td>
+                            {% else %}
+                                <td><span class="badge bg-warning"> False </span></td>
+                            {% endif%}
+                        </tr>
+                        {% endfor%}
+                    </tbody>
+                  </table>
+            </li>
+        </div>
+
+        <div class="col-sm-6">
+
+            <li class="list-group-item">   
+                <b class="text-primary">PLC Ladder Diagram</b> 
+                <p> </p>
+                <img src="{{url_for('static', filename='img/mbLadderLogic.png')}}" class="rounded img-fluid">
+            </li>
+
+        </div>
+
+        <div class="col-sm-3">
+
+            <li class="list-group-item">   
+                <b class="text-primary">PLC Output group</b> 
+                <p> </p>
+                <table class="table table-bordered table-sm">
+                    <thead class="table-dark">
+                      <tr>
+                        <th>Address</th>
+                        <th>Voltage</th>
+                        <th>Byte_Idx</th>
+                        <th>Value</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for coilVal in posts["coilVal"] %}
+                        <tr>
+                            <td><span class="badge bg-secondary">0x0000000{{loop.index0//4+3}}</span></td>
+                            {% if coilVal%}
+                                <td><span class="badge bg-success">{{coilVal}}</span></td>
+                            {% else %}
+                                <td><span class="badge bg-warning">{{coilVal}}</span></td>
+                            {% endif%}
+                            <td>B-{{loop.index0 % 4}}</td>
+                            {% if coilVal%}
+                                <td><span class="badge bg-success">{{posts["outputVol"][loop.index0]}} V</span></td>
+                            {% else %}
+                                <td><span class="badge bg-dark"> 0 V </span></td>
+                            {% endif%}
+                        </tr>
+                        {% endfor%}
+                    </tbody>
+                  </table>
+            </li>
+
+        </div>
+    </div>
+</ul>
+
+{% endblock %}
