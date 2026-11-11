@@ -25,17 +25,29 @@
 
     <li class="list-group-item">
         <h3> <b class="text-primary"> PLC Address State </b></h3>
-     {% if posts["registerVal"] | select | list | length > 7 %}
+    {% set high_temp = posts["coilVal"] | select | list | length > 7 %}
+
+    {% if high_temp %}
         <div class="alert alert-danger mt-2" role="alert">
             <strong>Warning:</strong> High Temperature
-
-        </div>
+        
+            <div id='alerttxt'></div>
+	</div>
     {% endif %}
 
-{{  posts["flag"]  }}
         <p> </p>
     </li>
     <br>
+
+<script>
+        (function () {
+            const highTemp = {{ 'true' if high_temp else 'false' }};
+
+            if (highTemp) {
+			document.getElementById("alerttxt").innerHTML = "<span>{{posts['flag']}}</span>";
+            } 
+        })();
+    </script>
     <div class="row">
         <div class="col-sm-3">
 
